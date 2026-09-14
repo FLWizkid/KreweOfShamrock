@@ -105,6 +105,14 @@
       <figure class="tall"><a href="assets/img/gallery/krewe-celebrate-pair.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/img/gallery/krewe-celebrate-pair.jpg" alt="Krewe members celebrating together"></a><figcaption>Heart of the Krewe<small>Neighbors &amp; friends</small></figcaption></figure>
     </div>
 
+    <div class="section-title" style="margin-top:42px;">
+      <h2>Member submissions</h2>
+      <p class="sub">Photos shared by the krewe (officer-approved)</p>
+    </div>
+    <div class="banner-flourish" aria-hidden="true"></div>
+    <div class="mosaic" id="memberGallery"></div>
+    <p class="empty" id="memberGalleryEmpty" style="display:none;text-align:center;color:#5a6a52;margin:18px 0 8px;">No member photos published yet. Share one from Member Hub after media consent.</p>
+
   </main>
 
   <footer class="krewe-foot">
@@ -138,5 +146,39 @@
     <span class="label" id="kreweMusicLabel">Tap for a tune ☘</span>
   </div>
   <script src="assets/krewe.js" defer></script>
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+    const supabase = createClient("https://oazwkwflgbthojvnclfc.supabase.co","sb_publishable_aMCyVxkiolMuBt9_R990CA_xQmXLaaS");
+    const esc = (s)=> (s??"").toString().replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[c]));
+    (async () => {
+      const grid = document.getElementById("memberGallery");
+      const empty = document.getElementById("memberGalleryEmpty");
+      if (!grid) return;
+      try {
+        const { data, error } = await supabase
+          .from("content_items")
+          .select("title, url, notes, created_at")
+          .eq("type", "photo")
+          .eq("is_published", true)
+          .order("created_at", { ascending: false });
+        if (error) throw error;
+        const rows = (data || []).filter(r => r.url);
+        if (!rows.length) {
+          if (empty) empty.style.display = "block";
+          return;
+        }
+        grid.innerHTML = rows.map(r => {
+          const cap = esc(r.title || "Krewe photo");
+          const sub = esc(r.notes || "Member submission");
+          return `<figure><a href="${esc(r.url)}" target="_blank" rel="noopener"><img loading="lazy" src="${esc(r.url)}" alt="${cap}"></a><figcaption>${cap}<small>${sub}</small></figcaption></figure>`;
+        }).join("");
+      } catch (e) {
+        if (empty) {
+          empty.style.display = "block";
+          empty.textContent = "Could not load member photos right now.";
+        }
+      }
+    })();
+  </script>
 </body>
 </html>
