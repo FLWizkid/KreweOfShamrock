@@ -16,3 +16,5 @@ IMG_*.JPG
 krewe-of-shamrock-website/
 assets/img/Photos.zip
 assets/img/Photos-3-001.zip
+# Curated site videos must deploy despite the *.mp4 exclusions above
+!assets/video/*.mp4

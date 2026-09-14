@@ -76,6 +76,22 @@ Official routing lives in `CONTACT_EMAILS.md` (the single source of truth):
   server-side as well.
 - To run a sync by hand: SQL Editor → `select public.sync_ikc_calendar();`
 
+## New member orientation video (added 2026-09-04)
+- The members-only orientation video ("What New Krewe of Shamrock Members
+  Must Know") is served from `assets/video/new-member-orientation.mp4` and
+  appears as the **New Member Orientation** card on the **My Krewe** tab of
+  the Member Hub (`members.html`), plus a "Watch the orientation video"
+  quick action on the hub Home tab.
+- `.gitignore` and `.vercelignore` normally exclude every `*.mp4` (raw
+  uploads); both now carry a `!assets/video/*.mp4` exception so curated
+  site videos in that folder are committed and deployed. To replace the
+  video, overwrite that file and commit.
+- The card only renders behind the member sign-in gate. Note that the file
+  itself is technically reachable by its direct URL (static hosting cannot
+  password-protect individual files); if the board ever needs hard access
+  control, move the file into a private Supabase Storage bucket with an
+  authenticated-read policy and a signed URL instead.
+
 ## Enable Email + Password provider
 - Supabase Dashboard → Authentication → Providers → Email: enable Email, disable “magic link only” if still forced.
 - Confirm email confirmations policy matches board preference (invite-only vs open create-password).

@@ -2,6 +2,8 @@
 *.zip
 *.mp4
 *.MP4
+# ...but curated site videos under assets/video/ ARE tracked & deployed
+!assets/video/*.mp4
 *.mov
 *.MOV
 *.heic
