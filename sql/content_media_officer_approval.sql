@@ -522,3 +522,28 @@ GRANT EXECUTE ON FUNCTION public.list_pending_media_approvals() TO authenticated
 GRANT EXECUTE ON FUNCTION public.approve_content_item(uuid, text) TO authenticated;
 GRANT EXECUTE ON FUNCTION public.deny_content_item(uuid, text) TO authenticated;
 GRANT EXECUTE ON FUNCTION public.list_content_approval_log(integer) TO authenticated;
+
+-- 15) Force non-officer photo/video inserts to pending (defense in depth)
+CREATE OR REPLACE FUNCTION public.content_items_force_media_pending()
+RETURNS trigger
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path TO 'public'
+AS $$
+BEGIN
+  IF NEW.type IN ('photo', 'video') AND NOT public.is_krewe_officer() THEN
+    NEW.is_published := false;
+    NEW.approval_status := 'pending';
+    IF NEW.submitted_by IS NULL THEN
+      NEW.submitted_by := auth.uid();
+    END IF;
+  END IF;
+  RETURN NEW;
+END;
+$$;
+
+DROP TRIGGER IF EXISTS trg_content_items_force_media_pending ON public.content_items;
+CREATE TRIGGER trg_content_items_force_media_pending
+  BEFORE INSERT ON public.content_items
+  FOR EACH ROW
+  EXECUTE FUNCTION public.content_items_force_media_pending();
