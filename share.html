@@ -167,7 +167,7 @@
     <div style="color:var(--muted);font-size:15px;margin:0 0 20px;line-height:1.5;">
       <p style="margin:0 0 10px;">Choose the type of content you&rsquo;d like to share. This space is for lifting each other up &mdash; post what is <b>positive, kind, and true to the krewe spirit</b>.</p>
       <p style="margin:0 0 10px;"><b>Our posting values:</b> keep it welcoming and constructive. Please do <b>not</b> post political campaigning, partisan arguments, or content that judges, shames, or attacks people. Celebrate our culture, creativity, and camaraderie instead.</p>
-      <p style="margin:0;">Signed-in members: your posts go live on the site right away. Photos and videos need a signed media consent (faces/likeness).</p>
+      <p style="margin:0;">Artwork, poems, stories, and recipes go live right away. Photos and videos are submitted for officer review before they appear on the site. Photos and videos also need a signed media consent (faces/likeness).</p>
     </div>
 
     <!-- Type selector tabs -->
@@ -189,9 +189,10 @@
         </div>
         <div class="share-body">
           <div class="note-box" role="note">
-            <strong>Video showcase limits (free plan):</strong> the site holds <strong>15 videos</strong> max (~<strong>25&nbsp;MB</strong> each).
-            Prefer clips <strong>under 25&nbsp;MB</strong> (MP4). When the library is full, uploading another
-            <strong>rotates out the earliest</strong> video and <strong>deletes it from Storage</strong>.
+            <strong>Officer review:</strong> videos wait for an officer to approve before they go live.
+            <strong>Showcase limits (free plan):</strong> the site holds <strong>15 published videos</strong> max (~<strong>25&nbsp;MB</strong> each).
+            Prefer clips <strong>under 25&nbsp;MB</strong> (MP4). When the published library is full, approving another
+            <strong>rotates out the earliest</strong> published video and <strong>deletes it from Storage</strong>.
           </div>
           <form id="formVideo" novalidate>
             <div class="form-group">
@@ -219,8 +220,8 @@
               <textarea id="vDesc" placeholder="Tell the krewe what this video is about..."></textarea>
             </div>
             <div class="submit-area">
-              <button type="submit" class="btn btn-primary">Post to the site</button>
-              <span class="submit-note">&#x1f512; Goes live on the site as soon as you submit.</span>
+              <button type="submit" class="btn btn-primary">Submit for review</button>
+              <span class="submit-note">&#x1f512; Submitted for officer review (media consent required). Not live until approved.</span>
             </div>
             <div class="msg" id="msgVideo"></div>
           </form>
@@ -256,8 +257,8 @@
               <textarea id="pDesc" placeholder="Where was this taken? Any story behind it?"></textarea>
             </div>
             <div class="submit-area">
-              <button type="submit" class="btn btn-primary">Post to the site</button>
-              <span class="submit-note">&#x1f512; Goes live in the gallery after you submit (media consent required).</span>
+              <button type="submit" class="btn btn-primary">Submit for review</button>
+              <span class="submit-note">&#x1f512; Submitted for officer review (media consent required). Not live until approved.</span>
             </div>
             <div class="msg" id="msgPhoto"></div>
           </form>
@@ -509,9 +510,9 @@ async function uploadFile(bucket, file) {
   const ext = file.name.split('.').pop();
   const base = Date.now() + '-' + Math.random().toString(36).slice(2) + '.' + ext;
   let path = base;
-  if (bucket === 'krewe-videos') {
+  if (bucket === 'krewe-videos' || bucket === 'gallery-photos') {
     const uid = currentUser?.id;
-    if (!uid) throw new Error('You must be signed in to upload videos.');
+    if (!uid) throw new Error('You must be signed in to upload.');
     path = uid + '/' + base;
   }
   const { error } = await sb.storage.from(bucket).upload(path, file, { upsert: false });
@@ -559,9 +560,9 @@ function showMsg(id, type, text) {
   el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
-function setLoading(btn, loading) {
+function setLoading(btn, loading, idleLabel) {
   btn.disabled = loading;
-  btn.textContent = loading ? 'Submitting...' : 'Post to the site';
+  btn.textContent = loading ? 'Submitting...' : (idleLabel || 'Post to the site');
 }
 
 // ---- VIDEO form ----
@@ -579,9 +580,9 @@ document.getElementById('formVideo').addEventListener('submit', async (e) => {
     showMsg('msgVideo','error','Video file is too large (max 25 MB). Prefer a shorter MP4 clip.');
     return;
   }
-  setLoading(btn, true);
+  setLoading(btn, true, 'Submit for review');
   try {
-    if (!(await gatePhotoVideo('msgVideo'))) { setLoading(btn, false); return; }
+    if (!(await gatePhotoVideo('msgVideo'))) { setLoading(btn, false, 'Submit for review'); return; }
     let url = vUrl;
     if (file) {
       url = await uploadFile('krewe-videos', file);
@@ -592,26 +593,17 @@ document.getElementById('formVideo').addEventListener('submit', async (e) => {
       p_notes: desc || null,
     });
     if (error) throw error;
-    let msg = 'Thanks! Your video is live on the videos page.';
-    let kind = 'success';
-    if (data && data.rotated) {
-      kind = 'warn';
-      const removed = Array.isArray(data.removed_titles) && data.removed_titles.length
-        ? ' Removed: ' + data.removed_titles.join(', ') + '.'
-        : '';
-      const countBit = (data.count != null) ? ` Showcase is now at ${data.count}/15.` : '';
-      msg = 'Library was full — oldest video(s) rotated out and deleted from Storage.' + removed
-        + ' Your new video is live.' + countBit;
-    } else if (data && data.count != null) {
-      msg = `Thanks! Your video is live on the videos page (${data.count}/15).`;
+    let msg = 'Thanks! Your video was submitted for officer review. It will appear on the videos page after an officer approves it.';
+    if (data && data.status === 'pending') {
+      msg = 'Thanks! Your video was submitted for officer review. It will appear on the videos page after an officer approves it.';
     }
-    showMsg('msgVideo', kind, msg);
+    showMsg('msgVideo', 'success', msg);
     e.target.reset();
     document.getElementById('fileVideoName').textContent = '';
   } catch(err) {
     showMsg('msgVideo', 'error', 'Something went wrong: ' + err.message);
   }
-  setLoading(btn, false);
+  setLoading(btn, false, 'Submit for review');
 });
 
 // ---- PHOTO form ----
@@ -621,23 +613,23 @@ document.getElementById('formPhoto').addEventListener('submit', async (e) => {
   const btn = e.target.querySelector('button[type=submit]');
   const file = document.getElementById('filePhoto').files[0];
   if (!file) { showMsg('msgPhoto','error','Please choose a photo to upload.'); return; }
-  setLoading(btn, true);
+  setLoading(btn, true, 'Submit for review');
   try {
-    if (!(await gatePhotoVideo('msgPhoto'))) { setLoading(btn, false); return; }
+    if (!(await gatePhotoVideo('msgPhoto'))) { setLoading(btn, false, 'Submit for review'); return; }
     const url = await uploadFile('gallery-photos', file);
-    await insertItem({
-      type: 'photo',
-      title: document.getElementById('pTitle').value.trim(),
-      body: document.getElementById('pDesc').value.trim() || null,
-      media_url: url,
+    const { error } = await sb.rpc('submit_krewe_photo', {
+      p_title: document.getElementById('pTitle').value.trim(),
+      p_url: url,
+      p_notes: document.getElementById('pDesc').value.trim() || null,
     });
-    showMsg('msgPhoto', 'success', 'Photo submitted — it’s live in the gallery.');
+    if (error) throw error;
+    showMsg('msgPhoto', 'success', 'Photo submitted for officer review. It will appear in the gallery after an officer approves it.');
     e.target.reset();
     document.getElementById('filePhotoName').textContent = '';
   } catch(err) {
     showMsg('msgPhoto', 'error', 'Upload failed: ' + err.message);
   }
-  setLoading(btn, false);
+  setLoading(btn, false, 'Submit for review');
 });
 
 // ---- ART form ----
