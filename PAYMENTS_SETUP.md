@@ -90,3 +90,17 @@ a matching member and year update that member's unpaid dues row.
 The Edge Function uses the Supabase service role only server-side to call the RPC;
 it does not expose that key. The webhook URL is not a substitute for the shared
 token. Keep the token out of GitHub, chat transcripts, and this runbook.
+
+## Amount units and roster matching (2026-09-14)
+
+Zeffy `payment.completed` sends `data.amount` and item `amount` in **cents**. The
+`zeffy-webhook` Edge Function stores that value in `payments.amount_cents` (no extra
+×100). Officer Payments divides by 100 once for display.
+
+Roster match uses the buyer email (Zeffy often puts a contact UUID in `contact`, so
+we read `buyer` first), plus `member_email_aliases`, then a careful name fallback.
+Event ticket purchases auto-RSVP matched members via `kos_auto_rsvp_from_payment`
+when the campaign links to a krewe event (`ticket_payment_url` / name). The member
+self-serve **"My ticket is already purchased"** checkbox on `event-signup.html`
+(still calling `rsvp_to_event` with `p_note`) is unchanged.
+
