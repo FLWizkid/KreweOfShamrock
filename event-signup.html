@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/krewe.css?v=20260909m3" />
+<link rel="stylesheet" href="assets/krewe.css?v=20260914t1&x=20260909m3" />
 <style>
 /* MOBILE EVENT SIGNUP */
 @media (max-width:680px){
@@ -157,10 +157,11 @@
         <input id="email" type="email" required autocomplete="email" />
         <div class="hint">We'll use this to confirm your spot and send event reminders.</div>
 
-        <div class="row">
+        <div class="row" id="guestsRow">
           <div>
             <label for="guests">Guests you're bringing</label>
             <input id="guests" type="number" min="0" max="20" value="0" />
+            <div class="hint">Yourself plus anyone else on your order.</div>
           </div>
           <div>
             <label for="role">I'm signing up as</label>
@@ -170,6 +171,23 @@
             </select>
             <div class="hint">Volunteers sign up free (no ticket checkout). Attendees use Zeffy when the event has paid tickets.</div>
           </div>
+        </div>
+
+        <div id="guestNamesWrap" style="display:none;">
+          <label for="guestNames">Guest names</label>
+          <textarea id="guestNames" rows="2" maxlength="1000" placeholder="One name per line, or separated by commas"></textarea>
+          <div class="hint">Helps the door list match Wild Apricot-style guest rows.</div>
+        </div>
+
+        <div id="raffleWrap" style="display:none;">
+          <label for="raffleTickets">Raffle tickets</label>
+          <select id="raffleTickets">
+            <option value="0">None</option>
+            <option value="1">1 raffle ticket</option>
+            <option value="5">5 raffle tickets</option>
+            <option value="15">15 raffle tickets</option>
+          </select>
+          <div class="hint">Tell us how many raffle tickets you plan to buy on Zeffy so officers can plan the pot.</div>
         </div>
 
         <div id="haveTicketWrap" style="display:none;">
@@ -465,7 +483,7 @@
 
     async function loadEvents() {
       const { data, error } = await supabase
-        .from("events").select("id, name, description, start_time, end_time, location, source, external_url, ticket_payment_url, ticket_price_cents, ticket_label, flyer_url, status, is_featured")
+        .from("events").select("id, name, description, start_time, end_time, location, source, external_url, ticket_payment_url, ticket_price_cents, ticket_label, flyer_url, status, is_featured, collect_guests, collect_guest_names, collect_raffle, raffle_options")
         .eq("is_public", true).order("start_time", { ascending: true });
       if (error) {
         eventSelect.innerHTML = '<option value="">Could not load events</option>';
@@ -521,6 +539,11 @@
         } else if (isPaidWithoutLink(ev)) {
           opt.dataset.needsTickets = "1";
         }
+        opt.dataset.collectGuests = (ev.collect_guests === false) ? "0" : "1";
+        opt.dataset.collectGuestNames = (ev.collect_guest_names === false) ? "0" : "1";
+        opt.dataset.collectRaffle = (ev.collect_raffle === false) ? "0" : "1";
+        opt.dataset.raffleOptions = (ev.raffle_options || "0,1,5,15");
+        if (ev.ticket_label) opt.dataset.ticketLabel = ev.ticket_label;
         eventSelect.appendChild(opt);
       }
       function isVolunteerRole() {
@@ -533,9 +556,41 @@
       function ticketAlreadyPurchased() {
         return haveTicketWrap.style.display !== "none" && haveTicketBox.checked;
       }
+      const guestsRow = document.getElementById("guestsRow");
+      const guestNamesWrap = document.getElementById("guestNamesWrap");
+      const raffleWrap = document.getElementById("raffleWrap");
+      const raffleSelect = document.getElementById("raffleTickets");
+      const guestsInput = document.getElementById("guests");
+      function fillRaffleOptions(csv) {
+        const parts = String(csv || "0,1,5,15").split(",").map((s)=> s.trim()).filter(Boolean);
+        const vals = parts.length ? parts : ["0","1","5","15"];
+        raffleSelect.innerHTML = vals.map((v)=>{
+          const n = parseInt(v, 10);
+          if (isNaN(n) || n < 0) return "";
+          const label = n === 0 ? "None" : (n === 1 ? "1 raffle ticket" : (n + " raffle tickets"));
+          return '<option value="' + n + '">' + label + '</option>';
+        }).join("");
+      }
+      function syncCollectFields() {
+        const opt = eventSelect.selectedOptions[0];
+        const collectGuests = !opt || opt.dataset.collectGuests !== "0";
+        const collectNames = !opt || opt.dataset.collectGuestNames !== "0";
+        const collectRaffle = !!(opt && opt.dataset.collectRaffle !== "0" && (opt.dataset.redirect || Number(document.getElementById("guests").value||0) >= 0));
+        // Guests count: hide only when officer turned it off
+        guestsRow.style.display = collectGuests ? "" : "none";
+        if (!collectGuests) { guestsInput.value = "0"; }
+        const g = parseInt(guestsInput.value || "0", 10) || 0;
+        guestNamesWrap.style.display = (collectGuests && collectNames && g > 0) ? "block" : "none";
+        // Raffle: show for ticketed events (or any event) when officer enabled it
+        const showRaffle = !!(opt && opt.value && opt.dataset.collectRaffle !== "0");
+        raffleWrap.style.display = showRaffle ? "block" : "none";
+        if (showRaffle) fillRaffleOptions(opt.dataset.raffleOptions);
+        if (!showRaffle) raffleSelect.value = "0";
+      }
       function syncSignupButton() {
         const opt = eventSelect.selectedOptions[0];
         btn.disabled = false;
+        syncCollectFields();
         // The "ticket already purchased" option only applies to attendees of ticketed events.
         const ticketedAttendee = !!(opt && opt.dataset.redirect && !isVolunteerRole());
         haveTicketWrap.style.display = ticketedAttendee ? "block" : "none";
@@ -576,6 +631,8 @@
       eventSelect.addEventListener("change", syncSignupButton);
       document.getElementById("role").addEventListener("change", syncSignupButton);
       haveTicketBox.addEventListener("change", syncSignupButton);
+      guestsInput.addEventListener("input", syncCollectFields);
+      guestsInput.addEventListener("change", syncCollectFields);
       // The submit handler lives outside this scope; give it a safe handle.
       window.__kosSyncSignup = syncSignupButton;
       // Deep-link: ?event=<uuid> preselects and syncs the button
@@ -715,17 +772,8 @@
       const volunteering = roleEarly === "volunteer" || roleEarly === "organizer";
       const ticketPurchased = !volunteering && selected && selected.dataset.redirect &&
         document.getElementById("haveTicket").checked;
-      // Paid checkout only for attendees — volunteers RSVP free on-site, and so does
-      // anyone whose ticket was already purchased (spouse, family, or group order).
-      if (!volunteering && !ticketPurchased && selected && selected.dataset.redirect) {
-        window.open(selected.dataset.redirect, "_blank", "noopener,noreferrer");
-        showMessage(selected.dataset.checkoutKind === "tartan"
-          ? "Opening Tampa Bay Tartan Ball tickets in a new tab…"
-          : "Opening Zeffy ticket checkout in a new tab…", "success");
-        return;
-      }
       if (!volunteering && selected && selected.dataset.needsTickets) {
-        showMessage("Paid tickets for this event aren’t linked yet. An officer needs to paste the Zeffy campaign URL in Event Studio.", "error");
+        showMessage("Paid tickets for this event aren't linked yet. An officer needs to paste the Zeffy campaign URL in Event Studio.", "error");
         return;
       }
       message.className = "msg"; btn.disabled = true; btn.textContent = "Submitting…";
@@ -734,10 +782,20 @@
       const planned = (role === "volunteer" || role === "organizer") && plannedRaw
         ? Number(plannedRaw) : null;
       let note = null;
+      let payStatus = null;
+      const goingToCheckout = !volunteering && !ticketPurchased && selected && selected.dataset.redirect;
       if (ticketPurchased) {
         const buyer = (document.getElementById("purchasedBy").value || "").trim();
-        note = "Ticket already purchased" + (buyer ? " — order by: " + buyer : "");
+        note = "Ticket already purchased" + (buyer ? " - order by: " + buyer : "");
+        payStatus = "already_purchased";
+      } else if (goingToCheckout) {
+        payStatus = "pending";
+      } else if (volunteering) {
+        payStatus = "n/a";
       }
+      const guestNamesEl = document.getElementById("guestNames");
+      const raffleEl = document.getElementById("raffleTickets");
+      const ticketLabel = (selected && selected.dataset.ticketLabel) || null;
       const { data, error } = await supabase.rpc("rsvp_to_event", {
         p_event_id: eventSelect.value,
         p_first_name: document.getElementById("firstName").value.trim(),
@@ -746,17 +804,41 @@
         p_guests_count: parseInt(document.getElementById("guests").value || "0", 10),
         p_signup_role: role,
         p_volunteer_hours_planned: (planned && planned > 0) ? planned : null,
-        p_note: note
+        p_note: note,
+        p_raffle_tickets: parseInt((raffleEl && raffleEl.value) || "0", 10),
+        p_guest_names: guestNamesEl ? (guestNamesEl.value || "").trim() || null : null,
+        p_ticket_type: ticketLabel,
+        p_payment_status: payStatus
       });
+      if (error) {
+        btn.disabled = false; resync();
+        showMessage("Something went wrong submitting your RSVP. Please try again.", "error");
+        return;
+      }
+      if (!(data && data.ok)) {
+        btn.disabled = false; resync();
+        showMessage((data && data.message) || "Please check your details and try again.", "error");
+        return;
+      }
+      // After saving intent, open Zeffy (or Tartan Ball) checkout when buying tickets.
+      if (goingToCheckout && data.status !== "waitlisted") {
+        window.open(selected.dataset.redirect, "_blank", "noopener,noreferrer");
+        btn.disabled = false;
+        form.reset();
+        document.getElementById("guests").value = "0";
+        if (raffleEl) raffleEl.value = "0";
+        resync();
+        showMessage(selected.dataset.checkoutKind === "tartan"
+          ? "Details saved. Opening Tampa Bay Tartan Ball tickets in a new tab."
+          : "Details saved (guests + raffle). Opening Zeffy ticket checkout in a new tab.", "success");
+        return;
+      }
       btn.disabled = false;
-      if (error) { resync(); showMessage("Something went wrong submitting your RSVP. Please try again.", "error"); return; }
-      if (data && data.ok) {
-        const doneMsg = ticketPurchased && data.status !== "waitlisted"
-          ? "You're signed up — no second charge, since your ticket is already covered. See you there!"
-          : data.message;
-        if (data.status === "waitlisted") { showMessage(data.message, "waitlist"); }
-        else { form.reset(); document.getElementById("guests").value = "0"; resync(); showMessage(doneMsg, "success"); }
-      } else { resync(); showMessage((data && data.message) || "Please check your details and try again.", "error"); }
+      const doneMsg = ticketPurchased && data.status !== "waitlisted"
+        ? "You're signed up - no second charge, since your ticket is already covered. See you there!"
+        : data.message;
+      if (data.status === "waitlisted") { showMessage(data.message, "waitlist"); }
+      else { form.reset(); document.getElementById("guests").value = "0"; if (raffleEl) raffleEl.value = "0"; resync(); showMessage(doneMsg, "success"); }
     });
 
     loadEvents();
