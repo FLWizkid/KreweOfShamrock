@@ -196,7 +196,7 @@ Officer/report views were switched to **`security_invoker = true`** (2026-09-08)
 
 | System | Integration point | Notes |
 |---|---|---|
-| **Zeffy** | Checkout links on site/store; webhook → `zeffy-webhook` | JWT verify **OFF** on webhook; shared token secret; known backlog: amount double-convert / email matching |
+| **Zeffy** | Checkout links on site/store; webhook → `zeffy-webhook` | JWT verify **OFF** on webhook; shared token secret; amount+email+auto-RSVP fixed 2026-09-14 |
 | **ImprovMX** | DNS MX for kreweofshamrock.com | Free forwarding preferred over paid mailboxes |
 | **IKC calendar** | Events with `source = 'ikc'` | Display only; no Krewe RSVP / Clovers |
 | **Gmail** | Soft-launch board email drafts | Human sends; automation digests are dry-run until enabled |
@@ -260,7 +260,7 @@ Remaining advisor noise is mostly “authenticated can call SECURITY DEFINER RPC
 
 ## 11. Known gaps / backlog (honest)
 
-- Zeffy webhook **amount / email matching** quirks on Officer Payments ledger.
+- Zeffy webhook amount/email matching: fixed 2026-09-14 (cents as cents; buyer email; aliases; auto-RSVP). See `sql/kos_zeffy_payment_match_rsvp_fix.sql`.
 - Dues reminder emails still **dry-run** until explicitly enabled.
 - Supabase Free pause risk; HIBP needs Pro.
 - Vercel Hobby vs commercial ToS — plan Pro before heavy public traffic.
