@@ -79,9 +79,13 @@
     if (!target) return;
     var t = report.totals || {};
     var rows = (report.attendees || []).map(function (a) {
+      var guestCell = a.guests ? esc(a.guests) : "";
+      if (a.guest_names) guestCell = (guestCell ? guestCell + " · " : "") + esc(String(a.guest_names).slice(0, 80));
+      var raffleCell = (a.raffle_tickets != null && Number(a.raffle_tickets) > 0) ? esc(a.raffle_tickets) : "";
       return '<tr><td>' + esc(a.name) + '</td><td>' + esc(a.email || "") + '</td>' +
         '<td>' + esc(a.detail || "") + '</td><td>' + esc(a.status || "") + '</td>' +
-        '<td style="text-align:center;">' + (a.guests ? esc(a.guests) : "") + '</td>' +
+        '<td style="text-align:center;">' + guestCell + '</td>' +
+        '<td style="text-align:center;">' + raffleCell + '</td>' +
         '<td style="text-align:right;">' + (a.amount_cents != null ? dollars(a.amount_cents) : "") + '</td>' +
         '<td style="text-align:center;">' + (a.checked_in ? "✔" : "") + '</td>' +
         '<td>' + esc(a.source || "") + '</td></tr>';
@@ -91,20 +95,22 @@
       '<div class="hub-report-chip"><b>' + esc(t.expected_headcount || 0) + '</b><span>expected attendees (incl. guests)</span></div>' +
       '<div class="hub-report-chip"><b>' + dollars(t.raised_cents) + '</b><span>raised for this event</span></div>' +
       (Number(t.pending_cents || 0) > 0 ? '<div class="hub-report-chip"><b>' + dollars(t.pending_cents) + '</b><span>still unpaid</span></div>' : '') +
+      (Number(t.pending_zeffy_signups || 0) > 0 ? '<div class="hub-report-chip"><b>' + esc(t.pending_zeffy_signups) + '</b><span>pending Zeffy checkout</span></div>' : '') +
       '<div class="hub-report-chip"><b>' + esc(t.checked_in || 0) + '</b><span>checked in</span></div>' +
       '</div>' +
       (rows
         ? '<div class="hub-report-tablewrap"><table class="hub-report-table"><thead><tr>' +
-          '<th>Name</th><th>Email</th><th>Ticket / role</th><th>Status</th><th>Guests</th><th>Paid</th><th>In</th><th>Source</th>' +
+          '<th>Name</th><th>Email</th><th>Ticket / role</th><th>Status</th><th>Guests</th><th>Raffle</th><th>Paid</th><th>In</th><th>Source</th>' +
           '</tr></thead><tbody>' + rows + '</tbody></table></div>' +
           '<div style="margin-top:10px;"><button class="btn" type="button" id="hubReportEventCsv">⬇ Download attendee list (CSV)</button></div>'
         : '<p class="empty">No sign-ups recorded for this event yet.</p>');
     var csvBtn = document.getElementById("hubReportEventCsv");
     if (csvBtn) csvBtn.addEventListener("click", function () {
       downloadCsv(slug((report.event || {}).title) + "-attendees.csv",
-        ["Name", "Email", "Ticket/role", "Status", "Guests", "Paid", "Checked in", "Source"],
+        ["Name", "Email", "Ticket/role", "Status", "Guests", "Guest names", "Raffle", "Paid", "Checked in", "Source"],
         (report.attendees || []).map(function (a) {
           return [a.name, a.email || "", a.detail || "", a.status || "", a.guests || 0,
+            a.guest_names || "", a.raffle_tickets || 0,
             a.amount_cents != null ? (a.amount_cents / 100).toFixed(2) : "", a.checked_in ? "yes" : "", a.source || ""];
         }));
     });
