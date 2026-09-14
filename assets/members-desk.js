@@ -1005,7 +1005,26 @@
     renderClaimForm(client, rows);
   }
 
-  // ---- Officer Approvals queue: role requests + duplicate-record merges ----
+  // ---- Officer Approvals queue: role requests + duplicate-record merges + media ----
+  function mediaLogHtml(rows) {
+    var html = '<h3 class="hub-appr-h">Recent media decisions</h3>';
+    html += '<div style="font-size:13px;color:var(--muted);margin:0 0 8px;">Who approved or denied photos and videos (newest first).</div>';
+    (rows || []).forEach(function (r) {
+      var when = r.created_at ? String(r.created_at).slice(0, 16).replace("T", " ") : "";
+      var act = String(r.action || "").toLowerCase() === "deny" ? "Denied" : "Approved";
+      var kind = r.content_type === "video" ? "video" : "photo";
+      html += '<div class="hub-appr" style="align-items:flex-start;">' +
+        '<div><b>' + esc(act) + '</b> · ' + esc(kind) + ' <b>' + esc(r.content_title || "") + '</b>' +
+        '<div class="muted">by ' + esc(r.officer_name || r.officer_email || "Officer") +
+        (when ? (" · " + esc(when) + " UTC") : "") +
+        (r.submitter_name ? (" · from " + esc(r.submitter_name)) : "") + '</div>' +
+        (r.note ? '<div class="muted">Note: ' + esc(r.note) + '</div>' : "") +
+        '</div></div>';
+    });
+    return html;
+  }
+
+
   // Officers decide on the website; every decision is recorded with who/when.
   function setOfficerBadge(n) {
     var btn = document.querySelector('[data-hub-tab="officer"]');
@@ -1039,11 +1058,13 @@
       panel.insertBefore(card, panel.firstChild);
     }
     card.innerHTML =
-      '<div class="app-head"><span class="ic">✅</span><div><h2>Approvals</h2><small>Role requests, clover claims, and record merges waiting on an officer</small></div></div>' +
+      '<div class="app-head"><span class="ic">✅</span><div><h2>Approvals</h2><small>Role requests, clover claims, media (photos/videos), and record merges waiting on an officer</small></div></div>' +
       '<div class="app-body" id="hubApprovalsBody"><p class="empty">Loading approvals…</p></div>';
     var body = card.querySelector("#hubApprovalsBody");
     var data = null;
     var clovers = [];
+    var media = [];
+    var mediaLog = [];
     try {
       var res = await client.rpc("list_officer_approvals");
       data = res.data || null;
@@ -1052,15 +1073,48 @@
       var cr = await client.rpc("list_pending_clover_requests");
       if (cr.data && Array.isArray(cr.data)) clovers = cr.data;
     } catch (e2) {}
+    try {
+      var mr = await client.rpc("list_pending_media_approvals");
+      if (mr.data && Array.isArray(mr.data)) media = mr.data;
+    } catch (e3) {}
+    try {
+      var lr = await client.rpc("list_content_approval_log", { p_limit: 25 });
+      if (lr.data && Array.isArray(lr.data)) mediaLog = lr.data;
+    } catch (e4) {}
     if (!data) { body.innerHTML = '<p class="empty">Couldn&rsquo;t load the approvals queue. Try again in a moment.</p>'; return; }
     var reqs = data.role_requests || [];
     var dups = data.duplicates || [];
-    setOfficerBadge(reqs.length + dups.length + clovers.length);
-    if (!reqs.length && !dups.length && !clovers.length) {
-      body.innerHTML = '<p class="empty">Nothing waiting · all caught up. ☘</p>';
+    setOfficerBadge(reqs.length + dups.length + clovers.length + media.length);
+    if (!reqs.length && !dups.length && !clovers.length && !media.length) {
+      var emptyHtml = '<p class="empty">Nothing waiting · all caught up. ☘</p>';
+      if (mediaLog.length) emptyHtml += mediaLogHtml(mediaLog);
+      body.innerHTML = emptyHtml;
+      wireOfficerDeskPicker();
       return;
     }
     var html = "";
+    if (media.length) {
+      html += '<h3 class="hub-appr-h">Media approvals</h3>';
+      media.forEach(function (q) {
+        var when = q.created_at ? String(q.created_at).slice(0, 16).replace("T", " ") : "";
+        var kind = (q.type === "video") ? "Video" : "Photo";
+        var preview = "";
+        if (q.url && q.type === "photo") {
+          preview = '<div style="margin-top:6px;"><a href="' + esc(q.url) + '" target="_blank" rel="noopener"><img src="' + esc(q.url) + '" alt="" style="max-width:140px;max-height:100px;border-radius:8px;object-fit:cover;border:1px solid rgba(168,128,28,.35);" /></a></div>';
+        } else if (q.url) {
+          preview = '<div class="muted" style="margin-top:4px;"><a href="' + esc(q.url) + '" target="_blank" rel="noopener">Open / preview video</a></div>';
+        }
+        html += '<div class="hub-appr">' +
+          '<div><b>' + esc(q.submitter_name || "Member") + '</b> <span class="muted">' + esc(kind) + (when ? (" · " + esc(when) + " UTC") : "") + '</span>' +
+          '<div class="muted"><b>' + esc(q.title || "(untitled)") + '</b></div>' +
+          (q.notes ? '<div class="muted">' + esc(q.notes) + '</div>' : "") +
+          preview +
+          '</div><div class="hub-appr-btns">' +
+          '<button class="btn btn-primary" data-media-approve="' + esc(q.id) + '">Approve</button>' +
+          '<button class="btn" data-media-deny="' + esc(q.id) + '">Deny</button>' +
+          '</div></div>';
+      });
+    }
     if (clovers.length) {
       html += '<h3 class="hub-appr-h">Clover claims</h3>';
       clovers.forEach(function (q) {
@@ -1109,7 +1163,20 @@
           '</div></div>';
       });
     }
+    if (mediaLog.length) html += mediaLogHtml(mediaLog);
     body.innerHTML = html;
+    body.querySelectorAll("[data-media-approve]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        decideApproval(client, "approve_content_item", { p_id: b.getAttribute("data-media-approve") }, b);
+      });
+    });
+    body.querySelectorAll("[data-media-deny]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var note = prompt("Optional note for the record (why deny?)");
+        if (note === null) return;
+        decideApproval(client, "deny_content_item", { p_id: b.getAttribute("data-media-deny"), p_note: note || null }, b);
+      });
+    });
     body.querySelectorAll("[data-clover-approve]").forEach(function (b) {
       b.addEventListener("click", function () {
         decideApproval(client, "approve_clover_request", { p_id: b.getAttribute("data-clover-approve") }, b);
