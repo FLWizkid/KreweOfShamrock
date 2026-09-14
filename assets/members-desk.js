@@ -86,6 +86,19 @@
     ".hub-appr .muted{color:var(--muted);font-size:13px;}",
     ".hub-appr-btns{display:flex;gap:8px;flex-wrap:wrap;}",
     ".hub-appr-h{font-family:var(--display);color:var(--green-800);margin:14px 0 6px;font-size:17px;}",
+    ".hub-claim{margin-top:0;}",
+    ".hub-claim label{display:block;font-size:13px;color:var(--muted);margin:10px 0 3px;}",
+    ".hub-claim select,.hub-claim input,.hub-claim textarea{width:100%;box-sizing:border-box;padding:8px 10px;border:1px solid rgba(168,128,28,.4);border-radius:8px;font:inherit;background:#fff;}",
+    ".hub-claim textarea{min-height:64px;resize:vertical;}",
+    ".hub-claim-row{display:none;}",
+    ".hub-claim-row.on{display:block;}",
+    ".hub-claim-msg{margin:10px 0 0;font-size:14px;color:var(--green-800);}",
+    ".hub-claim-list{margin:14px 0 0;padding:0;list-style:none;}",
+    ".hub-claim-list li{border-top:1px solid rgba(168,128,28,.22);padding:8px 0;font-size:14px;}",
+    ".hub-claim-list .st{font-size:12px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);}",
+    ".hub-claim-list .st.pending{color:#7a5b00;}",
+    ".hub-claim-list .st.approved{color:var(--green-800);}",
+    ".hub-claim-list .st.denied{color:#b3261e;}",
     "#memberContent > .member-grid{display:none !important;}",
     ".hub-event-form h3,.hub-event-list h3{font-family:var(--display);color:var(--green-800);margin:0 0 10px;font-size:18px;}",
     ".hub-event-form label{display:block;font-size:13px;color:var(--muted);margin:10px 0 3px;}",
@@ -295,6 +308,7 @@
     if (give && give.firstChild) parade.insertBefore(give.firstChild, parade.firstChild);
     oldGrid.remove();
     relocateHours();
+    ensureClaimCloversCard();
   }
 
   function standingChip() {
@@ -349,7 +363,9 @@
       (next ? ('<div class="prog"><i style="width:' + pct + '%"></i></div>') : '') +
       '</div></div>' +
       nextQuestHtml() +
-      '<div style="margin-top:12px;"><button type="button" class="btn" id="hubOpenCraic" style="background:transparent;border:1px solid rgba(240,215,140,.55);color:#f6efdc;">See the standings →</button></div>' +
+      '<div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;">' +
+      '<button type="button" class="btn" id="hubClaimClovers" style="background:#f0d78c;color:#14532d;border:0;font-weight:700;">Claim Clovers</button>' +
+      '<button type="button" class="btn" id="hubOpenCraic" style="background:transparent;border:1px solid rgba(240,215,140,.55);color:#f6efdc;">See the standings →</button></div>' +
       '</div>';
   }
 
@@ -453,6 +469,14 @@
     if (openC) openC.addEventListener("click", function () {
       if (typeof window.openGame === "function") window.openGame();
     });
+    var claimBtn = document.getElementById("hubClaimClovers");
+    if (claimBtn) claimBtn.addEventListener("click", function () {
+      showTab("fun");
+      setTimeout(function () {
+        var el = document.getElementById("hubClaimCard");
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 60);
+    });
   }
 
   window.__hubShowTab = showTab;
@@ -532,6 +556,7 @@
     if (state.officer) loadApprovals(client);
     if (state.canViewPayments) loadPaymentsCard(client);
     if (state.canManageEvents) loadEventStudio(client);
+    loadClaimClovers(client);
 
     try {
       var email = (window.kosProfile || {}).email || null;
@@ -849,6 +874,137 @@
     }
   }
 
+
+  // ---- Claim Clovers: member submits activities for officer approval ----
+  var CLAIM_ACTIVITIES = [
+    { code: "attend_event", label: "Attend an event (verified)", clovers: 20 },
+    { code: "attend_meeting", label: "Attend a members' meeting", clovers: 15 },
+    { code: "volunteer_event", label: "Volunteer at an event", clovers: 30 },
+    { code: "volunteer_priority", label: "Volunteer for a priority shift (setup / teardown / parade day)", clovers: 60 },
+    { code: "organize_event", label: "Organize an event", clovers: 50 },
+    { code: "bring_guest", label: "Bring a guest (up to 3)", clovers: 5, perGuest: true },
+    { code: "dues_on_time", label: "Pay your dues on time", clovers: 25 },
+    { code: "dues_early", label: "Pay your dues early (by St. Paddy's)", clovers: 15 },
+    { code: "refer_member", label: "Refer a member who joins", clovers: 40 }
+  ];
+
+  function ensureClaimCloversCard() {
+    var fun = document.getElementById("hubFun");
+    if (!fun) return;
+    if (document.getElementById("hubClaimCard")) return;
+    var card = document.createElement("section");
+    card.className = "app-card";
+    card.id = "hubClaimCard";
+    card.innerHTML =
+      '<div class="app-head"><span class="ic">🍀</span><div><h2>Claim Clovers</h2><small>Ask officers to credit an activity that is not auto-awarded</small></div></div>' +
+      '<div class="app-body hub-claim" id="hubClaimBody"><p class="empty">Loading…</p></div>';
+    fun.insertBefore(card, fun.firstChild);
+  }
+
+  function claimOptionsHtml() {
+    return CLAIM_ACTIVITIES.map(function (a) {
+      var pts = a.perGuest ? (a.clovers + " each") : ("+" + a.clovers);
+      return '<option value="' + a.code + '">' + esc(a.label) + " · " + pts + " 🍀</option>";
+    }).join("");
+  }
+
+  function renderClaimForm(client, rows) {
+    ensureClaimCloversCard();
+    var body = document.getElementById("hubClaimBody");
+    if (!body) return;
+    var pending = (rows || []).filter(function (r) { return r.status === "pending"; });
+    var recent = (rows || []).slice(0, 8);
+    var listHtml = "";
+    if (recent.length) {
+      listHtml = '<h3 style="font-family:var(--display);color:var(--green-800);margin:16px 0 6px;font-size:16px;">Your recent claims</h3><ul class="hub-claim-list">';
+      recent.forEach(function (r) {
+        var extra = [];
+        if (r.guest_count) extra.push(r.guest_count + (r.guest_count === 1 ? " guest" : " guests"));
+        if (r.event_name) extra.push(r.event_name);
+        listHtml += '<li><span class="st ' + esc(r.status) + '">' + esc(r.status) + '</span> · <b>' +
+          esc(r.activity_label || r.activity_code) + '</b> · +' + Number(r.clovers || 0) + ' 🍀' +
+          (extra.length ? '<div class="muted" style="color:var(--muted);font-size:13px;">' + esc(extra.join(" · ")) + "</div>" : "") +
+          "</li>";
+      });
+      listHtml += "</ul>";
+    } else {
+      listHtml = '<p class="empty" style="margin-top:14px;">No claims yet. RSVPs still earn +5 automatically.</p>';
+    }
+    body.innerHTML =
+      '<p style="margin:0 0 8px;font-size:14px;color:var(--muted);">Pick an activity. Officers review and credit Clovers to your Craic Cup. RSVP to an event is already automatic, so it is not listed here.</p>' +
+      '<form id="hubClaimForm">' +
+      '<label for="hubClaimActivity">Activity</label>' +
+      '<select id="hubClaimActivity" required><option value="">Choose one…</option>' + claimOptionsHtml() + "</select>" +
+      '<div class="hub-claim-row" id="hubClaimGuestsRow"><label for="hubClaimGuests">How many guests (1-3)</label>' +
+      '<select id="hubClaimGuests"><option value="1">1 · +5</option><option value="2">2 · +10</option><option value="3">3 · +15</option></select></div>' +
+      '<label for="hubClaimEvent">Event or activity name (optional)</label>' +
+      '<input id="hubClaimEvent" type="text" maxlength="120" placeholder="e.g. Members meeting, parade setup">' +
+      '<label for="hubClaimNotes">Notes for officers (optional)</label>' +
+      '<textarea id="hubClaimNotes" maxlength="400" placeholder="Anything that helps them verify"></textarea>' +
+      '<div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;">' +
+      '<button type="submit" class="btn btn-primary" id="hubClaimSubmit">Submit claim</button>' +
+      (pending.length ? ('<span style="font-size:13px;color:var(--muted);">' + pending.length + " pending</span>") : "") +
+      "</div>" +
+      '<p class="hub-claim-msg" id="hubClaimMsg" hidden></p>' +
+      "</form>" + listHtml;
+
+    var act = document.getElementById("hubClaimActivity");
+    var guestRow = document.getElementById("hubClaimGuestsRow");
+    function syncGuests() {
+      if (guestRow) guestRow.classList.toggle("on", act && act.value === "bring_guest");
+    }
+    if (act) act.addEventListener("change", syncGuests);
+    syncGuests();
+
+    var form = document.getElementById("hubClaimForm");
+    if (form) form.addEventListener("submit", async function (ev) {
+      ev.preventDefault();
+      var code = (act && act.value) || "";
+      if (!code) return;
+      var btn = document.getElementById("hubClaimSubmit");
+      var msg = document.getElementById("hubClaimMsg");
+      if (btn) btn.disabled = true;
+      var guests = null;
+      if (code === "bring_guest") {
+        guests = Number((document.getElementById("hubClaimGuests") || {}).value || 1);
+      }
+      var eventName = ((document.getElementById("hubClaimEvent") || {}).value || "").trim() || null;
+      var notes = ((document.getElementById("hubClaimNotes") || {}).value || "").trim() || null;
+      try {
+        var res = await client.rpc("submit_clover_request", {
+          p_activity_code: code,
+          p_guest_count: guests,
+          p_event_name: eventName,
+          p_notes: notes
+        });
+        if (res.error) throw res.error;
+        var payload = res.data || {};
+        if (!payload.ok) throw new Error(payload.message || "Could not submit");
+        if (msg) {
+          msg.hidden = false;
+          msg.textContent = "Sent to officers for approval.";
+        }
+        loadClaimClovers(client);
+      } catch (e) {
+        if (msg) {
+          msg.hidden = false;
+          msg.textContent = "Could not send: " + ((e && e.message) || e);
+        }
+        if (btn) btn.disabled = false;
+      }
+    });
+  }
+
+  async function loadClaimClovers(client) {
+    ensureClaimCloversCard();
+    var rows = [];
+    try {
+      var res = await client.rpc("list_my_clover_requests");
+      if (res.data && Array.isArray(res.data)) rows = res.data;
+    } catch (e) {}
+    renderClaimForm(client, rows);
+  }
+
   // ---- Officer Approvals queue: role requests + duplicate-record merges ----
   // Officers decide on the website; every decision is recorded with who/when.
   function setOfficerBadge(n) {
@@ -883,23 +1039,45 @@
       panel.insertBefore(card, panel.firstChild);
     }
     card.innerHTML =
-      '<div class="app-head"><span class="ic">✅</span><div><h2>Approvals</h2><small>Role requests and record merges waiting on an officer</small></div></div>' +
+      '<div class="app-head"><span class="ic">✅</span><div><h2>Approvals</h2><small>Role requests, clover claims, and record merges waiting on an officer</small></div></div>' +
       '<div class="app-body" id="hubApprovalsBody"><p class="empty">Loading approvals…</p></div>';
     var body = card.querySelector("#hubApprovalsBody");
     var data = null;
+    var clovers = [];
     try {
       var res = await client.rpc("list_officer_approvals");
       data = res.data || null;
     } catch (e) {}
+    try {
+      var cr = await client.rpc("list_pending_clover_requests");
+      if (cr.data && Array.isArray(cr.data)) clovers = cr.data;
+    } catch (e2) {}
     if (!data) { body.innerHTML = '<p class="empty">Couldn&rsquo;t load the approvals queue. Try again in a moment.</p>'; return; }
     var reqs = data.role_requests || [];
     var dups = data.duplicates || [];
-    setOfficerBadge(reqs.length + dups.length);
-    if (!reqs.length && !dups.length) {
-      body.innerHTML = '<p class="empty">Nothing waiting — all caught up. ☘</p>';
+    setOfficerBadge(reqs.length + dups.length + clovers.length);
+    if (!reqs.length && !dups.length && !clovers.length) {
+      body.innerHTML = '<p class="empty">Nothing waiting · all caught up. ☘</p>';
       return;
     }
     var html = "";
+    if (clovers.length) {
+      html += '<h3 class="hub-appr-h">Clover claims</h3>';
+      clovers.forEach(function (q) {
+        var bits = [];
+        if (q.guest_count) bits.push(q.guest_count + (q.guest_count === 1 ? " guest" : " guests"));
+        if (q.event_name) bits.push(q.event_name);
+        if (q.notes) bits.push(q.notes);
+        html += '<div class="hub-appr">' +
+          '<div><b>' + esc(q.member_name || q.member_email || "Member") + '</b> <span class="muted">' + esc(q.member_email || "") + '</span>' +
+          '<div class="muted"><b>' + esc(q.activity_label || q.activity_code) + '</b> · +' + Number(q.clovers || 0) + ' 🍀</div>' +
+          (bits.length ? '<div class="muted">' + esc(bits.join(" · ")) + '</div>' : "") +
+          '</div><div class="hub-appr-btns">' +
+          '<button class="btn btn-primary" data-clover-approve="' + esc(q.id) + '">Approve</button>' +
+          '<button class="btn" data-clover-deny="' + esc(q.id) + '">Deny</button>' +
+          '</div></div>';
+      });
+    }
     if (reqs.length) {
       html += '<h3 class="hub-appr-h">Role requests</h3>';
       reqs.forEach(function (q) {
@@ -932,6 +1110,18 @@
       });
     }
     body.innerHTML = html;
+    body.querySelectorAll("[data-clover-approve]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        decideApproval(client, "approve_clover_request", { p_id: b.getAttribute("data-clover-approve") }, b);
+      });
+    });
+    body.querySelectorAll("[data-clover-deny]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var note = prompt("Optional note for the record (why deny?)");
+        if (note === null) return;
+        decideApproval(client, "deny_clover_request", { p_id: b.getAttribute("data-clover-deny"), p_note: note || null }, b);
+      });
+    });
     body.querySelectorAll("[data-appr-approve]").forEach(function (b) {
       b.addEventListener("click", function () {
         decideApproval(client, "approve_role_request", { p_id: b.getAttribute("data-appr-approve") }, b);
@@ -1357,7 +1547,7 @@
   ];
 
   var OFFICER_TOOL_META = {
-    hubApprovals: { title: "Approvals", desc: "Role requests and record merges" },
+    hubApprovals: { title: "Approvals", desc: "Role requests, clover claims, and record merges" },
     hubPayments: { title: "Payments", desc: "Dues and payment records" },
     hubEventStudio: { title: "Event Studio", desc: "Create events, RSVP QR, door check-in" },
     hubShopStudio: { title: "Shop Studio", desc: "Products, Zeffy links, shop QR" },
