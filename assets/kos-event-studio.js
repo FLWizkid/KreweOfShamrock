@@ -102,6 +102,12 @@
       '<div><label for="hubEventTicketLabel">Ticket label</label><input id="hubEventTicketLabel" placeholder="e.g. Member ticket" /></div>' +
       '<div><label for="hubEventTicketPrice">Ticket price (dollars)</label><input id="hubEventTicketPrice" type="number" min="0" step="0.01" placeholder="0.00" /></div>' +
       '<div><label for="hubEventPaymentUrl">Ticket payment URL</label><input id="hubEventPaymentUrl" type="url" placeholder="https://www.zeffy.com/en-US/ticketing/..." /></div>' +
+      '<div class="wide" style="grid-column:1/-1;"><div class="hub-event-checks" style="margin:0;">' +
+      '<label><input type="checkbox" id="hubEventCollectGuests" checked /> Ask for guest count</label>' +
+      '<label><input type="checkbox" id="hubEventCollectGuestNames" checked /> Ask for guest names</label>' +
+      '<label><input type="checkbox" id="hubEventCollectRaffle" checked /> Ask for raffle ticket qty</label></div>' +
+      '<p style="font-size:12px;color:var(--muted);margin:6px 0 0;line-height:1.4;">Defaults match Mini Golf style (guests + raffle). Collected on the website before Zeffy checkout so officer reports show the same data Wild Apricot had.</p></div>' +
+      '<div><label for="hubEventRaffleOptions">Raffle qty choices</label><input id="hubEventRaffleOptions" placeholder="0,1,5,15" value="0,1,5,15" /></div>' +
       '<div class="wide"><label for="hubEventFlyerUrl">Event image / PDF URL</label><input id="hubEventFlyerUrl" type="url" placeholder="https://… or upload a file below" /></div>' +
       '<div class="wide"><label for="hubEventFlyerFile">Upload event image or PDF</label>' +
       '<input id="hubEventFlyerFile" type="file" accept="application/pdf,image/jpeg,image/png,image/webp" />' +
@@ -161,6 +167,10 @@
     document.getElementById("hubEventPublic").checked = true;
     document.getElementById("hubEventMandatory").checked = false;
     var feat = document.getElementById("hubEventFeatured"); if (feat) feat.checked = false;
+    var cg = document.getElementById("hubEventCollectGuests"); if (cg) cg.checked = true;
+    var cn = document.getElementById("hubEventCollectGuestNames"); if (cn) cn.checked = true;
+    var cr = document.getElementById("hubEventCollectRaffle"); if (cr) cr.checked = true;
+    var ro = document.getElementById("hubEventRaffleOptions"); if (ro) ro.value = "0,1,5,15";
     document.getElementById("hubEventStatus").value = "draft";
     document.getElementById("hubEventType").value = "social";
     document.getElementById("hubEventFormTitle").textContent = "New event";
@@ -187,6 +197,10 @@
     get("hubEventTicketLabel").value = event.ticket_label || "";
     get("hubEventTicketPrice").value = event.ticket_price_cents == null ? "" : (Number(event.ticket_price_cents) / 100).toFixed(2);
     get("hubEventPaymentUrl").value = event.ticket_payment_url || "";
+    var cg = get("hubEventCollectGuests"); if (cg) cg.checked = event.collect_guests !== false;
+    var cn = get("hubEventCollectGuestNames"); if (cn) cn.checked = event.collect_guest_names !== false;
+    var cr = get("hubEventCollectRaffle"); if (cr) cr.checked = event.collect_raffle !== false;
+    var ro = get("hubEventRaffleOptions"); if (ro) ro.value = event.raffle_options || "0,1,5,15";
     get("hubEventFlyerUrl").value = event.flyer_url || "";
     syncFlyerPreview();
     get("hubEventFormTitle").textContent = "Edit event";
@@ -273,7 +287,11 @@
       status: value("hubEventStatus") || "draft",
       ticket_label: value("hubEventTicketLabel") || null,
       ticket_price_cents: ticketValue === "" ? null : Math.round(dollars * 100),
-      ticket_payment_url: value("hubEventPaymentUrl") || null, flyer_url: value("hubEventFlyerUrl") || null
+      ticket_payment_url: value("hubEventPaymentUrl") || null, flyer_url: value("hubEventFlyerUrl") || null,
+      collect_guests: !!(document.getElementById("hubEventCollectGuests") && document.getElementById("hubEventCollectGuests").checked),
+      collect_guest_names: !!(document.getElementById("hubEventCollectGuestNames") && document.getElementById("hubEventCollectGuestNames").checked),
+      collect_raffle: !!(document.getElementById("hubEventCollectRaffle") && document.getElementById("hubEventCollectRaffle").checked),
+      raffle_options: value("hubEventRaffleOptions") || "0,1,5,15"
     };
     if (!payload.name) { if (msg) msg.textContent = "Event name is required."; return; }
     if (save) { save.disabled = true; save.textContent = "Saving…"; }
