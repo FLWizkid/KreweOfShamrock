@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/krewe.css?v=20260915officer1" />
+<link rel="stylesheet" href="assets/krewe.css?v=20260915hubcalm1" />
 <style>
   .gate{ position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center;
     background:linear-gradient(180deg,var(--green-800),var(--green-900)); padding:24px; overflow-y:auto; }
@@ -445,6 +445,44 @@
   body:has(#setPasswordStage:not([style*="display:none"])){
     overflow:hidden !important;
   }
+
+  /* Hub calm: quieter castle door + larger taps */
+  #authStage .castle-torch{ display:none; }
+  #authStage .castle-top{ height:18px; width:84%; opacity:.85; }
+  #authStage .castle-wall{
+    padding:18px 16px 20px;
+    box-shadow:0 16px 40px rgba(0,0,0,.45), inset 0 0 28px rgba(0,0,0,.18);
+  }
+  #authStage .castle-banner{ font-size:14px; letter-spacing:.6px; margin-bottom:8px; }
+  #authStage .gate-card.auth-card{
+    border-width:6px;
+    border-radius:72px 72px 14px 14px;
+    box-shadow:0 0 0 3px #3a2712, 0 10px 24px rgba(0,0,0,.35);
+    padding-top:28px;
+  }
+  #authStage .auth-card::before, #authStage .auth-card::after{ display:none; }
+  #authStage .gate-card h1{ font-size:22px; margin:6px 0 8px; }
+  #authStage .gate-card p{ font-size:15px; line-height:1.4; }
+  #authStage .castle-guide{ margin-top:12px; border-radius:12px; border-width:1px; box-shadow:none; }
+  #authStage .castle-guide summary{ padding:12px 14px; font-size:16px; }
+  #authStage form input{ font-size:16px; min-height:48px; padding:12px 14px; border-radius:10px; }
+  #authStage form .btn, #authStage .btn{ min-height:48px; font-size:16px; }
+  #memberContent .member-grid{ gap:18px; }
+  #memberContent .app-body input,
+  #memberContent .app-body select,
+  #memberContent .app-body textarea,
+  #memberContent .mini-form input{
+    font-size:16px; min-height:48px; padding:12px 12px; border-radius:10px;
+  }
+  #memberContent .app-body textarea{ min-height:88px; }
+  #memberContent .btn{ min-height:44px; }
+  #memberContent .seg button{ min-height:44px; padding:10px 14px; }
+  #memberContent .data-row, #memberContent .van-card{ padding:14px; }
+  @media (max-width:640px){
+    #memberContent .mini-form{ grid-template-columns:1fr; }
+    #memberContent .dir-grid{ grid-template-columns:1fr; }
+    #authStage .gate-card.auth-card{ border-radius:48px 48px 12px 12px; padding-top:20px; }
+  }
 </style>
   <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js" defer></script>
   <script>
@@ -485,8 +523,8 @@
 
       <!-- Sign in -->
       <div id="authPanelSignin">
-        <p>Fáilte! This Member Hub is new. Your old Wild Apricot password will not work here.</p>
-        <p style="font-size:14px;">Enter the email on the krewe roster first. We check that list. If you are on it and have never set a Hub password, we email a setup link. If you already have one, enter it below and sign in.</p>
+        <p>Fáilte! Use the email on the krewe roster. Old Wild Apricot passwords do not work here.</p>
+        <p style="font-size:15px;line-height:1.4;">If you are on the roster and never set a Hub password, we email a setup link. If you already have one, enter it below and sign in.</p>
         <form id="signinForm">
           <input id="siEmail" type="email" placeholder="Email on the krewe roster" autocomplete="email" required />
           <input id="siPassword" type="password" placeholder="Hub password (if you already have one)" autocomplete="current-password" style="margin-top:10px;" />
@@ -1038,7 +1076,7 @@
     </button>
     <span class="label" id="kreweMusicLabel">Tap for a tune ☘</span>
   </div>
-  <script src="assets/krewe.js?v=20260915officer1" defer></script>
+  <script src="assets/krewe.js?v=20260915hubcalm1" defer></script>
 
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
@@ -2858,7 +2896,7 @@
     document.addEventListener("keydown",e=>{ if(e.key==="Escape" && window.closeRaffles) closeRaffles(); });
   </script>
 
-<script src="assets/members-desk.js?v=20260915officer2" defer></script>
+<script src="assets/members-desk.js?v=20260915hubcalm1" defer></script>
   <script src="assets/kos-event-studio.js?v=20260914t1" defer></script>
   <script src="assets/kos-shop-studio.js?v=20260910shopfix" defer></script>
 <script src="assets/kos-qr-studio.js?v=20260909b"></script>
