@@ -1,6 +1,6 @@
 # Officer desk: Email members & Send invoices
 
-For Deb (Krewe Secretary) and other officers.
+For any krewe officer with Officer desk access (board, officer, or captain — not secretary-only).
 
 ## Where to find it
 
