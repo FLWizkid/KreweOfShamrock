@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/krewe.css?v=20260909m6" />
+<link rel="stylesheet" href="assets/krewe.css?v=20260915fonts1" />
 <style>
   .gate{ position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center;
     background:linear-gradient(180deg,var(--green-800),var(--green-900)); padding:24px; overflow-y:auto; }
@@ -75,7 +75,7 @@
     border:1.5px solid rgba(168,128,28,.55); border-radius:14px; overflow:hidden;
     box-shadow:inset 0 1px 0 rgba(255,255,255,.7), 0 2px 8px rgba(90,60,10,.10); }
   .castle-guide summary{ list-style:none; display:flex; align-items:center; gap:10px; cursor:pointer;
-    padding:13px 16px; font-family:var(--display); color:var(--green-800); font-size:15.5px; letter-spacing:.3px;
+    padding:13px 16px; font-family:var(--display); color:var(--green-800); font-size:17px; letter-spacing:.3px;
     background:linear-gradient(180deg, rgba(212,180,90,.30), rgba(212,180,90,.10)); }
   .castle-guide summary::-webkit-details-marker{ display:none; }
   .castle-guide summary .key{ font-size:20px; filter:drop-shadow(0 1px 1px rgba(0,0,0,.25)); }
@@ -90,7 +90,7 @@
     color:#fff; font-family:var(--display); font-size:15px; display:flex; align-items:center; justify-content:center;
     box-shadow:0 0 0 2px #fffdf4, 0 0 0 3.5px rgba(168,128,28,.5), 0 2px 4px rgba(0,0,0,.25); }
   .castle-guide .guide-step h3{ margin:3px 0 4px; font-family:var(--display); font-size:15px; color:var(--green-800); }
-  .castle-guide .guide-step p{ margin:0; font-size:13.5px; color:#3d3a33; line-height:1.5; }
+  .castle-guide .guide-step p{ margin:0; font-size:15.5px; color:#3d3a33; line-height:1.5; }
   .castle-guide .guide-step a{ color:var(--green-800); }
   .castle-guide .guide-cta{ display:block; width:100%; margin:10px 0 2px; padding:11px 14px; border-radius:12px;
     border:1.5px solid #8a6d1f; background:linear-gradient(180deg,#e9c96a,#caa53d); color:#3a2a05;
@@ -121,26 +121,26 @@
     .gate-card img{ width:42px; margin-bottom:2px; }
     .auth-card img{ box-shadow:0 0 0 3px #3a2712, 0 0 0 5px #8a8d80; }
     .gate-card h1{ font-size:18px; margin:0 0 2px; }
-    .gate-card p{ font-size:13.5px; margin:0 0 8px; line-height:1.35; }
+    .gate-card p{ font-size:15.5px; margin:0 0 8px; line-height:1.35; }
     .gate-card input, .gate-card textarea{ padding:9px 12px; }
     #authPanelSignin form input[type="password"]{ margin-top:7px !important; }
     #authPanelSignin form .btn, #authPanelCreate form .btn, #authPanelForgot form .btn{ margin-top:8px !important; }
     #authPanelSignin > p[style], #authPanelCreate > p[style], #authPanelForgot > p[style]{ margin-top:8px !important; font-size:13px !important; }
     .gate-card .err{ min-height:12px; margin-top:4px; font-size:13px; }
     .castle-guide{ margin-top:8px; border-radius:11px; }
-    .castle-guide summary{ padding:9px 12px; font-size:13px; gap:8px; }
+    .castle-guide summary{ padding:9px 12px; font-size:15px; gap:8px; }
     .castle-guide summary .key{ font-size:16px; }
     .castle-guide .guide-body{ padding:12px; }
     .castle-guide .guide-step{ margin:0 0 12px; gap:10px; }
     .castle-guide .guide-step .num{ flex-basis:26px; width:26px; height:26px; font-size:13px; }
     .castle-guide .guide-step h3{ font-size:14px; margin:1px 0 2px; }
-    .castle-guide .guide-step p{ font-size:12.5px; }
+    .castle-guide .guide-step p{ font-size:14.5px; }
   }
   .gate-card{ background:#fff; border-radius:18px; padding:34px 30px; max-width:380px; width:100%; text-align:center;
     box-shadow:0 20px 60px rgba(0,0,0,.4); border:1px solid var(--gold); }
   .gate-card img{ width:64px; height:auto; margin-bottom:10px; }
   .gate-card h1{ font-family:var(--display); color:var(--green-800); font-size:24px; margin:0 0 6px; }
-  .gate-card p{ color:var(--muted); font-size:15px; margin:0 0 18px; }
+  .gate-card p{ color:var(--muted); font-size:17px; margin:0 0 18px; }
   .gate-card input, .gate-card textarea{ width:100%; box-sizing:border-box; padding:12px 14px; border:1px solid rgba(168,128,28,.5); border-radius:10px; font-size:16px; text-align:left; font:inherit; background:#fff; }
   .gate-card textarea{ min-height:64px; resize:vertical; }
   #authStage .gate-card input{ text-align:center; }
@@ -149,12 +149,20 @@
   .member-grid{ display:grid; gap:26px; }
   .app-card{ background:#fff; border:1px solid rgba(168,128,28,.28); border-radius:18px; box-shadow:var(--shadow-sm); overflow:hidden; }
   .app-card > .app-head{ background:linear-gradient(180deg,var(--green-700),var(--green-800)); color:#fff; padding:18px 22px; display:flex; align-items:center; gap:12px; }
-  .app-head .ic{ font-size:26px; } .app-head h2{ margin:0; font-family:var(--display); font-size:21px; }
-  .app-head small{ display:block; font-family:var(--fancy); font-style:italic; color:var(--gold-light); font-size:14px; }
+  .app-head .ic{ font-size:26px; } .app-head h2{ margin:0; font-family:var(--display); font-size:22px; }
+  .app-head small{ display:block; font-family:var(--fancy); font-style:italic; color:var(--gold-light); font-size:16px; }
   .app-body{ padding:20px 22px; }
+  /* Sep 14 meeting: larger Hub body / labels for older members */
+  #memberContent, #memberContent .app-body, #hubRoot, .hub-wrap{
+    font-size:17px;
+  }
+  #memberContent label, .hub-wrap label, .mini-form label, .krewe-form label{
+    font-size:16px;
+  }
+  #memberContent .empty{ font-size:16px; }
   .krewe-form .row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
   .data-list{ list-style:none; padding:0; margin:14px 0 0; display:grid; gap:10px; }
-  .data-row{ border:1px solid rgba(168,128,28,.25); border-radius:12px; padding:12px 14px; background:#fbf7ec; font-size:15px; }
+  .data-row{ border:1px solid rgba(168,128,28,.25); border-radius:12px; padding:12px 14px; background:#fbf7ec; font-size:17px; }
   .data-row b{ color:var(--green-800); }
   .badge{ display:inline-block; font-size:12px; font-weight:700; padding:2px 9px; border-radius:999px; text-transform:uppercase; letter-spacing:.5px; }
   .badge.requested{ background:#f0e2bd; color:#7a5b00; }
@@ -167,13 +175,13 @@
   .van-card{ border:1px solid rgba(168,128,28,.3); border-radius:14px; padding:16px; margin-top:12px; background:#fbf7ec; }
   .van-card .seats{ font-family:var(--display); color:var(--green-800); font-weight:700; }
   .mini-form{ display:grid; grid-template-columns:1fr 1fr auto; gap:8px; margin-top:10px; }
-  .mini-form input{ padding:9px 11px; border:1px solid rgba(168,128,28,.5); border-radius:9px; font-size:14px; }
+  .mini-form input{ padding:9px 11px; border:1px solid rgba(168,128,28,.5); border-radius:9px; font-size:16px; }
   .mini-form button{ white-space:nowrap; }
   .dir-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; margin-top:14px; }
   .dir-card{ border:1px solid rgba(168,128,28,.25); border-radius:12px; padding:12px 14px; background:#fbf7ec; text-align:left; width:100%; font:inherit; cursor:pointer; display:flex; gap:12px; align-items:center; transition:background .15s, transform .15s; }
   .dir-card:hover{ background:#f3ebd2; transform:translateY(-1px); }
-  .dir-card .nm{ font-family:var(--display); color:var(--green-800); font-size:16px; }
-  .dir-card .rl{ font-size:13px; color:var(--muted); text-transform:capitalize; }
+  .dir-card .nm{ font-family:var(--display); color:var(--green-800); font-size:18px; }
+  .dir-card .rl{ font-size:15px; color:var(--muted); text-transform:capitalize; }
   .dir-card .dir-av{ width:44px; height:44px; border-radius:50%; object-fit:cover; border:2px solid rgba(168,128,28,.45); flex:none; background:var(--green-800); color:#f6efdc; display:flex; align-items:center; justify-content:center; font-family:var(--display); font-size:15px; }
   .dir-card .dir-av img{ width:100%; height:100%; object-fit:cover; border-radius:50%; }
   .dir-card .dir-go{ margin-left:auto; color:var(--gold); font-family:var(--display); opacity:.7; }
@@ -211,7 +219,7 @@
   /* My Krewe people directory — photo-first, not a spreadsheet */
   .people-toolbar{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:0 0 4px; }
   .people-toolbar #dirSearch{ flex:1 1 220px; min-width:0; }
-  .people-count{ font-size:13px; color:var(--muted); white-space:nowrap; }
+  .people-count{ font-size:15px; color:var(--muted); white-space:nowrap; }
   .people-grid{ display:flex; flex-direction:column; gap:18px; margin-top:10px; }
   .people-letter{ font-family:var(--display); font-size:18px; color:var(--green-800); letter-spacing:.04em;
     border-bottom:1px solid rgba(168,128,28,.35); padding:4px 2px 6px; margin:4px 0 0; position:sticky; top:52px; background:#fff; z-index:2; }
@@ -226,9 +234,9 @@
     background:var(--green-800); color:#f6efdc; display:flex; align-items:center; justify-content:center;
     font-family:var(--display); font-size:22px; overflow:hidden; flex:none; }
   .people-card .dir-av img{ width:100%; height:100%; object-fit:cover; border-radius:50%; display:block; }
-  .people-card .nm{ font-family:var(--display); color:var(--green-800); font-size:17px; line-height:1.25; margin:2px 0 0; }
-  .people-card .rl{ font-size:13px; color:var(--muted); text-transform:capitalize; }
-  .people-card .people-go{ margin-top:4px; font-size:12px; letter-spacing:.04em; text-transform:uppercase;
+  .people-card .nm{ font-family:var(--display); color:var(--green-800); font-size:19px; line-height:1.25; margin:2px 0 0; }
+  .people-card .rl{ font-size:15px; color:var(--muted); text-transform:capitalize; }
+  .people-card .people-go{ margin-top:4px; font-size:14px; letter-spacing:.04em; text-transform:uppercase;
     color:var(--green-800); background:rgba(29,107,62,.08); border:1px solid rgba(168,128,28,.3);
     border-radius:999px; padding:4px 10px; font-family:var(--display); }
   @media (max-width:640px){
@@ -243,10 +251,10 @@
   #memberProfileModal .mp-av{ width:72px; height:72px; border-radius:50%; object-fit:cover; border:2px solid var(--gold); background:var(--green-800); color:#f6efdc; display:flex; align-items:center; justify-content:center; font-family:var(--display); font-size:24px; flex:none; overflow:hidden; }
   #memberProfileModal .mp-av img{ width:100%; height:100%; object-fit:cover; }
   #memberProfileModal .mp-name{ font-family:var(--display); font-size:22px; color:var(--green-800); font-weight:700; }
-  #memberProfileModal .mp-facts{ display:flex; flex-wrap:wrap; gap:8px 14px; margin:8px 0 12px; font-size:14px; color:#3a3a2e; }
-  #memberProfileModal .mp-line{ margin:8px 0; font-size:15px; color:#3a3a2e; line-height:1.45; }
-  #memberProfileModal .mp-muted{ color:var(--muted); font-size:13px; }
-  .msg{ margin-top:10px; font-size:14px; }
+  #memberProfileModal .mp-facts{ display:flex; flex-wrap:wrap; gap:8px 14px; margin:8px 0 12px; font-size:16px; color:#3a3a2e; }
+  #memberProfileModal .mp-line{ margin:8px 0; font-size:17px; color:#3a3a2e; line-height:1.45; }
+  #memberProfileModal .mp-muted{ color:var(--muted); font-size:15px; }
+  .msg{ margin-top:10px; font-size:16px; }
   .msg.success{ color:#14532d; } .msg.error{ color:#a12; }
   .empty{ color:var(--muted); font-style:italic; }
 
@@ -257,8 +265,8 @@
   .dash-card .dash-go{ margin-left:auto; font-family:var(--display); color:var(--gold-light); font-size:15px; white-space:nowrap; }
   .dash-body p{ margin:0 0 14px; color:#3a3a2e; }
   .dash-chips{ display:flex; flex-wrap:wrap; gap:8px; }
-  .dash-chips span{ background:#f0e8d2; border:1px solid rgba(168,128,28,.3); color:var(--green-800); border-radius:999px; padding:5px 13px; font-size:14px; font-family:var(--display); }
-  .dash-chip-link{ background:#f0e8d2; border:1px solid rgba(168,128,28,.3); color:var(--green-800); border-radius:999px; padding:5px 13px; font-size:14px; font-family:var(--display); text-decoration:none; display:inline-block; transition:background .15s,border-color .15s; }
+  .dash-chips span{ background:#f0e8d2; border:1px solid rgba(168,128,28,.3); color:var(--green-800); border-radius:999px; padding:5px 13px; font-size:16px; font-family:var(--display); }
+  .dash-chip-link{ background:#f0e8d2; border:1px solid rgba(168,128,28,.3); color:var(--green-800); border-radius:999px; padding:5px 13px; font-size:16px; font-family:var(--display); text-decoration:none; display:inline-block; transition:background .15s,border-color .15s; }
   .dash-chip-link:hover{ background:#e8ddc0; border-color:var(--green-700); color:var(--green-800); }
 
   .modal-overlay{ position:fixed; inset:0; z-index:10000; background:rgba(12,28,18,.74); display:none; align-items:flex-start; justify-content:center; padding:24px 14px; overflow-y:auto; }
@@ -275,10 +283,10 @@
   .rpt-card{ text-align:left; background:#fff; border:1px solid rgba(168,128,28,.28); border-radius:12px; padding:14px 15px; cursor:pointer; transition:transform .12s, box-shadow .12s; }
   .rpt-card:hover{ transform:translateY(-2px); box-shadow:0 10px 24px rgba(0,0,0,.12); }
   .rpt-card .t{ font-family:var(--display); color:var(--green-800); font-size:16px; display:flex; align-items:center; gap:7px; }
-  .rpt-card .d{ font-size:13px; color:var(--muted); margin-top:4px; line-height:1.4; }
+  .rpt-card .d{ font-size:15px; color:var(--muted); margin-top:4px; line-height:1.4; }
   .rpt-card .lock{ font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:#7a5b00; background:#f0e2bd; border-radius:999px; padding:2px 9px; display:inline-block; margin-top:9px; }
   .rpt-picker{ background:#fff; border:1px solid rgba(168,128,28,.35); border-radius:14px; padding:16px 16px 14px; }
-  .rpt-picker label{ display:block; font-family:var(--display); color:var(--green-800); font-size:14px; margin:0 0 8px; letter-spacing:.03em; }
+  .rpt-picker label{ display:block; font-family:var(--display); color:var(--green-800); font-size:16px; margin:0 0 8px; letter-spacing:.03em; }
   .rpt-picker select{ width:100%; box-sizing:border-box; font:inherit; font-size:16px; padding:12px 14px; border-radius:10px; border:1px solid rgba(168,128,28,.5); background:#fbf7ec; color:var(--green-800); }
   .rpt-picker .rpt-pick-desc{ margin:10px 0 12px; font-size:14px; color:var(--muted); line-height:1.4; min-height:2.8em; }
   .rpt-picker .rpt-pick-actions{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
@@ -288,9 +296,9 @@
   .stat-row{ display:flex; flex-wrap:wrap; gap:12px; margin:0 0 16px; }
   .stat{ flex:1 1 120px; background:#fff; border:1px solid rgba(168,128,28,.25); border-radius:12px; padding:14px; text-align:center; }
   .stat .num{ font-family:var(--display); color:var(--green-800); font-size:26px; line-height:1.1; }
-  .stat .lab{ font-size:13px; color:var(--muted); margin-top:4px; }
+  .stat .lab{ font-size:15px; color:var(--muted); margin-top:4px; }
   .rpt-tablewrap{ overflow-x:auto; }
-  .rpt-table{ width:100%; border-collapse:collapse; font-size:14px; background:#fff; border-radius:10px; overflow:hidden; }
+  .rpt-table{ width:100%; border-collapse:collapse; font-size:16px; background:#fff; border-radius:10px; overflow:hidden; }
   .rpt-table th{ background:var(--green-700); color:#fff; text-align:left; padding:9px 11px; font-family:var(--display); font-weight:600; white-space:nowrap; }
   .rpt-table td{ padding:8px 11px; border-top:1px solid rgba(168,128,28,.18); }
   .rpt-table tr:nth-child(even) td{ background:#fbf7ec; }
@@ -311,10 +319,10 @@
   .pr-gate small,.pr-gate .pr-hint{color:var(--muted);font-size:13.5px;font-weight:400;}
   .pr-pay{display:inline-flex;align-items:center;justify-content:center;margin-left:auto;padding:8px 14px;border-radius:999px;background:var(--gold,#c9a227);color:var(--green-900,#1a3a24);font-family:var(--display);font-size:14px;font-weight:700;text-decoration:none;border:1px solid rgba(120,90,10,.35);white-space:nowrap;}
   .pr-pay:hover{filter:brightness(1.05);}
-  .pr-pay-alt{flex:1 1 100%;margin:2px 0 0;font-size:13px;color:var(--muted);}
+  .pr-pay-alt{flex:1 1 100%;margin:2px 0 0;font-size:15px;color:var(--muted);}
   .pr-pay-alt a{color:var(--green-800);font-weight:600;}
   .pr-waiver{background:#fffdf4;border:1px dashed rgba(168,128,28,.5);border-radius:12px;padding:12px 14px;margin-top:10px;}
-  .pr-hrs{font-size:15px;margin:0 0 6px;}
+  .pr-hrs{font-size:17px;margin:0 0 6px;}
   @media (max-width:480px){
     .pr-pay{margin-left:0;width:100%;}
   }
@@ -890,8 +898,8 @@
       </section>
 
       <!-- DIRECTORY -->
-            <section class="app-card">
-        <div class="app-head"><span class="ic">👥</span><div><h2>Member Directory</h2><small>Your krewe — faces first</small></div></div>
+            <section class="app-card" id="hubMemberDirectory" data-hub="krewe">
+        <div class="app-head"><span class="ic">👥</span><div><h2>Member Directory</h2><small>Your krewe — faces first. Find everyone under My Krewe / Directory.</small></div></div>
         <div class="app-body">
           <div class="people-toolbar">
             <input id="dirSearch" class="krewe-form" placeholder="Search by name…" style="padding:11px 13px;border:1px solid rgba(168,128,28,.5);border-radius:10px;" oninput="renderDir()" />
@@ -899,7 +907,7 @@
           </div>
           <div class="people-grid" id="dirGrid"><p class="empty">Loading directory…</p></div>
 
-          <p style="font-size:13px;color:var(--muted);margin-top:12px;">Tap a card to open their My Krewe profile. Contact details stay private — reach people through a krewe officer or <a href="mailto:secretary@kreweofshamrock.com">email the Krewe</a>.</p><p style="margin:10px 0 0;"><a class="btn" href="https://www.facebook.com/groups/1790675004521855" target="_blank" rel="noopener noreferrer" style="background:#1877f2;color:#fff;border:0;display:inline-block;padding:8px 14px;border-radius:999px;font-weight:700;text-decoration:none;">📘 Members-only Facebook group →</a></p>
+          <p style="font-size:15px;color:var(--muted);margin-top:12px;">Tap a card to open their My Krewe profile. Contact details stay private — reach people through a krewe officer or <a href="mailto:secretary@kreweofshamrock.com">email the Krewe</a>.</p><p style="margin:10px 0 0;"><a class="btn" href="https://www.facebook.com/groups/1790675004521855" target="_blank" rel="noopener noreferrer" style="background:#1877f2;color:#fff;border:0;display:inline-block;padding:8px 14px;border-radius:999px;font-weight:700;text-decoration:none;">📘 Members-only Facebook group →</a></p>
         </div>
       </section>
 
@@ -2841,7 +2849,7 @@
     document.addEventListener("keydown",e=>{ if(e.key==="Escape" && window.closeRaffles) closeRaffles(); });
   </script>
 
-<script src="assets/members-desk.js?v=20260914media1" defer></script>
+<script src="assets/members-desk.js?v=20260915fonts1" defer></script>
   <script src="assets/kos-event-studio.js?v=20260914t1" defer></script>
   <script src="assets/kos-shop-studio.js?v=20260910shopfix" defer></script>
 <script src="assets/kos-qr-studio.js?v=20260909b"></script>

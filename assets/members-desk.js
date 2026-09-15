@@ -14,94 +14,98 @@
     ".hub-craic::after{bottom:-10px;right:6px;font-size:84px;transform:rotate(22deg);opacity:.14;}",
     ".hub-craic > *{position:relative;z-index:1;}",
     ".hub-craic h2{font-family:var(--display);margin:0 0 4px;font-size:28px;color:#fff;}",
-    ".hub-craic .tag{opacity:.9;font-size:14px;margin:0 0 14px;}",
+    ".hub-craic .tag{opacity:.9;font-size:16px;margin:0 0 14px;}",
     ".hub-craic-grid{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;}",
     ".hub-craic .rank-big{font-size:52px;line-height:1;}",
     ".hub-craic .clovers{font-size:34px;font-family:var(--display);font-weight:700;}",
-    ".hub-craic .meta{font-size:14px;opacity:.92;}",
+    ".hub-craic .meta{font-size:16px;opacity:.92;}",
     ".hub-craic .prog{height:12px;background:rgba(255,255,255,.2);border-radius:999px;overflow:hidden;margin-top:8px;box-shadow:inset 0 1px 2px rgba(0,0,0,.18);}",
     ".hub-craic .prog>i{display:block;height:100%;background:linear-gradient(90deg,#fff6c8 0%,#f0d78c 35%,#d4af37 70%,#f7e7a1 100%);box-shadow:0 0 10px rgba(240,215,140,.55);position:relative;}",
     ".hub-craic .prog>i::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.45) 50%,transparent 60%);background-size:200% 100%;animation:hubSparkle 2.8s ease-in-out infinite;}",
     "@keyframes hubSparkle{0%,100%{background-position:100% 0}50%{background-position:0 0}}",
     ".hub-quest{margin-top:14px;}",
     ".hub-quest-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:0 0 10px;}",
-    ".hub-quest-head b{font-family:var(--display);font-size:17px;}",
-    ".hub-quest-head span{font-size:13px;opacity:.88;}",
+    ".hub-quest-head b{font-family:var(--display);font-size:18px;}",
+    ".hub-quest-head span{font-size:15px;opacity:.88;}",
     ".hub-quest-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;}",
     ".hub-quest-card{background:rgba(255,255,255,.12);border:1px solid rgba(240,215,140,.35);border-radius:14px;padding:12px 13px;display:flex;flex-direction:column;gap:6px;min-height:118px;}",
-    ".hub-quest-card .date{display:inline-block;align-self:flex-start;background:rgba(240,215,140,.22);border:1px solid rgba(240,215,140,.45);color:#f6efdc;border-radius:999px;padding:3px 9px;font-size:12px;font-family:var(--display);letter-spacing:.02em;}",
-    ".hub-quest-card .title{font-family:var(--display);font-size:15px;line-height:1.25;color:#fff;}",
-    ".hub-quest-card .meta{font-size:12px;opacity:.88;line-height:1.35;}",
-    ".hub-quest-card .hint{font-size:12px;color:#f0d78c;font-weight:700;}",
-    ".hub-quest-card .btn{margin-top:auto;background:#f0d78c;color:#14532d;border:0;text-decoration:none;display:inline-block;padding:7px 12px;border-radius:999px;font-weight:700;font-size:13px;align-self:flex-start;}",
+    ".hub-quest-card .date{display:inline-block;align-self:flex-start;background:rgba(240,215,140,.22);border:1px solid rgba(240,215,140,.45);color:#f6efdc;border-radius:999px;padding:3px 9px;font-size:14px;font-family:var(--display);letter-spacing:.02em;}",
+    ".hub-quest-card .title{font-family:var(--display);font-size:17px;line-height:1.25;color:#fff;}",
+    ".hub-quest-card .meta{font-size:14px;opacity:.88;line-height:1.35;}",
+    ".hub-quest-card .hint{font-size:14px;color:#f0d78c;font-weight:700;}",
+    ".hub-quest-card .btn{margin-top:auto;background:#f0d78c;color:#14532d;border:0;text-decoration:none;display:inline-block;padding:7px 12px;border-radius:999px;font-weight:700;font-size:15px;align-self:flex-start;}",
     ".hub-quest-empty{background:rgba(255,255,255,.12);border:1px solid rgba(240,215,140,.35);border-radius:14px;padding:12px 14px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;}",
     ".hub-quest-empty .btn{background:#f0d78c;color:#14532d;border:0;text-decoration:none;display:inline-block;padding:8px 14px;border-radius:999px;font-weight:700;}",
     ".hub-soft-desk{margin-top:14px;background:#fff;border:1px solid rgba(168,128,28,.28);border-radius:16px;padding:14px 16px;color:var(--green-800);}",
-    ".hub-soft-desk h3{font-family:var(--display);margin:0 0 8px;font-size:18px;}",
+    ".hub-soft-desk h3{font-family:var(--display);margin:0 0 8px;font-size:19px;}",
     ".hub-soft-desk .hub-chips{margin:0 0 8px;}",
     ".hub-chips{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 4px;}",
-    ".hub-chip{display:inline-flex;align-items:center;gap:8px;background:#fbf7ec;border:1px solid rgba(168,128,28,.35);border-radius:999px;padding:8px 14px;font-family:var(--display);font-size:14px;color:var(--green-800);}",
+    ".hub-chip{display:inline-flex;align-items:center;gap:8px;background:#fbf7ec;border:1px solid rgba(168,128,28,.35);border-radius:999px;padding:8px 14px;font-family:var(--display);font-size:16px;color:var(--green-800);}",
     ".hub-chip.ok{background:var(--green-800);color:#f6efdc;border-color:var(--green-800);}",
     ".hub-chip.warn{background:#f0e2bd;color:#7a5b00;border-color:#d4b45a;}",
     ".hub-actions{margin-top:16px;}",
-    ".hub-actions h3{font-family:var(--display);color:var(--green-800);margin:0 0 10px;font-size:18px;}",
+    ".hub-actions h3{font-family:var(--display);color:var(--green-800);margin:0 0 10px;font-size:19px;}",
     ".hub-action-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}",
     ".hub-action{text-align:left;background:#fffdf4;border:1px dashed rgba(168,128,28,.55);border-radius:14px;padding:12px 14px;cursor:pointer;font:inherit;}",
     ".hub-action:hover{background:#f7efd8;}",
     ".hub-action b{display:block;color:var(--green-800);font-family:var(--display);margin-bottom:4px;}",
-    ".hub-action span{font-size:13px;color:var(--muted);line-height:1.35;}",
+    ".hub-action span{font-size:15px;color:var(--muted);line-height:1.35;}",
+    ".hub-find{margin-top:14px;background:#fff;border:1px solid rgba(168,128,28,.28);border-radius:16px;padding:14px 16px;}",
+    ".hub-find h3{font-family:var(--display);color:var(--green-800);margin:0 0 10px;font-size:19px;}",
+    ".hub-find-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;}",
+    ".hub-find .hub-action{width:100%;}",
     ".hub-officer-card{margin-top:14px;background:linear-gradient(180deg,#1d6b3e,var(--green-900));color:#fff;border-radius:16px;padding:16px 18px;display:flex;gap:14px;align-items:center;cursor:pointer;border:1px solid var(--gold);}",
     ".hub-officer-card:hover{filter:brightness(1.05);}",
     ".hub-officer-card .go{margin-left:auto;color:var(--gold-light);font-family:var(--display);}",
     ".hub-officer-picker{background:#fff;border:1px solid rgba(168,128,28,.35);border-radius:16px;padding:14px 16px;margin:0 0 14px;}",
-    ".hub-officer-picker label{display:block;font-family:var(--display);color:var(--green-800);font-size:15px;margin:0 0 8px;}",
-    ".hub-officer-picker select{width:100%;box-sizing:border-box;font:inherit;font-size:16px;padding:12px 14px;border-radius:10px;border:1px solid rgba(168,128,28,.5);background:#fbf7ec;color:var(--green-800);}",
-    ".hub-officer-picker .hint{margin:8px 0 0;font-size:13px;color:var(--muted);line-height:1.35;}",
+    ".hub-officer-picker label{display:block;font-family:var(--display);color:var(--green-800);font-size:17px;margin:0 0 8px;}",
+    ".hub-officer-picker select{width:100%;box-sizing:border-box;font:inherit;font-size:17px;padding:12px 14px;border-radius:10px;border:1px solid rgba(168,128,28,.5);background:#fbf7ec;color:var(--green-800);}",
+    ".hub-officer-picker .hint{margin:8px 0 0;font-size:15px;color:var(--muted);line-height:1.35;}",
     "#hubOfficer > .app-card.hub-officer-hidden,#hubOfficer > section.app-card.hub-officer-hidden{display:none !important;}",
     ".hub-tabs{position:sticky;top:0;z-index:40;display:flex;flex-wrap:wrap;gap:8px;padding:10px 0 14px;background:linear-gradient(180deg,#fbf7ec 70%,rgba(251,247,236,0));}",
-    ".hub-tabs button{border:1px solid rgba(168,128,28,.4);background:#fff;color:var(--green-800);border-radius:999px;padding:8px 14px;font-family:var(--display);font-size:14px;cursor:pointer;}",
+    ".hub-tabs button{border:1px solid rgba(168,128,28,.4);background:#fff;color:var(--green-800);border-radius:999px;padding:8px 14px;font-family:var(--display);font-size:16px;cursor:pointer;}",
     ".hub-tabs button.on{background:var(--green-800);color:#f6efdc;border-color:var(--green-800);}",
     ".hub-panel{display:none !important;}",
     ".hub-panel.hub-on{display:block !important;}",
     ".hub-panel > .member-grid{display:grid;gap:26px;}",
     ".hub-docs{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;}",
-    ".hub-docs a{display:inline-block;background:#f0e8d2;border:1px solid rgba(168,128,28,.3);color:var(--green-800);border-radius:999px;padding:6px 13px;font-size:14px;font-family:var(--display);text-decoration:none;}",
+    ".hub-docs a{display:inline-block;background:#f0e8d2;border:1px solid rgba(168,128,28,.3);color:var(--green-800);border-radius:999px;padding:6px 13px;font-size:16px;font-family:var(--display);text-decoration:none;}",
     ".hub-docs a:hover{background:#e8ddc0;}",
     ".hub-profile{background:#fff;border:1px solid rgba(168,128,28,.28);border-radius:16px;padding:16px 18px;margin-bottom:14px;}",
     ".hub-profile h3{margin:0 0 6px;font-family:var(--display);color:var(--green-800);}",
     ".hub-fb-members{margin-top:12px;padding:12px 14px;background:#fbf7ec;border:1px solid rgba(168,128,28,.35);border-radius:12px;}",
     ".hub-fb-members a{color:var(--green-800);font-weight:700;text-decoration:none;}",
     ".hub-fb-members a:hover{text-decoration:underline;}",
-    ".hub-badge{display:inline-block;margin-left:6px;min-width:20px;padding:1px 6px;border-radius:999px;background:#b3261e;color:#fff;font-size:12px;text-align:center;}",
+    ".hub-badge{display:inline-block;margin-left:6px;min-width:20px;padding:1px 6px;border-radius:999px;background:#b3261e;color:#fff;font-size:14px;text-align:center;}",
     ".hub-avatar{width:72px;height:72px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);flex:none;}",
     ".hub-avatar-blank{display:flex;align-items:center;justify-content:center;background:var(--green-800);color:#f6efdc;font-family:var(--display);font-size:24px;}",
     ".hub-prof-head{display:flex;gap:14px;align-items:center;margin:6px 0 10px;}",
-    ".hub-prof-line{margin:6px 0;font-size:14px;}",
-    ".hub-prof-form label{display:block;font-size:13px;color:var(--muted);margin:10px 0 3px;}",
+    ".hub-prof-line{margin:6px 0;font-size:16px;}",
+    ".hub-prof-form label{display:block;font-size:15px;color:var(--muted);margin:10px 0 3px;}",
     ".hub-prof-form input,.hub-prof-form textarea{width:100%;box-sizing:border-box;padding:8px 10px;border:1px solid rgba(168,128,28,.4);border-radius:8px;font:inherit;background:#fff;}",
     ".hub-prof-form textarea{min-height:70px;resize:vertical;}",
     ".hub-prof-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 12px;}",
     "@media (max-width:520px){.hub-prof-grid{grid-template-columns:1fr;}}",
     ".hub-appr{display:flex;gap:12px;justify-content:space-between;align-items:flex-start;border:1px solid rgba(168,128,28,.3);border-radius:12px;padding:10px 12px;margin:8px 0;background:#fffdf4;flex-wrap:wrap;}",
-    ".hub-appr .muted{color:var(--muted);font-size:13px;}",
+    ".hub-appr .muted{color:var(--muted);font-size:15px;}",
     ".hub-appr-btns{display:flex;gap:8px;flex-wrap:wrap;}",
-    ".hub-appr-h{font-family:var(--display);color:var(--green-800);margin:14px 0 6px;font-size:17px;}",
+    ".hub-appr-h{font-family:var(--display);color:var(--green-800);margin:14px 0 6px;font-size:18px;}",
     ".hub-claim{margin-top:0;}",
-    ".hub-claim label{display:block;font-size:13px;color:var(--muted);margin:10px 0 3px;}",
+    ".hub-claim label{display:block;font-size:15px;color:var(--muted);margin:10px 0 3px;}",
     ".hub-claim select,.hub-claim input,.hub-claim textarea{width:100%;box-sizing:border-box;padding:8px 10px;border:1px solid rgba(168,128,28,.4);border-radius:8px;font:inherit;background:#fff;}",
     ".hub-claim textarea{min-height:64px;resize:vertical;}",
     ".hub-claim-row{display:none;}",
     ".hub-claim-row.on{display:block;}",
-    ".hub-claim-msg{margin:10px 0 0;font-size:14px;color:var(--green-800);}",
+    ".hub-claim-msg{margin:10px 0 0;font-size:16px;color:var(--green-800);}",
     ".hub-claim-list{margin:14px 0 0;padding:0;list-style:none;}",
-    ".hub-claim-list li{border-top:1px solid rgba(168,128,28,.22);padding:8px 0;font-size:14px;}",
-    ".hub-claim-list .st{font-size:12px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);}",
+    ".hub-claim-list li{border-top:1px solid rgba(168,128,28,.22);padding:8px 0;font-size:16px;}",
+    ".hub-claim-list .st{font-size:14px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);}",
     ".hub-claim-list .st.pending{color:#7a5b00;}",
     ".hub-claim-list .st.approved{color:var(--green-800);}",
     ".hub-claim-list .st.denied{color:#b3261e;}",
     "#memberContent > .member-grid{display:none !important;}",
-    ".hub-event-form h3,.hub-event-list h3{font-family:var(--display);color:var(--green-800);margin:0 0 10px;font-size:18px;}",
-    ".hub-event-form label{display:block;font-size:13px;color:var(--muted);margin:10px 0 3px;}",
+    ".hub-event-form h3,.hub-event-list h3{font-family:var(--display);color:var(--green-800);margin:0 0 10px;font-size:19px;}",
+    ".hub-event-form label{display:block;font-size:15px;color:var(--muted);margin:10px 0 3px;}",
     ".hub-event-form input,.hub-event-form textarea,.hub-event-form select{width:100%;box-sizing:border-box;padding:8px 10px;border:1px solid rgba(168,128,28,.4);border-radius:8px;font:inherit;background:#fff;}",
     ".hub-event-form textarea{min-height:76px;resize:vertical;}",
     ".hub-event-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 12px;}",
@@ -112,18 +116,18 @@
     "#hubEventStudio,.hub-event-list,.hub-event-form{width:100%;max-width:100%;box-sizing:border-box;}",
     ".hub-event-row{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start;border:1px solid rgba(168,128,28,.3);border-radius:12px;padding:11px 12px;margin:8px 0;background:#fffdf4;width:100%;box-sizing:border-box;}",
     ".hub-event-row b{font-family:var(--display);color:var(--green-800);}",
-    ".hub-event-row .muted{color:var(--muted);font-size:13px;line-height:1.45;}",
+    ".hub-event-row .muted{color:var(--muted);font-size:15px;line-height:1.45;}",
     ".hub-event-copy{flex:1 1 220px;min-width:0;}",
     ".hub-event-row .hub-appr-btns{flex:1 1 auto;justify-content:flex-end;}",
     ".hub-event-row .qr-slot{flex:1 1 100%;width:100%;}",
-    ".hub-event-msg{min-height:1.2em;color:var(--green-800);font-size:14px;margin:8px 0 0;}",
+    ".hub-event-msg{min-height:1.2em;color:var(--green-800);font-size:16px;margin:8px 0 0;}",
     ".hub-event-form{margin-top:18px;padding-top:16px;border-top:1px dashed rgba(168,128,28,.4);}",
-    ".hub-flyer-note{font-size:12px;color:var(--muted);margin:4px 0 0;}",
+    ".hub-flyer-note{font-size:14px;color:var(--muted);margin:4px 0 0;}",
     ".hub-flyer-preview{margin-top:10px;display:none;align-items:center;gap:12px;flex-wrap:wrap;}",
     ".hub-flyer-preview.show{display:flex;}",
     ".hub-flyer-preview img{max-width:160px;max-height:120px;border-radius:10px;border:1px solid rgba(168,128,28,.35);object-fit:cover;background:#fff;}",
     ".hub-event-thumb{width:54px;height:54px;border-radius:10px;object-fit:cover;border:1px solid rgba(168,128,28,.35);background:#f3efe2;flex:none;}",
-    ".hub-event-thumb.ph{display:grid;place-items:center;font-size:11px;color:var(--muted);text-align:center;padding:4px;}",
+    ".hub-event-thumb.ph{display:grid;place-items:center;font-size:13px;color:var(--muted);text-align:center;padding:4px;}",
     "@media(max-width:620px){.hub-event-grid{grid-template-columns:1fr;}.hub-event-grid .wide{grid-column:auto;}.hub-event-row{flex-direction:column;}}",
     "@keyframes kosHoursFlash{0%,100%{box-shadow:none}40%{box-shadow:0 0 0 4px rgba(29,107,62,.45)}}",
     "#vhForm.kos-hours-flash{animation:kosHoursFlash 1.6s ease;border-radius:12px;}",
@@ -222,7 +226,7 @@
       body.innerHTML = "";
       body.appendChild(frag);
     } else {
-      body.innerHTML = '<p style="font-size:14px;color:var(--muted);">Volunteer hours appear after your Parade Ready data loads. You can also log hours from the Parade Day tab.</p>';
+      body.innerHTML = '<p style="font-size:16px;color:var(--muted);">Volunteer hours appear after your Parade Ready data loads. You can also log hours from the Parade Day tab.</p>';
     }
   }
 
@@ -239,7 +243,7 @@
 
     var tabs = [
       ["hub", "Home"],
-      ["krewe", "My Krewe"],
+      ["krewe", "My Krewe / Directory"],
       ["events", "Events"],
       ["parade", "Member desk"],
       ["fun", "Fun"],
@@ -268,7 +272,7 @@
 
     var krewe = document.getElementById("hubKrewe");
     krewe.innerHTML =
-      '<section class="app-card"><div class="app-head"><span class="ic">☘</span><div><h2>My Krewe</h2><small>Profile, directory and governing docs</small></div></div>' +
+      '<section class="app-card"><div class="app-head"><span class="ic">☘</span><div><h2>My Krewe</h2><small>Profile, member directory, and governing docs</small></div></div>' +
       '<div class="app-body">' +
       '<div class="hub-profile" id="hubProfileCard"><h3>Your profile</h3><p class="empty">Loading…</p></div>' +
       '<h3 style="font-family:var(--display);color:var(--green-800);margin:8px 0;">Governing documents</h3>' +
@@ -283,7 +287,7 @@
       '<section class="app-card"><div class="app-head"><span class="ic">📅</span><div><h2>Events and RSVPs</h2><small>See the calendar and RSVP</small></div></div>' +
       '<div class="app-body"><p>RSVP to krewe events, track attendance, and keep your calendar current.</p>' +
       '<p><a class="btn btn-primary" href="event-signup.html">Open event signup</a></p>' +
-      '<p style="font-size:14px;color:var(--muted);margin-top:12px;">Attendance feeds Parade Ready and the Craic Cup.</p></div></section>';
+      '<p style="font-size:16px;color:var(--muted);margin-top:12px;">Attendance feeds Parade Ready and the Craic Cup.</p></div></section>';
 
     var give = document.getElementById("hubGive");
     if (give) give.innerHTML =
@@ -355,7 +359,7 @@
       kickoffNote +
       '<div class="hub-craic-grid">' +
       '<div class="rank-big">' + esc(icon) + '</div>' +
-      '<div><div style="font-size:15px;opacity:.9;">Right now you\'re a</div>' +
+      '<div><div style="font-size:17px;opacity:.9;">Right now you\'re a</div>' +
       '<div style="font-family:var(--display);font-size:24px;margin:2px 0 6px;">' + esc(icon) + ' ' + esc(rank) + '</div>' +
       '<div class="clovers">' + life + ' 🍀</div>' +
       '<div class="meta">This season: <b>' + season + '</b>' +
@@ -381,7 +385,7 @@
     var head = '<div class="hub-quest"><div class="hub-quest-head"><b>Next Easy Win</b><span>Shamrock-hosted events · +5 Clovers for RSVP</span></div>';
     if (!list.length) {
       return head +
-        '<div class="hub-quest-empty"><div><b>You\'re caught up</b><div style="font-size:14px;opacity:.95;margin-top:2px;">Clovers await at the next Shamrock event</div></div>' +
+        '<div class="hub-quest-empty"><div><b>You\'re caught up</b><div style="font-size:16px;opacity:.95;margin-top:2px;">Clovers await at the next Shamrock event</div></div>' +
         '<a class="btn" href="event-signup.html">Browse calendar</a></div></div>';
     }
     var cards = list.slice(0, 4).map(function (ev) {
@@ -423,8 +427,8 @@
     return '<div class="hub-soft-desk">' +
       '<h3>Member desk</h3>' +
       '<div class="hub-chips">' + standingChip() + paradeChip() + hoursChip() + '</div>' +
-      '<p style="margin:0 0 10px;font-size:14px;color:var(--muted);">' + esc(line) + '</p>' +
-      '<ol style="margin:0 0 12px;padding-left:1.2em;font-size:14px;color:#3a3a2e;line-height:1.45;">' +
+      '<p style="margin:0 0 10px;font-size:16px;color:var(--muted);">' + esc(line) + '</p>' +
+      '<ol style="margin:0 0 12px;padding-left:1.2em;font-size:16px;color:#3a3a2e;line-height:1.45;">' +
       '<li>Open <b>Member desk</b></li>' +
       '<li>Sign <b>Parade Ready</b> liability waiver + <b>Photo &amp; Image Release</b></li>' +
       '<li>Finish <b>My Krewe profile</b></li>' +
@@ -433,6 +437,46 @@
       '<button type="button" class="btn btn-primary" data-hub-action="parade">Open Member desk</button>' +
       profileBtn +
       '</div>';
+  }
+
+
+  function openDirectoryFromHome() {
+    showTab("krewe");
+    setTimeout(function () {
+      var el = document.getElementById("hubMemberDirectory");
+      if (!el) {
+        var cards = document.querySelectorAll("#hubKrewe .app-card");
+        for (var i = 0; i < cards.length; i++) {
+          var h = cards[i].querySelector("h2");
+          if (h && /directory/i.test(h.textContent || "")) { el = cards[i]; break; }
+        }
+      }
+      if (el && el.scrollIntoView) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 80);
+  }
+
+  function openEventStudioFromHome() {
+    if (!state.officer && !state.canManageEvents) {
+      showTab("events");
+      return;
+    }
+    try { sessionStorage.setItem("kosOfficerTool", "tool:hubEventStudio"); } catch (e) {}
+    showTab("officer");
+    setTimeout(function () {
+      wireOfficerDeskPicker();
+      var sel = document.getElementById("officerToolSelect");
+      if (sel) {
+        var want = "tool:hubEventStudio";
+        var ok = Array.prototype.some.call(sel.options, function (o) { return o.value === want; });
+        if (ok) {
+          sel.value = want;
+          if (typeof sel.onchange === "function") sel.onchange();
+          else sel.dispatchEvent(new Event("change"));
+        }
+      }
+      var el = document.getElementById("hubEventStudio");
+      if (el && el.scrollIntoView) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 120);
   }
 
   function renderHome() {
@@ -451,15 +495,31 @@
       home.appendChild(grid);
     }
     var officerCard = (state.officer || state.canManageEvents)
-      ? '<div class="hub-officer-card" data-hub-action="officer" style="margin-top:14px;"><div><b style="font-family:var(--display);font-size:18px;">Officer desk</b><div style="opacity:.9;font-size:14px;margin-top:4px;">Event Studio, Shop Studio, QR, Reports, and more</div></div><div class="go">Open →</div></div>'
+      ? '<div class="hub-officer-card" data-hub-action="officer" style="margin-top:14px;"><div><b style="font-family:var(--display);font-size:19px;">Officer desk</b><div style="opacity:.9;font-size:16px;margin-top:4px;">Event Studio (add or edit events), Shop Studio, QR, Reports, and more</div></div><div class="go">Open →</div></div>'
       : "";
+    var findCards =
+      '<div class="hub-find">' +
+      '<h3>Looking for something?</h3>' +
+      '<div class="hub-find-grid">' +
+      '<button type="button" class="hub-action" data-hub-goto="directory"><b>Member Directory</b><span>Faces and profiles of your krewe. Lives under My Krewe / Directory.</span></button>' +
+      ((state.officer || state.canManageEvents)
+        ? '<button type="button" class="hub-action" data-hub-goto="event-studio"><b>Add or edit events &amp; calendar</b><span>Open Event Studio to change dates (Basket Social and more) without a developer.</span></button>'
+        : '') +
+      '</div></div>';
     // Only refresh the welcome strip — never wipe the beautiful card grid below.
-    top.innerHTML = craicHeroHtml() + softMemberDeskHtml() + officerCard;
+    top.innerHTML = craicHeroHtml() + softMemberDeskHtml() + officerCard + findCards;
 
     renderProfileCard();
 
     top.querySelectorAll("[data-hub-action]").forEach(function (btn) {
       btn.addEventListener("click", function () { showTab(btn.getAttribute("data-hub-action")); });
+    });
+    top.querySelectorAll("[data-hub-goto]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var go = btn.getAttribute("data-hub-goto");
+        if (go === "directory") openDirectoryFromHome();
+        else if (go === "event-studio") openEventStudioFromHome();
+      });
     });
     var op = document.getElementById("hubOpenProfile");
     if (op) op.addEventListener("click", function () {
@@ -726,16 +786,16 @@
       "<h3>Your profile</h3>" +
       '<div class="hub-prof-head">' + profileAvatarHtml(p) +
       "<div><b>" + esc(nm) + "</b>" +
-      (p.email ? '<div style="color:var(--muted);font-size:14px;">' + esc(p.email) + "</div>" : "") +
-      (facts.length ? '<div style="color:var(--muted);font-size:14px;">' + facts.join(" · ") + "</div>" : "") +
+      (p.email ? '<div style="color:var(--muted);font-size:16px;">' + esc(p.email) + "</div>" : "") +
+      (facts.length ? '<div style="color:var(--muted);font-size:16px;">' + facts.join(" · ") + "</div>" : "") +
       "</div></div>" + longs +
 '<div class="hub-fb-members">' +
-      '<div style="font-size:13px;color:var(--muted);margin-bottom:4px;">Members only</div>' +
+      '<div style="font-size:15px;color:var(--muted);margin-bottom:4px;">Members only</div>' +
       '<a href="https://www.facebook.com/groups/1790675004521855" target="_blank" rel="noopener noreferrer">📘 Join the Krewe members Facebook group →</a>' +
       '</div>' +
       '<button class="btn btn-primary" id="hubProfEditBtn" type="button" style="margin-top:10px;">✏️ Edit my profile</button>' +
-      (p.profile_visible === false ? '<p style="color:var(--muted);font-size:13px;">Your profile is hidden from the member directory.</p>' : "") +
-      '<p style="color:var(--muted);font-size:12px;margin:8px 0 0;">Fellow members see your birthday and anniversary as month and day only — never the year.</p>';
+      (p.profile_visible === false ? '<p style="color:var(--muted);font-size:15px;">Your profile is hidden from the member directory.</p>' : "") +
+      '<p style="color:var(--muted);font-size:14px;margin:8px 0 0;">Fellow members see your birthday and anniversary as month and day only — never the year.</p>';
     var btn = document.getElementById("hubProfEditBtn");
     if (btn) btn.addEventListener("click", function () { profileEditing = true; renderProfileCard(); });
   }
@@ -916,14 +976,14 @@
     var recent = (rows || []).slice(0, 8);
     var listHtml = "";
     if (recent.length) {
-      listHtml = '<h3 style="font-family:var(--display);color:var(--green-800);margin:16px 0 6px;font-size:16px;">Your recent claims</h3><ul class="hub-claim-list">';
+      listHtml = '<h3 style="font-family:var(--display);color:var(--green-800);margin:16px 0 6px;font-size:17px;">Your recent claims</h3><ul class="hub-claim-list">';
       recent.forEach(function (r) {
         var extra = [];
         if (r.guest_count) extra.push(r.guest_count + (r.guest_count === 1 ? " guest" : " guests"));
         if (r.event_name) extra.push(r.event_name);
         listHtml += '<li><span class="st ' + esc(r.status) + '">' + esc(r.status) + '</span> · <b>' +
           esc(r.activity_label || r.activity_code) + '</b> · +' + Number(r.clovers || 0) + ' 🍀' +
-          (extra.length ? '<div class="muted" style="color:var(--muted);font-size:13px;">' + esc(extra.join(" · ")) + "</div>" : "") +
+          (extra.length ? '<div class="muted" style="color:var(--muted);font-size:15px;">' + esc(extra.join(" · ")) + "</div>" : "") +
           "</li>";
       });
       listHtml += "</ul>";
@@ -931,7 +991,7 @@
       listHtml = '<p class="empty" style="margin-top:14px;">No claims yet. RSVPs still earn +5 automatically.</p>';
     }
     body.innerHTML =
-      '<p style="margin:0 0 8px;font-size:14px;color:var(--muted);">Pick an activity. Officers review and credit Clovers to your Craic Cup. RSVP to an event is already automatic, so it is not listed here.</p>' +
+      '<p style="margin:0 0 8px;font-size:16px;color:var(--muted);">Pick an activity. Officers review and credit Clovers to your Craic Cup. RSVP to an event is already automatic, so it is not listed here.</p>' +
       '<form id="hubClaimForm">' +
       '<label for="hubClaimActivity">Activity</label>' +
       '<select id="hubClaimActivity" required><option value="">Choose one…</option>' + claimOptionsHtml() + "</select>" +
@@ -943,7 +1003,7 @@
       '<textarea id="hubClaimNotes" maxlength="400" placeholder="Anything that helps them verify"></textarea>' +
       '<div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;">' +
       '<button type="submit" class="btn btn-primary" id="hubClaimSubmit">Submit claim</button>' +
-      (pending.length ? ('<span style="font-size:13px;color:var(--muted);">' + pending.length + " pending</span>") : "") +
+      (pending.length ? ('<span style="font-size:15px;color:var(--muted);">' + pending.length + " pending</span>") : "") +
       "</div>" +
       '<p class="hub-claim-msg" id="hubClaimMsg" hidden></p>' +
       "</form>" + listHtml;
@@ -1008,7 +1068,7 @@
   // ---- Officer Approvals queue: role requests + duplicate-record merges + media ----
   function mediaLogHtml(rows) {
     var html = '<h3 class="hub-appr-h">Recent media decisions</h3>';
-    html += '<div style="font-size:13px;color:var(--muted);margin:0 0 8px;">Who approved or denied photos and videos (newest first).</div>';
+    html += '<div style="font-size:15px;color:var(--muted);margin:0 0 8px;">Who approved or denied photos and videos (newest first).</div>';
     (rows || []).forEach(function (r) {
       var when = r.created_at ? String(r.created_at).slice(0, 16).replace("T", " ") : "";
       var act = String(r.action || "").toLowerCase() === "deny" ? "Denied" : "Approved";
@@ -1242,7 +1302,7 @@
       body.innerHTML = '<p class="empty">No online payments yet. They appear here automatically once the payment system is connected (see PAYMENTS_SETUP.md).</p>';
       return;
     }
-    var html = '<div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;font-size:14px;">' +
+    var html = '<div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;font-size:16px;">' +
       '<tr style="text-align:left;color:var(--muted);"><th style="padding:4px 8px;">When</th><th style="padding:4px 8px;">Who</th><th style="padding:4px 8px;">What</th><th style="padding:4px 8px;">Amount</th></tr>';
     data.forEach(function (r) {
       var when = String(r.when || "").slice(0, 10);
@@ -1265,7 +1325,7 @@
 
   function studioPaintQR(slot, url, label) {
     if (!slot) return;
-    slot.innerHTML = '<canvas></canvas><div style="font-size:13px;color:var(--muted);margin-top:6px;word-break:break-all;">' +
+    slot.innerHTML = '<canvas></canvas><div style="font-size:15px;color:var(--muted);margin-top:6px;word-break:break-all;">' +
       esc(label || "Scan or open") + ': <a href="' + esc(url) + '" target="_blank" rel="noopener">' + esc(url) + "</a></div>";
     if (window.QRCode) {
       QRCode.toCanvas(slot.querySelector("canvas"), url, { width: 220, margin: 1, color: { dark: "#14532d", light: "#ffffff" } });
@@ -1335,7 +1395,7 @@
       '<p class="hub-flyer-note" id="hubEventFlyerNote" aria-live="polite">Upload fills the URL above. Then press Save event to attach it. Published public events show on the Events page. Check Featured Event to pin one in the Featured spot (only one at a time).</p>' +
       '<div class="hub-flyer-preview" id="hubEventFlyerPreview"></div>' +
       '<button class="btn" type="button" id="hubEventFlyerClear" style="margin-top:8px;">Clear image / PDF</button></div></div>' +
-      '<p style="font-size:13px;color:var(--muted);margin:10px 0 0;">For paid tickets, create a Zeffy ticketing campaign and paste the public share link here. Sign me up / RSVP will open that checkout.</p>' +
+      '<p style="font-size:15px;color:var(--muted);margin:10px 0 0;">For paid tickets, create a Zeffy ticketing campaign and paste the public share link here. Sign me up / RSVP will open that checkout.</p>' +
       '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;"><button class="btn btn-primary" type="submit" id="hubEventSave">☘ Save event</button>' +
       '<button class="btn" type="button" id="hubEventNew">New / clear</button></div><p class="hub-event-msg" id="hubEventMsg" aria-live="polite"></p></form></div>';
   }
@@ -1551,9 +1611,9 @@
       else panel.appendChild(card);
     }
     card.innerHTML =
-      '<div class="app-head"><span class="ic">📅</span><div><h2>Event Studio</h2><small>Create events — then make RSVP & door check-in QR codes</small></div></div>' +
+      '<div class="app-head"><span class="ic">📅</span><div><h2>Event Studio</h2><small>Add or edit events and calendar — then make RSVP and door check-in QR codes</small></div></div>' +
       '<div class="app-body">' +
-      '<p style="font-size:14px;color:var(--muted);margin:0 0 12px;">How QR works here: <b>save the event</b>, then tap <b>RSVP QR</b> (flyer/table tent) or <b>Door check-in QR</b> (projector at the door). The square is just that link.</p>' +
+      '<p style="font-size:16px;color:var(--muted);margin:0 0 12px;">How QR works here: <b>save the event</b>, then tap <b>RSVP QR</b> (flyer/table tent) or <b>Door check-in QR</b> (projector at the door). The square is just that link.</p>' +
       '<div class="hub-event-list"><h3>Events</h3><div id="hubEventList"><p class="empty">Loading events…</p></div></div>' +
       eventStudioFormHtml() + '</div>';
     document.getElementById("hubEventForm").addEventListener("submit", function (e) {
@@ -1616,7 +1676,7 @@
   var OFFICER_TOOL_META = {
     hubApprovals: { title: "Approvals", desc: "Role requests, clover claims, and record merges" },
     hubPayments: { title: "Payments", desc: "Dues and payment records" },
-    hubEventStudio: { title: "Event Studio", desc: "Create events, RSVP QR, door check-in" },
+    hubEventStudio: { title: "Event Studio", desc: "Add or edit events and calendar, RSVP QR, door check-in" },
     hubShopStudio: { title: "Shop Studio", desc: "Products, Zeffy links, shop QR" },
     hubQrStudio: { title: "QR Code Studio", desc: "Meeting check-in and handy link QRs" },
     hubReports: { title: "Reports (live event & money)", desc: "Attendance and fundraising from Event Studio" },
