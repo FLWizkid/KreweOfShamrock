@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/krewe.css?v=20260915fonts1" />
+<link rel="stylesheet" href="assets/krewe.css?v=20260915officer1" />
 <style>
   .gate{ position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center;
     background:linear-gradient(180deg,var(--green-800),var(--green-900)); padding:24px; overflow-y:auto; }
@@ -721,10 +721,9 @@
   </header>
 
   <main class="wrap" id="memberContent" style="display:none;">
-    <div id="memberBar" style="display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:6px 2px 10px;">
-      <span id="memberWho" style="font-family:var(--display,serif);color:var(--green-800,#14532d);font-size:15px;"></span>
-      <button type="button" onclick="if(window.kosSignOut)window.kosSignOut()"
-              style="cursor:pointer;border:1px solid rgba(168,128,28,.5);background:transparent;color:var(--green-800,#14532d);border-radius:999px;padding:6px 14px;font-size:14px;font-weight:600;">Sign out</button>
+    <div id="memberBar" class="hub-member-bar">
+      <span id="memberWho" class="hub-signed-pill" aria-live="polite"></span>
+      <button type="button" class="hub-signout-btn" onclick="if(window.kosSignOut)window.kosSignOut()">Sign out</button>
     </div>
     <div class="member-grid">
 
@@ -1039,7 +1038,7 @@
     </button>
     <span class="label" id="kreweMusicLabel">Tap for a tune ☘</span>
   </div>
-  <script src="assets/krewe.js" defer></script>
+  <script src="assets/krewe.js?v=20260915officer1" defer></script>
 
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
@@ -1054,7 +1053,14 @@
         const p = window.kosProfile || {};
         const nm = (p.display_name || [p.first_name,p.last_name].filter(Boolean).join(" ") || p.email || "").toString().trim();
         const who = document.getElementById("memberWho");
-        if(who) who.textContent = nm ? ("Signed in as "+nm) : "Signed in";
+        if(who){
+          who.classList.add("hub-signed-pill","is-on");
+          if(!who.querySelector(".hub-signed-label")){
+            who.innerHTML = '<span class="dot" aria-hidden="true"></span><span class="hub-signed-label"></span>';
+          }
+          const label = who.querySelector(".hub-signed-label");
+          if(label) label.textContent = nm ? ("Signed in as "+nm) : "Signed in";
+        }
       }catch(e){}
       try{
         const head = document.querySelector("header.page-head");
@@ -2285,6 +2291,7 @@
             localStorage.setItem("kosLepWelcome","1");
           }
         }catch(_){ }
+        // Wait for Member Hub to settle on one tab before overlays (stops post-login snap).
         setTimeout(function(){
           try{
             var hours = false;
@@ -2292,7 +2299,7 @@
             if(hours) return;
             if(window.kosShowLepWelcome) window.kosShowLepWelcome(); else maybeTour();
           }catch(_){ maybeTour(); }
-        }, 400);
+        }, 900);
     }
     document.getElementById("signinForm").addEventListener("submit", async (e)=>{
       e.preventDefault();
@@ -2550,7 +2557,9 @@
         if(localStorage.getItem("kosLepWelcome")!=="1") return;
         if(localStorage.getItem("kosLepWelcomeSeen")==="1" && localStorage.getItem("kosLepWelcome")!=="1") return;
       }catch(_){ return; }
-      const who=(document.getElementById("memberWho")?.textContent||"").replace(/^SIGNED IN AS\s+/i,"").trim();
+      const whoEl=document.getElementById("memberWho");
+      const whoRaw=(whoEl && (whoEl.querySelector(".hub-signed-label")?.textContent || whoEl.textContent) || "");
+      const who=whoRaw.replace(/^SIGNED IN AS\s+/i,"").trim();
       const first=(who.split(/\s+/)[0]||"friend");
       const nice=first.charAt(0).toUpperCase()+first.slice(1).toLowerCase();
       const body=document.getElementById("lepBody");
@@ -2849,7 +2858,7 @@
     document.addEventListener("keydown",e=>{ if(e.key==="Escape" && window.closeRaffles) closeRaffles(); });
   </script>
 
-<script src="assets/members-desk.js?v=20260915fonts1" defer></script>
+<script src="assets/members-desk.js?v=20260915officer1" defer></script>
   <script src="assets/kos-event-studio.js?v=20260914t1" defer></script>
   <script src="assets/kos-shop-studio.js?v=20260910shopfix" defer></script>
 <script src="assets/kos-qr-studio.js?v=20260909b"></script>

@@ -219,3 +219,51 @@
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fixFooters);
   else fixFooters();
 })();
+
+
+(function kosNavSignedChip() {
+  function hasActiveSession() {
+    try {
+      var keys = Object.keys(localStorage);
+      for (var i = 0; i < keys.length; i++) {
+        var k = keys[i];
+        if (k.indexOf("sb-") !== 0 || k.indexOf("auth-token") === -1) continue;
+        var raw = localStorage.getItem(k);
+        if (!raw) continue;
+        var parsed = JSON.parse(raw);
+        if (!parsed || !parsed.access_token) continue;
+        if (parsed.expires_at && parsed.expires_at * 1000 < Date.now()) continue;
+        return true;
+      }
+    } catch (e) {}
+    return false;
+  }
+  function place() {
+    if (!hasActiveSession()) return;
+    if (document.getElementById("kosNavSigned")) return;
+    var path = (location.pathname.split("/").pop() || "").toLowerCase();
+    var onHub = path === "members.html";
+    var chip = document.createElement("a");
+    chip.id = "kosNavSigned";
+    chip.className = "kos-nav-signed";
+    chip.href = "members.html";
+    chip.innerHTML = onHub
+      ? '<span class="dot" aria-hidden="true"></span>Signed in'
+      : '<span class="dot" aria-hidden="true"></span>Member Hub';
+    chip.title = onHub ? "You are signed in" : "Open Member Hub";
+    var nav = document.querySelector(".krewe-nav");
+    if (!nav) return;
+    var cta = nav.querySelector(".nav-cta");
+    var menu = nav.querySelector(".krewe-menu");
+    var login = nav.querySelector('[data-nav="members.html"]');
+    if (login && !onHub) {
+      login.textContent = "Member Hub";
+      login.classList.add("kos-nav-hub-link");
+    }
+    if (cta && cta.parentNode) cta.parentNode.insertBefore(chip, cta);
+    else if (menu) menu.appendChild(chip);
+    else nav.appendChild(chip);
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", place);
+  else place();
+})();

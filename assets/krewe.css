@@ -766,3 +766,22 @@ table{ max-width:100%; }
   /* Forms need the lower screen; tuck the music control away there */
   body:has(.form-stage) .krewe-music{ display:none; }
 }
+
+
+/* ===== Signed-in signal (shared nav) ===== */
+.kos-nav-signed{
+  display:inline-flex; align-items:center; gap:7px;
+  margin-left:8px; padding:6px 12px; border-radius:999px;
+  background:var(--green-50); color:var(--green-900);
+  border:1px solid rgba(212,175,55,.55);
+  font-family:var(--display); font-size:14px; font-weight:700;
+  text-decoration:none; white-space:nowrap;
+}
+.kos-nav-signed:hover{ background:#dff0e3; color:var(--green-900); }
+.kos-nav-signed .dot{
+  width:7px; height:7px; border-radius:50%; background:#2b8b51;
+  box-shadow:0 0 0 3px rgba(43,139,81,.25); flex:none;
+}
+@media (max-width:980px){
+  .kos-nav-signed{ margin:8px 12px; }
+}
