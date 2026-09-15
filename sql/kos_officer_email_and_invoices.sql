@@ -1,4 +1,5 @@
 -- Officer desk: Email members + Send invoices
+-- Gated by is_krewe_officer() — any board/officer/captain, not secretary-only.
 -- Project: Krewe of Shamrock (oazwkwflgbthojvnclfc)
 -- Safe to re-run. Extends outbound_emails / dues_payments; no card storage.
 
@@ -445,7 +446,7 @@ begin
         'text-decoration:none;font-weight:700;">Pay dues on Zeffy</a></p>' ||
         '<p style="font-size:13px;color:#5f6b5a;">Or open Member Hub, Home, and use the Pay dues path when available.</p>' ||
         '<p>If you already paid, thank you. You can ignore this note.</p>' ||
-        '<p>Slainte,<br>Krewe of Shamrock · Secretary</p>';
+        '<p>Slainte,<br>Krewe of Shamrock</p>';
       v_body_wrapped := public.wrap_all_krewe_email_html(v_subj, v_body);
       perform public.enqueue_email(r.email, v_name, v_subj, v_body_wrapped, 'invoice_notice', r.id);
       v_emailed := v_emailed + 1;
