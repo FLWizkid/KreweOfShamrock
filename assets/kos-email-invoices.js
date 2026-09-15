@@ -1,5 +1,5 @@
 /* Officer desk: Email members + Send invoices.
-   Uses officer_* RPCs → outbound_emails (Resend) / dues_payments. */
+   Any krewe officer (is_krewe_officer). Uses officer_* RPCs → outbound_emails / dues_payments. */
 (function () {
   var CSS =
     ".hub-ei label{display:block;font-size:13px;color:var(--muted);margin:0 0 4px;}" +
@@ -265,7 +265,7 @@
       '<div class="app-head"><span class="ic">✉️</span><div><h2>Email members</h2>' +
       "<small>Write once, choose who gets it, preview, then send</small></div></div>" +
       '<div class="app-body hub-ei">' +
-      '<p class="hub-ei-note">Uses the same branded Shamrock template and outbound queue as All Krewe Messages. Officers and secretary only.</p>' +
+      '<p class="hub-ei-note">Uses the same branded Shamrock template and outbound queue as All Krewe Messages. Available to any officer on Officer desk.</p>' +
       '<div class="hub-ei-grid">' +
       "<div><label>Audience</label>" +
       '<div class="hub-ei-pills" role="group" aria-label="Email audience">' +
