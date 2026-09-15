@@ -1867,7 +1867,9 @@
     "hubShopStudio",
     "hubQrStudio",
     "hubReports",
-    "hubAllKrewe"
+    "hubAllKrewe",
+    "hubEmailMembers",
+    "hubSendInvoices"
   ];
 
   var OFFICER_TOOL_META = {
@@ -1877,7 +1879,9 @@
     hubShopStudio: { title: "Shop Studio", desc: "Products, Zeffy links, shop QR", icon: "🛍️", section: "Shop" },
     hubQrStudio: { title: "QR Code Studio", desc: "Meeting check-in and handy link QRs", icon: "📱", section: "Events" },
     hubReports: { title: "Reports", desc: "Attendance, fundraising, and live event numbers", icon: "📊", section: "Reports" },
-    hubAllKrewe: { title: "All Krewe Messages", desc: "Email the full membership", icon: "✉️", section: "Reports" }
+    hubAllKrewe: { title: "All Krewe Messages", desc: "Email the full membership", icon: "✉️", section: "Reports" },
+    hubEmailMembers: { title: "Email members", desc: "Choose audience, write, preview, and send", icon: "✉️", section: "Email & invoices" },
+    hubSendInvoices: { title: "Send invoices", desc: "Create dues invoices and email pay links", icon: "🧾", section: "Email & invoices" }
   };
 
   var OFFICER_SECTION_ORDER = [
@@ -1885,6 +1889,7 @@
     "Approvals",
     "Shop",
     "Money",
+    "Email & invoices",
     "Reports"
   ];
 
@@ -1959,7 +1964,7 @@
       hero.className = "hub-officer-hero";
       hero.innerHTML =
         "<h2>Officer desk</h2>" +
-        "<p>Pick one tool below. Everything stays in these sections: Events, Approvals, Shop, Money, and Reports.</p>";
+        "<p>Pick one tool below. Sections: Events, Approvals, Shop, Money, Email & invoices, and Reports.</p>";
       panel.insertBefore(hero, panel.firstChild);
     }
 
