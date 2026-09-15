@@ -54,9 +54,9 @@
     ".hub-find h3{font-family:var(--display);color:var(--green-800);margin:0 0 10px;font-size:19px;}",
     ".hub-find-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;}",
     ".hub-find .hub-action{width:100%;}",
-    ".hub-officer-card{margin-top:14px;background:linear-gradient(180deg,#1d6b3e,var(--green-900));color:#fff;border-radius:16px;padding:16px 18px;display:flex;gap:14px;align-items:center;cursor:pointer;border:1px solid var(--gold);}",
-    ".hub-officer-card:hover{filter:brightness(1.05);}",
-    ".hub-officer-card .go{margin-left:auto;color:var(--gold-light);font-family:var(--display);}",
+    ".hub-officer-card{margin-top:16px;background:linear-gradient(145deg,#fff4c2 0%,#f0d078 38%,#d4a017 100%);color:#14532d;border-radius:20px;padding:22px 24px;display:flex;flex-direction:column;gap:14px;cursor:pointer;border:2px solid #a67c00;box-shadow:0 6px 18px rgba(166,124,0,.22);}",
+    ".hub-officer-card:hover{filter:brightness(1.03);}",
+    ".hub-officer-card .go{margin-left:auto;color:#7a5b00;font-family:var(--display);}",
     ".hub-officer-picker{background:#fff;border:1px solid rgba(168,128,28,.35);border-radius:16px;padding:14px 16px;margin:0 0 14px;}",
     ".hub-officer-picker label{display:block;font-family:var(--display);color:var(--green-800);font-size:17px;margin:0 0 8px;}",
     ".hub-officer-picker select{width:100%;box-sizing:border-box;font:inherit;font-size:17px;padding:12px 14px;border-radius:10px;border:1px solid rgba(168,128,28,.5);background:#fbf7ec;color:var(--green-800);}",
@@ -143,14 +143,17 @@
     ".hub-officer-chip .ic{font-size:18px;line-height:1;}",
     ".hub-tabs button[data-hub-tab=\"officer\"]{border:2px solid var(--gold);background:linear-gradient(180deg,#1d6b3e,var(--green-900));color:#fff;font-weight:700;padding:10px 16px;box-shadow:0 2px 10px rgba(12,59,33,.18);}",
     ".hub-tabs button[data-hub-tab=\"officer\"].on{background:var(--gold);color:var(--green-900);border-color:var(--gold-deep);}",
-    ".hub-officer-card{margin-top:16px;background:linear-gradient(165deg,#1d6b3e 0%,#14532d 55%,#0f3d22 100%);color:#fff;border-radius:18px;padding:18px 20px;display:flex;gap:16px;align-items:center;cursor:pointer;border:2px solid var(--gold);box-shadow:var(--shadow-sm);}",
-    ".hub-officer-card .ic{font-size:36px;line-height:1;flex:none;}",
+    ".hub-officer-card{margin-top:18px;background:linear-gradient(145deg,#fff4c2 0%,#f0d078 38%,#d4a017 100%);color:#14532d;border-radius:20px;padding:22px 24px;display:flex;flex-direction:column;gap:14px;cursor:pointer;border:2px solid #a67c00;box-shadow:0 6px 18px rgba(166,124,0,.22);}",
+    ".hub-officer-card-top{display:flex;gap:16px;align-items:center;width:100%;}",
+    ".hub-officer-card .ic{font-size:42px;line-height:1;flex:none;}",
     ".hub-officer-card .copy{flex:1;min-width:0;}",
-    ".hub-officer-card b{display:block;font-family:var(--display);font-size:22px;margin:0 0 4px;}",
-    ".hub-officer-card .sub{opacity:.92;font-size:16px;line-height:1.35;}",
-    ".hub-officer-card .go{margin-left:auto;color:var(--gold-light);font-family:var(--display);font-size:18px;font-weight:700;flex:none;}",
-    ".hub-officer-card:hover{filter:brightness(1.05);}",
-    "@keyframes hubOfficerPulse{0%,100%{box-shadow:0 0 0 0 rgba(212,175,55,.0)}40%{box-shadow:0 0 0 8px rgba(212,175,55,.45)}70%{box-shadow:0 0 0 3px rgba(212,175,55,.2)}}",
+    ".hub-officer-card b{display:block;font-family:var(--display);font-size:28px;margin:0 0 6px;letter-spacing:.02em;color:#14532d;}",
+    ".hub-officer-card .sub{opacity:.95;font-size:17px;line-height:1.4;color:#3d5a40;}",
+    ".hub-officer-card .go{margin-left:auto;color:#7a5b00;font-family:var(--display);font-size:20px;font-weight:700;flex:none;}",
+    ".hub-officer-tools{display:flex;flex-wrap:wrap;gap:8px;}",
+    ".hub-officer-tool{display:inline-flex;align-items:center;background:rgba(255,255,255,.72);border:1px solid rgba(122,91,0,.35);border-radius:999px;padding:7px 12px;font-size:15px;line-height:1.3;color:#14532d;font-family:var(--display);}",
+    ".hub-officer-card:hover{filter:brightness(1.03);}",
+    "@keyframes hubOfficerPulse{0%,100%{box-shadow:0 6px 18px rgba(166,124,0,.22)}40%{box-shadow:0 0 0 8px rgba(212,175,55,.55),0 6px 18px rgba(166,124,0,.22)}70%{box-shadow:0 0 0 3px rgba(212,175,55,.28),0 6px 18px rgba(166,124,0,.22)}}",
     ".hub-officer-card.hub-officer-pulse{animation:hubOfficerPulse 1.8s ease 2;}",
     /* ---- Officer desk layout ---- */
     ".hub-officer-hero{background:#fff;border:1px solid rgba(168,128,28,.3);border-radius:18px;padding:18px 20px;margin:0 0 16px;}",
@@ -178,7 +181,7 @@
     ".hub-officer-picker .hint{margin:6px 0 0;font-size:14px;color:var(--muted);line-height:1.35;}",
     ".hub-officer-picker.compact{opacity:.95;}",
     "#hubOfficer > .app-card.hub-officer-hidden,#hubOfficer > section.app-card.hub-officer-hidden{display:none !important;}",
-    "@media (max-width:520px){.hub-officer-card{flex-wrap:wrap;}.hub-officer-card .go{margin-left:0;}.hub-officer-tiles{grid-template-columns:1fr;}}",
+    "@media (max-width:520px){.hub-officer-card{padding:20px 18px;}.hub-officer-card-top{flex-wrap:wrap;}.hub-officer-card .go{margin-left:0;}.hub-officer-card b{font-size:26px;}.hub-officer-tiles{grid-template-columns:1fr;}}",
   ].join("");
 
   var state = { officer: false, shopOnly: false, socialOnly: false, canViewPayments: false, canManageEvents: false, parade: null, hoursApproved: 0, membershipStatus: null, game: null, nextEvent: null, nextEvents: [] };
@@ -550,9 +553,19 @@
     } catch (pe) {}
     var officerCard = (state.officer || state.canManageEvents)
       ? '<div class="hub-officer-card' + officerPulse + '" data-hub-action="officer" role="button" tabindex="0">' +
+        '<div class="hub-officer-card-top">' +
         '<div class="ic" aria-hidden="true">🎖️</div>' +
-        '<div class="copy"><b>Officer desk</b><div class="sub">Events, approvals, reports, QR, shop, and messages for officers</div></div>' +
-        '<div class="go">Open →</div></div>'
+        '<div class="copy"><b>Officer desk</b><div class="sub">Everything officers need in one place. Tap Open to jump in.</div></div>' +
+        '<div class="go">Open →</div></div>' +
+        '<div class="hub-officer-tools" aria-label="Officer desk tools">' +
+        '<span class="hub-officer-tool">Event Studio / calendar edits</span>' +
+        '<span class="hub-officer-tool">Approvals (photos, videos, clovers)</span>' +
+        '<span class="hub-officer-tool">Shop</span>' +
+        '<span class="hub-officer-tool">Member records and money</span>' +
+        '<span class="hub-officer-tool">Reports and outreach</span>' +
+        '<span class="hub-officer-tool">QR tools</span>' +
+        '<span class="hub-officer-tool">Messages</span>' +
+        '</div></div>'
       : "";
     var findCards =
       '<div class="hub-find">' +
@@ -2248,3 +2261,4 @@
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
   else boot();
 })();
+
