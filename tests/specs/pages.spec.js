@@ -66,3 +66,24 @@ test("internal links across pages point at real pages", async ({ request }) => {
   }
   expect(seen.size).toBeGreaterThan(10);
 });
+
+test("bylaws.html publishes the official bylaws, not a placeholder", async ({ page, request }) => {
+  await page.goto("/assets/docs/bylaws.html");
+  await expect(page).toHaveTitle(/Bylaws/);
+  await expect(page.locator("h1")).toHaveText(/Official Bylaws of the Krewe of Shamrock/i);
+  await expect(page.locator("body")).not.toContainText("Awaiting officer upload");
+  await expect(page.locator("body")).not.toContainText("Email digital@ to upload");
+  await expect(page.locator("#art-1")).toContainText("Article I: Official Name");
+  await expect(page.locator("#art-8")).toContainText("05 June 2025");
+
+  const pdfLink = page.getByRole("link", { name: /Open \/ download official PDF/i }).first();
+  await expect(pdfLink).toBeVisible();
+  await expect(pdfLink).toHaveAttribute("href", "krewe-of-shamrock-bylaws.pdf");
+
+  const pdf = await request.get("/assets/docs/krewe-of-shamrock-bylaws.pdf");
+  expect(pdf.status(), "official bylaws PDF should be committed and served").toBe(200);
+  expect(pdf.headers()["content-type"] || "").toMatch(/pdf/i);
+
+  const back = page.getByRole("link", { name: /Back to Documents/i }).first();
+  await expect(back).toHaveAttribute("href", "../../members.html#docs");
+});

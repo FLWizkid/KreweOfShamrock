@@ -9,15 +9,36 @@
 
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Bylaws · Krewe of Shamrock</title>
+<title>Official Bylaws · Krewe of Shamrock</title>
 <link rel="stylesheet" href="../krewe.css" />
 <style>
-  .doc-sheet{max-width:720px;margin:0 auto;padding:28px 18px 48px;}
-  .doc-sheet h1{font-family:var(--display);color:var(--green-800);font-size:1.65rem;margin:0 0 8px;}
-  .await{background:#fffdf4;border:1px dashed rgba(168,128,28,.55);border-radius:14px;padding:16px 18px;line-height:1.5;}
-  .await b{color:var(--green-800);font-family:var(--display);}
-  .doc-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px;}
+  .doc-sheet{max-width:760px;margin:0 auto;padding:28px 18px 48px;}
+  .doc-sheet h1{font-family:var(--display);color:var(--green-800);font-size:1.65rem;margin:0 0 6px;line-height:1.25;}
+  .doc-sheet h2{font-family:var(--display);color:var(--green-800);font-size:1.18rem;margin:0 0 10px;line-height:1.3;}
+  .doc-sheet h3{font-family:var(--display);color:var(--green-800);font-size:1.02rem;margin:18px 0 8px;}
+  .doc-sub{color:var(--muted);font-size:.95rem;margin:0 0 16px;}
+  .doc-lead{margin:0 0 12px;line-height:1.55;}
+  .doc-card{background:#fff;border:1px solid rgba(168,128,28,.28);border-radius:14px;padding:16px 18px;margin:0 0 14px;}
+  .doc-card p{margin:0 0 10px;line-height:1.5;}
+  .doc-card p:last-child{margin-bottom:0;}
+  .doc-card ul,.doc-card ol{margin:0 0 10px;padding-left:1.2em;line-height:1.5;}
+  .doc-card li{margin:0 0 6px;}
+  .doc-note{background:#fffdf4;border:1px solid rgba(168,128,28,.4);border-radius:12px;padding:12px 14px;margin:14px 0 0;}
+  .doc-note h3{margin-top:0;}
+  .doc-toc{list-style:decimal;margin:0;padding-left:1.3em;}
+  .doc-toc li{margin:0 0 6px;}
+  .doc-toc a{color:var(--green-800);}
+  .doc-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:10px 0 12px;}
+  .doc-table{width:100%;min-width:280px;border-collapse:collapse;font-size:.95rem;}
+  .doc-table th,.doc-table td{border:1px solid rgba(168,128,28,.35);padding:8px 10px;text-align:left;vertical-align:top;}
+  .doc-table th{background:#fbf6e9;font-family:var(--display);color:var(--green-800);font-size:.85rem;font-weight:600;}
+  .doc-actions{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0 18px;}
   .doc-actions a{min-height:44px;display:inline-flex;align-items:center;}
+  .doc-card[id],.doc-toc a{scroll-margin-top:84px;}
+  @media (max-width:640px){
+    .doc-sheet{padding:20px 14px 40px;}
+    .doc-sheet h1{font-size:1.4rem;}
+  }
 </style>
 </head>
 <body>
@@ -26,18 +47,268 @@
   <div class="krewe-menu"><ul class="krewe-links"><li><a href="../../members.html#docs">Member Hub</a></li></ul></div>
 </nav>
 <main class="doc-sheet">
-  <h1>Bylaws</h1>
-  <div class="await">
-    <p style="margin:0 0 10px;"><b>Awaiting officer upload</b></p>
-    <p style="margin:0;">The official Krewe of Shamrock bylaws are not in the Member Hub yet. Officers: send the current PDF or approved HTML to digital@kreweofshamrock.com and we will publish it here for every member to open and read in-Hub.</p>
-  </div>
-  
+  <h1>Official Bylaws of the Krewe of Shamrock</h1>
+  <p class="doc-sub">Governing document for members and officers. Original copy adopted 29 March 2000. Last amended 05 June 2025. The PDF is the official original.</p>
+
   <div class="doc-actions">
-    <a class="btn btn-primary" href="../../members.html#docs">Back to Documents</a>
-    <a class="btn" href="mailto:digital@kreweofshamrock.com?subject=Upload%20Bylaws">Email digital@ to upload</a>
+    <a class="btn btn-primary" href="krewe-of-shamrock-bylaws.pdf" target="_blank" rel="noopener">Open / download official PDF</a>
+    <a class="btn" href="../../members.html#docs">Back to Documents</a>
   </div>
-  <p style="font-size:14px;color:var(--muted);margin-top:28px;">Questions: <a href="mailto:secretary@kreweofshamrock.com">secretary@kreweofshamrock.com</a>
-  · website uploads: <a href="mailto:digital@kreweofshamrock.com">digital@kreweofshamrock.com</a></p>
+
+  <div class="doc-card">
+    <h2 style="margin-top:0;">Contents</h2>
+    <ol class="doc-toc">
+      <li><a href="#art-1">Governance Identity and Organizational Objectives</a></li>
+      <li><a href="#art-2">Membership Framework and Compliance Standards</a></li>
+      <li><a href="#art-3">Financial Governance and Resource Allocation</a></li>
+      <li><a href="#art-4">Leadership Structure and Executive Mandates</a></li>
+      <li><a href="#art-5">Electoral Procedures and Democratic Integrity</a></li>
+      <li><a href="#art-6">Operational Committees and Functional Pillars</a></li>
+      <li><a href="#art-7">Protocol, Parades, and External Relations</a></li>
+      <li><a href="#art-8">Legislative Maintenance and Amendment Protocols</a></li>
+    </ol>
+  </div>
+
+  <article class="doc-card" id="art-1">
+    <h2>1. Governance Identity and Organizational Objectives</h2>
+    <p class="doc-lead">In the specialized field of nonprofit governance, the establishment of a cohesive corporate identity is the primary safeguard for organizational longevity. To evolve beyond the limitations of a casual social collective, a deliberative assembly must codify its mission to ensure strategic alignment and measurable community impact. By defining a clear purpose, the "Krewe of Shamrock" Inc. creates a framework that transforms social engagement into a structured vehicle for civic contribution, ensuring that all logistical and financial resources are directed toward its foundational pillars.</p>
+
+    <h3>Identity and Mission Codification</h3>
+    <h3>Article I: Official Name</h3>
+    <p>The official name of this organization is "Krewe of Shamrock" Inc.</p>
+    <h3>Article II: Strategic Objectives</h3>
+    <p>The Krewe operates under a prioritized hierarchy of objectives, ranked to ensure that philanthropic efforts remain the organization’s primary function:</p>
+    <ul>
+      <li><b>A. Charity Promotion:</b> To actively promote awareness for charities and nonprofit organizations.</li>
+      <li><b>B. Material Assistance:</b> To provide direct monetary and/or volunteer assistance to worthwhile charities and nonprofit organizations.</li>
+      <li><b>C. Camaraderie:</b> To foster fellowship among concerned citizens united by the common goal of helping the less fortunate.</li>
+      <li><b>D. Social Exposure:</b> To participate in social events that enhance the public profile and exposure of the Krewe.</li>
+    </ul>
+
+    <div class="doc-note">
+      <h3>Impact Analysis</h3>
+      <p>These objectives serve as the constitutional bedrock of the organization, strategically pivoting the Krewe from a traditional social club to a dedicated nonprofit support entity. By ranking charity promotion and material assistance above social exposure, the governance structure ensures that the "parade" is merely a secondary instrument for the primary "philanthropy." This mission-driven focus attracts a membership base committed to professionalized community service.</p>
+      <p>The effective execution of these high-level objectives depends entirely upon the discipline and commitment of the individual members governed by these bylaws.</p>
+    </div>
+  </article>
+
+  <article class="doc-card" id="art-2">
+    <h2>2. Membership Framework and Compliance Standards</h2>
+    <p class="doc-lead">The integrity of a nonprofit organization is inextricably linked to the quality and reliability of its membership. A robust framework governing entry protocols and ongoing compliance ensures the Krewe maintains the necessary volunteer capacity and financial stability to manage complex event logistics. Through these standards, the Krewe fosters a culture of accountability where membership is defined by active contribution rather than passive affiliation.</p>
+
+    <h3>Membership Classification and Requirements</h3>
+    <p><b>Equal Opportunity</b> Membership in the Krewe of Shamrock is inclusive and open to any reputable individual interested in the general welfare of the community, regardless of Race, Creed, Color, or Sexual orientation.</p>
+    <p><b>Entry Protocols</b> Prospective members must be at least 21 years of age. The admission process requires sponsorship by a "Member in Good Standing," with the application subject to processing by the Membership Committee and final ratification by the Board of Directors.</p>
+
+    <h3>The 12/12 Mandate</h3>
+    <p>To maintain organizational efficiency, members must meet specific volunteer or financial benchmarks as detailed below:</p>
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>Requirement Category</th><th>Specification</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Annual Service Commitment</td><td>12 hours of volunteer service per Krewe year (June–May)</td></tr>
+          <tr><td>Financial Substitution</td><td>Payment of $12 per unworked mandatory hour</td></tr>
+          <tr><td>Probationary Requirements</td><td>Members with &lt;1 year must provide security at one alcohol parade and volunteer at one sponsored event</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><b>Note:</b> Failure to meet these requirements results in immediate transition to "Delinquent Member" status.</p>
+
+    <h3>Member Status Definitions</h3>
+    <ul>
+      <li><b>Member in Good Standing:</b> A member current on all annual dues (payable by June 1st), assessments, and fines.</li>
+      <li><b>Delinquent Member:</b> A member whose dues are unpaid by July 1st, or who has outstanding fines/assessments 30 days post-levy. This status is maintained for a maximum of 15 days.</li>
+      <li><b>Inactive Member:</b> A member who remains delinquent for more than 15 days. Re-entry requires a full membership re-application.</li>
+      <li><b>Leave of Absence (LOA):</b> A social membership status ($100 fee, waived for military) valid for one year. LOA members may participate in one of the "Big 3" parades (Gasparilla Day, Sant Yago Knight, or the St. Patrick’s Parade).</li>
+    </ul>
+
+    <div class="doc-note">
+      <h3>The "So What?" Layer</h3>
+      <p>The distinction between "Good Standing" and "Delinquent" status serves as a critical liability shield. Only members in Good Standing are authorized to participate in parade events. This "No Exceptions" policy ensures that the Krewe’s public representatives are those who have fully satisfied their fiduciary and conduct obligations, thereby mitigating operational risk during high-visibility functions.</p>
+      <p>While active service is mandatory, the sustained operation of the Krewe also requires the disciplined management of its capital resources.</p>
+    </div>
+  </article>
+
+  <article class="doc-card" id="art-3">
+    <h2>3. Financial Governance and Resource Allocation</h2>
+    <p class="doc-lead">Transparent financial management and the maintenance of a stable treasury are essential for the logistical complexity of managing a large-scale Krewe. A predictable revenue stream allows the organization to fulfill its charitable mandates while ensuring the continuous upkeep of its significant capital assets, such as the parade float.</p>
+
+    <h3>Fee Structure and Revenue Streams</h3>
+    <h3>Dues and Fees</h3>
+    <ul>
+      <li><b>Annual Dues:</b> $325 (covers name tags, sponsored gifts, and parade refreshments).</li>
+      <li><b>Application Fees:</b> $50 for individuals or $75 for couples applying simultaneously.</li>
+    </ul>
+
+    <h3>Special Classifications</h3>
+    <ul>
+      <li><b>Associate Members:</b> Dues are $450 with a strict one-year limit. Associates may attend two parades of their choice but possess no voting rights and are exempt from the 12/12 volunteer mandate.</li>
+      <li><b>Elected Officer Exemptions:</b> In recognition of the extensive administrative labor required, elected officers are exempt from annual dues during their tenure.</li>
+    </ul>
+    <p><b>Capital Security</b> To ensure organizational solvency, the Krewe maintains a treasury floor of $1,000. Should the balance fall below this threshold, a "Special Assessment" of $10 per member shall be initiated by the President with the concurrence of the Board of Trustees.</p>
+
+    <h3>Fund Utilization</h3>
+    <p>Expenditure of Krewe funds is restricted to the following four categories:</p>
+    <ol>
+      <li>Meeting and parade-related expenses.</li>
+      <li>Board of Directors Insurance premiums.</li>
+      <li>Float maintenance, storage, insurance, and towing.</li>
+      <li>Extraordinary expenses approved by the Board of Directors.</li>
+    </ol>
+
+    <h3>Financial Accountability</h3>
+    <p>Financial integrity is enforced through regular reporting. The President ensures the Membership Status Roster is updated every 30 days, while the Treasurer is mandated to present a current financial statement at every business meeting and oversee all tax filings and annual budgets.</p>
+    <p>These financial assets are managed under the direct mandate of the Krewe’s elected leadership and governing board.</p>
+  </article>
+
+  <article class="doc-card" id="art-4">
+    <h2>4. Leadership Structure and Executive Mandates</h2>
+    <p class="doc-lead">Organizational stability is provided by a clearly defined hierarchy and a disciplined separation of powers. By codifying leadership roles and term limits, the Krewe ensures professional management and a healthy rotation of authority, preventing the stagnation of governance.</p>
+
+    <h3>Executive Officers</h3>
+    <p>The Krewe is led by four officers elected for two-year terms commencing June 1st of odd years. Officers may serve a maximum of two consecutive terms.</p>
+    <ul>
+      <li><b>President:</b> The chief executive who schedules/presides over all meetings and parades and manages organizational discipline.</li>
+      <li><b>Vice-President:</b> Assumes presidential duties in the event of an absence and is specifically responsible for business meeting arrangements.</li>
+      <li><b>Secretary:</b> Maintains minutes, manages all correspondence, and handles member communications/sign-in sheets.</li>
+      <li><b>Treasurer:</b> Acts as the fiduciary lead, collecting all dues/fines, filing taxes, and managing disbursements.</li>
+    </ul>
+
+    <h3>The Board of Directors</h3>
+    <p>The Board serves as the primary governing body, composed of the Original Founders, the Executive Officers, and seven (7) Directors at Large.</p>
+    <ul>
+      <li><b>Terms:</b> Directors at Large serve two-year terms starting June 1st of even years.</li>
+      <li><b>Extensions:</b> An outgoing Director at Large may extend their term by one year, provided it benefits the Krewe and is approved by a majority vote of the general membership.</li>
+      <li><b>Compliance:</b> Board members must maintain a 50% attendance record and adhere to the Code of Conduct.</li>
+    </ul>
+
+    <h3>Specialized Authority: Sargent at Arms</h3>
+    <p>Appointed by the officers, the Sargent at Arms maintains order at all gatherings. This official oversees a security team consisting of both members and non-members and possesses the authority to evict individuals from events at the direction of the presiding officer.</p>
+    <p>This leadership structure is maintained through a rigorous democratic process that empowers the general membership.</p>
+  </article>
+
+  <article class="doc-card" id="art-5">
+    <h2>5. Electoral Procedures and Democratic Integrity</h2>
+    <p class="doc-lead">Fair and transparent elections are the ultimate safeguard against the consolidation of power. By implementing strict eligibility requirements and secret balloting, the Krewe ensures that its leadership remains a true reflection of the membership’s will.</p>
+
+    <h3>Election Lifecycle</h3>
+    <p><b>Candidate Eligibility</b> Candidates for any leadership position must be Members in Good Standing and have attended at least 50% of general meetings during the two-year period preceding the election.</p>
+    <p><b>The Nomination Process</b> Nominations are formally accepted during the May meeting. A Nomination Committee (composed of the President, Secretary, and Membership Chair) is responsible for verifying the credentials and attendance records of all nominees.</p>
+
+    <h3>Voting Mechanics</h3>
+    <ul>
+      <li><b>Quorum:</b> One-third (1/3rd) of Members in Good Standing must be present.</li>
+      <li><b>Balloting:</b> Conducted via secret ballot during the June meeting.</li>
+      <li><b>Runoffs:</b> In the event of a tie, new ballots are issued for an immediate runoff election.</li>
+    </ul>
+
+    <div class="doc-note">
+      <h3>The "So What?" Layer</h3>
+      <p>The mandated one-month transition period (June 1 to July 1) is a strategic necessity for leadership continuity. This period facilitates the transfer of institutional knowledge regarding complex vendor contracts, float mechanics, and parade staging protocols, ensuring that the change in administration does not degrade operational readiness.</p>
+      <p>Beyond the executive board, the daily functions of the organization are driven by specialized permanent committees.</p>
+    </div>
+  </article>
+
+  <article class="doc-card" id="art-6">
+    <h2>6. Operational Committees and Functional Pillars</h2>
+    <p class="doc-lead">The Krewe achieves operational efficiency by delegating specialized tasks to nine permanent committees. This structure allows for expert focus on every aspect of the organization’s mission, from financial audits to public relations.</p>
+
+    <h3>Functional Mandates</h3>
+    <ul>
+      <li><b>Membership:</b> Manages recruitment, retention, and new member orientation (digital systems setup).</li>
+      <li><b>Bylaws and Rules:</b> Acts as the parliamentarian body, interpreting governing documents and processing amendments.</li>
+      <li><b>Float:</b> Manages mechanical upkeep and parade preparation (icing, stocking supplies, and cleaning).</li>
+      <li><b>Parade:</b> Liaises with organizers, manages staging logistics, and distributes signage/wristbands.</li>
+      <li><b>Social:</b> Coordinates parade-related gatherings and special member functions.</li>
+      <li><b>Charity/Fundraising:</b> Researches aid candidates and develops revenue-generating strategies.</li>
+      <li><b>Merchandise:</b> Manages apparel and branding. All designs must receive Board/Krewe approval before production.</li>
+      <li><b>Finance:</b> Oversees P&amp;L accounts, tax filings, and the collection of outstanding invoices.</li>
+      <li><b>Communication:</b> Ensures the website and social media channels provide timely updates to the membership.</li>
+    </ul>
+
+    <h3>Committee Governance</h3>
+    <p>The President appoints the Chairman for each committee. Committee members must remain in Good Standing and can be removed by the Board or by a vote of the membership at a business meeting.</p>
+    <p>These committees ensure the Krewe is prepared for the rigorous protocols of public parades and external relations.</p>
+  </article>
+
+  <article class="doc-card" id="art-7">
+    <h2>7. Protocol, Parades, and External Relations</h2>
+    <p class="doc-lead">In a high-visibility deliberative assembly, public image is a strategic asset. Consistent professional conduct and adherence to an established aesthetic are essential for maintaining the Krewe’s reputation and fostering partnerships with charitable organizations.</p>
+
+    <h3>Operational Logistics</h3>
+    <ul>
+      <li><b>Meeting Frequency:</b> The Krewe conducts a minimum of six business meetings annually, governed strictly by parliamentary procedure.</li>
+      <li><b>Dress Code:</b> To maintain a cohesive brand identity, members must wear "Celtic, Irish, or Scottish Attire" (Kilts, Celtic Dress, or approved Krewe T-shirts) at all functions.</li>
+    </ul>
+
+    <h3>Guest Management</h3>
+    <ul>
+      <li><b>Official Guests:</b> VIPs and speakers invited by the President with Board concurrence.</li>
+      <li><b>Personal Guests:</b> Invited by members in Good Standing. Guests must sign waivers, provide proof of age (21+ for most parades), and pay required fees.</li>
+    </ul>
+
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>Event Classification</th><th>Guest Fee Specification</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Santa Fest / Gasparilla Children’s Parade</td><td>$10 (Immediate Family/Under 12); $25 (Others)</td></tr>
+          <tr><td>All Other Parades</td><td>Fee determined annually by Officers/Board</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="doc-note">
+      <h3>The "So What?" Layer</h3>
+      <p>Members bear vicarious liability for their guests’ adherence to the Code of Conduct and dress code. The mandatory Celtic attire is not merely aesthetic; it is a branding requirement that differentiates the Krewe in a crowded parade landscape. Guest fees and waivers further mitigate the logistical costs of float hospitality and protect the organization from external legal liability.</p>
+      <p>As the organization grows, the bylaws provide a formal mechanism for legislative evolution.</p>
+    </div>
+  </article>
+
+  <article class="doc-card" id="art-8">
+    <h2>8. Legislative Maintenance and Amendment Protocols</h2>
+    <p class="doc-lead">A living governing document must balance stability with adaptability. The amendment process ensures that the Krewe's "constitution" can evolve while requiring a broad consensus to prevent impulsive or unilateral changes.</p>
+
+    <h3>Voting Thresholds</h3>
+    <ul>
+      <li><b>Resolutions:</b> Require a simple majority of members present (assuming a 1/3rd quorum).</li>
+      <li><b>Bylaw Amendments:</b> Require ratification by one-fourth (1/4th) of the total "Members in Good Standing" via secret ballot.</li>
+    </ul>
+
+    <h3>The Amendment Process (The Two-Reading Rule)</h3>
+    <ol>
+      <li><b>First Reading:</b> The proposal is read to the membership. Following a floor discussion led by the President, a poll (voice vote) determines if the membership wishes to proceed to a formal vote.</li>
+      <li><b>Second Reading:</b> The amendment is read in its final, verbatim form. No further discussion is permitted. A formal secret ballot vote is conducted; if passed, the amendment takes effect immediately.</li>
+    </ol>
+
+    <h3>Conflict Resolution</h3>
+    <p>The Bylaws and Rules Committee serves as the final arbiter of interpretation. Their rulings on parliamentary procedure or bylaw language are recorded in the permanent minutes. While a member may challenge a ruling once, the committee’s subsequent written decision is binding and final.</p>
+
+    <h3>Final Certification</h3>
+    <p><b>Original Copy Adopted:</b> 29 March 2000</p>
+    <p><b>Amended On:</b></p>
+    <ul>
+      <li>07 February 2001</li>
+      <li>11 September 2002</li>
+      <li>11 December 2002</li>
+      <li>08 November 2006</li>
+      <li>12 September 2007</li>
+      <li>16 April 2014</li>
+      <li>08 August 2017</li>
+      <li>08 October 2019</li>
+      <li>12 September 2022</li>
+      <li>05 June 2025</li>
+    </ul>
+  </article>
+
+  <div class="doc-actions">
+    <a class="btn btn-primary" href="krewe-of-shamrock-bylaws.pdf" target="_blank" rel="noopener">Open / download official PDF</a>
+    <a class="btn" href="../../members.html#docs">Back to Documents</a>
+  </div>
+  <p style="font-size:14px;color:var(--muted);margin-top:28px;">Questions: <a href="mailto:secretary@kreweofshamrock.com">secretary@kreweofshamrock.com</a></p>
 </main>
 </body>
 </html>

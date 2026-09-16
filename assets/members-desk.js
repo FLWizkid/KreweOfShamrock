@@ -436,7 +436,7 @@
       '<section class="app-card"><div class="app-head"><span class="ic">☘</span><div><h2>My Krewe</h2><small>Profile, member directory, and governing docs</small></div></div>' +
       '<div class="app-body">' +
       '<div class="hub-profile" id="hubProfileCard"><h3>Your profile</h3><p class="empty">Loading…</p></div>' +
-      '<h3 style="font-family:var(--display);color:var(--green-800);margin:8px 0;">Governing documents</h3>' +
+      '<h3 id="docs" style="font-family:var(--display);color:var(--green-800);margin:8px 0;">Governing documents</h3>' +
       '<div class="hub-docs">' +
       '<a href="assets/docs/code-of-conduct.html">Code of Conduct</a>' +
       '<a href="assets/docs/bylaws.html">Bylaws</a>' +
@@ -883,7 +883,7 @@
         saved = "parade";
       } else if (hash === "parade" || hash === "desk") saved = "parade";
       else if (hash === "officer") saved = "officer";
-      else if (hash === "krewe" || hash === "directory") saved = "krewe";
+      else if (hash === "krewe" || hash === "directory" || hash === "docs") saved = "krewe";
       else if (hash === "events") saved = "events";
       else if (hash === "fun") saved = "fun";
       else {
