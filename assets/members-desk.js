@@ -350,7 +350,7 @@
       if (sec.getAttribute("data-hub")) return;
       if (sec.id === "prCard") sec.setAttribute("data-hub", "parade");
       else if (sec.id === "dashCard") {
-        // Reports belong on Officer desk only — never on member Home.
+        // Reports belong on Officer desk only - never on member Home.
         sec.setAttribute("data-hub", "officer");
         sec.style.display = "none";
         sec.setAttribute("hidden", "");
@@ -489,7 +489,7 @@
 
   function paradeChip() {
     var me = state.parade;
-    if (!me) return '<span class="hub-chip">🎗️ Parade Ready · —</span>';
+    if (!me) return '<span class="hub-chip">🎗️ Parade Ready · -</span>';
     var ready = !!(me.dues_paid && me.waiver_signed && me.meeting_attended);
     return '<span class="hub-chip ' + (ready ? "ok" : "warn") + '">🎗️ ' + (ready ? "Parade Ready" : "Not parade ready") + "</span>";
   }
@@ -646,7 +646,7 @@
         ? '<button type="button" class="hub-action" data-hub-goto="event-studio"><b>Add or edit events &amp; calendar</b><span>Open Event Studio to change dates (Basket Social and more) without a developer.</span></button>'
         : '') +
       '</div></div>';
-    // Only refresh the welcome strip — never wipe the beautiful card grid below.
+    // Only refresh the welcome strip - never wipe the beautiful card grid below.
     top.innerHTML = craicHeroHtml() + softMemberDeskHtml() + officerCard + findCards;
 
     renderProfileCard();
@@ -742,12 +742,17 @@
     if (!who) return;
     var p = window.kosProfile || {};
     var nm = (p.display_name || [p.first_name, p.last_name].filter(Boolean).join(" ") || p.email || "").toString().trim();
+    var title = (p.officer_title || "").toString().trim();
     who.classList.add("hub-signed-pill");
     if (!who.querySelector(".dot")) {
       who.innerHTML = '<span class="dot" aria-hidden="true"></span><span class="hub-signed-label"></span>';
     }
     var label = who.querySelector(".hub-signed-label");
-    if (label) label.textContent = nm ? ("Signed in as " + nm) : "Signed in";
+    if (label) {
+      if (nm && title) label.textContent = "Signed in as " + nm + " · " + title;
+      else if (nm) label.textContent = "Signed in as " + nm;
+      else label.textContent = "Signed in";
+    }
     who.classList.add("is-on");
     who.setAttribute("aria-live", "polite");
   }
@@ -992,7 +997,7 @@
       '</div>' +
       '<button class="btn btn-primary" id="hubProfEditBtn" type="button" style="margin-top:10px;">✏️ Edit my profile</button>' +
       (p.profile_visible === false ? '<p style="color:var(--muted);font-size:15px;">Your profile is hidden from the member directory.</p>' : "") +
-      '<p style="color:var(--muted);font-size:14px;margin:8px 0 0;">Fellow members see your birthday and anniversary as month and day only — never the year.</p>';
+      '<p style="color:var(--muted);font-size:14px;margin:8px 0 0;">Fellow members see your birthday and anniversary as month and day only - never the year.</p>';
     var btn = document.getElementById("hubProfEditBtn");
     if (btn) btn.addEventListener("click", function () { profileEditing = true; renderProfileCard(); });
   }
@@ -1089,7 +1094,7 @@
     var client = window.__kosSb;
     var msg = document.getElementById("hubPfMsg");
     function val(id) { var el = document.getElementById(id); return el ? el.value.trim() : ""; }
-    if (!client) { if (msg) msg.textContent = "Still connecting — try again in a moment."; return; }
+    if (!client) { if (msg) msg.textContent = "Still connecting - try again in a moment."; return; }
     if (msg) { msg.style.color = ""; msg.textContent = "Saving…"; }
     try {
       var photoUrl = null;
@@ -1487,7 +1492,7 @@
       else panel.appendChild(card);
     }
     card.innerHTML =
-      '<div class="app-head"><span class="ic">💵</span><div><h2>Payments</h2><small>Treasurer &amp; board — online payments recorded automatically</small></div></div>' +
+      '<div class="app-head"><span class="ic">💵</span><div><h2>Payments</h2><small>Treasurer &amp; board - online payments recorded automatically</small></div></div>' +
       '<div class="app-body" id="hubPaymentsBody"><p class="empty">Loading payments…</p></div>';
     var body = card.querySelector("#hubPaymentsBody");
     var data = null;
@@ -1527,7 +1532,7 @@
     if (window.QRCode) {
       QRCode.toCanvas(slot.querySelector("canvas"), url, { width: 220, margin: 1, color: { dark: "#14532d", light: "#ffffff" } });
     } else {
-      slot.querySelector("canvas").replaceWith(Object.assign(document.createElement("p"), { textContent: "QR library unavailable — use the link." }));
+      slot.querySelector("canvas").replaceWith(Object.assign(document.createElement("p"), { textContent: "QR library unavailable - use the link." }));
     }
   }
 
@@ -2350,7 +2355,7 @@
   window.kosUnlock = function () {
     if (typeof _unlock === "function") _unlock();
     // Build hub once; loadHubData itself is single-flight. Do not open hours
-    // here — loadHubData settles the tab and defers the hours deep-link.
+    // here - loadHubData settles the tab and defers the hours deep-link.
     setTimeout(boot, 40);
   };
 
