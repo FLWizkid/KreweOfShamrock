@@ -91,7 +91,9 @@
       '<option value="fundraiser">Fundraiser</option><option value="other">Other</option></select></div>' +
       '<div><label for="hubEventStart">Start time *</label><input id="hubEventStart" type="datetime-local" required /></div>' +
       '<div><label for="hubEventEnd">End time</label><input id="hubEventEnd" type="datetime-local" /></div>' +
-      '<div><label for="hubEventLocation">Location</label><input id="hubEventLocation" /></div>' +
+      '<div><label for="hubEventRegCloses">Close registrations on</label><input id="hubEventRegCloses" type="datetime-local" /></div>' +
+      '<div class="wide" style="margin-top:-4px;"><p style="font-size:12px;color:var(--muted);margin:0 0 6px;line-height:1.4;">Optional. After this date/time, public signup shows Registration closed and blocks new RSVPs and ticket checkout. Leave blank to stay open. Edit address, dates, and this close date anytime, including after publish.</p></div>' +
+      '<div><label for="hubEventLocation">Location / address</label><input id="hubEventLocation" placeholder="Venue name and street address" /></div>' +
       '<div><label for="hubEventCapacity">Capacity</label><input id="hubEventCapacity" type="number" min="0" step="1" /></div>' +
       '<div class="wide"><label for="hubEventDescription">Description</label><textarea id="hubEventDescription"></textarea></div></div>' +
       '<div class="hub-event-checks"><label><input type="checkbox" id="hubEventPublic" checked /> Public event</label>' +
@@ -171,6 +173,7 @@
     var cn = document.getElementById("hubEventCollectGuestNames"); if (cn) cn.checked = true;
     var cr = document.getElementById("hubEventCollectRaffle"); if (cr) cr.checked = true;
     var ro = document.getElementById("hubEventRaffleOptions"); if (ro) ro.value = "0,1,5,15";
+    var rcClear = document.getElementById("hubEventRegCloses"); if (rcClear) rcClear.value = "";
     document.getElementById("hubEventStatus").value = "draft";
     document.getElementById("hubEventType").value = "social";
     document.getElementById("hubEventFormTitle").textContent = "New event";
@@ -187,6 +190,7 @@
     get("hubEventType").value = event.event_type || "other";
     get("hubEventStart").value = eventLocalInput(event.start_time);
     get("hubEventEnd").value = eventLocalInput(event.end_time);
+    var rc = get("hubEventRegCloses"); if (rc) rc.value = eventLocalInput(event.registration_closes_at);
     get("hubEventLocation").value = event.location || "";
     get("hubEventCapacity").value = event.capacity == null ? "" : event.capacity;
     get("hubEventDescription").value = event.description || "";
@@ -218,8 +222,9 @@
     var html = "";
     list.forEach(function (event) {
       var details = [];
-      if (event.start_time) details.push(eventLocalDisplay(event.start_time) + (event.end_time ? " – " + eventLocalDisplay(event.end_time) : ""));
+      if (event.start_time) details.push(eventLocalDisplay(event.start_time) + (event.end_time ? " - " + eventLocalDisplay(event.end_time) : ""));
       if (event.location) details.push(event.location);
+      if (event.registration_closes_at) details.push("Regs close " + eventLocalDisplay(event.registration_closes_at));
       var ticket = event.ticket_price_cents != null ? " · $" + (Number(event.ticket_price_cents) / 100).toFixed(2) : "";
       var readOnly = String(event.source || "").toLowerCase() === "ikc";
       var flyer = event.flyer_url || "";
@@ -271,6 +276,9 @@
     var endValue = value("hubEventEnd");
     var end = endValue ? new Date(endValue) : null;
     if (endValue && (!end || isNaN(end.getTime()))) { if (msg) msg.textContent = "Please check the end time."; return; }
+    var regCloseValue = value("hubEventRegCloses");
+    var regClose = regCloseValue ? new Date(regCloseValue) : null;
+    if (regCloseValue && (!regClose || isNaN(regClose.getTime()))) { if (msg) msg.textContent = "Please check the registration close date/time."; return; }
     var capacityValue = value("hubEventCapacity");
     var ticketValue = value("hubEventTicketPrice");
     var capacity = capacityValue === "" ? null : parseInt(capacityValue, 10);
@@ -291,7 +299,14 @@
       collect_guests: !!(document.getElementById("hubEventCollectGuests") && document.getElementById("hubEventCollectGuests").checked),
       collect_guest_names: !!(document.getElementById("hubEventCollectGuestNames") && document.getElementById("hubEventCollectGuestNames").checked),
       collect_raffle: !!(document.getElementById("hubEventCollectRaffle") && document.getElementById("hubEventCollectRaffle").checked),
-      raffle_options: value("hubEventRaffleOptions") || "0,1,5,15"
+      raffle_options: value("hubEventRaffleOptions") || "0,1,5,15",
+      registration_closes_at: (function () {
+        var rv = value("hubEventRegCloses");
+        if (!rv) return null;
+        var rd = new Date(rv);
+        if (isNaN(rd.getTime())) return null;
+        return rd.toISOString();
+      })()
     };
     if (!payload.name) { if (msg) msg.textContent = "Event name is required."; return; }
     if (save) { save.disabled = true; save.textContent = "Saving…"; }

@@ -71,18 +71,6 @@
     ".hub-docs{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;}",
     ".hub-docs a{display:inline-block;background:#f0e8d2;border:1px solid rgba(168,128,28,.3);color:var(--green-800);border-radius:999px;padding:6px 13px;font-size:16px;font-family:var(--display);text-decoration:none;}",
     ".hub-docs a:hover{background:#e8ddc0;}",
-
-    ".hub-doc-list{display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px;}",
-    ".hub-doc-card{display:block;text-align:left;background:#fff;border:1px solid rgba(168,128,28,.28);border-radius:14px;padding:14px 16px;text-decoration:none;color:inherit;}",
-    ".hub-doc-card:hover{background:#fffdf4;border-color:rgba(168,128,28,.5);}",
-    ".hub-doc-card .hub-doc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}",
-    ".hub-doc-card b{font-family:var(--display);color:var(--green-800);font-size:17px;}",
-    ".hub-doc-card .hub-doc-desc{display:block;margin-top:4px;font-size:14px;color:var(--muted);line-height:1.4;}",
-    ".hub-doc-pill{flex:none;font-size:12px;font-weight:600;border-radius:999px;padding:4px 10px;background:#f0e8d2;color:var(--green-800);border:1px solid rgba(168,128,28,.35);}",
-    ".hub-doc-pill.wait{background:#fff4c2;color:#7a5b00;border-color:rgba(166,124,0,.45);}",
-    ".hub-doc-pill.ready{background:#e8f5e9;color:#1b5e20;border-color:rgba(46,125,50,.35);}",
-    ".hub-doc-group{margin:16px 0 6px;font-family:var(--display);color:var(--green-800);font-size:15px;letter-spacing:.03em;}",
-    "#hubDocsCard{scroll-margin-top:72px;}",
     ".hub-profile{background:#fff;border:1px solid rgba(168,128,28,.28);border-radius:16px;padding:16px 18px;margin-bottom:14px;}",
     ".hub-profile h3{margin:0 0 6px;font-family:var(--display);color:var(--green-800);}",
     ".hub-fb-members{margin-top:12px;padding:12px 14px;background:#fbf7ec;border:1px solid rgba(168,128,28,.35);border-radius:12px;}",
@@ -275,7 +263,6 @@
     ".hub-profile{background:#fbf7ec;border:0;border-radius:14px;padding:14px;margin-bottom:12px;}",
     ".hub-docs{gap:8px;}",
     ".hub-docs a{min-height:44px;display:inline-flex;align-items:center;padding:10px 14px;}",
-    ".hub-doc-card{min-height:56px;padding:14px 16px;}",
     ".hub-prof-form input,.hub-prof-form textarea,.hub-claim select,.hub-claim input,.hub-claim textarea,.hub-event-form input,.hub-event-form textarea,.hub-event-form select{font-size:16px;padding:12px 12px;border-radius:10px;min-height:48px;}",
     ".hub-prof-form textarea,.hub-claim textarea,.hub-event-form textarea{min-height:88px;}",
     ".hub-appr{padding:12px 14px;border-radius:12px;gap:10px;}",
@@ -446,15 +433,15 @@
 
     var krewe = document.getElementById("hubKrewe");
     krewe.innerHTML =
-      '<section class="app-card"><div class="app-head"><span class="ic">☘</span><div><h2>My Krewe</h2><small>Profile, member directory, and documents</small></div></div>' +
+      '<section class="app-card"><div class="app-head"><span class="ic">☘</span><div><h2>My Krewe</h2><small>Profile, member directory, and governing docs</small></div></div>' +
       '<div class="app-body">' +
       '<div class="hub-profile" id="hubProfileCard"><h3>Your profile</h3><p class="empty">Loading…</p></div>' +
-      '</div></section>' +
-      '<section class="app-card" id="hubDocsCard">' +
-      '<div class="app-head"><span class="ic">📜</span><div><h2>Documents</h2><small>Bylaws, waivers, dues, and member guides in one place</small></div></div>' +
-      '<div class="app-body" id="hubDocsBody">' + docsSectionHtml() + '</div></section>';
-    // Helpers are function-declared (hoisted); wire orientation / parade shortcuts now.
-    try { wireDocsCard(); } catch (e) {}
+      '<h3 style="font-family:var(--display);color:var(--green-800);margin:8px 0;">Governing documents</h3>' +
+      '<div class="hub-docs">' +
+      '<a href="assets/docs/code-of-conduct.html">Code of Conduct</a>' +
+      '<a href="assets/docs/bylaws.html">Bylaws</a>' +
+      '<a href="assets/docs/parade-rules.html">Parade Rules</a>' +
+      "</div></div></section>";
 
     var events = document.getElementById("hubEvents");
     events.innerHTML =
@@ -611,95 +598,6 @@
       '</div>';
   }
 
-
-  function docsSectionHtml() {
-    function card(href, title, desc, pill, pillClass, external) {
-      var target = external ? ' target="_blank" rel="noopener"' : "";
-      return '<a class="hub-doc-card" href="' + href + '"' + target + '>' +
-        '<div class="hub-doc-top"><b>' + title + '</b><span class="hub-doc-pill ' + (pillClass || "") + '">' + pill + "</span></div>" +
-        '<span class="hub-doc-desc">' + desc + "</span></a>";
-    }
-    return (
-      '<p style="margin:0 0 8px;font-size:15px;color:var(--muted);line-height:1.45;">Open and read governing docs and waiver language here. Sign waivers only after you have read them on Parade Ready.</p>' +
-      '<div class="hub-doc-group">Governing</div>' +
-      '<div class="hub-doc-list">' +
-      card("assets/docs/bylaws.html", "Bylaws", "Open the krewe bylaws in-Hub (placeholder until officers upload the official file).", "Awaiting upload", "wait") +
-      card("assets/docs/code-of-conduct.html", "Code of Conduct", "Member conduct expectations. Placeholder until the official document is uploaded.", "Awaiting upload", "wait") +
-      card("assets/docs/parade-rules.html", "Parade Rules", "Attire and safety rules. Learn already has float safety lessons while this awaits upload.", "Awaiting upload", "wait") +
-      "</div>" +
-      '<div class="hub-doc-group">Waivers (read before you sign)</div>' +
-      '<div class="hub-doc-list">' +
-      card("assets/docs/liability-waiver.html", "Liability Waiver", "Full season waiver language. Your signed status lives under Member Desk / Parade Ready.", "Read", "ready") +
-      card("photo-image-release.html", "Photo & Image Release", "Media consent language (version 2026.1). Printable page plus sign-in flow on Parade Ready.", "Read", "ready") +
-      "</div>" +
-      '<div class="hub-doc-group">Member guides</div>' +
-      '<div class="hub-doc-list">' +
-      card("assets/docs/dues-and-loa.html", "Dues & Leave of Absence", "How to pay dues or LOA ($100), and where status shows in Parade Ready.", "Guide", "ready") +
-      card("learn.html", "Heritage & parade know-how", "Irish heritage, kilts, Gasparilla, and parade-day safety in the Heritage Library.", "Learn", "ready") +
-      card("assets/docs/kilts-and-celtic-style-women.pdf", "Women's kilt & Celtic style guide", "Downloadable PDF for parade and ball attire.", "PDF", "ready", true) +
-      '<button type="button" class="hub-doc-card" id="hubDocsOpenOrientation" style="cursor:pointer;font:inherit;width:100%;">' +
-      '<div class="hub-doc-top"><b>New Member Orientation</b><span class="hub-doc-pill ready">Video</span></div>' +
-      '<span class="hub-doc-desc">Watch the orientation video on My Krewe (dues, waiver, parade day).</span></button>' +
-      '<button type="button" class="hub-doc-card" id="hubDocsOpenParade" style="cursor:pointer;font:inherit;width:100%;">' +
-      '<div class="hub-doc-top"><b>Sign waivers (Parade Ready)</b><span class="hub-doc-pill ready">Member desk</span></div>' +
-      '<span class="hub-doc-desc">After you read the language above, open Parade Ready to view status and sign.</span></button>' +
-      "</div>" +
-      '<p style="margin:14px 0 0;font-size:13px;color:var(--muted);">Missing a Wild Apricot-era PDF? Officers: email <a href="mailto:digital@kreweofshamrock.com">digital@kreweofshamrock.com</a> to upload.</p>'
-    );
-  }
-
-  function wireDocsCard() {
-    var orient = document.getElementById("hubDocsOpenOrientation");
-    if (orient && !orient._kosBound) {
-      orient._kosBound = true;
-      orient.addEventListener("click", function () {
-        showTab("krewe", { skipScroll: true });
-        setTimeout(function () {
-          var el = document.getElementById("orientationCard");
-          if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-        }, 80);
-      });
-    }
-    var parade = document.getElementById("hubDocsOpenParade");
-    if (parade && !parade._kosBound) {
-      parade._kosBound = true;
-      parade.addEventListener("click", function () {
-        showTab("parade", { skipScroll: true });
-        setTimeout(function () {
-          var el = document.getElementById("prCard");
-          if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-        }, 80);
-      });
-    }
-  }
-
-  function openDocumentsFromHome() {
-    showTab("krewe", { skipScroll: true });
-    setTimeout(function () {
-      var el = document.getElementById("hubDocsCard");
-      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 80);
-  }
-
-  function openDirectoryFromHome() {
-    showTab("krewe", { skipScroll: true });
-    setTimeout(function () {
-      var el = document.getElementById("hubMemberDirectory");
-      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 80);
-  }
-
-  function openEventStudioFromHome() {
-    showTab("officer", { skipScroll: true });
-    setTimeout(function () {
-      if (typeof openOfficerTool === "function") {
-        try { openOfficerTool("events", true); } catch (e) {}
-      }
-      var el = document.getElementById("hubEventStudio") || document.querySelector("[data-officer-tool='events']");
-      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 120);
-  }
-
   function renderHome() {
     var home = document.getElementById("hubHome");
     if (!home) return;
@@ -743,7 +641,6 @@
       '<div class="hub-find">' +
       '<h3>Quick links</h3>' +
       '<div class="hub-find-grid">' +
-      '<button type="button" class="hub-action" data-hub-goto="documents"><b>Documents</b><span>Bylaws, waiver language, dues / LOA, and member guides under My Krewe.</span></button>' +
       '<button type="button" class="hub-action" data-hub-goto="directory"><b>Member Directory</b><span>Faces and profiles of your krewe under My Krewe.</span></button>' +
       ((state.officer || state.canManageEvents)
         ? '<button type="button" class="hub-action" data-hub-goto="event-studio"><b>Add or edit events &amp; calendar</b><span>Open Event Studio to change dates (Basket Social and more) without a developer.</span></button>'
@@ -766,12 +663,10 @@
     top.querySelectorAll("[data-hub-goto]").forEach(function (btn) {
       btn.addEventListener("click", function () {
         var go = btn.getAttribute("data-hub-goto");
-        if (go === "documents") openDocumentsFromHome();
-        else if (go === "directory") openDirectoryFromHome();
+        if (go === "directory") openDirectoryFromHome();
         else if (go === "event-studio") openEventStudioFromHome();
       });
     });
-    wireDocsCard();
     var op = document.getElementById("hubOpenProfile");
     if (op) op.addEventListener("click", function () {
       if (window.kosOpenProfileStage) window.kosOpenProfileStage();
@@ -814,7 +709,6 @@
       setTimeout(wireOfficerDeskPicker, 500);
     }
     if (tab === "hub" && !opts.skipHomeRender) renderHome();
-    if (tab === "krewe") setTimeout(wireDocsCard, 40);
     if (!opts.skipScroll) {
       // Defer scroll until after panel display settles (avoids snap on login).
       setTimeout(function () {
@@ -1681,7 +1575,9 @@
       '<option value="fundraiser">Fundraiser</option><option value="other">Other</option></select></div>' +
       '<div><label for="hubEventStart">Start time *</label><input id="hubEventStart" type="datetime-local" required /></div>' +
       '<div><label for="hubEventEnd">End time</label><input id="hubEventEnd" type="datetime-local" /></div>' +
-      '<div><label for="hubEventLocation">Location</label><input id="hubEventLocation" /></div>' +
+      '<div><label for="hubEventRegCloses">Close registrations on</label><input id="hubEventRegCloses" type="datetime-local" /></div>' +
+      '<div class="wide" style="margin-top:-4px;"><p style="font-size:12px;color:var(--muted);margin:0 0 6px;line-height:1.4;">Optional. After this date/time, public signup shows Registration closed and blocks new RSVPs and ticket checkout. Leave blank to stay open. Edit address, dates, and this close date anytime, including after publish.</p></div>' +
+      '<div><label for="hubEventLocation">Location / address</label><input id="hubEventLocation" placeholder="Venue name and street address" /></div>' +
       '<div><label for="hubEventCapacity">Capacity</label><input id="hubEventCapacity" type="number" min="0" step="1" /></div>' +
       '<div class="wide"><label for="hubEventDescription">Description</label><textarea id="hubEventDescription"></textarea></div></div>' +
       '<div class="hub-event-checks"><label><input type="checkbox" id="hubEventPublic" checked /> Public event</label>' +
@@ -1748,6 +1644,7 @@
     document.getElementById("hubEventPublic").checked = true;
     document.getElementById("hubEventMandatory").checked = false;
     document.getElementById("hubEventFeatured").checked = false;
+    var rcClear = document.getElementById("hubEventRegCloses"); if (rcClear) rcClear.value = "";
     document.getElementById("hubEventStatus").value = "draft";
     document.getElementById("hubEventType").value = "social";
     document.getElementById("hubEventFormTitle").textContent = "New event";
@@ -1764,6 +1661,7 @@
     get("hubEventType").value = event.event_type || "other";
     get("hubEventStart").value = eventLocalInput(event.start_time);
     get("hubEventEnd").value = eventLocalInput(event.end_time);
+    var rc = get("hubEventRegCloses"); if (rc) rc.value = eventLocalInput(event.registration_closes_at);
     get("hubEventLocation").value = event.location || "";
     get("hubEventCapacity").value = event.capacity == null ? "" : event.capacity;
     get("hubEventDescription").value = event.description || "";
@@ -1791,8 +1689,9 @@
     var html = "";
     list.forEach(function (event) {
       var details = [];
-      if (event.start_time) details.push(eventLocalDisplay(event.start_time) + (event.end_time ? " – " + eventLocalDisplay(event.end_time) : ""));
+      if (event.start_time) details.push(eventLocalDisplay(event.start_time) + (event.end_time ? " - " + eventLocalDisplay(event.end_time) : ""));
       if (event.location) details.push(event.location);
+      if (event.registration_closes_at) details.push("Regs close " + eventLocalDisplay(event.registration_closes_at));
       var ticket = event.ticket_price_cents != null ? " · $" + (Number(event.ticket_price_cents) / 100).toFixed(2) : "";
       var readOnly = String(event.source || "").toLowerCase() === "ikc";
       var eid = esc(event.id);
@@ -1809,7 +1708,7 @@
         (flyer ? " · has image/PDF" : " · add image/PDF") +
         (readOnly ? " · IKC event (read-only)" : "") + '</div></div>' +
         (readOnly ? "" : '<div class="hub-appr-btns">' +
-          '<button class="btn" type="button" data-event-edit="' + eid + '">Edit</button>' +
+          '<button class="btn btn-primary" type="button" data-event-edit="' + eid + '">Edit event</button>' +
           '<button class="btn" type="button" data-event-rsvp-qr="' + eid + '">▦ RSVP QR</button>' +
           '<button class="btn btn-primary" type="button" data-event-checkin-qr="' + eid + '">▦ Door check-in QR</button>' +
         '</div>') +
@@ -1866,6 +1765,9 @@
     var endValue = value("hubEventEnd");
     var end = endValue ? new Date(endValue) : null;
     if (endValue && (!end || isNaN(end.getTime()))) { if (msg) msg.textContent = "Please check the end time."; return; }
+    var regCloseValue = value("hubEventRegCloses");
+    var regClose = regCloseValue ? new Date(regCloseValue) : null;
+    if (regCloseValue && (!regClose || isNaN(regClose.getTime()))) { if (msg) msg.textContent = "Please check the registration close date/time."; return; }
     var capacityValue = value("hubEventCapacity");
     var ticketValue = value("hubEventTicketPrice");
     var capacity = capacityValue === "" ? null : parseInt(capacityValue, 10);
@@ -1882,7 +1784,14 @@
       status: value("hubEventStatus") || "draft",
       ticket_label: value("hubEventTicketLabel") || null,
       ticket_price_cents: ticketValue === "" ? null : Math.round(dollars * 100),
-      ticket_payment_url: value("hubEventPaymentUrl") || null, flyer_url: value("hubEventFlyerUrl") || null
+      ticket_payment_url: value("hubEventPaymentUrl") || null, flyer_url: value("hubEventFlyerUrl") || null,
+      registration_closes_at: (function () {
+        var rv = value("hubEventRegCloses");
+        if (!rv) return null;
+        var rd = new Date(rv);
+        if (isNaN(rd.getTime())) return null;
+        return rd.toISOString();
+      })()
     };
     if (!payload.name) { if (msg) msg.textContent = "Event name is required."; return; }
     if (save) { save.disabled = true; save.textContent = "Saving…"; }
@@ -1914,9 +1823,9 @@
       else panel.appendChild(card);
     }
     card.innerHTML =
-      '<div class="app-head"><span class="ic">📅</span><div><h2>Event Studio</h2><small>Add or edit events and calendar — then make RSVP and door check-in QR codes</small></div></div>' +
+      '<div class="app-head"><span class="ic">📅</span><div><h2>Event Studio</h2><small>Add or edit events (address, dates, registration close) anytime after publish - then make RSVP and door check-in QR codes</small></div></div>' +
       '<div class="app-body">' +
-      '<p style="font-size:16px;color:var(--muted);margin:0 0 12px;">How QR works here: <b>save the event</b>, then tap <b>RSVP QR</b> (flyer/table tent) or <b>Door check-in QR</b> (projector at the door). The square is just that link.</p>' +
+      '<p style="font-size:16px;color:var(--muted);margin:0 0 12px;">Tap <b>Edit event</b> on any published row to change address, start/end, or registration close. How QR works: <b>save the event</b>, then tap <b>RSVP QR</b> (flyer/table tent) or <b>Door check-in QR</b> (projector at the door). The square is just that link.</p>' +
       '<div class="hub-event-list"><h3>Events</h3><div id="hubEventList"><p class="empty">Loading events…</p></div></div>' +
       eventStudioFormHtml() + '</div>';
     document.getElementById("hubEventForm").addEventListener("submit", function (e) {
@@ -2412,22 +2321,6 @@
     }
   };
 
-  function handleHubHash() {
-    try {
-      var h = (location.hash || "").replace(/^#/, "").toLowerCase();
-      if (!h) return;
-      if (h === "docs" || h === "documents") openDocumentsFromHome();
-      else if (h === "directory" || h === "dir") openDirectoryFromHome();
-      else if (h === "parade" || h === "parade-ready") {
-        showTab("parade", { skipScroll: true });
-        setTimeout(function () {
-          var el = document.getElementById("prCard");
-          if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-        }, 100);
-      }
-    } catch (e) {}
-  }
-
   function boot() {
     if (!document.getElementById("memberContent")) return;
     if (document.getElementById("hubRoot")) {
@@ -2448,7 +2341,7 @@
       var visible = content && content.style.display !== "none";
       if (visible || tries > 50) {
         clearInterval(t);
-        loadHubData().then(function () { setTimeout(handleHubHash, 200); }).catch(function () { setTimeout(handleHubHash, 200); });
+        loadHubData();
       }
     }, 200);
   }
