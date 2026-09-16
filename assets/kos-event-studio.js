@@ -236,9 +236,10 @@
       html += '<div class="hub-event-row">' + thumb + '<div style="flex:1;min-width:0;"><b>' + esc(event.name) + '</b>' +
         '<div class="muted">' + esc(details.join(" · ") || "Date to be announced") + '</div>' +
         '<div class="muted">' + esc(event.status || "published") + (event.event_type ? " · " + esc(event.event_type) : "") + esc(ticket) +
+        (event.is_featured ? " · Featured" : "") +
         (flyer ? " · has image/PDF" : " · add image/PDF") +
         (readOnly ? " · IKC event (read-only)" : "") + '</div></div>' +
-        (readOnly ? "" : '<div class="hub-appr-btns"><button class="btn" type="button" data-event-edit="' + esc(event.id) + '">Edit</button></div>') + '</div>';
+        (readOnly ? "" : '<div class="hub-appr-btns"><button class="btn btn-primary" type="button" data-event-edit="' + esc(event.id) + '">Edit event</button></div>') + '</div>';
     });
     target.innerHTML = html;
     target.querySelectorAll("[data-event-edit]").forEach(function (button) {
@@ -339,8 +340,8 @@
       else panel.appendChild(card);
     }
     card.innerHTML =
-      '<div class="app-head"><span class="ic">📅</span><div><h2>Event Studio</h2><small>Create and edit krewe events</small></div></div>' +
-      '<div class="app-body"><div class="hub-event-list"><h3>Events</h3><div id="hubEventList"><p class="empty">Loading events…</p></div></div>' +
+      '<div class="app-head"><span class="ic">📅</span><div><h2>Event Studio</h2><small>Create and edit krewe events (address, dates, registration close) anytime after publish</small></div></div>' +
+      '<div class="app-body"><p style="font-size:14px;color:var(--muted);margin:0 0 12px;line-height:1.45;">Tap <b>Edit event</b> on any published row to change location/address, start/end times, or Close registrations on. Then Save event.</p><div class="hub-event-list"><h3>Events</h3><div id="hubEventList"><p class="empty">Loading events…</p></div></div>' +
       eventStudioFormHtml() + '</div>';
     document.getElementById("hubEventForm").addEventListener("submit", function (e) {
       e.preventDefault(); saveEventStudio(client);
