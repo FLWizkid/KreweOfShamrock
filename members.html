@@ -779,7 +779,7 @@
               <a href="assets/video/new-member-orientation.mp4">Download it instead.</a>
             </video>
           </div>
-          <p style="font-size:14px;color:var(--muted);margin:10px 0 0;">Pair it with the governing documents below — Code of Conduct, bylaws, and parade rules.</p>
+          <p style="font-size:14px;color:var(--muted);margin:10px 0 0;">Pair it with <a href="#docs">Documents</a> under My Krewe: bylaws, waiver language, Code of Conduct, and parade guides.</p>
         </div>
       </section>
 
@@ -1385,25 +1385,64 @@
           : "☘ " + gates.filter(Boolean).length + " of 4 requirements complete"}</div>`
         + `<div class="pr-list">`
         + duesGate(me.dues_paid)
-        + gate(me.waiver_signed, "Liability waiver signed", "sign below; it takes ten seconds")
+        + gate(me.waiver_signed, "Liability waiver signed", "read the language below, then sign")
         + gate(me.meeting_attended, "Mandatory meeting attended", "scan the check-in QR at the next mandatory meeting")
         + mediaGate
         + `</div>`
-        + (me.waiver_signed ? "" : waiverForm())
-        + (mediaOk ? "" : `<div id="mediaConsentBlock" style="margin-top:14px;"></div>`);
+        + `<div id="waiverBlock" style="margin-top:4px;"></div>`
+        + `<div id="mediaConsentBlock" style="margin-top:14px;"></div>`;
       renderHoursBar(me);
-      if(!mediaOk) loadMediaConsent();
+      loadWaiverBlock(me);
+      loadMediaConsent();
+    }
+    async function loadWaiverBlock(me){
+      const el = document.getElementById("waiverBlock");
+      if(!el || !me) return;
+      let rec = null;
+      try{
+        const { data } = await supabase.from("waivers")
+          .select("signed_name,signed_at,season_year")
+          .eq("member_id", me.member_id)
+          .eq("season_year", SEASON)
+          .order("signed_at", { ascending: false })
+          .limit(1);
+        rec = (data && data[0]) || null;
+      }catch(_){}
+      if(me.waiver_signed || rec){
+        el.innerHTML = waiverSignedCard(rec || { signed_name: kosIdentity().name, signed_at: null });
+      } else {
+        el.innerHTML = waiverForm();
+      }
+    }
+    const WAIVER_TEXT = (season) => `I release and hold harmless the Krewe of Shamrock, its officers, and event organizers from liability arising from my voluntary participation in krewe parades and events during the ${season} season, and I agree to follow all parade safety rules.`;
+    function waiverReadBlock(season){
+      return `<div class="media-release-scroll" style="max-height:200px;overflow:auto;margin:0 0 10px;padding:10px 12px;background:#fff;border:1px solid rgba(168,128,28,.35);border-radius:10px;font-size:13.5px;color:var(--muted);line-height:1.45;">
+          <p style="margin:0 0 8px;"><b>Liability waiver · ${season} season</b></p>
+          <p style="margin:0;">${WAIVER_TEXT(season)}</p>
+          <p style="margin:10px 0 0;"><a href="assets/docs/liability-waiver.html" target="_blank" rel="noopener">Open full waiver page</a>
+          · <a href="assets/docs/parade-rules.html" target="_blank" rel="noopener">Parade Rules</a>
+          · <a href="members.html#docs">All Documents</a></p>
+        </div>`;
     }
     function waiverForm(){
       const nm = esc(kosIdentity().name);
       return `<div class="pr-waiver">
-        <p style="font-size:14px;color:var(--muted);margin:0 0 10px;">I release and hold harmless the Krewe of Shamrock, its officers, and event organizers
-        from liability arising from my voluntary participation in krewe parades and events during the ${SEASON} season,
-        and I agree to follow all parade safety rules.</p>
+        <p style="font-size:14px;color:var(--muted);margin:0 0 8px;"><b>Read before you sign.</b> Scroll the waiver language, then type your name.</p>
+        ${waiverReadBlock(SEASON)}
         <label for="wvName">Type your full legal name to sign</label>
         <input id="wvName" value="${nm}" />
         <button type="button" class="btn btn-primary" style="margin-top:10px;" onclick="kosSignWaiver()">✍️ Sign the ${SEASON} waiver</button>
         <div class="msg" id="wvMsg"></div>
+      </div>`;
+    }
+    function waiverSignedCard(rec){
+      const when = rec && rec.signed_at ? new Date(rec.signed_at).toLocaleString() : "on file";
+      const who = rec && rec.signed_name ? esc(rec.signed_name) : "your name";
+      return `<div class="pr-waiver" style="margin-top:12px;">
+        <p style="margin:0 0 8px;font-size:14px;color:var(--green-800);"><b>Your ${SEASON} liability waiver is signed</b></p>
+        <p style="margin:0 0 8px;font-size:13.5px;color:var(--muted);">Signed as <b>${who}</b> · ${when}</p>
+        ${waiverReadBlock(SEASON)}
+        <p style="margin:0;font-size:13px;color:var(--muted);">Need a different season or a correction? Contact <a href="mailto:secretary@kreweofshamrock.com">secretary@kreweofshamrock.com</a>.</p>
       </div>`;
     }
     window.kosSignWaiver = async function(){
@@ -1418,7 +1457,15 @@
       if(!el || !_prMe) return;
       let ok = false;
       try{ const { data } = await supabase.rpc("has_media_consent"); ok = !!data; }catch(_){}
-      if(ok){ el.innerHTML = ""; return; }
+      if(ok){
+        el.innerHTML = `<div class="pr-waiver" style="margin-top:4px;">
+          <p style="margin:0 0 8px;font-size:14px;color:var(--green-800);"><b>Photo &amp; Image Release signed</b> · version 2026.1</p>
+          <p style="margin:0;font-size:13.5px;color:var(--muted);"><a href="photo-image-release.html" target="_blank" rel="noopener">Re-read the full release</a>
+          · <a href="members.html#docs">All Documents</a>
+          · revoke later via <a href="mailto:digital@kreweofshamrock.com">digital@kreweofshamrock.com</a></p>
+        </div>`;
+        return;
+      }
       const nm = esc(kosIdentity().name);
       el.innerHTML = `<div class="pr-waiver" style="margin-top:4px;">
         <div class="media-release-scroll" style="max-height:220px;overflow:auto;margin:0 0 10px;padding:10px 12px;background:#fff;border:1px solid rgba(168,128,28,.35);border-radius:10px;font-size:13.5px;color:var(--muted);line-height:1.45;">
@@ -2896,7 +2943,7 @@
     document.addEventListener("keydown",e=>{ if(e.key==="Escape" && window.closeRaffles) closeRaffles(); });
   </script>
 
-<script src="assets/members-desk.js?v=20260915ei1" defer></script>
+<script src="assets/members-desk.js?v=20260916docs1" defer></script>
   <script src="assets/kos-event-studio.js?v=20260914t1" defer></script>
   <script src="assets/kos-shop-studio.js?v=20260910shopfix" defer></script>
 <script src="assets/kos-qr-studio.js?v=20260909b"></script>
