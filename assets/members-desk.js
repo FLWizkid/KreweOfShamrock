@@ -71,6 +71,7 @@
     ".hub-docs{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;}",
     ".hub-docs a{display:inline-block;background:#f0e8d2;border:1px solid rgba(168,128,28,.3);color:var(--green-800);border-radius:999px;padding:6px 13px;font-size:16px;font-family:var(--display);text-decoration:none;}",
     ".hub-docs a:hover{background:#e8ddc0;}",
+    "#docs{scroll-margin-top:88px;}",
     ".hub-profile{background:#fff;border:1px solid rgba(168,128,28,.28);border-radius:16px;padding:16px 18px;margin-bottom:14px;}",
     ".hub-profile h3{margin:0 0 6px;font-family:var(--display);color:var(--green-800);}",
     ".hub-fb-members{margin-top:12px;padding:12px 14px;background:#fbf7ec;border:1px solid rgba(168,128,28,.35);border-radius:12px;}",
@@ -368,6 +369,7 @@
         else if (h.indexOf("van") !== -1) sec.setAttribute("data-hub", "parade");
         else if (h.indexOf("volunteer") !== -1 || h.indexOf("hours") !== -1) sec.setAttribute("data-hub", "parade");
         else if (h.indexOf("directory") !== -1) sec.setAttribute("data-hub", "krewe");
+        else if (h.indexOf("document") !== -1) sec.setAttribute("data-hub", "parade");
       }
     });
   }
@@ -436,7 +438,7 @@
       '<section class="app-card"><div class="app-head"><span class="ic">☘</span><div><h2>My Krewe</h2><small>Profile, member directory, and governing docs</small></div></div>' +
       '<div class="app-body">' +
       '<div class="hub-profile" id="hubProfileCard"><h3>Your profile</h3><p class="empty">Loading…</p></div>' +
-      '<h3 id="docs" style="font-family:var(--display);color:var(--green-800);margin:8px 0;">Governing documents</h3>' +
+      '<h3 style="font-family:var(--display);color:var(--green-800);margin:8px 0;">Governing documents</h3>' +
       '<div class="hub-docs">' +
       '<a href="assets/docs/code-of-conduct.html">Code of Conduct</a>' +
       '<a href="assets/docs/bylaws.html">Bylaws</a>' +
@@ -642,6 +644,16 @@
       '<h3>Quick links</h3>' +
       '<div class="hub-find-grid">' +
       '<button type="button" class="hub-action" data-hub-goto="directory"><b>Member Directory</b><span>Faces and profiles of your krewe under My Krewe.</span></button>' +
+      '<div class="hub-action" id="docsHome" style="cursor:default">' +
+      '<b>Documents</b>' +
+      '<span>Governing documents for members and officers. Open bylaws and the Code of Conduct in-Hub.</span>' +
+      '<div class="hub-docs" style="margin-top:10px;">' +
+      '<a href="assets/docs/bylaws.html">Bylaws</a>' +
+      '<a href="assets/docs/code-of-conduct.html">Code of Conduct</a>' +
+      '<a href="assets/docs/parade-rules.html">Parade Rules</a>' +
+      "</div>" +
+      '<p style="margin:10px 0 0;"><button type="button" class="btn" data-hub-goto="docs">Open Documents card</button></p>' +
+      "</div>" +
       ((state.officer || state.canManageEvents)
         ? '<button type="button" class="hub-action" data-hub-goto="event-studio"><b>Add or edit events &amp; calendar</b><span>Open Event Studio to change dates (Basket Social and more) without a developer.</span></button>'
         : '') +
@@ -665,6 +677,7 @@
         var go = btn.getAttribute("data-hub-goto");
         if (go === "directory") openDirectoryFromHome();
         else if (go === "event-studio") openEventStudioFromHome();
+        else if (go === "docs") revealDocsCard();
       });
     });
     var op = document.getElementById("hubOpenProfile");
@@ -687,6 +700,17 @@
 
   window.__hubShowTab = showTab;
   window.showHubTab = showTab;
+  window.kosRevealDocs = revealDocsCard;
+
+  function revealDocsCard() {
+    try { history.replaceState(null, "", location.pathname + "#docs"); } catch (e) {}
+    showTab("parade", { skipScroll: true });
+    setTimeout(function () {
+      var el = document.getElementById("docs");
+      if (el && el.scrollIntoView) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 80);
+  }
+
   function showTab(name, opts) {
     var tab = name || TAB_HOME;
     opts = opts || {};
@@ -876,6 +900,7 @@
 
     var saved = TAB_HOME;
     var wantHours = hoursIntent();
+    var wantDocs = false;
     try {
       var hash = (location.hash || "").replace(/^#/, "").toLowerCase();
       if (wantHours) {
@@ -883,7 +908,8 @@
         saved = "parade";
       } else if (hash === "parade" || hash === "desk") saved = "parade";
       else if (hash === "officer") saved = "officer";
-      else if (hash === "krewe" || hash === "directory" || hash === "docs") saved = "krewe";
+      else if (hash === "krewe" || hash === "directory") saved = "krewe";
+      else if (hash === "docs") { saved = "parade"; wantDocs = true; }
       else if (hash === "events") saved = "events";
       else if (hash === "fun") saved = "fun";
       else {
@@ -904,6 +930,8 @@
     if (saved !== "hub") renderHome();
     if (wantHours) {
       setTimeout(function () { openVolunteerHoursForm(false); }, 280);
+    } else if (wantDocs) {
+      setTimeout(function () { revealDocsCard(); }, 280);
     }
   }
 
@@ -1882,6 +1910,13 @@
         showTab(tab);
       });
     });
+    if (!window.__hubDocsHashBound) {
+      window.__hubDocsHashBound = true;
+      window.addEventListener("hashchange", function () {
+        var hash = (location.hash || "").replace(/^#/, "").toLowerCase();
+        if (hash === "docs") revealDocsCard();
+      });
+    }
   }
 
   
