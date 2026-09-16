@@ -1,4 +1,4 @@
-/* Krewe of Shamrock — member profiles, officer titles, role-aware home.
+/* Krewe of Shamrock - member profiles, officer titles, role-aware home.
    Loaded only on members.html. Comments are for a beginner reading the file. */
 (function () {
   "use strict";
@@ -6,23 +6,25 @@
   var SB_URL = "https://oazwkwflgbthojvnclfc.supabase.co";
   var SB_KEY = "sb_publishable_aMCyVxkiolMuBt9_R990CA_xQmXLaaS";
 
-  /* Display titles the krewe can assign. Access still comes from member_role. */
-  /* Titles taken from the 26 August 2026 general meeting committees. */
+  /* Display titles the krewe can assign. Access still comes from member_role / is_krewe_officer. */
+  /* Titles from Shamrock Leaders (directory + RBAC vocabulary). */
   var TITLE_CHOICES = [
     "",
-    "Captain",
-    "Past Captain",
-    "First Lieutenant",
-    "Secretary",
+    "President",
+    "Vice President",
     "Treasurer",
-    "Membership Chair",
-    "Parade Chair",
-    "Float Chair",
-    "Social and Charity Committee",
-    "Technology Chair",
-    "Merchandise Chair",
-    "Finance Chair",
-    "Board Member"
+    "Secretary",
+    "Board Member",
+    "Committee Chair of Finance",
+    "Committee Chair of Bylaws",
+    "Committee Chair of Charity",
+    "Committee Chair of Technology",
+    "Chair of Technology",
+    "Committee Chair of Membership",
+    "Committee Chair of Social",
+    "Committee Chair of Float",
+    "Committee Chair of Parade",
+    "Committee Chair of Merchandise"
   ];
 
   var ACCESS_LABEL = {
