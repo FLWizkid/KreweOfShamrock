@@ -101,7 +101,7 @@
     border:1px dashed rgba(168,128,28,.45); border-radius:10px; font-size:13px; color:#57513f; line-height:1.5; }
   .castle-guide .guide-inside b{ color:var(--green-800); }
   .castle-guide .guide-help{ margin:10px 0 0; font-size:13px; color:var(--muted); text-align:center; }
-  /* Compact castle on small phones — fit gate + login without painful nested scroll */
+  /* Compact castle on small phones - fit gate + login without painful nested scroll */
   @media (max-width:480px){
     .castle-torch{ display:none; }
     .gate{ padding:8px 10px 10px; }
@@ -216,7 +216,7 @@
     align-items:center;
   }
 
-  /* My Krewe people directory — photo-first, not a spreadsheet */
+  /* My Krewe people directory - photo-first, not a spreadsheet */
   .people-toolbar{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:0 0 4px; }
   .people-toolbar #dirSearch{ flex:1 1 220px; min-width:0; }
   .people-count{ font-size:15px; color:var(--muted); white-space:nowrap; }
@@ -594,7 +594,7 @@
 
       <div class="auth-features">
         <div class="afe"><span>🍀</span> The Craic Cup: friendly competition. Earn Clovers, climb ranks, cheer your krewe</div>
-        <div class="afe"><span>🎟️</span> Gift-basket &amp; 50/50 raffles for charity — create, plan, enter</div>
+        <div class="afe"><span>🎟️</span> Gift-basket &amp; 50/50 raffles for charity - create, plan, enter</div>
         <div class="afe"><span>📅</span> RSVP to events &amp; volunteer, all tied to you</div>
         <div class="afe"><span>🚗</span> Carpools, van pools, lockers &amp; the member directory</div>
       </div>
@@ -646,7 +646,7 @@
         <label for="pfFact">A fun fact about you</label>
         <input id="pfFact" placeholder="e.g. I once caught 47 strands of beads in one parade" />
         <label for="pfMemory">Favorite krewe or parade memory</label>
-        <textarea id="pfMemory" rows="2" placeholder="Optional — the story you’d tell at the pub"></textarea>
+        <textarea id="pfMemory" rows="2" placeholder="Optional - the story you’d tell at the pub"></textarea>
 
         <details id="pfMoreDetails" style="margin-top:14px;border:1px dashed rgba(168,128,28,.45);border-radius:12px;padding:10px 12px;background:#fffdf4;">
           <summary style="cursor:pointer;font-weight:600;color:var(--green-800);">More for your directory (optional)</summary>
@@ -669,25 +669,30 @@
             </label>
             <input type="checkbox" id="pfHasRole" style="display:none;" />
             <div id="pfRolePanel" style="margin-top:10px;">
-              <p style="font-size:13px;color:var(--muted);margin:0 0 8px;">An officer confirms role access — you can use the hub right away.</p>
-              <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" value="board" /> Board / Officer</label>
+              <p style="font-size:13px;color:var(--muted);margin:0 0 8px;">An officer confirms role access - you can use the hub right away.</p>
+              <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" value="officer" /> Officer (President / Vice President)</label>
+              <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" value="board" /> Board Member</label>
               <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" value="treasurer" /> Treasurer</label>
               <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" value="secretary" /> Secretary</label>
               <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" value="captain" /> Parade captain</label>
-              <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" value="committee" id="pfRoleCommittee" /> Committee chair / member</label>
+              <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" value="committee" id="pfRoleCommittee" /> Committee Chair</label>
               <div id="pfCommitteeWrap" style="margin:8px 0 0 26px;display:none;">
                 <label for="pfCommittee" style="font-size:13px;color:var(--muted);">Which committee?</label>
                 <select id="pfCommittee" style="width:100%;margin-top:4px;">
                   <option value="">Select…</option>
-                  <option value="Merchandise">Merchandise (Shop Studio)</option>
-                  <option value="Social/Charity">Social / Charity (Raffles, Events, related reports)</option>
-                  <option value="Events">Events</option>
-                  <option value="Parade">Parade</option>
+                  <option value="Finance">Finance</option>
+                  <option value="Bylaws">Bylaws</option>
+                  <option value="Charity">Charity</option>
+                  <option value="Technology">Technology</option>
                   <option value="Membership">Membership</option>
+                  <option value="Social">Social</option>
+                  <option value="Float">Float</option>
+                  <option value="Parade">Parade</option>
+                  <option value="Merchandise">Merchandise (Shop Studio)</option>
                   <option value="Other">Other</option>
                 </select>
                 <input id="pfCommitteeOther" placeholder="If Other, name the committee" style="margin-top:8px;display:none;width:100%;" />
-                <p style="font-size:12px;color:var(--muted);margin:6px 0 0;line-height:1.4;">After an officer approves: <b>Merchandise</b> unlocks Shop Studio; <b>Social / Charity</b> unlocks Raffles tools, Event Studio, and event/charity reports.</p>
+                <p style="font-size:12px;color:var(--muted);margin:6px 0 0;line-height:1.4;">These match Krewe directory titles (Committee Chair of …). After approval: <b>Merchandise</b> unlocks Shop Studio; other chairs get Officer desk tools. Officers and Board Members get full Officer desk.</p>
               </div>
               <input id="pfRoleNote" placeholder="Anything that helps verify (optional)" style="margin-top:8px;" />
             </div>
@@ -769,13 +774,13 @@
       <section class="app-card" id="orientationCard" data-hub="krewe">
         <div class="app-head"><span class="ic">🎬</span><div><h2>New Member Orientation</h2><small>What new Krewe of Shamrock members must know</small></div></div>
         <div class="app-body">
-          <p style="margin-top:0;">New to the Krewe — or want a refresher? This short video walks through
+          <p style="margin-top:0;">New to the Krewe - or want a refresher? This short video walks through
              what every member should know: dues, the waiver, parade day, and how the season works.</p>
           <div style="position:relative;padding-top:56.25%;border-radius:12px;overflow:hidden;box-shadow:var(--shadow);border:1px solid rgba(168,128,28,.3);">
             <video controls playsinline preload="metadata"
                    style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#0a0a0a;"
                    src="assets/video/new-member-orientation.mp4">
-              Sorry — your browser cannot play this video.
+              Sorry - your browser cannot play this video.
               <a href="assets/video/new-member-orientation.mp4">Download it instead.</a>
             </video>
           </div>
@@ -785,7 +790,7 @@
 
       <!-- PARADE READY -->
       <section class="app-card" id="prCard">
-        <div class="app-head"><span class="ic">🎗️</span><div><h2>Parade Ready</h2><small>Dues, waiver, meeting &amp; photo release (Jun–May)</small></div></div>
+        <div class="app-head"><span class="ic">🎗️</span><div><h2>Parade Ready</h2><small>Dues, waiver, meeting &amp; photo release (Jun-May)</small></div></div>
         <div class="app-body">
           <div id="prStatus"><p class="empty">Loading your status…</p></div>
           <h4 style="font-family:var(--display);color:var(--green-800);margin:16px 0 8px;">Volunteer hours</h4>
@@ -828,10 +833,10 @@
       <section class="app-card dash-card raffle-head" role="button" tabindex="0"
                onclick="openRaffles()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openRaffles();}">
         <div class="app-head"><span class="ic">🎟️</span>
-          <div><h2>Raffles</h2><small>Gift baskets &amp; 50/50 for charity — create, plan, enter</small></div>
+          <div><h2>Raffles</h2><small>Gift baskets &amp; 50/50 for charity - create, plan, enter</small></div>
           <span class="dash-go">Open →</span></div>
         <div class="app-body dash-body">
-          <p>Build gift-ready baskets from donated contents, track who is bringing what, and raise money for charity. Draws happen in person at events — tickets are tracked digitally; pay a volunteer at the table.</p>
+          <p>Build gift-ready baskets from donated contents, track who is bringing what, and raise money for charity. Draws happen in person at events - tickets are tracked digitally; pay a volunteer at the table.</p>
           <div class="dash-chips"><span>🎁 Gift baskets</span><span>💚 Charity</span><span>📋 Planning</span><span>🎫 In-person draws</span></div>
         </div>
       </section>
@@ -845,7 +850,7 @@
           <span class="dash-go">Open →</span>
         </div>
         <div class="app-body dash-body">
-          <p>Officer reports in one place — choose from a dropdown. Meeting check-in and handy link QRs are in Officer desk → QR Code Studio.</p>
+          <p>Officer reports in one place - choose from a dropdown. Meeting check-in and handy link QRs are in Officer desk → QR Code Studio.</p>
         </div>
       </section>
 
@@ -936,7 +941,7 @@
 
       <!-- DIRECTORY -->
             <section class="app-card" id="hubMemberDirectory" data-hub="krewe">
-        <div class="app-head"><span class="ic">👥</span><div><h2>Member Directory</h2><small>Your krewe — faces first. Find everyone under My Krewe / Directory.</small></div></div>
+        <div class="app-head"><span class="ic">👥</span><div><h2>Member Directory</h2><small>Your krewe - faces first. Find everyone under My Krewe / Directory.</small></div></div>
         <div class="app-body">
           <div class="people-toolbar">
             <input id="dirSearch" class="krewe-form" placeholder="Search by name…" style="padding:11px 13px;border:1px solid rgba(168,128,28,.5);border-radius:10px;" oninput="renderDir()" />
@@ -944,7 +949,7 @@
           </div>
           <div class="people-grid" id="dirGrid"><p class="empty">Loading directory…</p></div>
 
-          <p style="font-size:15px;color:var(--muted);margin-top:12px;">Tap a card to open their My Krewe profile. Contact details stay private — reach people through a krewe officer or <a href="mailto:secretary@kreweofshamrock.com">email the Krewe</a>.</p><p style="margin:10px 0 0;"><a class="btn" href="https://www.facebook.com/groups/1790675004521855" target="_blank" rel="noopener noreferrer" style="background:#1877f2;color:#fff;border:0;display:inline-block;padding:8px 14px;border-radius:999px;font-weight:700;text-decoration:none;">📘 Members-only Facebook group →</a></p>
+          <p style="font-size:15px;color:var(--muted);margin-top:12px;">Tap a card to open their My Krewe profile. Contact details stay private - reach people through a krewe officer or <a href="mailto:secretary@kreweofshamrock.com">email the Krewe</a>.</p><p style="margin:10px 0 0;"><a class="btn" href="https://www.facebook.com/groups/1790675004521855" target="_blank" rel="noopener noreferrer" style="background:#1877f2;color:#fff;border:0;display:inline-block;padding:8px 14px;border-radius:999px;font-weight:700;text-decoration:none;">📘 Members-only Facebook group →</a></p>
         </div>
       </section>
 
@@ -1315,7 +1320,7 @@
       if(m.interests) longs += `<p class="mp-line"><b>Interests:</b> ${esc(m.interests)}</p>`;
       if(m.favorite_memory) longs += `<p class="mp-line"><b>Favorite krewe memory:</b> ${esc(m.favorite_memory)}</p>`;
       if(m.fun_fact) longs += `<p class="mp-line"><b>Fun fact:</b> ${esc(m.fun_fact)}</p>`;
-      if(!longs) longs = `<p class="mp-muted">They haven\'t filled in their story yet — nudge them at the next event.</p>`;
+      if(!longs) longs = `<p class="mp-muted">They haven\'t filled in their story yet - nudge them at the next event.</p>`;
       const meId = (window.kosProfile||{}).member_id;
       const isMe = meId && String(meId) === String(m.member_id);
       body.innerHTML = `<div class="mp-sheet">
@@ -1325,7 +1330,7 @@
         </div></div>
         <div class="mp-facts">${facts.map(f=>`<span>${f}</span>`).join("")}</div>
         ${longs}
-        <p class="mp-muted" style="margin-top:12px;">Birthday and anniversary show as month and day only — never the year. Contact stays private.</p>
+        <p class="mp-muted" style="margin-top:12px;">Birthday and anniversary show as month and day only - never the year. Contact stays private.</p>
       </div>`;
       modal.classList.add("open");
       modal.setAttribute("aria-hidden","false");
@@ -1342,7 +1347,7 @@
 
     /* ================= PARADE READY ================= */
     const SEASON = new Date().getFullYear();
-    // Bylaws volunteer season is Jun–May; season_year is the ending calendar year (e.g. Jun 2026–may 2027 → 2027).
+    // Bylaws volunteer season is Jun-May; season_year is the ending calendar year (e.g. Jun 2026-may 2027 → 2027).
     function kreweVolunteerSeasonYear(d = new Date()){
       const mo = d.getMonth() + 1;
       return mo >= 6 ? d.getFullYear() + 1 : d.getFullYear();
@@ -1495,7 +1500,7 @@
         consent_version: "2026.1"
       });
       if(error){ show("mcMsg","Could not record your consent. "+(error.message||""),"error"); return; }
-      show("mcMsg","Signed — you can post photos and videos.","success");
+      show("mcMsg","Signed - you can post photos and videos.","success");
       loadMediaConsent();
     };
     function renderHoursBar(me){
@@ -1666,7 +1671,7 @@
           const rows=data||[];
           const isReady=r=>r.dues_paid&&r.waiver_signed&&r.meeting_attended;
           const ready=rows.filter(isReady), not=rows.filter(r=>!isReady(r));
-          const mark=v=>v?"✅":"—";
+          const mark=v=>v?"✅":"-";
           return rStats([{l:"Parade Ready",v:ready.length},{l:"Not yet",v:not.length},{l:"Roster",v:rows.length}])
             + '<h3 class="rpt-cat">🎗️ Ready for wristbands</h3>'
             + rTable(["Name","Status","Volunteer hrs"], ready.map(r=>[`${r.first_name} ${r.last_name}`, r.membership_status||"-", `${Number(r.hours_approved??r.volunteer_hours_approved??0)}/12`]))
@@ -1718,10 +1723,10 @@
             html += '<div class="rpt-tablewrap"><table class="rpt-table"><thead><tr><th>Name</th><th>Role</th><th>Status</th><th>Planned hrs</th><th>Confirm hrs</th><th></th></tr></thead><tbody>';
             html += rows.map(r=>{
               const isVol = r.signup_role==="volunteer"||r.signup_role==="organizer";
-              const planned = r.volunteer_hours_planned != null ? String(r.volunteer_hours_planned) : (isVol ? "2" : "—");
+              const planned = r.volunteer_hours_planned != null ? String(r.volunteer_hours_planned) : (isVol ? "2" : "-");
               const hrsCell = isVol
                 ? `<input id="attHrs-${r.id}" type="number" min="0.5" max="24" step="0.5" value="${esc(r.volunteer_hours_planned != null ? String(r.volunteer_hours_planned) : "2")}" style="width:72px;" />`
-                : "—";
+                : "-";
               const actions = r.status==="attended"
                 ? `<button class="rpt-btn" type="button" onclick="kosConfirmAttendance('${r.id}',false)">Undo</button>`
                 : `<button class="rpt-btn ok" type="button" onclick="kosConfirmAttendance('${r.id}',true)">${isVol?"Confirm + hours":"Confirm attended"}</button>`;
@@ -1774,7 +1779,7 @@
               return `<tr><td>${esc(r.guest_name||"")}${r.is_vip?' <span class="rank-pill">VIP</span>':""}</td>`
                 + `<td>${esc(meal||"-")}</td>`
                 + `<td>${jewelDot(r.jewel_color,r.jewel_code)}${esc(r.jewel_color||r.jewel_code||"-")}</td>`
-                + `<td>${esc(r.seating_request||"—")}</td>`
+                + `<td>${esc(r.seating_request||"-")}</td>`
                 + `<td><input id="tbTable-${r.guest_id}" type="number" min="1" step="1" value="${esc(val)}" style="width:72px;" placeholder="TBA" /></td>`
                 + `<td><button class="rpt-btn ok" type="button" onclick="kosSetTartanTable('${r.guest_id}')">Save</button></td></tr>`;
             }).join("");
@@ -1849,9 +1854,9 @@
           const light = rows.filter(r=>r.engagement_band==="light");
           const active = rows.filter(r=>r.engagement_band==="active");
           const fmtLast = iso => {
-            if(!iso) return "—";
+            if(!iso) return "-";
             const d=new Date(iso);
-            return isNaN(d)?"—":d.toLocaleDateString([],{month:"short",day:"numeric",year:"numeric",timeZone:"America/New_York"});
+            return isNaN(d)?"-":d.toLocaleDateString([],{month:"short",day:"numeric",year:"numeric",timeZone:"America/New_York"});
           };
           const bandLabel = b => b==="quiet"?"Quiet":b==="light"?"Light":"Active";
           let html = rStats([
@@ -1877,7 +1882,7 @@
           html += quiet.length
             ? rTable(["Name","Email","Status","Season 🍀","Lifetime 🍀","Rank","Last RSVP"],
                 quiet.map(r=>[`${r.first_name||""} ${r.last_name||""}`.trim(), r.email||". ", r.membership_status||". ", String(r.season_clovers||0), String(r.lifetime_clovers||0), `${r.rank_icon||"🌱"} ${r.rank_name||"Newcomer"}`, fmtLast(r.last_rsvp_at)]))
-            : '<p class="empty">Nobody is fully quiet — nice.</p>';
+            : '<p class="empty">Nobody is fully quiet - nice.</p>';
           html += '<h3 class="rpt-cat">🌤️ Light engagement</h3>';
           html += light.length
             ? rTable(headers, light.map(rowCols))
@@ -2225,7 +2230,7 @@
       html+=`<p class="rpt-note">RSVPs earn a little; <b>showing up</b> earns the real Clovers; an officer confirms who attended after each event.</p>`;
       html+=`<h3 class="rpt-cat">🏅 The Rank Ladder</h3>`;
       html+='<div class="rpt-tablewrap"><table class="rpt-table"><thead><tr><th>Rank</th><th>Lifetime Clovers</th></tr></thead><tbody>'+
-        RANKS.map((r,i)=>`<tr><td style="font-family:var(--display);font-size:16px;">${r.icon} ${E(r.name)}</td><td>${r.min}${RANKS[i+1]?(" – "+(RANKS[i+1].min-1)):"+"}</td></tr>`).join("")+'</tbody></table></div>';
+        RANKS.map((r,i)=>`<tr><td style="font-family:var(--display);font-size:16px;">${r.icon} ${E(r.name)}</td><td>${r.min}${RANKS[i+1]?(" - "+(RANKS[i+1].min-1)):"+"}</td></tr>`).join("")+'</tbody></table></div>';
       html+=`<h3 class="rpt-cat">🎖️ Badges to collect</h3><div class="badge-gallery">`+
         (badges||[]).map(b=>`<div class="badge-chip"><div class="ic">${b.icon}</div><div class="nm">${E(b.name)}</div><div class="ds">${E(b.description||"")}</div></div>`).join("")+'</div>';
       box.innerHTML=html;
@@ -2289,7 +2294,7 @@
     let awaitingNewPassword=false;
     // Invite and recovery links from the Supabase dashboard land here with a
     // type marker in the URL; both should open the set-password screen. The
-    // PASSWORD_RECOVERY auth event below covers reset links as well — this
+    // PASSWORD_RECOVERY auth event below covers reset links as well - this
     // catches dashboard invites, which sign in without emitting that event.
     try{
       const hashParams=new URLSearchParams((location.hash||"").replace(/^#/,""));
@@ -2552,7 +2557,7 @@
         } else if(existingPhoto){
           photoUrl = existingPhoto;
         } else {
-          msg.textContent = "Add a photo so My Krewe can see your face — then you're in the game.";
+          msg.textContent = "Add a photo so My Krewe can see your face - then you're in the game.";
           return;
         }
       }catch(err){
@@ -2617,7 +2622,7 @@
             }
           });
           if(req && req.needs_approval){
-            alert("Thanks! Your role request was sent to the officers for approval. You can use the Member Hub right away — role tools unlock once an officer confirms.");
+            alert("Thanks! Your role request was sent to the officers for approval. You can use the Member Hub right away - role tools unlock once an officer confirms.");
           }
         }catch(err){ /* the profile is saved; a failed role request can be retried from the hub */ }
       }
@@ -2709,7 +2714,7 @@
       const e1 = evRes.error;
       const myB={}, myP={};
       if(mine){ (mine.baskets||[]).forEach(b=>myB[b.basket_id]=b.tickets); (mine.pot||[]).forEach(p=>myP[p.event_id]=p.tickets); }
-      const howHtml = '<div style="background:#fbf6e9;border:1px solid var(--gold);border-radius:12px;padding:14px 16px;margin-bottom:16px;font-size:14px;color:#4a3f1e;line-height:1.5;"><b>How our raffles work</b><br>🎁 <b>Gift baskets:</b> themed, gift-ready baskets (or bottles / a single item) filled with <b>donated</b> contents. Members create a raffle, use the planning board to track who is bringing what, and raise money for charity. \ud83d\udcb0 <b>50/50:</b> one pot; winner takes half, the rest supports charity. 🎫 <b>In person:</b> draws happen at events — enter digitally (or via QR), settle payment with a volunteer at the table.</div>';
+      const howHtml = '<div style="background:#fbf6e9;border:1px solid var(--gold);border-radius:12px;padding:14px 16px;margin-bottom:16px;font-size:14px;color:#4a3f1e;line-height:1.5;"><b>How our raffles work</b><br>🎁 <b>Gift baskets:</b> themed, gift-ready baskets (or bottles / a single item) filled with <b>donated</b> contents. Members create a raffle, use the planning board to track who is bringing what, and raise money for charity. \ud83d\udcb0 <b>50/50:</b> one pot; winner takes half, the rest supports charity. 🎫 <b>In person:</b> draws happen at events - enter digitally (or via QR), settle payment with a volunteer at the table.</div>';
       if(e1){
         box.innerHTML = howHtml + '<p class="msg error">Could not load raffles.</p><p class="empty">No raffles are running right now. Create one above to start planning gift baskets for charity. 🍀</p>';
         await renderManage();
@@ -2826,7 +2831,7 @@
       box.innerHTML =
         mrInput('Gift basket title','<input class="bfName" '+IS+' maxlength="90" value="'+(b?RE(b.name):'')+'" />')+
         mrInput('Approximate gift value ($)','<input class="bfVal" type="number" min="0" step="1" '+IS+' value="'+(b&&b.estimated_value!=null?b.estimated_value:'')+'" />')+
-        mrInput('Donated contents (what’s inside — themes, bottles, or a single item)','<textarea class="bfContents" rows="2" '+IS+' placeholder="e.g. Irish whiskey, tartan throw, tea towels — note donors if known">'+(b&&b.contents?RE(b.contents):'')+'</textarea>')+
+        mrInput('Donated contents (what’s inside - themes, bottles, or a single item)','<textarea class="bfContents" rows="2" '+IS+' placeholder="e.g. Irish whiskey, tartan throw, tea towels - note donors if known">'+(b&&b.contents?RE(b.contents):'')+'</textarea>')+
         mrInput('Gift presentation / details','<textarea class="bfDesc" rows="2" '+IS+' placeholder="Theme, wrapping, display notes for the planning board">'+(b&&b.description?RE(b.description):'')+'</textarea>')+
         mrInput('Photo of the finished gift basket'+(b&&b.image_url?' (uploading a new one replaces it)':''),'<input class="bfPhoto" type="file" accept="image/*" '+IS+' />')+
         (b&&b.image_url?'<img src="'+RE(b.image_url)+'" alt="" style="margin-top:8px;max-width:120px;border-radius:8px;" />':'')+
