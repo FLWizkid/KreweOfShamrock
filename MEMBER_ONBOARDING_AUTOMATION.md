@@ -20,9 +20,18 @@ and has been applied to the project as migrations
 2. **First login only**: one short screen — first name, last name, optional
    phone and bio, plus:
    - ☑ *I am a current Krewe of Shamrock member* (checked by default)
-   - ☐ *I hold a krewe role (officer, treasurer, committee…)* — opens a small
-     checklist (Board / Officer, Treasurer, Secretary, Parade captain,
-     Committee member + which committee) and an optional note for the board.
+   - ☐ *I hold a krewe title* — opens the Shamrock Leaders checklist
+     (President, Vice President, Treasurer, Secretary, Board Member, and
+     Committee Chair of Finance / Bylaws / Charity / Technology / Membership /
+     Social / Float / Parade / Merchandise) and an optional note for the board.
+     These labels match the Member Hub directory. Douglas Tully's roster
+     title **Chair of Technology** is the same Technology chair (not a
+     vacant seat and not a Dayna replacement). Tammy Miller and Deb
+     Rutkowski are both **Co-Chair of Merchandise** — the directory and
+     `kos_sync` treat `Co-Chair of X` like `Chair of X`. The client maps them onto
+     the existing `member_roles` enums (`officer`, `board`, `treasurer`,
+     `secretary`, `committee`). Highest role wins when someone holds more than
+     one title.
 3. **Instant member access**: if the sign-in email matches the roster
    (`members.email`), the account links automatically — the member is inside
    the hub immediately. No waiting, no human step.

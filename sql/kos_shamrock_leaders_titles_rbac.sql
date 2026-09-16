@@ -1,12 +1,19 @@
--- Shamrock Leaders titles + RBAC (screenshot + live ops conflict policy)
--- Live wins: Tim Fitzpatrick = Treasurer, Debbie Fitzpatrick = Secretary,
--- Douglas Tully = Chair of Technology. Patrick is Finance chair (not Treasurer).
+-- Shamrock Leaders titles + RBAC
+-- Melissa confirmed 2026-09-16: Tim Fitzpatrick = President (not Treasurer);
+-- Patrick Pustay = Treasurer · Committee Chair of Finance; Douglas Tully =
+-- Chair of Technology (do not demote). Mandy Franklin and Dayna Olmsted are
+-- not in the Krewe. Parade and Social chairs stay vacant.
 -- Project: oazwkwflgbthojvnclfc
+--
+-- Roster upsert + grant sync: sql/kos_shamrock_leaders_roster_and_rbac.sql
+-- Chair of X grant parsing:   sql/kos_shamrock_leaders_chair_grants.sql
+-- This file keeps is_krewe_officer() (officer desk for non-merchandise chairs)
+-- and will not revert Tim/Patrick if re-applied.
 
--- 1) Directory-facing titles + access roles on matched roster rows ---------------
+-- 1) Directory-facing titles on matched roster rows -----------------------------
 UPDATE public.members SET
   member_role = 'officer',
-  officer_title = 'Treasurer',
+  officer_title = 'President',
   updated_at = now()
 WHERE id = 'f552c5a0-c1dc-48c3-942f-cfbb99d95dbc'
   AND email ILIKE 'tim.fitzpatrick@lumen.com';
@@ -25,10 +32,9 @@ UPDATE public.members SET
 WHERE id = '48a50129-c235-42e0-95ab-e5dd31f61bb9'
   AND email ILIKE 'jimsugruemtm@gmail.com';
 
--- Patrick: screenshot Treasurer conflicts with live Tim Treasurer → Finance chair only
 UPDATE public.members SET
   member_role = 'officer',
-  officer_title = 'Committee Chair of Finance',
+  officer_title = 'Treasurer · Committee Chair of Finance',
   updated_at = now()
 WHERE id = 'b5450ba2-89e9-4e2f-bfec-4d6669a4c315'
   AND email ILIKE 'ppustay1@gmail.com';
@@ -66,58 +72,32 @@ UPDATE public.members SET
   updated_at = now()
 WHERE id = '1e449202-b472-43b1-93b9-18c4f55b36cc'; -- Bruce Weiner
 
--- Merchandise chairs: keep member_role member so Shop Studio stays scoped (shopOnly)
+-- Merchandise co-chairs: Tammy Miller and Deb Rutkowski, both Co-Chair of Merchandise.
+-- member_role stays member so Shop Studio remains shopOnly.
 UPDATE public.members SET
-  officer_title = 'Committee Chair of Merchandise',
+  officer_title = 'Co-Chair of Merchandise',
   updated_at = now()
 WHERE id IN (
   '2a2355ce-44e7-46fa-a064-bbc39c584483', -- Tammy Miller
   '02e85f52-7a8e-4cb9-b8ed-675d6f6e40e6'  -- Deb Rutkowski
-);
-
--- 2) Explicit grants: Tim gets treasurer; Patrick loses treasurer grant ---------
-INSERT INTO public.member_roles (user_id, role, granted_by)
-SELECT p.id, 'treasurer', NULL
-FROM public.profiles p
-WHERE p.member_id = 'f552c5a0-c1dc-48c3-942f-cfbb99d95dbc'
-ON CONFLICT (user_id, role) DO NOTHING;
-
-INSERT INTO public.member_roles (user_id, role, granted_by)
-SELECT p.id, 'officer', NULL
-FROM public.profiles p
-WHERE p.member_id = 'f552c5a0-c1dc-48c3-942f-cfbb99d95dbc'
-ON CONFLICT (user_id, role) DO NOTHING;
-
-DELETE FROM public.member_roles r
-USING public.profiles p
-WHERE r.user_id = p.id
-  AND p.member_id = 'b5450ba2-89e9-4e2f-bfec-4d6669a4c315'
-  AND r.role = 'treasurer';
-
--- Ensure Finance chair keeps committee grant labeled Finance
-INSERT INTO public.member_roles (user_id, role, committee, granted_by)
-SELECT p.id, 'committee', 'Finance', NULL
-FROM public.profiles p
-WHERE p.member_id = 'b5450ba2-89e9-4e2f-bfec-4d6669a4c315'
-  AND NOT EXISTS (
-    SELECT 1 FROM public.member_roles x
-    WHERE x.user_id = p.id AND x.role = 'committee'
-      AND coalesce(x.committee,'') ILIKE 'Finance'
-  );
-
--- Merchandise committee grants for chairs who have Auth profiles
-INSERT INTO public.member_roles (user_id, role, committee, granted_by)
-SELECT p.id, 'committee', 'Merchandise', NULL
-FROM public.profiles p
-WHERE p.member_id IN (
-  '2a2355ce-44e7-46fa-a064-bbc39c584483',
-  '02e85f52-7a8e-4cb9-b8ed-675d6f6e40e6'
 )
-AND NOT EXISTS (
-  SELECT 1 FROM public.member_roles x
-  WHERE x.user_id = p.id AND x.role = 'committee'
-    AND coalesce(x.committee,'') ILIKE 'Merchandise'
-);
+AND email ILIKE ANY (ARRAY['tammymillerkos@gmail.com', 'debrski1@gmail.com']);
+
+-- 2) Grants from display titles (Chair of X included). Does not invent people.
+DO $$
+BEGIN
+  IF to_regprocedure('public.kos_sync_roster_role_grants(uuid)') IS NOT NULL THEN
+    PERFORM public.kos_sync_roster_role_grants(m.id)
+      FROM public.members m
+     WHERE m.merged_into IS NULL
+       AND coalesce(m.membership_status, 'active') IN ('active', 'pending-renewal')
+       AND EXISTS (SELECT 1 FROM public.profiles p WHERE p.member_id = m.id)
+       AND (
+         coalesce(m.officer_title, '') <> ''
+         OR m.member_role IN ('officer', 'board', 'captain')
+       );
+  END IF;
+END $$;
 
 -- 3) Officer desk: Officers + Board + non-merchandise chairs -------------------
 -- Merchandise stays on can_manage_shop → shopOnly scoped desk in Hub JS.

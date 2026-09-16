@@ -1397,13 +1397,18 @@
     if (reqs.length) {
       html += '<h3 class="hub-appr-h">Role requests</h3>';
       reqs.forEach(function (q) {
-        var roles = (q.requested_roles || []).join(", ");
+        var titles = (q.answers && q.answers.titles && q.answers.titles.length)
+          ? q.answers.titles.join(" · ")
+          : (q.requested_roles || []).join(", ");
         var extra = [];
         if (q.answers && q.answers.committee) extra.push("Committee: " + esc(q.answers.committee));
+        if (q.answers && q.answers.committees && q.answers.committees.length > 1) {
+          extra.push("Committees: " + esc(q.answers.committees.join(", ")));
+        }
         if (q.answers && q.answers.note) extra.push("Note: " + esc(q.answers.note));
         html += '<div class="hub-appr">' +
           '<div><b>' + esc(q.full_name || q.email) + '</b> <span class="muted">' + esc(q.email) + '</span>' +
-          '<div class="muted">Requests: <b>' + esc(roles) + '</b>' + (q.linked ? " · matches the roster" : " · <b>no roster match</b>") + '</div>' +
+          '<div class="muted">Requests: <b>' + esc(titles) + '</b>' + (q.linked ? " · matches the roster" : " · <b>no roster match</b>") + '</div>' +
           (extra.length ? '<div class="muted">' + extra.join(" · ") + '</div>' : "") +
           '</div><div class="hub-appr-btns">' +
           '<button class="btn btn-primary" data-appr-approve="' + esc(q.id) + '">Approve</button>' +

@@ -6,8 +6,8 @@
   var SB_URL = "https://oazwkwflgbthojvnclfc.supabase.co";
   var SB_KEY = "sb_publishable_aMCyVxkiolMuBt9_R990CA_xQmXLaaS";
 
-  /* Display titles the krewe can assign. Access still comes from member_role / is_krewe_officer. */
-  /* Titles from Shamrock Leaders (directory + RBAC vocabulary). */
+  /* Display titles the krewe can assign. Access still comes from member_role
+     plus member_roles grants. Language matches the Shamrock Leaders directory. */
   var TITLE_CHOICES = [
     "",
     "President",
@@ -15,6 +15,7 @@
     "Treasurer",
     "Secretary",
     "Board Member",
+    "Board",
     "Committee Chair of Finance",
     "Committee Chair of Bylaws",
     "Committee Chair of Charity",
@@ -24,7 +25,9 @@
     "Committee Chair of Social",
     "Committee Chair of Float",
     "Committee Chair of Parade",
-    "Committee Chair of Merchandise"
+    "Committee Chair of Merchandise",
+    "Chair of Merchandise",
+    "Co-Chair of Merchandise"
   ];
 
   var ACCESS_LABEL = {
@@ -131,7 +134,7 @@
     }
     window.__kosDirRows = rows;
     renderDirectory();
-    renderLeadership(rows);
+    if (typeof renderLeadership === "function") renderLeadership(rows);
     return rows;
   }
 

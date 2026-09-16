@@ -95,3 +95,32 @@ Official routing lives in `CONTACT_EMAILS.md` (the single source of truth):
 ## Enable Email + Password provider
 - Supabase Dashboard → Authentication → Providers → Email: enable Email, disable “magic link only” if still forced.
 - Confirm email confirmations policy matches board preference (invite-only vs open create-password).
+
+## Shamrock Leaders roster (directory + RBAC)
+- Canonical officer / board / committee-chair titles match the public
+  "Shamrock Leaders" page. The Member Hub directory and the first-login
+  questionnaire use the same labels (`assets/kos-leadership.js`).
+- Apply `sql/kos_shamrock_leaders_roster_and_rbac.sql` (idempotent) to upsert
+  named leaders onto existing roster emails, leave Parade and Social chairs
+  vacant (`Open`), and sync `member_roles` grants for any already-linked Auth
+  users. Highest role wins (officer > board > committee).
+- Tim Fitzpatrick (`tim.fitzpatrick@lumen.com`) is **President**,
+  `member_role = officer` — **not** Treasurer. Patrick Pustay
+  (`ppustay1@gmail.com`) is **Treasurer · Committee Chair of Finance**,
+  `member_role = officer`. Run `sql/kos_shamrock_leaders_president_treasurer.sql`
+  if a leftover Treasurer grant is still on Tim or missing on Patrick.
+- Mandy Franklin and Dayna Olmsted are **not** in the Krewe: do not seed them,
+  do not list them as Social or Technology chair, and run
+  `sql/kos_shamrock_leaders_remove_departed.sql` if those seed rows exist.
+- Do not invent a Parade, Social, or Technology chair or any email/phone.
+  Douglas Tully already holds **Chair of Technology** — keep that display
+  title; `kos_sync_roster_role_grants()` matches both `Chair of X` and
+  `Committee Chair of X` and writes officer + `committee:Technology` for his
+  linked Auth user without demoting him. A title of **Board** is treated the
+  same as **Board Member**. Run
+  `sql/kos_shamrock_leaders_sync_chair_of_and_board.sql` if those grants are
+  still missing.
+- Tammy Miller (`tammymillerkos@gmail.com`) and Deb Rutkowski
+  (`debrski1@gmail.com`) are both **Co-Chair of Merchandise**,
+  `member_role = member` so Shop Studio stays scoped. `kos_sync` and the
+  directory treat `Co-Chair of X` like `Chair of X` / `Committee Chair of X`.

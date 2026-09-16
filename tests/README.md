@@ -19,6 +19,9 @@ plus Playwright browser tests that load every page.
   client-side validation, the members-area auth gate, and the shop cart.
   Forms are never submitted with valid data, so no test writes to the
   production Supabase backend.
+- **`specs/leadership.spec.js`** — first-login questionnaire lists Shamrock
+  Leaders titles (officers, board, committee chairs) and the client catalog
+  maps titles onto existing RBAC enums, leaving Parade chair vacant.
 
 External services (Supabase, CDNs, Google Fonts) are treated as optional:
 the suite passes offline, and only same-origin failures or genuine script

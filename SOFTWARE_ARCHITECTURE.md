@@ -145,11 +145,14 @@ sequenceDiagram
 
 **Known soft-launch identities (roster Auth emails):**
 
-- Deb (Secretary): `dgfitzpa@gmail.com` — `secretary@` ImprovMX → Deb  
-- Tim (Treasurer): `tim.fitzpatrick@lumen.com` — `treasurer@` forwards via ImprovMX  
-- Patrick (Owner): `ppustay1@gmail.com` — `patrick@`  
-- Digital/tech: `digital@` → `melissa@encountive.com`  
+- Debbie Fitzpatrick (Secretary): `dgfitzpa@gmail.com` — `secretary@` ImprovMX → Deb
+- Tim Fitzpatrick (President): `tim.fitzpatrick@lumen.com`
+- Patrick Pustay (Treasurer + Finance Chair): `ppustay1@gmail.com` — `patrick@`
+- Digital/tech: `digital@` → `melissa@encountive.com`
 - Public contact: prefer `secretary@kreweofshamrock.com`
+
+Current Shamrock Leaders titles (directory + questionnaire) are in
+`assets/kos-leadership.js` and seeded by `sql/kos_shamrock_leaders_roster_and_rbac.sql`.
 
 ---
 
