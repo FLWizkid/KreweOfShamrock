@@ -200,6 +200,134 @@
     return { officers: officers, board: board, chairs: chairs };
   }
 
+  function officerRank(title) {
+    var t = String(title || "").toLowerCase();
+    var i;
+    for (i = 0; i < OFFICER_TITLES.length; i++) {
+      if (OFFICER_TITLES[i].title.toLowerCase() === t) return i;
+    }
+    return 99;
+  }
+
+  function committeeRank(name) {
+    var n = String(name || "").toLowerCase();
+    var i;
+    for (i = 0; i < COMMITTEES.length; i++) {
+      if (COMMITTEES[i].toLowerCase() === n) return i;
+    }
+    return 99;
+  }
+
+  function byLastFirst(a, b) {
+    return String(a.last_name || "").localeCompare(String(b.last_name || "")) ||
+      String(a.first_name || "").localeCompare(String(b.first_name || ""));
+  }
+
+  function sortOfficers(list) {
+    return (list || []).slice().sort(function (a, b) {
+      var rank = officerRank(a.title) - officerRank(b.title);
+      return rank || byLastFirst(a, b);
+    });
+  }
+
+  function sortBoard(list) {
+    return (list || []).slice().sort(byLastFirst);
+  }
+
+  function sortChairs(list) {
+    return (list || []).slice().sort(function (a, b) {
+      var rank = committeeRank(a.committee) - committeeRank(b.committee);
+      if (rank) return rank;
+      if (!!a.vacant !== !!b.vacant) return a.vacant ? 1 : -1;
+      return byLastFirst(a, b);
+    });
+  }
+
+  function leaderInitials(item) {
+    var a = String((item && item.first_name) || "").charAt(0);
+    var b = String((item && item.last_name) || "").charAt(0);
+    return ((a + b).toUpperCase() || "☘");
+  }
+
+  function avatarHtml(item) {
+    if (item.vacant) {
+      return '<span class="leaders-av leaders-av-open" aria-hidden="true">☘</span>';
+    }
+    if (item.photo_url) {
+      return '<span class="leaders-av"><img src="' + esc(item.photo_url) + '" alt="" /></span>';
+    }
+    return '<span class="leaders-av" aria-hidden="true">' + esc(leaderInitials(item)) + '</span>';
+  }
+
+  function wrapPerson(item, inner) {
+    var cls = "leaders-line" + (item.vacant ? " leaders-vacant" : "");
+    if (item.member_id && !item.vacant) {
+      return '<li class="' + cls + '">' +
+        '<button type="button" class="leaders-person" data-mid="' + esc(item.member_id) + '">' + inner + "</button></li>";
+    }
+    var label = item.vacant && item.committee
+      ? esc(item.committee) + " chair seat is open"
+      : "";
+    return '<li class="' + cls + '">' +
+      '<div class="leaders-person"' + (label ? ' aria-label="' + label + '"' : "") + ">" + inner + "</div></li>";
+  }
+
+  function listHtml(items, rowFn) {
+    if (!items.length) return '<p class="leaders-empty">None listed yet.</p>';
+    return '<ul class="leaders-list">' + items.map(rowFn).join("") + "</ul>";
+  }
+
+  function officerRow(item) {
+    var inner = avatarHtml(item) +
+      '<span class="leaders-copy">' +
+        '<span class="leaders-role">' + esc(item.title || "") + "</span>" +
+        '<span class="leaders-name">' + esc(item.name || "") + "</span>" +
+      "</span>";
+    return wrapPerson(item, inner);
+  }
+
+  function boardRow(item) {
+    var inner = avatarHtml(item) +
+      '<span class="leaders-copy"><span class="leaders-name">' + esc(item.name || "") + "</span></span>";
+    return wrapPerson(item, inner);
+  }
+
+  function chairRow(item) {
+    var inner = avatarHtml(item) +
+      '<span class="leaders-copy"><span class="leaders-name">' + esc(item.name || "Open") + "</span></span>" +
+      '<span class="leaders-committee">' + esc(item.committee || "") + "</span>";
+    return wrapPerson(item, inner);
+  }
+
+  function renderLeadersHtml(groups) {
+    groups = groups || { officers: [], board: [], chairs: [] };
+    var officers = sortOfficers(groups.officers);
+    var board = sortBoard(groups.board);
+    var chairs = sortChairs(groups.chairs);
+    return (
+      '<header class="leaders-head">' +
+        '<p class="leaders-kicker">With gratitude</p>' +
+        '<h3 id="leadersBoardTitle">Shamrock Leaders</h3>' +
+        '<p class="leaders-intro">Officers, board members, and committee chairs who serve the Krewe of Shamrock.</p>' +
+      "</header>" +
+      '<div class="leaders-grid">' +
+        '<section class="leaders-col leaders-officers" aria-labelledby="leadersOfficersTitle">' +
+          '<h4 id="leadersOfficersTitle">Officers</h4>' +
+          listHtml(officers, officerRow) +
+        "</section>" +
+        '<section class="leaders-col leaders-col-board" aria-labelledby="leadersBoardColTitle">' +
+          '<h4 id="leadersBoardColTitle">Board</h4>' +
+          listHtml(board, boardRow) +
+        "</section>" +
+        '<section class="leaders-col leaders-chairs" aria-labelledby="leadersChairsTitle">' +
+          '<h4 id="leadersChairsTitle">Committee Chairs</h4>' +
+          listHtml(chairs, chairRow) +
+        "</section>" +
+      "</div>" +
+      '<p class="leaders-thanks">Thank you for the time, care, and craic you give this krewe.</p>'
+    );
+  }
+
   root.KOS_LEADERSHIP = {
     COMMITTEES: COMMITTEES,
     OFFICER_TITLES: OFFICER_TITLES,
@@ -210,7 +338,8 @@
     highestMemberRole: highestMemberRole,
     collectChecked: collectChecked,
     mountQuestionnaire: mountQuestionnaire,
-    groupLeaders: groupLeaders
+    groupLeaders: groupLeaders,
+    renderLeadersHtml: renderLeadersHtml
   };
 
   if (document.readyState === "loading") {

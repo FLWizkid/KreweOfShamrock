@@ -237,21 +237,104 @@
   .people-card .nm{ font-family:var(--display); color:var(--green-800); font-size:19px; line-height:1.25; margin:2px 0 0; }
   .people-card .rl{ font-size:15px; color:var(--muted); text-transform:none; }
   .people-card .rl.is-role{ text-transform:capitalize; }
-  .leaders-board{ display:grid; grid-template-columns:minmax(180px,1fr) minmax(160px,1fr) minmax(220px,1.4fr); gap:10px; margin:0 0 18px; }
-  .leaders-col{ border-radius:12px; padding:12px 14px 10px; min-width:0; }
-  .leaders-col h3{ margin:0 0 8px; font-family:var(--display); font-size:18px; color:var(--green-800); }
-  .leaders-col.leaders-officers{ background:#7cb342; color:#14321a; }
-  .leaders-col.leaders-officers h3, .leaders-col.leaders-officers .leaders-line{ color:#14321a; }
-  .leaders-col.leaders-board, .leaders-col.leaders-chairs{ background:#9a9a9a; color:#1f1f1f; }
-  .leaders-col.leaders-board h3, .leaders-col.leaders-chairs h3,
-  .leaders-col.leaders-board .leaders-line, .leaders-col.leaders-chairs .leaders-line{ color:#1f1f1f; }
-  .leaders-line{ display:flex; justify-content:space-between; gap:8px; font-size:14px; line-height:1.35; padding:3px 0; }
-  .leaders-line button{ appearance:none; border:0; background:transparent; padding:0; font:inherit; color:inherit; cursor:pointer; text-align:left; }
-  .leaders-line button:hover{ text-decoration:underline; }
-  .leaders-vacant{ font-style:italic; opacity:.9; }
-  .leaders-chairs-head{ display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:13px; font-weight:700; margin:0 0 4px; }
-  @media (max-width:800px){
-    .leaders-board{ grid-template-columns:1fr; }
+  .leaders-board{
+    position:relative; overflow:hidden;
+    margin:0 0 22px; padding:22px 18px 16px;
+    background:
+      radial-gradient(720px 220px at 0% 0%, rgba(212,175,55,.14), transparent 58%),
+      linear-gradient(180deg,#fffdf8 0%, #f6efdd 100%);
+    border:1px solid rgba(168,128,28,.38);
+    border-radius:18px;
+    box-shadow:var(--shadow-sm);
+    color:var(--ink);
+  }
+  .leaders-board::before{
+    content:"☘"; position:absolute; right:8px; top:-10px;
+    font-size:92px; line-height:1; opacity:.08; transform:rotate(14deg);
+    color:var(--green-800); pointer-events:none;
+  }
+  .leaders-head{ text-align:center; margin:0 0 16px; position:relative; }
+  .leaders-kicker{
+    margin:0 0 2px; font-family:var(--fancy); font-style:italic;
+    font-size:17px; color:var(--gold-deep); letter-spacing:.04em;
+  }
+  .leaders-head h3{
+    margin:0; font-family:var(--display); font-size:clamp(22px,3.4vw,28px);
+    color:var(--green-800); letter-spacing:.04em;
+  }
+  .leaders-head h3::after{
+    content:""; display:block; width:64px; height:2px; margin:9px auto 0;
+    background:var(--gold); border-radius:99px;
+  }
+  .leaders-intro{
+    margin:10px auto 0; max-width:36em; font-family:var(--fancy);
+    font-size:17px; color:var(--muted);
+  }
+  .leaders-grid{ display:grid; grid-template-columns:1fr; gap:14px; align-items:start; }
+  .leaders-col{
+    min-width:0; background:#fff;
+    border:1px solid rgba(168,128,28,.28); border-radius:16px;
+    box-shadow:0 1px 0 rgba(168,128,28,.08); overflow:hidden;
+  }
+  .leaders-officers{ background:linear-gradient(180deg,#fff,#eef6ee); }
+  .leaders-col h4{
+    margin:0; padding:12px 16px;
+    font-family:var(--display); font-size:14px; font-weight:600;
+    letter-spacing:.1em; text-transform:uppercase; color:#fff;
+    background:linear-gradient(180deg,var(--green-700),var(--green-800));
+    border-bottom:2px solid var(--gold);
+  }
+  .leaders-list{ list-style:none; margin:0; padding:8px; display:flex; flex-direction:column; gap:2px; }
+  .leaders-line{ margin:0; }
+  .leaders-person{
+    display:flex; align-items:center; gap:10px; width:100%;
+    min-height:44px; padding:8px 10px; border-radius:12px;
+    color:var(--ink); text-align:left;
+  }
+  button.leaders-person{
+    appearance:none; -webkit-appearance:none; border:0; background:transparent;
+    font:inherit; cursor:pointer;
+  }
+  button.leaders-person:hover{ background:rgba(20,83,45,.07); }
+  button.leaders-person:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
+  .leaders-av{
+    width:36px; height:36px; border-radius:50%; flex:none; overflow:hidden;
+    border:2px solid rgba(212,175,55,.6); background:var(--green-800); color:#f6efdc;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--display); font-size:13px;
+  }
+  .leaders-av img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .leaders-av-open{
+    background:#f4efe0; color:var(--green-700); border-color:rgba(168,128,28,.4); font-size:16px;
+  }
+  .leaders-copy{ display:flex; flex-direction:column; gap:1px; min-width:0; flex:1; }
+  .leaders-role{
+    font-family:var(--display); font-size:12px; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--gold-deep);
+  }
+  .leaders-name{
+    font-family:var(--display); font-size:17px; color:var(--green-800); line-height:1.25;
+  }
+  .leaders-committee{
+    flex:none; margin-left:auto;
+    font-family:var(--display); font-size:12px; letter-spacing:.04em; text-transform:uppercase;
+    color:var(--green-800); background:var(--green-50);
+    border:1px solid rgba(43,139,81,.28); border-radius:999px; padding:5px 10px;
+  }
+  .leaders-vacant .leaders-name{
+    font-family:var(--fancy); font-style:italic; font-size:17px; color:var(--muted); font-weight:500;
+  }
+  .leaders-vacant .leaders-committee{
+    background:#f4efe0; color:#5a5344; border-color:rgba(168,128,28,.35);
+  }
+  .leaders-empty{ margin:10px 14px 12px; color:var(--muted); font-family:var(--fancy); font-style:italic; }
+  .leaders-thanks{
+    position:relative; margin:16px 8px 2px; text-align:center;
+    font-family:var(--fancy); font-style:italic; font-size:16px; color:var(--muted);
+  }
+  @media (min-width:900px){
+    .leaders-board{ padding:24px 22px 18px; }
+    .leaders-grid{ grid-template-columns:minmax(0,1.05fr) minmax(0,.92fr) minmax(0,1.25fr); gap:16px; }
   }
   .people-card .people-go{ margin-top:4px; font-size:14px; letter-spacing:.04em; text-transform:uppercase;
     color:var(--green-800); background:rgba(29,107,62,.08); border:1px solid rgba(168,128,28,.3);
@@ -972,14 +1055,14 @@
             <section class="app-card" id="hubMemberDirectory" data-hub="krewe">
         <div class="app-head"><span class="ic">👥</span><div><h2>Member Directory</h2><small>Your krewe - faces first. Find everyone under My Krewe / Directory.</small></div></div>
         <div class="app-body">
-          <div id="hubLeaders" class="leaders-board" hidden></div>
+          <div id="hubLeaders" class="leaders-board" hidden role="region" aria-label="Shamrock Leaders"></div>
           <div class="people-toolbar">
             <input id="dirSearch" class="krewe-form" placeholder="Search by name…" style="padding:11px 13px;border:1px solid rgba(168,128,28,.5);border-radius:10px;" oninput="renderDir()" />
             <span class="people-count" id="dirCount"></span>
           </div>
           <div class="people-grid" id="dirGrid"><p class="empty">Loading directory…</p></div>
 
-          <p style="font-size:15px;color:var(--muted);margin-top:12px;">Shamrock Leaders (officers, board, and committee chairs) are listed above. Tap a card to open their My Krewe profile. Contact details stay private — reach people through a krewe officer or <a href="mailto:secretary@kreweofshamrock.com">email the Krewe</a>.</p><p style="margin:10px 0 0;"><a class="btn" href="https://www.facebook.com/groups/1790675004521855" target="_blank" rel="noopener noreferrer" style="background:#1877f2;color:#fff;border:0;display:inline-block;padding:8px 14px;border-radius:999px;font-weight:700;text-decoration:none;">📘 Members-only Facebook group →</a></p>
+          <p style="font-size:15px;color:var(--muted);margin-top:12px;">Tap a name to open the My Krewe profile. Contact details stay private. Reach people through a krewe officer or <a href="mailto:secretary@kreweofshamrock.com">email the Krewe</a>.</p><p style="margin:10px 0 0;"><a class="btn" href="https://www.facebook.com/groups/1790675004521855" target="_blank" rel="noopener noreferrer" style="background:#1877f2;color:#fff;border:0;display:inline-block;padding:8px 14px;border-radius:999px;font-weight:700;text-decoration:none;">📘 Members-only Facebook group →</a></p>
         </div>
       </section>
 
@@ -1292,38 +1375,17 @@
         box.innerHTML = "";
         return;
       }
-      function line(item){
-        const nm = esc(item.name || "Open");
-        const title = esc(item.title || "");
-        const vacant = item.vacant ? " leaders-vacant" : "";
-        const label = title ? (title + ": " + nm) : nm;
-        if (item.member_id && !item.vacant) {
-          return `<div class="leaders-line${vacant}"><button type="button" data-mid="${esc(item.member_id)}">${label}</button></div>`;
-        }
-        return `<div class="leaders-line${vacant}"><span>${label}</span></div>`;
-      }
-      function chairLine(item){
-        const nm = esc(item.name || "Open");
-        const committee = esc(item.committee || "");
-        const vacant = item.vacant ? " leaders-vacant" : "";
-        if (item.member_id && !item.vacant) {
-          return `<div class="leaders-line${vacant}"><button type="button" data-mid="${esc(item.member_id)}">${nm}</button><span>${committee}</span></div>`;
-        }
-        return `<div class="leaders-line${vacant}"><span>${nm}</span><span>${committee}</span></div>`;
-      }
       box.hidden = false;
-      box.innerHTML =
-        `<div class="leaders-col leaders-officers"><h3>Officers</h3>${groups.officers.map(line).join("") || '<p class="empty">—</p>'}</div>` +
-        `<div class="leaders-col leaders-board"><h3>Board Member</h3>${groups.board.map(function(item){
-          const nm = esc(item.name || "");
-          if (item.member_id) return `<div class="leaders-line"><button type="button" data-mid="${esc(item.member_id)}">${nm}</button></div>`;
-          return `<div class="leaders-line"><span>${nm}</span></div>`;
-        }).join("") || '<p class="empty">—</p>'}</div>` +
-        `<div class="leaders-col leaders-chairs"><h3>Committee Chair</h3><div class="leaders-chairs-head"><span>Committee Chair</span><span>Committee</span></div>${groups.chairs.map(chairLine).join("") || '<p class="empty">—</p>'}</div>`;
+      box.setAttribute("role", "region");
+      box.setAttribute("aria-labelledby", "leadersBoardTitle");
+      box.innerHTML = (window.KOS_LEADERSHIP && window.KOS_LEADERSHIP.renderLeadersHtml)
+        ? window.KOS_LEADERSHIP.renderLeadersHtml(groups)
+        : "";
       box.querySelectorAll("button[data-mid]").forEach(function(btn){
         btn.addEventListener("click", function(){ window.openMemberProfile(btn.getAttribute("data-mid")); });
       });
     }
+    window.renderLeaders = renderLeaders;
     async function loadDir(){
       const grid=document.getElementById("dirGrid");
       let rows=null, error=null;
@@ -3007,7 +3069,7 @@
     document.addEventListener("keydown",e=>{ if(e.key==="Escape" && window.closeRaffles) closeRaffles(); });
   </script>
 
-<script src="assets/kos-leadership.js?v=20260916lead5"></script>
+<script src="assets/kos-leadership.js?v=20260916lead6"></script>
 <script src="assets/members-desk.js?v=20260916lead1" defer></script>
   <script src="assets/kos-event-studio.js?v=20260916reg2" defer></script>
   <script src="assets/kos-shop-studio.js?v=20260910shopfix" defer></script>
