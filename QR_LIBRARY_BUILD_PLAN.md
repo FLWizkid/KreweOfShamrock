@@ -153,7 +153,9 @@ Grow `assets/kos-qr-studio.js` from "tonight's handy squares" into the library v
   of the library instead of parallel implementations).
 - A **print-sheet builder**: pick any set of codes, get a `raffle-qr-sheet.html`-style
   page (that page then becomes just a preset of this builder).
-- Scan-count report added to `assets/kos-reports.js` (pattern: the existing reports).
+- Scan counts are surfaced directly in the library table (total, last 30 days, last
+  scan), so a separate `assets/kos-reports.js` report is optional — add one later only
+  if officers want scans inside the Reports dashboard too.
 
 ### Phase 4 — Attendance QR upgrades (the old "Attendance QR Studio" roadmap item)
 
@@ -197,8 +199,8 @@ upgrades to the existing Door check-in button.
 | 0 | Self-host the QR library (ships with this plan) | — | done |
 | 1 | Export + commit the missing `kos_parade_ready_engine` / `kos_checkin_codes_private` migrations to `sql/` | database access | tiny |
 | 2 | Phase 1: shared `assets/kos-qr.js`, delete the five copies, add Download PNG | — | done |
-| 3 | Phase 2: `sql/kos_qr_registry.sql` + `go.html` | run the migration in Supabase | built |
-| 4 | Phase 3: QR Library card + print-sheet builder + scan report | Phase 2 | medium |
+| 3 | Phase 2: `sql/kos_qr_registry.sql` + `go.html` | migration applied 2026-09-18 | done |
+| 4 | Phase 3: QR Library card + print-sheet builder (scan counts shown in the card) | Phase 2 | done |
 | 5 | Phase 4: hours-on-scan, live door count | — (parallel ok) | medium |
 
 *Written 2026-09-18 from a review of the `main` branch. Sources: `QR_FEATURE_SOLUTIONS.md`,
