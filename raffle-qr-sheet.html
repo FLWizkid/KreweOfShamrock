@@ -38,6 +38,8 @@
        If the local file somehow fails, fall back to the CDN copy. -->
   <script src="assets/vendor/qrcode.min.js?v=153"
           onerror="var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js';document.head.appendChild(s);"></script>
+  <!-- Shared QR generator (see QR_LIBRARY_BUILD_PLAN.md Phase 1). -->
+  <script src="assets/kos-qr.js?v=20260918qr1"></script>
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
     const sb = createClient("https://oazwkwflgbthojvnclfc.supabase.co","sb_publishable_aMCyVxkiolMuBt9_R990CA_xQmXLaaS");
@@ -48,9 +50,7 @@
       const d=document.createElement('div'); d.className='qr-card'+(cls?' '+cls:'');
       d.innerHTML='<h2>'+E(title)+'</h2><div class="sub">'+E(sub)+'</div><canvas></canvas><div class="scan">📷 Scan to enter</div>';
       grid.appendChild(d);
-      if (window.QRCode) {
-        QRCode.toCanvas(d.querySelector('canvas'), url, {width:230, margin:1, color:{dark:'#0c3b21',light:'#ffffff'}});
-      } else {
+      if (!(window.kosQR && kosQR.draw(d.querySelector('canvas'), url, 230))) {
         d.querySelector('canvas').replaceWith(Object.assign(document.createElement('p'), {
           textContent: 'QR library unavailable — use the printed URL or open raffle.html.'
         }));

@@ -1727,14 +1727,7 @@
   }
 
   function studioPaintQR(slot, url, label) {
-    if (!slot) return;
-    slot.innerHTML = '<canvas></canvas><div style="font-size:15px;color:var(--muted);margin-top:6px;word-break:break-all;">' +
-      esc(label || "Scan or open") + ': <a href="' + esc(url) + '" target="_blank" rel="noopener">' + esc(url) + "</a></div>";
-    if (window.QRCode) {
-      QRCode.toCanvas(slot.querySelector("canvas"), url, { width: 220, margin: 1, color: { dark: "#14532d", light: "#ffffff" } });
-    } else {
-      slot.querySelector("canvas").replaceWith(Object.assign(document.createElement("p"), { textContent: "QR library unavailable - use the link." }));
-    }
+    if (window.kosQR) kosQR.paint(slot, url, label);
   }
 
   async function studioShowEventCheckinQR(eventId, slot) {
