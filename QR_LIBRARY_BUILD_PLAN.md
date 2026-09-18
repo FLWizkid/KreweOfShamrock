@@ -201,7 +201,7 @@ upgrades to the existing Door check-in button.
 | 2 | Phase 1: shared `assets/kos-qr.js`, delete the five copies, add Download PNG | — | done |
 | 3 | Phase 2: `sql/kos_qr_registry.sql` + `go.html` | migration applied 2026-09-18 | done |
 | 4 | Phase 3: QR Library card + print-sheet builder (scan counts shown in the card) | Phase 2 | done |
-| 5 | Phase 4: hours-on-scan, live door count | — (parallel ok) | medium |
+| 5 | Phase 4: hours-on-scan, live door count (`sql/kos_attendance_qr_hours.sql`) | run the migration in Supabase | built |
 
 *Written 2026-09-18 from a review of the `main` branch. Sources: `QR_FEATURE_SOLUTIONS.md`,
 `DATABASE_BACKEND.md` §Parade Ready, `SOFTWARE_ARCHITECTURE.md` §QR feature solutions,

@@ -251,3 +251,18 @@ Migration: `sql/kos_qr_registry.sql` (QR_LIBRARY_BUILD_PLAN.md Phase 2).
 | `officer_list_qr_codes()` | Officer RPC: every code with `scan_count`, `scans_30d`, and `last_scan_at` — the data source for the Phase 3 QR Library card. |
 
 Frontend: `go.html` (the tracked hop; plain fetch to PostgREST, no third-party scripts).
+
+## Attendance QR upgrades (added 2026-09)
+
+Migration: `sql/kos_attendance_qr_hours.sql` (QR_LIBRARY_BUILD_PLAN.md Phase 4).
+
+| Object | Purpose |
+| --- | --- |
+| `door_checkins` | Committed door log: one row per member per event (`event_id`, `member_id`, `checked_at`, `hours_awarded`). Unique on (event, member) so re-scans never double-count. Locked down; access via RPCs only. |
+| `kos_volunteer_season_year()` | Season-year rule shared with the front end: June onward belongs to the season ending next year. |
+| `kos_checkin_event_for_code(code)` | Guarded dynamic lookup from a check-in code to its event via the uncommitted `meeting_checkin_codes`; if that table's columns differ, check-in still works and hours-on-scan no-ops (the migration prints a warning with the real columns). |
+| `door_check_in(p_code)` | Member RPC used by the `?checkin=CODE` flow: calls the existing `meeting_check_in` (Parade Ready attendance unchanged), records the scan in `door_checkins`, and — for volunteer events or members signed up as volunteers — inserts a PENDING `volunteer_hours` row (planned hours, else event duration, else 2; clamped 0.5–24). Front end falls back to `meeting_check_in` if this migration is not applied. |
+| `officer_door_count(p_event)` | Officer RPC behind the Live door count view: running total, pending hours sum, and the last 12 names. |
+
+Frontend: members.html check-in flow (adds the "volunteer hours logged — pending review" note) and the
+📊 Live door count button on each meeting in the QR Code Studio (refreshes every 10 seconds; projector friendly).
