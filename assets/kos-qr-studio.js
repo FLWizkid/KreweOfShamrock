@@ -92,19 +92,7 @@
       if (res.error || !res.data) throw res.error || new Error("No check-in code");
       var url = location.origin + location.pathname + "?checkin=" + res.data;
       var slot = btn.parentElement.querySelector(".qr-slot");
-      slot.innerHTML =
-        '<canvas></canvas><div style="font-size:13px;color:var(--muted);margin-top:4px;">Members scan this, or use the link: <a href="' +
-        esc(url) +
-        '">' +
-        esc(url) +
-        "</a></div>";
-      if (window.QRCode) {
-        QRCode.toCanvas(slot.querySelector("canvas"), url, {
-          width: 220,
-          margin: 1,
-          color: { dark: "#14532d", light: "#ffffff" }
-        });
-      }
+      if (window.kosQR) kosQR.paint(slot, url, "Members scan this, or use the link");
     } catch (e) {
       alert("Could not get a check-in code. " + ((e && e.message) || e));
     }
@@ -142,19 +130,7 @@
     var url = btn.getAttribute("data-qr-url") || "";
     var slot = btn.parentElement.querySelector(".qr-slot");
     if (!url || !slot) return;
-    slot.innerHTML =
-      '<canvas></canvas><div style="font-size:13px;color:var(--muted);margin-top:4px;word-break:break-all;">Scan or open: <a href="' +
-      esc(url) +
-      '" target="_blank" rel="noopener">' +
-      esc(url) +
-      "</a></div>";
-    if (window.QRCode) {
-      QRCode.toCanvas(slot.querySelector("canvas"), url, {
-        width: 220,
-        margin: 1,
-        color: { dark: "#14532d", light: "#ffffff" }
-      });
-    }
+    if (window.kosQR) kosQR.paint(slot, url, "Scan or open");
   }
 
   function quickRow(title, note, url) {

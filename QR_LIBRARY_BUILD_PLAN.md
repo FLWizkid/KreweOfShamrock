@@ -194,7 +194,7 @@ upgrades to the existing Door check-in button.
 |---|---|---|---|
 | 0 | Self-host the QR library (ships with this plan) | — | done |
 | 1 | Export + commit the missing `kos_parade_ready_engine` / `kos_checkin_codes_private` migrations to `sql/` | database access | tiny |
-| 2 | Phase 1: shared `assets/kos-qr.js`, delete the five copies, add Download PNG | — | small |
+| 2 | Phase 1: shared `assets/kos-qr.js`, delete the five copies, add Download PNG | — | done |
 | 3 | Phase 2: `sql/kos_qr_registry.sql` + `go.html` | officer decisions (§4) | medium |
 | 4 | Phase 3: QR Library card + print-sheet builder + scan report | Phase 2 | medium |
 | 5 | Phase 4: hours-on-scan, live door count | — (parallel ok) | medium |

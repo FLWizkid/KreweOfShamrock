@@ -594,6 +594,8 @@
        If the local file somehow fails, fall back to the CDN copy. -->
   <script src="assets/vendor/qrcode.min.js?v=153" defer
           onerror="var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js';document.head.appendChild(s);"></script>
+  <!-- Shared QR generator: every studio draws its squares through kosQR (see QR_LIBRARY_BUILD_PLAN.md Phase 1). -->
+  <script src="assets/kos-qr.js?v=20260918qr1" defer></script>
   <script>
   /* A meeting QR lands here as ?checkin=CODE; stash it so it survives the sign-in.
      A members-only page (e.g. share.html) lands here as ?next=PAGE; stash it (15-minute
@@ -1765,24 +1767,14 @@
       if(error || !code){ alert("Could not get a check-in code. " + ((error&&error.message)||"")); return; }
       const url = location.origin + location.pathname + "?checkin=" + code;
       const slot = btn.parentElement.querySelector(".qr-slot");
-      slot.innerHTML = `<canvas></canvas><div style="font-size:13px;color:var(--muted);margin-top:4px;">Members scan this, or use the link: <a href="${url}">${esc(url)}</a></div>`;
-      if(window.QRCode){
-        QRCode.toCanvas(slot.querySelector("canvas"), url, { width:220, margin:1, color:{ dark:"#14532d", light:"#ffffff" } });
-      } else {
-        slot.querySelector("canvas").replaceWith(Object.assign(document.createElement("p"),{ textContent:"QR library unavailable; share the link instead." }));
-      }
+      kosQR.paint(slot, url, "Members scan this, or use the link");
     };
     /* Static / deep-link QR helpers (dues, hours, etc.) */
     window.kosShowLinkQR = (btn)=>{
       const url = btn.getAttribute("data-qr-url") || "";
       const slot = btn.parentElement.querySelector(".qr-slot");
       if(!url || !slot){ alert("Missing QR link."); return; }
-      slot.innerHTML = `<canvas></canvas><div style="font-size:13px;color:var(--muted);margin-top:4px;word-break:break-all;">Scan or open: <a href="${esc(url)}" target="_blank" rel="noopener">${esc(url)}</a></div>`;
-      if(window.QRCode){
-        QRCode.toCanvas(slot.querySelector("canvas"), url, { width:220, margin:1, color:{ dark:"#14532d", light:"#ffffff" } });
-      } else {
-        slot.querySelector("canvas").replaceWith(Object.assign(document.createElement("p"),{ textContent:"QR library unavailable; share the link instead." }));
-      }
+      kosQR.paint(slot, url, "Scan or open");
     };
 
     /* ================= REPORTS DASHBOARD ================= */
