@@ -99,6 +99,7 @@
   function renderLibrary(client) {
     var el = document.getElementById("hubQrLibList");
     if (!el) return;
+    buildPickerOptions(); // keep the quick picker's library group in sync
     if (!libCodes.length) {
       el.innerHTML = '<p class="empty">No tracked QR codes yet. Create the first one above — try “Pay member dues”.</p>';
       return;
@@ -389,37 +390,125 @@
     }
   }
 
-  /* ================= HANDY LINK SQUARES ================= */
+  /* ================= QUICK QR PICKER =================
+     One dropdown for every square: events (filled in automatically from
+     Event Studio's events table), tracked library codes, and handy links. */
 
-  function paintLinkQR(btn) {
-    if (typeof window.kosShowLinkQR === "function") {
-      window.kosShowLinkQR(btn);
-      return;
+  var HANDY_LINKS = [];
+  var pickerEvents = [];
+
+  function buildPickerOptions() {
+    var sel = document.getElementById("hubQrPick");
+    if (!sel) return;
+    var current = sel.value;
+    var html = '<option value="">Pick an event, library code, or link…</option>';
+    if (pickerEvents.length) {
+      html +=
+        '<optgroup label="Events (added automatically)">' +
+        pickerEvents.map(function (r) {
+          var extra = r.status && String(r.status).toLowerCase() !== "published" ? " · " + r.status : "";
+          return '<option value="ev:' + esc(r.id) + '">' + esc(r.name) + " — " + esc(fmtDate(r.start_time)) + esc(extra) + "</option>";
+        }).join("") +
+        "</optgroup>";
     }
-    var url = btn.getAttribute("data-qr-url") || "";
-    var slot = btn.parentElement.querySelector(".qr-slot");
-    if (!url || !slot) return;
-    if (window.kosQR) kosQR.paint(slot, url, "Scan or open");
+    if (libCodes.length) {
+      html +=
+        '<optgroup label="Tracked library codes">' +
+        libCodes.map(function (c) {
+          return '<option value="lib:' + esc(c.id) + '">' + esc(c.label) + (c.active ? "" : " · retired") + "</option>";
+        }).join("") +
+        "</optgroup>";
+    }
+    if (HANDY_LINKS.length) {
+      html +=
+        '<optgroup label="Handy links">' +
+        HANDY_LINKS.map(function (l, i) {
+          return '<option value="link:' + i + '">' + esc(l.label) + "</option>";
+        }).join("") +
+        "</optgroup>";
+    }
+    sel.innerHTML = html;
+    if (current) sel.value = current;
   }
 
-  function quickRow(title, note, url) {
-    return (
-      '<div style="padding:12px 0;border-bottom:1px dashed rgba(168,128,28,.3);">' +
-      '<b style="font-family:var(--display);color:var(--green-800);">' +
-      esc(title) +
-      "</b>" +
-      '<div style="font-size:14px;color:var(--muted);margin:4px 0 8px;">' +
-      esc(note) +
-      "</div>" +
-      '<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">' +
-      '<button type="button" class="btn" data-qr-url="' +
-      esc(url) +
-      '">▦ Show QR</button>' +
-      '<a href="' +
-      esc(url) +
-      '" target="_blank" rel="noopener" style="font-size:13px;">Open link</a>' +
-      '<div class="qr-slot" style="flex-basis:100%;"></div></div></div>'
-    );
+  async function loadPickerEvents(client) {
+    try {
+      var since = new Date(Date.now() - 86400000).toISOString();
+      var res = await client
+        .from("events")
+        .select("id,name,start_time,event_type,status")
+        .gte("start_time", since)
+        .order("start_time", { ascending: true });
+      if (res.error) throw res.error;
+      pickerEvents = (res.data || []).filter(function (r) {
+        return String(r.status || "").toLowerCase() !== "cancelled";
+      });
+    } catch (e) {
+      pickerEvents = [];
+    }
+    buildPickerOptions();
+  }
+
+  function onPickerChange(client) {
+    var sel = document.getElementById("hubQrPick");
+    var actions = document.getElementById("hubQrPickActions");
+    var slot = document.getElementById("hubQrPickSlot");
+    if (!sel || !actions || !slot) return;
+    actions.innerHTML = "";
+    slot.innerHTML = "";
+    var v = sel.value || "";
+    if (!v) return;
+    var kind = v.split(":")[0];
+    var id = v.slice(kind.length + 1);
+
+    if (kind === "link") {
+      var l = HANDY_LINKS[Number(id)];
+      if (l && window.kosQR) kosQR.paint(slot, l.url, l.label);
+      return;
+    }
+    if (kind === "lib") {
+      var c = libCodes.find(function (x) { return String(x.id) === id; });
+      if (c && window.kosQR) kosQR.paint(slot, abs("go.html?c=" + encodeURIComponent(c.slug)), c.label);
+      return;
+    }
+
+    var ev = pickerEvents.find(function (x) { return String(x.id) === id; });
+    if (!ev) return;
+    function mkBtn(text, fn) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "btn";
+      b.textContent = text;
+      b.onclick = fn;
+      return b;
+    }
+    actions.appendChild(mkBtn("▦ RSVP QR", function () {
+      if (window.kosQR) kosQR.paint(slot, abs("event-signup.html?event=" + encodeURIComponent(ev.id)), ev.name + " — RSVP");
+    }));
+    actions.appendChild(mkBtn("▦ Door check-in QR", async function () {
+      slot.innerHTML = '<p class="empty">Making check-in QR…</p>';
+      try {
+        var res = await client.rpc("officer_enable_checkin", { p_event: ev.id });
+        if (res.error || !res.data) throw res.error || new Error("No check-in code returned.");
+        if (window.kosQR) kosQR.paint(slot, abs("members.html?checkin=" + encodeURIComponent(res.data)), ev.name + " — door check-in");
+      } catch (e) {
+        slot.innerHTML = '<p class="empty">Couldn&rsquo;t make a check-in QR. ' + esc((e && e.message) || e) + "</p>";
+      }
+    }));
+    actions.appendChild(mkBtn("📊 Live door count", function () {
+      paintDoorCount(client, ev.id, slot);
+    }));
+    actions.appendChild(mkBtn("➕ Save tracked RSVP in library", function () {
+      libSetForm(null);
+      document.getElementById("hubQrLibLabel").value = ev.name + " RSVP";
+      var slugEl = document.getElementById("hubQrLibSlug");
+      slugEl.value = slugify(ev.name + "-rsvp");
+      slugEl.dataset.touched = "1";
+      document.getElementById("hubQrLibTarget").value = abs("event-signup.html?event=" + encodeURIComponent(ev.id));
+      document.getElementById("hubQrLibPurpose").value = "event_rsvp";
+      showMsg("hubQrLibMsg", "Prefilled from “" + ev.name + "”. Press the create button to save the tracked square.");
+      document.getElementById("hubQrLibLabel").focus();
+    }));
   }
 
   /* ================= CARD ================= */
@@ -452,12 +541,23 @@
 
     card.innerHTML =
       '<div class="app-head"><span class="ic">▦</span><div><h2>QR Code Studio</h2>' +
-      "<small>The QR library, meeting check-in, and handy deep-link QR codes</small></div></div>" +
+      "<small>Every square in one place: events, tracked library codes, and handy links</small></div></div>" +
       '<div class="app-body">' +
       '<p style="font-size:14px;color:var(--muted);margin:0 0 14px;line-height:1.45;">' +
-      "A QR code is just a link drawn as a square. <b>Library squares</b> below are tracked: they encode " +
-      "go.html?c=CODE, count scans anonymously, and can be re-pointed after printing. " +
-      "<b>Event Studio</b> has RSVP / door QR. <b>Shop Studio</b> has product QR.</p>" +
+      "A QR code is just a link drawn as a square. Pick anything from the menu below — events show up " +
+      "automatically when they are created in Event Studio. <b>Library squares</b> are tracked: they encode " +
+      "go.html?c=CODE, count scans anonymously, and can be re-pointed after printing.</p>" +
+
+      /* ---- Quick QR picker ---- */
+      '<div style="margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid rgba(168,128,28,.25);">' +
+      '<h3 style="font-family:var(--display);color:var(--green-800);margin:0 0 10px;">🎯 Quick QR picker</h3>' +
+      '<label for="hubQrPick" style="' + labelStyle + '">Event, library code, or link</label>' +
+      '<select id="hubQrPick" style="' + inputStyle + '"></select>' +
+      '<div id="hubQrPickActions" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;"></div>' +
+      '<div class="qr-slot" id="hubQrPickSlot" style="margin-top:8px;"></div>' +
+      '<p style="font-size:13px;color:var(--muted);margin:10px 0 0;">Raffle basket QRs stay on the <a href="' +
+      esc(raffle) +
+      '" target="_blank" rel="noopener">raffle print sheet</a>.</p></div>' +
 
       /* ---- QR Library ---- */
       '<div style="margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid rgba(168,128,28,.25);">' +
@@ -493,18 +593,6 @@
       '<p id="hubQrMtMsg" style="font-size:14px;min-height:1.2em;margin:8px 0 0;" aria-live="polite"></p>' +
       '<h3 style="font-family:var(--display);color:var(--green-800);margin:18px 0 8px;">📲 Upcoming meetings</h3>' +
       '<div id="hubQrMeetingList"></div></div>' +
-
-      /* ---- Handy squares ---- */
-      '<h3 style="font-family:var(--display);color:var(--green-800);margin:0 0 8px;">Tonight&rsquo;s handy squares</h3>' +
-      '<p style="font-size:13px;color:var(--muted);margin:0 0 8px;">Untracked one-taps. To count scans on one of these, create it in the library above instead.</p>' +
-      quickRow("Pay member dues", "Meeting slide / postcard", dues) +
-      quickRow("Log volunteer hours", "Warehouse door → login → form", hours) +
-      quickRow("Krewe store", "Whole shop, not one product", store) +
-      quickRow("Members Facebook group", "Welcome packet", fbMem) +
-      quickRow("Help / secretary", "Report a problem", help) +
-      '<p style="font-size:13px;color:var(--muted);margin:14px 0 0;">Raffle basket QRs stay on the <a href="' +
-      esc(raffle) +
-      '" target="_blank" rel="noopener">raffle print sheet</a>.</p>' +
       "</div>";
 
     /* Library wiring */
@@ -521,16 +609,24 @@
     loadLibrary(client);
     window.kosRefreshQrLibrary = function () { loadLibrary(client); };
 
+    /* Quick picker wiring */
+    HANDY_LINKS = [
+      { label: "Pay member dues (Zeffy)", url: dues },
+      { label: "Log volunteer hours", url: hours },
+      { label: "Krewe store", url: store },
+      { label: "Members Facebook group", url: fbMem },
+      { label: "Help / secretary email", url: help }
+    ];
+    buildPickerOptions();
+    loadPickerEvents(client);
+    document.getElementById("hubQrPick").onchange = function () { onPickerChange(client); };
+    window.kosRefreshQrPicker = function () { loadPickerEvents(client); };
+
     /* Meeting wiring */
     var listEl = document.getElementById("hubQrMeetingList");
     document.getElementById("hubQrMtCreate").onclick = function () {
       createMeeting(client, listEl);
     };
-    card.querySelectorAll("[data-qr-url]").forEach(function (btn) {
-      btn.onclick = function () {
-        paintLinkQR(btn);
-      };
-    });
     loadMeetings(client, listEl);
     window.kosRefreshQrMeetings = function () {
       loadMeetings(client, listEl);
