@@ -82,13 +82,13 @@ h1,h2,h3{ font-family:var(--display); letter-spacing:.4px; line-height:1.2; }
   border:2px solid var(--gold); box-shadow:0 0 0 2px rgba(212,175,55,.25); }
 .krewe-nav .brand .name{ display:flex; flex-direction:column; line-height:1.05; }
 .krewe-nav .brand .name b{ font-family:var(--display); font-weight:700; font-size:19px; letter-spacing:.6px; }
-.krewe-nav .brand .name small{ font-family:var(--fancy); font-style:italic; font-size:13px; color:var(--gold-light); letter-spacing:.5px; }
+.krewe-nav .brand .name small{ font-family:var(--fancy); font-style:italic; font-size:14px; color:var(--gold-light); letter-spacing:.5px; }
 
 .krewe-links{ display:flex; flex-wrap:wrap; align-items:center; }
 .krewe-links a{
   color:#f3ecd6; text-decoration:none; font-family:var(--display);
-  font-size:14px; font-weight:500; letter-spacing:.5px;
-  margin-left:6px; padding:8px 12px; border-radius:8px;
+  font-size:16px; font-weight:500; letter-spacing:.2px;
+  margin-left:6px; padding:8px 10px; border-radius:8px;
   transition:background .15s, color .15s;
 }
 .krewe-links a:hover{ background:rgba(212,175,55,.16); color:#fff; }
@@ -239,7 +239,7 @@ h1,h2,h3{ font-family:var(--display); letter-spacing:.4px; line-height:1.2; }
   background:var(--paper); border-radius:var(--radius); padding:22px 24px;
   border-left:5px solid var(--gold); box-shadow:var(--shadow-sm);
 }
-.event-card .type{ font-size:12px; text-transform:uppercase; letter-spacing:1px; color:var(--green-700); font-weight:700; font-family:var(--display); }
+.event-card .type{ font-size:14px; text-transform:uppercase; letter-spacing:1px; color:var(--green-700); font-weight:700; font-family:var(--display); }
 .event-card h3{ margin:6px 0; color:var(--green-800); font-size:21px; }
 .event-card .meta{ color:var(--muted); font-size:17px; margin-bottom:14px; font-family:var(--fancy); font-style:italic; }
 .event-card a.rsvp{ font-family:var(--display); font-weight:600; text-decoration:none; color:var(--green-700); }
@@ -255,7 +255,7 @@ h1,h2,h3{ font-family:var(--display); letter-spacing:.4px; line-height:1.2; }
   background:var(--paper); border-left:5px solid var(--gold); border-radius:12px;
   padding:26px 28px; margin-bottom:26px; box-shadow:var(--shadow-sm);
 }
-.article .cat{ font-size:12px; text-transform:uppercase; letter-spacing:.8px; color:var(--green-700); font-weight:700; font-family:var(--display); }
+.article .cat{ font-size:14px; text-transform:uppercase; letter-spacing:.8px; color:var(--green-700); font-weight:700; font-family:var(--display); }
 .article h2{ margin:4px 0 4px; color:var(--green-800); }
 .article .by{ color:var(--muted); font-size:14px; margin-bottom:10px; font-family:var(--fancy); font-style:italic; }
 .article img{ width:100%; border-radius:10px; margin:12px 0; }
@@ -321,10 +321,10 @@ form.krewe-form{ padding:26px 30px 30px; }
 .krewe-foot .fimg{ width:64px; height:64px; border-radius:50%; border:2px solid var(--gold); margin:0 auto 12px; }
 .krewe-foot .fname{ font-family:var(--display); font-size:22px; color:#fff; letter-spacing:.6px; }
 .krewe-foot .flinks{ margin:14px 0 10px; }
-.krewe-foot .flinks a{ color:var(--gold-light); text-decoration:none; margin:0 10px; font-family:var(--display); font-size:14px; }
+.krewe-foot .flinks a{ color:var(--gold-light); text-decoration:none; margin:0 10px; font-family:var(--display); font-size:15px; }
 .krewe-foot .flinks a:hover{ color:#fff; text-decoration:underline; }
 .krewe-foot .slainte{ font-family:var(--fancy); font-style:italic; font-size:18px; color:var(--gold-light); margin-top:8px; }
-.krewe-foot .fine{ opacity:.6; font-size:13px; margin-top:6px; }
+.krewe-foot .fine{ opacity:.6; font-size:14px; margin-top:6px; }
 
 /* ============================================================
    MUSIC PLAYER  (floating, paused by default, click violin to play)
@@ -375,7 +375,7 @@ form.krewe-form{ padding:26px 30px 30px; }
 }
 @media (max-width:680px){
   body{ font-size:19px; }
-  .krewe-links a{ font-size:13px; padding:7px 9px; margin-left:2px; }
+  .krewe-links a{ font-size:16px; padding:7px 9px; margin-left:2px; }
   .krewe-nav .brand .name small{ display:none; }
   .krewe-music .label{ display:none; }
   .wrap{ padding:40px 16px; }
@@ -508,7 +508,7 @@ form.krewe-form{ padding:26px 30px 30px; }
   opacity:0; transform:translateY(8px); transition:opacity .3s, transform .3s;
 }
 .mosaic figcaption small{ display:block; font-family:var(--fancy); font-style:italic;
-  font-size:13px; color:var(--gold-light); }
+  font-size:14px; color:var(--gold-light); }
 .mosaic figure:hover figcaption{ opacity:1; transform:translateY(0); }
 .mosaic .wide{ grid-column:span 2; }
 .mosaic .tall{ grid-row:span 2; }
@@ -582,15 +582,15 @@ form.krewe-form{ padding:26px 30px 30px; }
 .krewe-nav .brand img{ width:42px; height:42px; border-radius:50%; border:2px solid var(--gold); box-shadow:0 0 0 2px rgba(212,175,55,.25); }
 .krewe-nav .brand .name{ display:flex; flex-direction:column; line-height:1.05; }
 .krewe-nav .brand .name b{ font-family:var(--display); font-weight:700; font-size:19px; letter-spacing:.6px; }
-.krewe-nav .brand .name small{ font-family:var(--fancy); font-style:italic; font-size:13px; color:var(--gold-light); letter-spacing:.5px; }
+.krewe-nav .brand .name small{ font-family:var(--fancy); font-style:italic; font-size:14px; color:var(--gold-light); letter-spacing:.4px; }
 
-.krewe-menu{ display:flex; align-items:center; gap:8px; }
-.krewe-links{ display:flex; align-items:center; gap:2px; list-style:none; margin:0; padding:0; }
+.krewe-menu{ display:flex; align-items:center; gap:4px; flex-wrap:nowrap; }
+.krewe-links{ display:flex; align-items:center; gap:0; list-style:none; margin:0; padding:0; flex-wrap:nowrap; }
 .krewe-links > li{ position:relative; }
 .krewe-links a, .nav-group-btn{
-  display:flex; align-items:center; gap:6px;
-  color:#f3ecd6; font-family:var(--display); font-size:14px; font-weight:500; letter-spacing:.5px;
-  padding:9px 13px; border-radius:8px; text-decoration:none;
+  display:flex; align-items:center; gap:5px;
+  color:#f3ecd6; font-family:var(--display); font-size:16px; font-weight:500; letter-spacing:0;
+  padding:8px 8px; border-radius:8px; text-decoration:none;
   background:none; border:0; cursor:pointer; white-space:nowrap; font-kerning:none;
   transition:background .15s, color .15s;
 }
@@ -610,7 +610,7 @@ form.krewe-form{ padding:26px 30px 30px; }
   transition:opacity .16s, transform .16s, visibility .16s;
 }
 .nav-dropdown li{ list-style:none; }
-.nav-dropdown a{ display:block; width:100%; font-size:14px; }
+.nav-dropdown a{ display:block; width:100%; font-size:16px; }
 .nav-group:hover > .nav-dropdown,
 .nav-group:focus-within > .nav-dropdown,
 .nav-group.open > .nav-dropdown{ opacity:1; visibility:visible; transform:translateY(0); }
@@ -618,10 +618,10 @@ form.krewe-form{ padding:26px 30px 30px; }
 .nav-group.open > .nav-group-btn .caret{ transform:rotate(180deg); }
 
 .nav-cta{
-  display:inline-flex; align-items:center; gap:6px; margin-left:6px;
-  padding:10px 18px; border-radius:999px;
+  display:inline-flex; align-items:center; gap:6px; margin-left:4px;
+  padding:9px 14px; border-radius:999px;
   background:var(--gold); color:var(--green-900);
-  font-family:var(--display); font-weight:700; font-size:14px; letter-spacing:.5px;
+  font-family:var(--display); font-weight:700; font-size:16px; letter-spacing:0;
   text-decoration:none; white-space:nowrap;
   box-shadow:0 4px 12px rgba(212,175,55,.35);
   transition:transform .12s, box-shadow .15s, background .15s;
@@ -648,7 +648,8 @@ form.krewe-form{ padding:26px 30px 30px; }
 .nav-backdrop{ display:none; }
 
 /* ---------- MOBILE / TABLET ---------- */
-@media (max-width:980px){
+/* 1140px so 16px nav type never wraps on the desktop bar (was 980px). */
+@media (max-width:1140px){
   .nav-toggle{ display:inline-flex; }
   .krewe-menu{
     position:fixed; top:0; right:0; z-index:1001;
@@ -672,7 +673,7 @@ form.krewe-form{ padding:26px 30px 30px; }
     transition:max-height .26s ease, padding .26s ease;
   }
   .nav-group.open > .nav-dropdown{ max-height:360px; padding:6px 4px; }
-  .nav-dropdown a{ font-size:15px; padding:12px 14px 12px 22px; }
+  .nav-dropdown a{ font-size:16px; padding:12px 14px 12px 22px; }
   .nav-cta{ margin:16px 0 0; justify-content:center; padding:15px; font-size:16px; }
   .nav-backdrop{ display:block; position:fixed; inset:0; z-index:1000;
     background:rgba(6,28,16,.5); opacity:0; visibility:hidden; transition:opacity .22s; }
@@ -774,7 +775,7 @@ table{ max-width:100%; }
   margin-left:8px; padding:6px 12px; border-radius:999px;
   background:var(--green-50); color:var(--green-900);
   border:1px solid rgba(212,175,55,.55);
-  font-family:var(--display); font-size:14px; font-weight:700;
+  font-family:var(--display); font-size:16px; font-weight:700;
   text-decoration:none; white-space:nowrap;
 }
 .kos-nav-signed:hover{ background:#dff0e3; color:var(--green-900); }
@@ -782,6 +783,6 @@ table{ max-width:100%; }
   width:7px; height:7px; border-radius:50%; background:#2b8b51;
   box-shadow:0 0 0 3px rgba(43,139,81,.25); flex:none;
 }
-@media (max-width:980px){
+@media (max-width:1140px){
   .kos-nav-signed{ margin:8px 12px; }
 }
