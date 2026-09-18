@@ -18,6 +18,21 @@ Schema for these extras is `sql/kos_event_studio_raffle_meal_online.sql` (applie
 
 IKC-sourced events are read-only. The database authorization is enforced again by `officer_upsert_event`, so hiding the UI is not the security boundary.
 
+## Cancel vs delete permanently
+
+**Cancelled** (Status dropdown) keeps the event row and hides it from public signup. Use that when the gathering is off but the record should stay.
+
+**Delete permanently** is a separate dangerous action for mistaken events that should not remain in the system. It is on each Event Studio row and on the editor after you tap Edit event.
+
+1. Tap **Delete permanently**.
+2. Confirm the named event (title and date). Type the event name, or type `Delete permanently`.
+3. Tap **Delete permanently** again. **Cancel** aborts with no changes.
+4. On success the event leaves the list. On failure the server message is shown in the confirm panel.
+
+Authorization is `can_manage_events()` inside `officer_delete_event` (`sql/kos_officer_delete_event.sql`). Apply that SQL on live Supabase before the button will succeed.
+
+Related data: RSVPs (`event_signups`) for that event are removed. Payment ledger rows stay; `payments.event_id` is cleared. Linked raffles stay; `raffle_events.krewe_event_id` is cleared. Tartan Ball orders block the delete (cancel that event instead). IKC sync events cannot be deleted.
+
 ## Flyers (featured event)
 
 The public sign-up page (`event-signup.html`) features the earliest upcoming **published, public** event that has a flyer. To attach one:
