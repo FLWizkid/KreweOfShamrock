@@ -76,6 +76,42 @@ for (const file of htmlFiles) {
   }
 }
 
+// --- Member Hub web app manifest (home-screen install) ----------------------
+const manifestFile = "manifest.webmanifest";
+const manifestPath = join(ROOT, manifestFile);
+if (!existsSync(manifestPath)) {
+  problems.push(`${manifestFile}: missing`);
+} else {
+  let manifest;
+  try {
+    manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
+  } catch (err) {
+    problems.push(`${manifestFile}: invalid JSON (${err.message})`);
+    manifest = null;
+  }
+  if (manifest) {
+    if (manifest.name !== "Shamrock") {
+      problems.push(`${manifestFile}: name is ${JSON.stringify(manifest.name)}, expected "Shamrock"`);
+    }
+    if (manifest.short_name !== "Shamrock") {
+      problems.push(`${manifestFile}: short_name is ${JSON.stringify(manifest.short_name)}, expected "Shamrock"`);
+    }
+    if (manifest.display !== "standalone") {
+      problems.push(`${manifestFile}: display is ${JSON.stringify(manifest.display)}, expected "standalone"`);
+    }
+    if (!String(manifest.start_url || "").includes("members.html")) {
+      problems.push(`${manifestFile}: start_url is ${JSON.stringify(manifest.start_url)}, expected members.html`);
+    }
+    const sizes = new Set((manifest.icons || []).map((icon) => icon.sizes));
+    for (const need of ["192x192", "512x512"]) {
+      if (!sizes.has(need)) problems.push(`${manifestFile}: missing ${need} icon`);
+    }
+    for (const icon of manifest.icons || []) {
+      checkRef(manifestFile, icon.src, "icon");
+    }
+  }
+}
+
 if (problems.length) {
   console.error(`Static check FAILED (${problems.length} problem${problems.length === 1 ? "" : "s"}):`);
   for (const p of problems) console.error("  - " + p);

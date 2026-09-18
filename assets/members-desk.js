@@ -229,6 +229,11 @@
     ".hub-officer-card .go{margin-left:auto;color:#7a5b00;font-family:var(--display);font-size:18px;font-weight:700;flex:none;}",
     ".hub-officer-inside{margin:0;padding:0 0 0 1.15em;list-style:disc;display:grid;gap:6px;font-size:16px;line-height:1.35;color:#14532d;}",
     ".hub-officer-inside li{padding:0;}",
+    ".hub-install{background:#fff;border:1px solid rgba(168,128,28,.22);border-radius:16px;padding:16px 16px 14px;}",
+    ".hub-install h3{font-family:var(--display);color:var(--green-800);margin:0 0 8px;font-size:20px;}",
+    ".hub-install p{margin:0 0 10px;font-size:16px;line-height:1.4;color:#3a3a2e;}",
+    ".hub-install-steps{margin:0 0 10px;padding:0 0 0 1.2em;display:grid;gap:8px;font-size:16px;line-height:1.4;color:#3a3a2e;}",
+    ".hub-install-note{margin:0;font-size:15px;color:var(--muted);}",
     ".hub-find{margin-top:0;background:#fff;border:1px solid rgba(168,128,28,.22);border-radius:16px;padding:16px;}",
     ".hub-find h3{margin:0 0 10px;font-size:18px;}",
     ".hub-find-grid{display:grid;grid-template-columns:1fr;gap:10px;}",
@@ -579,6 +584,38 @@
     return head + '<div class="hub-quest-grid">' + cards + '</div></div>';
   }
 
+  function hubAppName() {
+    return (window.KOS_HUB_APP_NAME || "Shamrock").toString();
+  }
+
+  function isHubStandalone() {
+    try {
+      if (window.navigator && window.navigator.standalone) return true;
+      return !!(window.matchMedia && window.matchMedia("(display-mode: standalone)").matches);
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function installCardHtml() {
+    var name = hubAppName();
+    if (isHubStandalone()) {
+      return '<section class="hub-install" id="hubInstallCard">' +
+        "<h3>You are using " + esc(name) + " from your Home Screen</h3>" +
+        "<p>This is the same Member Hub. It updates with the website. Tickets and shop payments stay on Zeffy.</p>" +
+        "</section>";
+    }
+    return '<section class="hub-install" id="hubInstallCard">' +
+      "<h3>Add " + esc(name) + " to your Home Screen</h3>" +
+      "<p>This is the Member Hub you already use, as an icon on your phone. It is not an App Store or Play Store app. It opens here, full screen, and it updates when the website updates.</p>" +
+      '<ol class="hub-install-steps">' +
+      "<li><b>iPhone:</b> open this page in Safari, tap Share, then Add to Home Screen. Keep the name " + esc(name) + ".</li>" +
+      "<li><b>Android:</b> Chrome can offer Install on this page. You can also open the Chrome menu and choose Install app.</li>" +
+      "</ol>" +
+      '<p class="hub-install-note">Tickets and shop payments stay on Zeffy. There are no push alerts.</p>' +
+      "</section>";
+  }
+
   function softMemberDeskHtml() {
     var me = state.parade;
     var needsProfile = !!(window.kosNeedsProfile);
@@ -670,7 +707,7 @@
         : '') +
       '</div></div>';
     // Only refresh the welcome strip - never wipe the beautiful card grid below.
-    top.innerHTML = craicHeroHtml() + softMemberDeskHtml() + officerCard + findCards;
+    top.innerHTML = craicHeroHtml() + softMemberDeskHtml() + officerCard + installCardHtml() + findCards;
 
     renderProfileCard();
 
@@ -752,8 +789,11 @@
     }, 80);
   }
 
+  var roleFixture = null;
+
   window.__kosHubSetRole = function (flags) {
     flags = flags || {};
+    roleFixture = flags;
     if ("officer" in flags) state.officer = !!flags.officer;
     if ("canManageEvents" in flags) state.canManageEvents = !!flags.canManageEvents;
     syncOfficerChip();
@@ -881,6 +921,10 @@
       state.canViewPayments = !!pay.data;
     } catch (e) { state.canViewPayments = false; }
     try { var eventManager = await client.rpc("can_manage_events"); state.canManageEvents = !!eventManager.data; } catch (e) { state.canManageEvents = false; }
+    if (roleFixture) {
+      if ("officer" in roleFixture) state.officer = !!roleFixture.officer;
+      if ("canManageEvents" in roleFixture) state.canManageEvents = !!roleFixture.canManageEvents;
+    }
     if (state.officer) loadApprovals(client);
     if (state.canViewPayments) loadPaymentsCard(client);
     if (state.canManageEvents) loadEventStudio(client);
@@ -972,6 +1016,11 @@
       if (wantHours) saved = "parade";
     }
     if (saved === "officer" && !state.officer && !state.canManageEvents) saved = TAB_HOME;
+    try {
+      var already = document.querySelector("[data-hub-panel].hub-on");
+      var alreadyTab = already && already.getAttribute("data-hub-panel");
+      if (alreadyTab && alreadyTab !== TAB_HOME) saved = alreadyTab;
+    } catch (e) {}
 
     syncSignedInPill();
     syncOfficerChip();
