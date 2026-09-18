@@ -590,7 +590,10 @@
     #authStage .gate-card.auth-card{ border-radius:48px 48px 12px 12px; padding-top:20px; }
   }
 </style>
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js" defer></script>
+  <!-- Self-hosted QR library: same-origin so ad-blockers and venue networks can't block it.
+       If the local file somehow fails, fall back to the CDN copy. -->
+  <script src="assets/vendor/qrcode.min.js?v=153" defer
+          onerror="var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js';document.head.appendChild(s);"></script>
   <script>
   /* A meeting QR lands here as ?checkin=CODE; stash it so it survives the sign-in.
      A members-only page (e.g. share.html) lands here as ?next=PAGE; stash it (15-minute
