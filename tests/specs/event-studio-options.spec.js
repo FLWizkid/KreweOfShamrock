@@ -29,6 +29,12 @@ test.describe("Event Studio optional fields", () => {
     await expect(page.locator("#hubEventStudio")).toContainText("Meal choice (optional)");
     await expect(page.locator("#hubEventStudio")).toContainText("Online meeting (optional)");
     await expect(page.locator("#hubEventLocation")).toBeVisible();
+    await expect(page.locator("#hubEventMemberAddress")).toBeVisible();
+    await expect(page.locator("#hubEventMembersOnly")).toBeVisible();
+    await expect(page.locator("#hubEventMembersOnly")).not.toBeChecked();
+    await expect(page.locator("#hubEventStudio")).toContainText("Public location teaser");
+    await expect(page.locator("#hubEventStudio")).toContainText("Private / member address");
+    await expect(page.locator("#hubEventStudio")).toContainText("Members only");
     await expect(page.locator("#hubEventStart")).toBeVisible();
     await expect(page.locator("#hubEventRegCloses")).toBeVisible();
     assertHealthy(expect, report, "event studio optional fields");
@@ -56,6 +62,10 @@ test.describe("Event Studio optional fields", () => {
     await page.locator("#hubEventType").selectOption("online");
     await expect(page.locator("#hubEventOnline")).toBeChecked();
     await expect(page.locator("#hubEventMeetingUrl")).toBeVisible();
+
+    await page.locator("#hubEventMembersOnly").check();
+    await expect(page.locator("#hubEventMembersOnly")).toBeChecked();
+    await expect(page.locator("#hubEventMemberAddress")).toBeVisible();
     assertHealthy(expect, report, "event studio optional fields mobile");
   });
 });
@@ -188,4 +198,50 @@ test("event sign-up hides meal choice until an event with meals is selected", as
   await page.evaluate(() => { if (typeof window.__kosSyncSignup === "function") window.__kosSyncSignup(); });
   await expect(page.locator("#mealChoice")).toBeVisible();
   assertHealthy(expect, report, "signup meal visibility");
+});
+
+test("event sign-up treats members-only events as teaser-only on the public form", async ({ page }) => {
+  const report = watchPage(page);
+  await page.goto("/event-signup.html");
+  await page.waitForFunction(() => typeof window.__kosSyncSignup === "function");
+
+  await page.evaluate(() => {
+    const sel = document.getElementById("event");
+    const opt = document.createElement("option");
+    opt.value = "members-only-event";
+    opt.textContent = "Basket-making Happy Hour (Members home, Tampa · Members only)";
+    opt.dataset.membersOnly = "1";
+    opt.dataset.collectGuests = "1";
+    opt.dataset.collectGuestNames = "1";
+    opt.dataset.collectRaffle = "0";
+    opt.dataset.collectMeals = "0";
+    sel.appendChild(opt);
+  });
+
+  await page.locator("#event").selectOption("members-only-event");
+  await page.evaluate(() => { if (typeof window.__kosSyncSignup === "function") window.__kosSyncSignup(); });
+  await expect(page.locator("#message")).toContainText("Members only");
+  await expect(page.locator("#message")).toContainText("Member Hub");
+  await expect(page.locator("#rsvpForm")).not.toContainText("123 Secret Lane");
+  await expect(page.locator("#submitBtn")).toContainText(/members/i);
+  assertHealthy(expect, report, "signup members-only teaser");
+});
+
+test("Member Hub Events tab has a member event list for signed-in members", async ({ page }) => {
+  const report = watchPage(page);
+  await unlockMemberHub(page);
+  await page.locator('[data-hub-tab="events"]').click();
+  await expect(page.locator("[data-hub-panel='events']")).toHaveClass(/hub-on/);
+  await expect(page.locator("#hubMemberEventList")).toBeVisible();
+  await expect(page.locator("[data-hub-panel='events']")).toContainText("Member addresses show here after you sign in");
+  assertHealthy(expect, report, "hub member events list");
+});
+
+test("public event pages never request the private member address column", async ({ request }) => {
+  const signup = await (await request.get("/event-signup.html")).text();
+  const home = await (await request.get("/index.html")).text();
+  expect(signup, "event-signup must not select member_address").not.toMatch(/member_address/);
+  expect(home, "index must not select member_address").not.toMatch(/member_address/);
+  expect(signup).toMatch(/v_public_events/);
+  expect(home).toMatch(/v_public_events/);
 });

@@ -103,12 +103,17 @@
       '<div><label for="hubEventEnd">End time</label><input id="hubEventEnd" type="datetime-local" /></div>' +
       '<div><label for="hubEventRegCloses">Close registrations on</label><input id="hubEventRegCloses" type="datetime-local" /></div>' +
       '<div class="wide" style="margin-top:-4px;"><p style="font-size:12px;color:var(--muted);margin:0 0 6px;line-height:1.4;">Optional. After this date/time, public signup shows Registration closed and blocks new RSVPs and ticket checkout. Leave blank to stay open. You can edit address, dates, and this close date. Saving stores a draft and does not publish.</p></div>' +
-      '<div><label for="hubEventLocation">Location / address</label><input id="hubEventLocation" placeholder="Venue name and street address" /></div>' +
+      '<div class="wide"><label for="hubEventLocation">Public location teaser</label><input id="hubEventLocation" placeholder="Members home, Tampa" />' +
+      '<p class="hub-opt-hint" style="margin-top:6px;">Safe for the public site. For a house party, keep this vague. Do not put a street address here.</p></div>' +
+      '<div class="wide"><label for="hubEventMemberAddress">Private / member address</label><input id="hubEventMemberAddress" placeholder="Full street address" autocomplete="off" />' +
+      '<p class="hub-opt-hint" style="margin-top:6px;">Full address for signed-in members in the Member Hub and the RSVP confirmation email. Never shown on public pages.</p></div>' +
       '<div><label for="hubEventCapacity">Capacity</label><input id="hubEventCapacity" type="number" min="0" step="1" /></div>' +
       '<div class="wide"><label for="hubEventDescription">Description</label><textarea id="hubEventDescription"></textarea></div></div>' +
       '<div class="hub-event-checks"><label><input type="checkbox" id="hubEventPublic" checked /> Public event</label>' +
+      '<label><input type="checkbox" id="hubEventMembersOnly" /> Members only</label>' +
       '<label><input type="checkbox" id="hubEventMandatory" /> Mandatory meeting</label>' +
       '<label><input type="checkbox" id="hubEventFeatured" /> Featured Event</label></div>' +
+      '<p class="hub-opt-hint" style="margin:-4px 0 10px;">Members only: public pages show title, date, and the teaser, plus a sign-in note. Uncheck Public event to hide it from the public calendar. The street address stays off public pages either way.</p>' +
       '<div class="hub-event-grid">' +
       '<div><label for="hubEventStatus">Status</label><select id="hubEventStatus"><option value="draft">Draft</option><option value="cancelled">Cancelled</option></select></div>' +
       '<div><label for="hubEventTicketLabel">Ticket label</label><input id="hubEventTicketLabel" placeholder="e.g. Member ticket" /></div>' +
@@ -251,7 +256,12 @@
     showEl("hubEventMealFields", mealOn);
     showEl("hubEventOnlineFields", onlineOn);
     var loc = document.getElementById("hubEventLocation");
-    if (loc) loc.placeholder = onlineOn ? "Optional for online events" : "Venue name and street address";
+    var membersOnly = !!(document.getElementById("hubEventMembersOnly") && document.getElementById("hubEventMembersOnly").checked);
+    if (loc) {
+      if (onlineOn) loc.placeholder = "Optional for online events";
+      else if (membersOnly) loc.placeholder = "Members home, Tampa";
+      else loc.placeholder = "Venue name or city (public)";
+    }
   }
 
   function onRaffleEventPicked() {
@@ -446,6 +456,8 @@
     form.reset();
     document.getElementById("hubEventId").value = "";
     document.getElementById("hubEventPublic").checked = true;
+    var moOnly = document.getElementById("hubEventMembersOnly"); if (moOnly) moOnly.checked = false;
+    var ma = document.getElementById("hubEventMemberAddress"); if (ma) ma.value = "";
     document.getElementById("hubEventMandatory").checked = false;
     var feat = document.getElementById("hubEventFeatured"); if (feat) feat.checked = false;
     var cg = document.getElementById("hubEventCollectGuests"); if (cg) cg.checked = true;
@@ -483,9 +495,11 @@
     get("hubEventEnd").value = eventLocalInput(event.end_time);
     var rc = get("hubEventRegCloses"); if (rc) rc.value = eventLocalInput(event.registration_closes_at);
     get("hubEventLocation").value = event.location || "";
+    var maFill = get("hubEventMemberAddress"); if (maFill) maFill.value = event.member_address || "";
     get("hubEventCapacity").value = event.capacity == null ? "" : event.capacity;
     get("hubEventDescription").value = event.description || "";
     get("hubEventPublic").checked = event.is_public !== false;
+    var monly = get("hubEventMembersOnly"); if (monly) monly.checked = !!event.members_only;
     get("hubEventMandatory").checked = !!event.is_mandatory;
     var featEl = get("hubEventFeatured"); if (featEl) featEl.checked = !!event.is_featured;
     get("hubEventStatus").value = String(event.status || "").toLowerCase() === "cancelled" ? "cancelled" : "draft";
@@ -534,6 +548,8 @@
       var details = [];
       if (event.start_time) details.push(eventLocalDisplay(event.start_time) + (event.end_time ? " - " + eventLocalDisplay(event.end_time) : ""));
       if (event.location) details.push(event.location);
+      if (event.member_address) details.push("Member address set");
+      if (event.members_only) details.push("Members only");
       if (event.registration_closes_at) details.push("Regs close " + eventLocalDisplay(event.registration_closes_at));
       var ticket = event.ticket_price_cents != null ? " · $" + (Number(event.ticket_price_cents) / 100).toFixed(2) : "";
       var readOnly = String(event.source || "").toLowerCase() === "ikc";
@@ -549,6 +565,7 @@
         (event.is_featured ? " · Featured" : "") +
         (event.collect_raffle || event.raffle_event_id ? " · raffle" : "") +
         (event.collect_meals ? " · meals" : "") +
+        (event.members_only ? " · members only" : "") +
         (event.is_online || event.event_type === "online" ? " · online" : "") +
         (flyer ? " · has image/PDF" : " · add image/PDF") +
         (readOnly ? " · IKC event (read-only)" : "") + '</div></div>' +
@@ -627,12 +644,15 @@
     var row = event || {};
     var when = eventLocalDisplay(row.start_time) || "Not set";
     var where = row.location && String(row.location).trim() ? String(row.location).trim() : "Not set";
+    var memberAddr = row.member_address && String(row.member_address).trim() ? String(row.member_address).trim() : "Not set";
     var note = clearedNote ? "\n" + clearedNote + "\n" : "";
     return window.confirm(
       "Review the saved event. Confirm these details are correct.\n\n" +
       "Name: " + (row.name || "Not set") + "\n" +
       "Date and time: " + when + "\n" +
-      "Location: " + where + "\n" +
+      "Public location teaser: " + where + "\n" +
+      "Private member address: " + memberAddr + "\n" +
+      (row.members_only ? "Members only: yes\n" : "") +
       "Ticket price: " + ticketPriceLabel(row.ticket_price_cents) + "\n" +
       note + "\n" +
       "OK means the saved details are correct. It does not publish and does not notify anyone. A Publish button appears after OK.\n" +
@@ -667,6 +687,8 @@
       name: payload.name,
       start_time: payload.start_time,
       location: payload.location,
+      member_address: payload.member_address,
+      members_only: payload.members_only,
       ticket_price_cents: payload.ticket_price_cents
     };
     var clearedNote = cleared ? String(cleared).trim() : "";
@@ -767,8 +789,10 @@
     var payload = {
       id: value("hubEventId") || null, name: value("hubEventName"), start_time: start.toISOString(),
       end_time: end ? end.toISOString() : null, location: value("hubEventLocation") || null,
+      member_address: value("hubEventMemberAddress") || null,
       description: value("hubEventDescription") || null, event_type: value("hubEventType") || "other",
       capacity: capacity, is_public: !!document.getElementById("hubEventPublic").checked,
+      members_only: !!(document.getElementById("hubEventMembersOnly") && document.getElementById("hubEventMembersOnly").checked),
       is_mandatory: !!document.getElementById("hubEventMandatory").checked,
       is_featured: !!(document.getElementById("hubEventFeatured") && document.getElementById("hubEventFeatured").checked),
       status: value("hubEventStatus") === "cancelled" ? "cancelled" : "draft",
@@ -843,7 +867,7 @@
       eventForm.addEventListener("input", onEventFormEdited);
       eventForm.addEventListener("change", onEventFormEdited);
     }
-    ["hubEventType", "hubEventCollectRaffle", "hubEventCollectMeals", "hubEventOnline"].forEach(function (id) {
+    ["hubEventType", "hubEventCollectRaffle", "hubEventCollectMeals", "hubEventOnline", "hubEventMembersOnly"].forEach(function (id) {
       var el = document.getElementById(id);
       if (el) el.addEventListener("change", syncOptionalEventFields);
     });

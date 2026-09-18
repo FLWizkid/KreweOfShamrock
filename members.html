@@ -1939,12 +1939,22 @@
         desc:"Every scheduled event with date and location.",
         run: async()=>{
           const now=new Date().toISOString();
-          const { data, error } = await supabase.from("events")
-            .select("name,event_type,start_time,location")
+          let { data, error } = await supabase.from("events")
+            .select("name,event_type,start_time,location,member_address,members_only")
             .or(`start_time.gte.${now},start_time.is.null`).order("start_time",{ascending:true});
+          if(error){
+            ({ data, error } = await supabase.from("events")
+              .select("name,event_type,start_time,location")
+              .or(`start_time.gte.${now},start_time.is.null`).order("start_time",{ascending:true}));
+          }
           if(error) throw error;
           return rTable(["Event","Type","When","Location"],
-            (data||[]).map(e=>[e.name, e.event_type||"event", fmtDate(e.start_time), e.location||"-"]));
+            (data||[]).map(e=>[
+              e.name + (e.members_only ? " (members only)" : ""),
+              e.event_type||"event",
+              fmtDate(e.start_time),
+              e.member_address || e.location || "-"
+            ]));
         }},
       { id:"event_headcount", cat:"Events & Attendance", icon:"🧮", title:"Event Headcount & Capacity",
         desc:"RSVPs, guests, total headcount and spots remaining per event.",
@@ -3077,8 +3087,8 @@
 
 <script src="assets/kos-leadership.js?v=20260916lead6"></script>
 <script src="assets/hub-install.js?v=20260918pwa1"></script>
-<script src="assets/members-desk.js?v=20260918del1" defer></script>
-  <script src="assets/kos-event-studio.js?v=20260918del1" defer></script>
+<script src="assets/members-desk.js?v=20260918memb2" defer></script>
+  <script src="assets/kos-event-studio.js?v=20260918memb2" defer></script>
   <script src="assets/kos-shop-studio.js?v=20260910shopfix" defer></script>
 <script src="assets/kos-qr-studio.js?v=20260909b"></script>
   <script src="assets/kos-reports.js?v=20260914t1" defer></script>

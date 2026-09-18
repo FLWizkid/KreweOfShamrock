@@ -268,12 +268,20 @@ const list = document.getElementById("eventList");
 const esc = (s)=> (s??"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[c]));
 (async () => {
   const nowIso = new Date().toISOString();
-  const { data, error } = await supabase
-    .from("events")
-    .select("id, name, event_type, start_time, location, source, external_url, ticket_payment_url")
-    .eq("is_public", true)
+  const publicCols = "id, name, event_type, start_time, location, source, external_url, ticket_payment_url, members_only";
+  let { data, error } = await supabase
+    .from("v_public_events")
+    .select(publicCols)
     .or(`start_time.gte.${nowIso},start_time.is.null`)
     .order("start_time", { ascending: true });
+  if (error) {
+    ({ data, error } = await supabase
+      .from("events")
+      .select("id, name, event_type, start_time, location, source, external_url, ticket_payment_url")
+      .eq("is_public", true)
+      .or(`start_time.gte.${nowIso},start_time.is.null`)
+      .order("start_time", { ascending: true }));
+  }
 
  if (error) { list.innerHTML = '<p class="empty">Could not load events right now.</p>'; return; }
   if (!data || data.length === 0) { list.innerHTML = '<p class="empty">No upcoming events yet. Check back soon, or RSVP to be the first to know!</p>'; return; }
@@ -295,17 +303,23 @@ const esc = (s)=> (s??"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&g
     const pay = ev.ticket_payment_url
       || (isBall ? "http://www.tampabaytartanball.com/home.html" : "")
       || ((ev.external_url || "").toLowerCase().includes("zeffy.com") ? ev.external_url : "");
+    const membersOnly = !!ev.members_only;
+    const where = ev.location
+      ? ev.location
+      : (membersOnly ? "Address shared with members after signup" : "");
     const rsvp = isIkc
       ? `<a class="rsvp" href="${esc(ev.external_url || "https://interkrewe.com/Calendar")}" target="_blank" rel="noopener">Details on the host krewe&#39;s page &#8599;</a>`
-      : (pay
+      : (membersOnly
+          ? `<a class="rsvp" href="members.html">Members only. Sign in for details and address &#8594;</a>`
+          : (pay
           ? `<a class="rsvp" href="${esc(pay)}" target="_blank" rel="noopener noreferrer">Buy tickets &#8594;</a>`
-          : `<a class="rsvp" href="event-signup.html?event=${esc(ev.id)}">RSVP &#8594;</a>`);
+          : `<a class="rsvp" href="event-signup.html?event=${esc(ev.id)}">RSVP &#8594;</a>`));
     const card = document.createElement("div");
     card.className = isIkc ? "event-card ikc" : "event-card";
     card.innerHTML =
-      `<div class="type">${isIkc ? "Inter-Krewe Council" : esc(ev.event_type ?? "event")}</div>` +
+      `<div class="type">${isIkc ? "Inter-Krewe Council" : esc(ev.event_type ?? "event")}${membersOnly ? " · Members only" : ""}</div>` +
       `<h3>${esc(ev.name)}</h3>` +
-      `<div class="meta">${when}${ev.location ? " · " + esc(ev.location) : ""}</div>` +
+      `<div class="meta">${when}${where ? " · " + esc(where) : ""}</div>` +
       rsvp;
     list.appendChild(card);
   }

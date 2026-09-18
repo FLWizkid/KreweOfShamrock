@@ -384,6 +384,16 @@
       return "";
     }
 
+    function publicWhere(ev) {
+      if (!ev) return "";
+      if (ev.members_only) return ev.location || "Address shared with members after signup";
+      return ev.location || "";
+    }
+
+    function membersOnlyLabel() {
+      return "Members only. Sign in for details and address.";
+    }
+
     function renderFeaturedEvent(event) {
       const title = document.getElementById("featured-event-title");
       const sub = document.getElementById("featured-event-sub");
@@ -416,17 +426,21 @@
       title.textContent = "Featured Event: " + (event.name || "Upcoming Krewe event");
       sub.textContent = "Full details for our next public Krewe event";
       const closedFeat = isRegistrationClosed(event);
-      const ctaFeat = closedFeat
+      const membersOnlyFeat = !!event.members_only;
+      const ctaFeat = membersOnlyFeat
+        ? '<a class="btn btn-primary" href="members.html">Members only. Sign in</a>'
+        : (closedFeat
         ? '<a class="btn" href="#rsvpForm" data-featured-event="' + esc(event.id) + '">Registration closed</a>'
         : (payFeat
         ? '<a class="btn btn-primary" href="' + esc(payFeat) + '" target="_blank" rel="noopener noreferrer">☘ Buy Tickets</a>'
-        : '<a class="btn btn-primary" href="#rsvpForm" data-featured-event="' + esc(event.id) + '">☘ Sign Up Today</a>');
+        : '<a class="btn btn-primary" href="#rsvpForm" data-featured-event="' + esc(event.id) + '">☘ Sign Up Today</a>'));
       content.innerHTML = '<div class="ft-media"><div class="framed ornate"><span class="crn tr"></span><span class="crn bl"></span>' + media + '</div></div>' +
         '<div class="ft-text"><h2>' + esc(event.name || "Upcoming event") + '</h2>' +
         '<p><b>' + esc(when + until) + '</b></p>' +
-        '<p><b>Where:</b> ' + esc(event.location || 'Address to be announced') + '</p>' +
-        (closedFeat ? '<p><b>Registration:</b> Closed</p>' : '') +
-        (ticketBits ? '<p><b>Tickets:</b> ' + esc(ticketBits) + '</p>' : '') +
+        '<p><b>Where:</b> ' + esc(publicWhere(event) || 'Address to be announced') + '</p>' +
+        (membersOnlyFeat ? '<p><b>Members only.</b> ' + esc(membersOnlyLabel()) + '</p>' : '') +
+        (closedFeat && !membersOnlyFeat ? '<p><b>Registration:</b> Closed</p>' : '') +
+        (ticketBits && !membersOnlyFeat ? '<p><b>Tickets:</b> ' + esc(ticketBits) + '</p>' : '') +
         (event.description ? '<p class="feat-desc">' + esc(event.description) + '</p>' : '<p class="feat-desc">Join the Krewe of Shamrock. Details are in RSVP below.</p>') +
         '<div style="display:flex;flex-wrap:wrap;gap:10px;">' + ctaFeat +
         '<a class="btn" href="#event-previews">Browse all upcoming</a></div></div>';
@@ -461,18 +475,22 @@
           media = '<span>Image soon</span>';
         }
         const closedPrev = isRegistrationClosed(ev);
-        const cta = closedPrev
+        const membersOnlyPrev = !!ev.members_only;
+        const cta = membersOnlyPrev
+          ? '<a class="btn btn-primary" href="members.html">Members only. Sign in</a>'
+          : (closedPrev
           ? '<a class="btn" href="#rsvpForm" data-preview-event="' + esc(ev.id) + '">Registration closed</a>'
           : (pay
           ? '<a class="btn btn-primary" href="' + esc(pay) + '" target="_blank" rel="noopener noreferrer">Buy Tickets</a>'
-          : '<a class="btn btn-primary" href="#rsvpForm" data-preview-event="' + esc(ev.id) + '">Sign up</a>');
+          : '<a class="btn btn-primary" href="#rsvpForm" data-preview-event="' + esc(ev.id) + '">Sign up</a>'));
         return '<article class="ev-card">' +
           '<div class="ev-media">' + media + '</div>' +
           '<div class="ev-body"><h3>' + esc(ev.name) + '</h3>' +
           '<p class="ev-meta"><b>When:</b> ' + esc(when) + '</p>' +
-          '<p class="ev-meta"><b>Where:</b> ' + esc(ev.location || 'Address to be announced') + '</p>' +
-          (closedPrev ? '<p class="ev-meta"><b>Registration:</b> Closed</p>' : '') +
-          (ticketBits ? '<p class="ev-meta"><b>Tickets:</b> ' + esc(ticketBits) + '</p>' : '') +
+          '<p class="ev-meta"><b>Where:</b> ' + esc(publicWhere(ev) || 'Address to be announced') + '</p>' +
+          (membersOnlyPrev ? '<p class="ev-meta"><b>Members only.</b> ' + esc(membersOnlyLabel()) + '</p>' : '') +
+          (closedPrev && !membersOnlyPrev ? '<p class="ev-meta"><b>Registration:</b> Closed</p>' : '') +
+          (ticketBits && !membersOnlyPrev ? '<p class="ev-meta"><b>Tickets:</b> ' + esc(ticketBits) + '</p>' : '') +
           (ev.description ? '<p class="ev-desc">' + esc(ev.description) + '</p>' : '<p class="ev-desc">Krewe event. Open RSVP below for more.</p>') +
           '<div class="ev-actions">' + cta +
           (ev.flyer_url ? '<a class="btn" href="' + esc(ev.flyer_url) + '" target="_blank" rel="noopener">Flyer</a>' : '') +
@@ -505,9 +523,14 @@
     }
 
     async function loadEvents() {
-      const { data, error } = await supabase
-        .from("events").select("id, name, description, start_time, end_time, location, source, external_url, ticket_payment_url, ticket_price_cents, ticket_label, flyer_url, status, is_featured, collect_guests, collect_guest_names, collect_raffle, raffle_options, raffle_event_id, collect_meals, meal_options, is_online, event_type, registration_closes_at")
-        .eq("is_public", true).order("start_time", { ascending: true });
+      let { data, error } = await supabase
+        .from("v_public_events").select("id, name, description, start_time, end_time, location, source, external_url, ticket_payment_url, ticket_price_cents, ticket_label, flyer_url, status, is_featured, collect_guests, collect_guest_names, collect_raffle, raffle_options, raffle_event_id, collect_meals, meal_options, is_online, event_type, registration_closes_at, members_only")
+        .order("start_time", { ascending: true });
+      if (error) {
+        ({ data, error } = await supabase
+          .from("events").select("id, name, description, start_time, end_time, location, source, external_url, ticket_payment_url, ticket_price_cents, ticket_label, flyer_url, status, is_featured, collect_guests, collect_guest_names, collect_raffle, raffle_options, raffle_event_id, collect_meals, meal_options, is_online, event_type, registration_closes_at")
+          .eq("is_public", true).order("start_time", { ascending: true }));
+      }
       if (error) {
         eventSelect.innerHTML = '<option value="">Could not load events</option>';
         showMessage("Sorry, we couldn't load the events list. Please try again later.", "error");
@@ -559,9 +582,10 @@
           const ds = dateStrShort(d);
           when = hasTime(d) ? ds + ", " + timeStr(d) : ds + ", Time TBA";
         }
-        const loc = ev.location ? " · " + ev.location : "";
+        const loc = publicWhere(ev) ? " · " + publicWhere(ev) : "";
         const opt = document.createElement("option");
-        opt.value = ev.id; opt.textContent = `${ev.name} (${when}${loc})`;
+        opt.value = ev.id; opt.textContent = `${ev.name} (${when}${loc}${ev.members_only ? " · Members only" : ""})`;
+        if (ev.members_only) opt.dataset.membersOnly = "1";
         const redirect = ticketCheckoutUrl(ev);
         if (redirect) {
           opt.dataset.redirect = redirect;
@@ -657,6 +681,15 @@
         const opt = eventSelect.selectedOptions[0];
         btn.disabled = false;
         syncCollectFields();
+        if (opt && opt.dataset.membersOnly === "1") {
+          haveTicketWrap.style.display = "none";
+          haveTicketBox.checked = false;
+          purchasedByWrap.style.display = "none";
+          btn.disabled = false;
+          btn.textContent = "☘ Sign me up (members)";
+          showMessage("Members only. RSVP with the email on your member record. The street address is in the Member Hub and in your confirmation email.", "success");
+          return;
+        }
         if (opt && opt.dataset.regClosed === "1") {
           haveTicketWrap.style.display = "none";
           haveTicketBox.checked = false;
@@ -748,8 +781,9 @@
         };
         if (ev.end_time) item.endDate = ev.end_time;
         if (ev.description) item.description = ev.description;
-        if (ev.location) {
-          item.location = { "@type": "Place", "name": ev.location,
+        const schemaWhere = publicWhere(ev);
+        if (schemaWhere) {
+          item.location = { "@type": "Place", "name": schemaWhere,
             "address": { "@type": "PostalAddress", "addressRegion": "FL", "addressCountry": "US" } };
         }
         if (ev.flyer_url && !/\.pdf(?:$|[?#])/i.test(ev.flyer_url)) item.image = ev.flyer_url;
@@ -805,7 +839,7 @@
       const yearEl = document.getElementById("kcal-year");
       const dated = (events || [])
         .filter((e)=> e.start_time)
-        .map((e)=> ({ date: new Date(e.start_time), name: e.name, location: e.location || "", ikc: e.source === "ikc", url: e.external_url || "" }))
+        .map((e)=> ({ date: new Date(e.start_time), name: e.name, location: publicWhere(e), ikc: e.source === "ikc", url: e.external_url || "", membersOnly: !!e.members_only }))
         .filter((e)=> !isNaN(e.date))
         .sort((a, b)=> a.date - b.date);
       if (!dated.length) {
@@ -829,7 +863,9 @@
           const dateStr = MONTH_NAMES[ev.date.getMonth()] + " " + ev.date.getDate() + ", " + ev.date.getFullYear();
           const when = hasTime(ev.date) ? dateStr + " · " + timeStr(ev.date) : dateStr;
           const loc = ev.location ? ' <span style="color:var(--gold-light);">@ ' + esc(ev.location) + '</span>' : "";
-          const chip = ev.ikc ? '<span style="background:#7c5cae;color:#fff;border-radius:6px;padding:1px 8px;margin-right:8px;font-size:11px;font-family:var(--display);letter-spacing:.5px;vertical-align:1px;">IKC</span>' : "";
+          const chip = ev.ikc
+            ? '<span style="background:#7c5cae;color:#fff;border-radius:6px;padding:1px 8px;margin-right:8px;font-size:11px;font-family:var(--display);letter-spacing:.5px;vertical-align:1px;">IKC</span>'
+            : (ev.membersOnly ? '<span style="background:var(--green-800);color:#fff;border-radius:6px;padding:1px 8px;margin-right:8px;font-size:11px;font-family:var(--display);letter-spacing:.5px;vertical-align:1px;">Members</span>' : "");
           const name = ev.ikc && ev.url
             ? '<a href="' + esc(ev.url) + '" target="_blank" rel="noopener" style="color:#cdb9ec;text-decoration:none;">' + esc(ev.name) + ' &#8599;</a>'
             : esc(ev.name);

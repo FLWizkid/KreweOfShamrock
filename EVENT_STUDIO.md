@@ -7,14 +7,19 @@ Event Studio lives in the authenticated Member Hub under **Officer desk**. Membe
 1. Open `members.html` and sign in.
 2. Open **Officer desk**, then **Event Studio**.
 3. Choose **New / clear** for a new event, or **Edit** beside an existing Krewe event.
-4. Enter the name and start time, then add the location, description, capacity, event type, visibility, mandatory flag, status, flyer, and ticket details.
+4. Enter the name and start time, then add the public location teaser, private member address, description, capacity, event type, visibility, mandatory flag, status, flyer, and ticket details.
 5. Optional extras (all off unless you turn them on; existing events without them keep working):
+   - **Members only.** Check this for house parties and other member events. Public pages show title, date, and the teaser only (for example "Members home, Tampa"), plus a sign-in note. The full street address is never sent to anonymous visitors.
+   - **Public location teaser.** Safe for the public site. Keep it vague for members-only events.
+   - **Private / member address.** Full street address. Shown to signed-in members in the Member Hub and included in the RSVP confirmation email. Anonymous API clients cannot select this column.
    - **Raffle tickets.** Reuses `raffle_events` plus the signup raffle qty field. Offer tickets, attach an existing raffle, or enter a ticket price (officer-entered; nothing is hardcoded). Leave the box unchecked for no raffle.
    - **Meal choice.** Turn it on and list meal options (one per line). Members pick one at signup; the choice is stored on `event_signups.meal_choice`.
    - **Online meeting.** Set type to Online or check "This is an online event" and paste the join URL. Signup emails that link only to the member who just registered, through `enqueue_email` / `outbound_emails`.
 6. Save. The list refreshes from `officer_list_events()`. Published events stay editable (address, dates, Close registrations on).
 
-Schema for these extras is `sql/kos_event_studio_raffle_meal_online.sql` (applied live; safe to re-run).
+Schema for raffle / meal / online extras is `sql/kos_event_studio_raffle_meal_online.sql` (applied live; safe to re-run).
+
+Members-only + private address is `sql/kos_event_members_only_address.sql`. Melissa needs to run that file in the Supabase SQL editor on project `oazwkwflgbthojvnclfc` (same as prior Event Studio scripts). Safe to re-run. Until it is applied, Event Studio can still save other fields, but the new columns, `v_public_events` view, and RSVP email address line will not exist yet.
 
 IKC-sourced events are read-only. The database authorization is enforced again by `officer_upsert_event`, so hiding the UI is not the security boundary.
 
