@@ -8,7 +8,13 @@ Event Studio lives in the authenticated Member Hub under **Officer desk**. Membe
 2. Open **Officer desk**, then **Event Studio**.
 3. Choose **New / clear** for a new event, or **Edit** beside an existing Krewe event.
 4. Enter the name and start time, then add the location, description, capacity, event type, visibility, mandatory flag, status, flyer, and ticket details.
-5. Save. The list refreshes from `officer_list_events()`.
+5. Optional extras (all off unless you turn them on; existing events without them keep working):
+   - **Raffle tickets.** Reuses `raffle_events` plus the signup raffle qty field. Offer tickets, attach an existing raffle, or enter a ticket price (officer-entered; nothing is hardcoded). Leave the box unchecked for no raffle.
+   - **Meal choice.** Turn it on and list meal options (one per line). Members pick one at signup; the choice is stored on `event_signups.meal_choice`.
+   - **Online meeting.** Set type to Online or check "This is an online event" and paste the join URL. Signup emails that link only to the member who just registered, through `enqueue_email` / `outbound_emails`.
+6. Save. The list refreshes from `officer_list_events()`. Published events stay editable (address, dates, Close registrations on).
+
+Schema for these extras is `sql/kos_event_studio_raffle_meal_online.sql` (applied live; safe to re-run).
 
 IKC-sourced events are read-only. The database authorization is enforced again by `officer_upsert_event`, so hiding the UI is not the security boundary.
 

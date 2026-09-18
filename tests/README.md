@@ -25,6 +25,9 @@ plus Playwright browser tests that load every page.
   client-side validation, the members-area auth gate, and the shop cart.
   Forms are never submitted with valid data, so no test writes to the
   production Supabase backend.
+- **`specs/event-studio-options.spec.js`** — Event Studio optional raffle,
+  meal, and online-meeting controls (desktop and phone viewport), plus
+  public signup showing meal choices only when the selected event has them.
 - **`specs/leadership.spec.js`** — first-login questionnaire lists Shamrock
   Leaders titles (officers, board, committee chairs) and the client catalog
   maps titles onto existing RBAC enums, leaving Parade chair vacant.

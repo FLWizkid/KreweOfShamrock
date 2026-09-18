@@ -26,7 +26,11 @@
     ".hub-flyer-preview a{font-size:13px;}",
     ".hub-event-thumb{width:54px;height:54px;border-radius:10px;object-fit:cover;border:1px solid rgba(168,128,28,.35);background:#f3efe2;flex:none;}",
     ".hub-event-thumb.ph{display:grid;place-items:center;font-size:11px;color:var(--muted);text-align:center;padding:4px;}",
-    "@media(max-width:620px){.hub-event-grid{grid-template-columns:1fr;}.hub-event-grid .wide{grid-column:auto;}.hub-event-row{flex-direction:column;}}",
+    ".hub-event-optional{grid-column:1/-1;margin-top:8px;padding:12px;border:1px solid rgba(168,128,28,.28);border-radius:12px;background:#fff;}",
+    ".hub-event-optional h4{margin:0 0 6px;font-family:var(--display);color:var(--green-800);font-size:15px;}",
+    ".hub-event-optional p.hub-opt-hint{font-size:12px;color:var(--muted);margin:0 0 8px;line-height:1.4;}",
+    ".hub-event-optional-fields{display:grid;grid-template-columns:1fr 1fr;gap:0 12px;}",
+    "@media(max-width:620px){.hub-event-grid{grid-template-columns:1fr;}.hub-event-grid .wide{grid-column:auto;}.hub-event-row{flex-direction:column;}.hub-event-optional-fields{grid-template-columns:1fr;}.hub-event-optional{padding:12px;}}",
   ].join("");
 
   function injectCss() {
@@ -88,6 +92,7 @@
       '<div><label for="hubEventName">Name *</label><input id="hubEventName" required /></div>' +
       '<div><label for="hubEventType">Event type</label><select id="hubEventType">' +
       '<option value="social">Social</option><option value="parade">Parade</option><option value="meeting">Meeting</option>' +
+      '<option value="online">Online</option>' +
       '<option value="fundraiser">Fundraiser</option><option value="other">Other</option></select></div>' +
       '<div><label for="hubEventStart">Start time *</label><input id="hubEventStart" type="datetime-local" required /></div>' +
       '<div><label for="hubEventEnd">End time</label><input id="hubEventEnd" type="datetime-local" /></div>' +
@@ -106,10 +111,37 @@
       '<div><label for="hubEventPaymentUrl">Ticket payment URL</label><input id="hubEventPaymentUrl" type="url" placeholder="https://www.zeffy.com/en-US/ticketing/..." /></div>' +
       '<div class="wide" style="grid-column:1/-1;"><div class="hub-event-checks" style="margin:0;">' +
       '<label><input type="checkbox" id="hubEventCollectGuests" checked /> Ask for guest count</label>' +
-      '<label><input type="checkbox" id="hubEventCollectGuestNames" checked /> Ask for guest names</label>' +
-      '<label><input type="checkbox" id="hubEventCollectRaffle" checked /> Ask for raffle ticket qty</label></div>' +
-      '<p style="font-size:12px;color:var(--muted);margin:6px 0 0;line-height:1.4;">Defaults match Mini Golf style (guests + raffle). Collected on the website before Zeffy checkout so officer reports show the same data Wild Apricot had.</p></div>' +
+      '<label><input type="checkbox" id="hubEventCollectGuestNames" checked /> Ask for guest names</label></div>' +
+      '<p style="font-size:12px;color:var(--muted);margin:6px 0 0;line-height:1.4;">Guest fields default on for Mini Golf style events. Uncheck to hide them on public signup.</p></div>' +
+      '<div class="hub-event-optional" id="hubEventRaffleBox">' +
+      '<h4>Raffle tickets (optional)</h4>' +
+      '<p class="hub-opt-hint">Uses the existing Raffles tool (raffle_events) plus signup qty. Uncheck to leave this event without raffle tickets. If a price is needed, enter it. Do not leave a made-up amount.</p>' +
+      '<div class="hub-event-checks" style="margin:0 0 8px;">' +
+      '<label><input type="checkbox" id="hubEventCollectRaffle" /> Offer raffle tickets</label></div>' +
+      '<div class="hub-event-optional-fields" id="hubEventRaffleFields" hidden>' +
       '<div><label for="hubEventRaffleOptions">Raffle qty choices</label><input id="hubEventRaffleOptions" placeholder="0,1,5,15" value="0,1,5,15" /></div>' +
+      '<div><label for="hubEventRafflePrice">Raffle ticket price (dollars)</label><input id="hubEventRafflePrice" type="number" min="0" step="0.01" placeholder="Officer enters the price" /></div>' +
+      '<div class="wide" style="grid-column:1/-1;"><label for="hubEventRaffleEvent">Attach existing raffle</label>' +
+      '<select id="hubEventRaffleEvent"><option value="">None (qty only, or enter a price to create one)</option></select>' +
+      '<p class="hub-opt-hint" style="margin-top:6px;">Qty is saved with the signup (same path Mini Golf uses). A price or an existing raffle links raffle_events.ticket_price. There is no hardcoded dollar amount.</p></div></div></div>' +
+      '<div class="hub-event-optional" id="hubEventMealBox">' +
+      '<h4>Meal choice (optional)</h4>' +
+      '<p class="hub-opt-hint">Off unless you turn it on. Members only see meal choices on events that have them.</p>' +
+      '<div class="hub-event-checks" style="margin:0 0 8px;">' +
+      '<label><input type="checkbox" id="hubEventCollectMeals" /> Ask members to choose a meal</label></div>' +
+      '<div id="hubEventMealFields" hidden>' +
+      '<label for="hubEventMealOptions">Meal options (one per line)</label>' +
+      '<textarea id="hubEventMealOptions" placeholder="Chicken piccata&#10;Vegetarian pasta&#10;Kids meal"></textarea>' +
+      '</div></div>' +
+      '<div class="hub-event-optional" id="hubEventOnlineBox">' +
+      '<h4>Online meeting (optional)</h4>' +
+      '<p class="hub-opt-hint">In addition to in-person types. When this is an online event, save the open meeting join link. Signup emails that link only to the member who just registered.</p>' +
+      '<div class="hub-event-checks" style="margin:0 0 8px;">' +
+      '<label><input type="checkbox" id="hubEventOnline" /> This is an online event</label></div>' +
+      '<div id="hubEventOnlineFields" hidden>' +
+      '<label for="hubEventMeetingUrl">Meeting join URL</label>' +
+      '<input id="hubEventMeetingUrl" type="url" inputmode="url" autocomplete="url" placeholder="https://..." />' +
+      '</div></div>' +
       '<div class="wide"><label for="hubEventFlyerUrl">Event image / PDF URL</label><input id="hubEventFlyerUrl" type="url" placeholder="https://… or upload a file below" /></div>' +
       '<div class="wide"><label for="hubEventFlyerFile">Upload event image or PDF</label>' +
       '<input id="hubEventFlyerFile" type="file" accept="application/pdf,image/jpeg,image/png,image/webp" />' +
@@ -162,6 +194,66 @@
     }
   }
 
+  var eventRaffles = [];
+
+  function showEl(id, on) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    if (on) { el.hidden = false; el.style.display = ""; }
+    else { el.hidden = true; el.style.display = "none"; }
+  }
+
+  function fillRaffleEventSelect(selectedId) {
+    var sel = document.getElementById("hubEventRaffleEvent");
+    if (!sel) return;
+    var html = '<option value="">None (qty only, or enter a price to create one)</option>';
+    eventRaffles.forEach(function (r) {
+      if (!r || !r.id) return;
+      var label = (r.name || "Raffle") + (r.is_active === false ? " (inactive)" : "");
+      if (r.ticket_price != null && r.ticket_price !== "") label += " · $" + Number(r.ticket_price).toFixed(2);
+      html += '<option value="' + esc(r.id) + '"' + (String(r.id) === String(selectedId || "") ? " selected" : "") + ">" + esc(label) + "</option>";
+    });
+    sel.innerHTML = html;
+    if (selectedId) sel.value = selectedId;
+  }
+
+  function syncOptionalEventFields() {
+    var typeEl = document.getElementById("hubEventType");
+    var onlineBox = document.getElementById("hubEventOnline");
+    if (typeEl && onlineBox && typeEl.value === "online") onlineBox.checked = true;
+    var raffleOn = !!(document.getElementById("hubEventCollectRaffle") && document.getElementById("hubEventCollectRaffle").checked);
+    var mealOn = !!(document.getElementById("hubEventCollectMeals") && document.getElementById("hubEventCollectMeals").checked);
+    var onlineOn = !!(onlineBox && onlineBox.checked) || (typeEl && typeEl.value === "online");
+    showEl("hubEventRaffleFields", raffleOn);
+    showEl("hubEventMealFields", mealOn);
+    showEl("hubEventOnlineFields", onlineOn);
+    var loc = document.getElementById("hubEventLocation");
+    if (loc) loc.placeholder = onlineOn ? "Optional for online events" : "Venue name and street address";
+  }
+
+  function onRaffleEventPicked() {
+    var sel = document.getElementById("hubEventRaffleEvent");
+    var price = document.getElementById("hubEventRafflePrice");
+    if (!sel || !price || !sel.value) return;
+    var row = eventRaffles.find(function (r) { return String(r.id) === String(sel.value); });
+    if (row && row.ticket_price != null && row.ticket_price !== "" && !price.value) {
+      price.value = Number(row.ticket_price).toFixed(2);
+    }
+  }
+
+  async function loadEventRaffles(client) {
+    try {
+      var res = await client.rpc("officer_list_event_raffles");
+      if (res.error) throw res.error;
+      var data = res.data || {};
+      eventRaffles = Array.isArray(data.raffles) ? data.raffles : [];
+    } catch (e) {
+      eventRaffles = [];
+    }
+    var current = document.getElementById("hubEventRaffleEvent");
+    fillRaffleEventSelect(current ? current.value : "");
+  }
+
   function clearEventForm() {
     var form = document.getElementById("hubEventForm");
     if (!form) return;
@@ -172,8 +264,14 @@
     var feat = document.getElementById("hubEventFeatured"); if (feat) feat.checked = false;
     var cg = document.getElementById("hubEventCollectGuests"); if (cg) cg.checked = true;
     var cn = document.getElementById("hubEventCollectGuestNames"); if (cn) cn.checked = true;
-    var cr = document.getElementById("hubEventCollectRaffle"); if (cr) cr.checked = true;
+    var cr = document.getElementById("hubEventCollectRaffle"); if (cr) cr.checked = false;
     var ro = document.getElementById("hubEventRaffleOptions"); if (ro) ro.value = "0,1,5,15";
+    var rp = document.getElementById("hubEventRafflePrice"); if (rp) rp.value = "";
+    fillRaffleEventSelect("");
+    var cm = document.getElementById("hubEventCollectMeals"); if (cm) cm.checked = false;
+    var mo = document.getElementById("hubEventMealOptions"); if (mo) mo.value = "";
+    var onl = document.getElementById("hubEventOnline"); if (onl) onl.checked = false;
+    var mu = document.getElementById("hubEventMeetingUrl"); if (mu) mu.value = "";
     var rcClear = document.getElementById("hubEventRegCloses"); if (rcClear) rcClear.value = "";
     document.getElementById("hubEventStatus").value = "draft";
     var payClear = document.getElementById("hubEventPaymentUrl"); if (payClear) payClear.value = "";
@@ -184,6 +282,7 @@
     var note = document.getElementById("hubEventFlyerNote");
     if (note) note.textContent = FLYER_NOTE_DEFAULT;
     syncFlyerPreview();
+    syncOptionalEventFields();
   }
 
   function fillEventForm(event) {
@@ -207,10 +306,27 @@
     get("hubEventPaymentUrl").value = event.ticket_payment_url || "";
     var cg = get("hubEventCollectGuests"); if (cg) cg.checked = event.collect_guests !== false;
     var cn = get("hubEventCollectGuestNames"); if (cn) cn.checked = event.collect_guest_names !== false;
-    var cr = get("hubEventCollectRaffle"); if (cr) cr.checked = event.collect_raffle !== false;
+    var cr = get("hubEventCollectRaffle"); if (cr) cr.checked = !!event.collect_raffle || !!event.raffle_event_id;
     var ro = get("hubEventRaffleOptions"); if (ro) ro.value = event.raffle_options || "0,1,5,15";
+    fillRaffleEventSelect(event.raffle_event_id || "");
+    var rp = get("hubEventRafflePrice");
+    if (rp) {
+      rp.value = event.raffle_ticket_price == null || event.raffle_ticket_price === ""
+        ? ""
+        : Number(event.raffle_ticket_price).toFixed(2);
+    }
+    var cm = get("hubEventCollectMeals"); if (cm) cm.checked = !!event.collect_meals;
+    var mo = get("hubEventMealOptions"); if (mo) mo.value = event.meal_options || "";
+    var typeVal = event.event_type || "other";
+    get("hubEventType").value = typeVal;
+    if (get("hubEventType").value !== typeVal && typeVal) {
+      get("hubEventType").value = "other";
+    }
+    var onl = get("hubEventOnline"); if (onl) onl.checked = !!event.is_online || typeVal === "online";
+    var mu = get("hubEventMeetingUrl"); if (mu) mu.value = event.meeting_url || "";
     get("hubEventFlyerUrl").value = event.flyer_url || "";
     syncFlyerPreview();
+    syncOptionalEventFields();
     get("hubEventFormTitle").textContent = "Edit event";
     get("hubEventMsg").textContent = "";
     var wrap = document.getElementById("hubEventFormWrap");
@@ -241,6 +357,9 @@
         '<div class="muted">' + esc(details.join(" · ") || "Date to be announced") + '</div>' +
         '<div class="muted">' + esc(event.status || "published") + (event.event_type ? " · " + esc(event.event_type) : "") + esc(ticket) +
         (event.is_featured ? " · Featured" : "") +
+        (event.collect_raffle || event.raffle_event_id ? " · raffle" : "") +
+        (event.collect_meals ? " · meals" : "") +
+        (event.is_online || event.event_type === "online" ? " · online" : "") +
         (flyer ? " · has image/PDF" : " · add image/PDF") +
         (readOnly ? " · IKC event (read-only)" : "") + '</div></div>' +
         (readOnly ? "" : '<div class="hub-appr-btns"><button class="btn btn-primary" type="button" data-event-edit="' + esc(event.id) + '">Edit event</button></div>') + '</div>';
@@ -427,6 +546,26 @@
     var dollars = ticketValue === "" ? null : Number(ticketValue);
     if (capacityValue !== "" && (isNaN(capacity) || capacity < 0)) { if (msg) msg.textContent = "Capacity must be a whole number."; return; }
     if (ticketValue !== "" && (isNaN(dollars) || dollars < 0)) { if (msg) msg.textContent = "Ticket price must be zero or more."; return; }
+    var rafflePriceValue = value("hubEventRafflePrice");
+    var raffleDollars = rafflePriceValue === "" ? null : Number(rafflePriceValue);
+    if (rafflePriceValue !== "" && (isNaN(raffleDollars) || raffleDollars < 0)) {
+      if (msg) msg.textContent = "Raffle ticket price must be zero or more. Enter the amount or leave it blank.";
+      return;
+    }
+    var collectRaffle = !!(document.getElementById("hubEventCollectRaffle") && document.getElementById("hubEventCollectRaffle").checked);
+    var collectMeals = !!(document.getElementById("hubEventCollectMeals") && document.getElementById("hubEventCollectMeals").checked);
+    var mealOptions = value("hubEventMealOptions");
+    if (collectMeals && !mealOptions) {
+      if (msg) msg.textContent = "List at least one meal option, or turn meal choice off.";
+      return;
+    }
+    var isOnline = !!(document.getElementById("hubEventOnline") && document.getElementById("hubEventOnline").checked)
+      || value("hubEventType") === "online";
+    var meetingUrl = value("hubEventMeetingUrl");
+    if (isOnline && meetingUrl && !/^https?:\/\//i.test(meetingUrl)) {
+      if (msg) msg.textContent = "Meeting join link must start with http:// or https://.";
+      return;
+    }
     var payload = {
       id: value("hubEventId") || null, name: value("hubEventName"), start_time: start.toISOString(),
       end_time: end ? end.toISOString() : null, location: value("hubEventLocation") || null,
@@ -440,8 +579,14 @@
       ticket_payment_url: value("hubEventPaymentUrl") || null, flyer_url: value("hubEventFlyerUrl") || null,
       collect_guests: !!(document.getElementById("hubEventCollectGuests") && document.getElementById("hubEventCollectGuests").checked),
       collect_guest_names: !!(document.getElementById("hubEventCollectGuestNames") && document.getElementById("hubEventCollectGuestNames").checked),
-      collect_raffle: !!(document.getElementById("hubEventCollectRaffle") && document.getElementById("hubEventCollectRaffle").checked),
+      collect_raffle: collectRaffle,
       raffle_options: value("hubEventRaffleOptions") || "0,1,5,15",
+      raffle_event_id: collectRaffle ? (value("hubEventRaffleEvent") || null) : null,
+      raffle_ticket_price: collectRaffle && rafflePriceValue !== "" ? raffleDollars : null,
+      collect_meals: collectMeals,
+      meal_options: collectMeals ? mealOptions : null,
+      is_online: isOnline,
+      meeting_url: isOnline ? (meetingUrl || null) : null,
       registration_closes_at: (function () {
         var rv = value("hubEventRegCloses");
         if (!rv) return null;
@@ -461,6 +606,7 @@
         ? " The ticket payment link was cleared because another event already uses it. Paste this event's own Zeffy link."
         : "";
       await refreshEventStudio(client);
+      await loadEventRaffles(client);
       if (save) { save.disabled = false; save.textContent = "☘ Save event"; }
       finishSavedReview(msg, res, payload, cleared, "");
     } catch (e) { if (msg) msg.textContent = "Couldn't save: " + ((e && e.message) || e); }
@@ -498,6 +644,12 @@
       eventForm.addEventListener("input", onEventFormEdited);
       eventForm.addEventListener("change", onEventFormEdited);
     }
+    ["hubEventType", "hubEventCollectRaffle", "hubEventCollectMeals", "hubEventOnline"].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.addEventListener("change", syncOptionalEventFields);
+    });
+    var rafflePick = document.getElementById("hubEventRaffleEvent");
+    if (rafflePick) rafflePick.addEventListener("change", onRaffleEventPicked);
     var flyerFile = document.getElementById("hubEventFlyerFile");
     flyerFile.addEventListener("change", async function () {
       var note = document.getElementById("hubEventFlyerNote");
@@ -526,6 +678,7 @@
       if (note) note.textContent = "Cleared. Save the event to remove it from the public page.";
     });
     clearEventForm();
+    await loadEventRaffles(client);
     await refreshEventStudio(client);
   }
 

@@ -187,7 +187,15 @@
             <option value="5">5 raffle tickets</option>
             <option value="15">15 raffle tickets</option>
           </select>
-          <div class="hint">Tell us how many raffle tickets you plan to buy on Zeffy so officers can plan the pot.</div>
+          <div class="hint" id="raffleHint">Tell us how many raffle tickets you plan to buy on Zeffy so officers can plan the pot.</div>
+        </div>
+
+        <div id="mealWrap" style="display:none;">
+          <label for="mealChoice">Meal choice</label>
+          <select id="mealChoice">
+            <option value="">Select a meal</option>
+          </select>
+          <div class="hint">Choose the meal you want for this event.</div>
         </div>
 
         <div id="haveTicketWrap" style="display:none;">
@@ -498,7 +506,7 @@
 
     async function loadEvents() {
       const { data, error } = await supabase
-        .from("events").select("id, name, description, start_time, end_time, location, source, external_url, ticket_payment_url, ticket_price_cents, ticket_label, flyer_url, status, is_featured, collect_guests, collect_guest_names, collect_raffle, raffle_options, registration_closes_at")
+        .from("events").select("id, name, description, start_time, end_time, location, source, external_url, ticket_payment_url, ticket_price_cents, ticket_label, flyer_url, status, is_featured, collect_guests, collect_guest_names, collect_raffle, raffle_options, raffle_event_id, collect_meals, meal_options, is_online, event_type, registration_closes_at")
         .eq("is_public", true).order("start_time", { ascending: true });
       if (error) {
         eventSelect.innerHTML = '<option value="">Could not load events</option>';
@@ -519,6 +527,13 @@
       // IKC events show on the calendar below, but you RSVP to those on the
       // host krewe's own site — keep them out of our RSVP dropdown.
       const ours = data.filter((ev)=> ev.source !== "ikc");
+      let rafflePrices = {};
+      try {
+        const raffleRes = await supabase.from("v_raffle_events_public").select("id, ticket_price");
+        (raffleRes.data || []).forEach((row) => {
+          if (row && row.id != null) rafflePrices[row.id] = row.ticket_price;
+        });
+      } catch (_) {}
       if (ours.length === 0) { eventSelect.innerHTML = '<option value="">No upcoming events</option>'; }
       const TARTAN_BALL_TICKETS = "http://www.tampabaytartanball.com/home.html";
       function isMainTartanBall(ev) {
@@ -556,8 +571,15 @@
         }
         opt.dataset.collectGuests = (ev.collect_guests === false) ? "0" : "1";
         opt.dataset.collectGuestNames = (ev.collect_guest_names === false) ? "0" : "1";
-        opt.dataset.collectRaffle = (ev.collect_raffle === false) ? "0" : "1";
+        opt.dataset.collectRaffle = (ev.collect_raffle === false) ? "0" : (ev.collect_raffle || ev.raffle_event_id ? "1" : "0");
         opt.dataset.raffleOptions = (ev.raffle_options || "0,1,5,15");
+        if (ev.raffle_event_id) opt.dataset.raffleEventId = ev.raffle_event_id;
+        if (ev.raffle_event_id && rafflePrices[ev.raffle_event_id] != null) {
+          opt.dataset.rafflePrice = String(rafflePrices[ev.raffle_event_id]);
+        }
+        opt.dataset.collectMeals = ev.collect_meals ? "1" : "0";
+        if (ev.meal_options) opt.dataset.mealOptions = ev.meal_options;
+        opt.dataset.isOnline = (ev.is_online || ev.event_type === "online") ? "1" : "0";
         if (ev.ticket_label) opt.dataset.ticketLabel = ev.ticket_label;
         if (isRegistrationClosed(ev)) opt.dataset.regClosed = "1";
         else if (ev.registration_closes_at) opt.dataset.regClosesAt = ev.registration_closes_at;
@@ -577,6 +599,9 @@
       const guestNamesWrap = document.getElementById("guestNamesWrap");
       const raffleWrap = document.getElementById("raffleWrap");
       const raffleSelect = document.getElementById("raffleTickets");
+      const raffleHint = document.getElementById("raffleHint");
+      const mealWrap = document.getElementById("mealWrap");
+      const mealSelect = document.getElementById("mealChoice");
       const guestsInput = document.getElementById("guests");
       function fillRaffleOptions(csv) {
         const parts = String(csv || "0,1,5,15").split(",").map((s)=> s.trim()).filter(Boolean);
@@ -588,21 +613,45 @@
           return '<option value="' + n + '">' + label + '</option>';
         }).join("");
       }
+      function parseMealOptions(raw) {
+        return String(raw || "").replace(/,/g, "\n").split(/\n+/).map((s)=> s.trim()).filter(Boolean)
+          .filter((v, i, a) => a.indexOf(v) === i);
+      }
+      function fillMealOptions(raw) {
+        const meals = parseMealOptions(raw);
+        const prev = mealSelect.value;
+        mealSelect.innerHTML = '<option value="">Select a meal</option>' + meals.map((m) =>
+          '<option value="' + String(m).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;") + '">' +
+          String(m).replace(/&/g,"&amp;").replace(/</g,"&lt;") + "</option>"
+        ).join("");
+        if (prev && meals.indexOf(prev) !== -1) mealSelect.value = prev;
+      }
       function syncCollectFields() {
         const opt = eventSelect.selectedOptions[0];
         const collectGuests = !opt || opt.dataset.collectGuests !== "0";
         const collectNames = !opt || opt.dataset.collectGuestNames !== "0";
-        const collectRaffle = !!(opt && opt.dataset.collectRaffle !== "0" && (opt.dataset.redirect || Number(document.getElementById("guests").value||0) >= 0));
-        // Guests count: hide only when officer turned it off
         guestsRow.style.display = collectGuests ? "" : "none";
         if (!collectGuests) { guestsInput.value = "0"; }
         const g = parseInt(guestsInput.value || "0", 10) || 0;
         guestNamesWrap.style.display = (collectGuests && collectNames && g > 0) ? "block" : "none";
-        // Raffle: show for ticketed events (or any event) when officer enabled it
-        const showRaffle = !!(opt && opt.value && opt.dataset.collectRaffle !== "0");
+        const showRaffle = !!(opt && opt.value && opt.dataset.collectRaffle === "1");
         raffleWrap.style.display = showRaffle ? "block" : "none";
-        if (showRaffle) fillRaffleOptions(opt.dataset.raffleOptions);
-        if (!showRaffle) raffleSelect.value = "0";
+        if (showRaffle) {
+          fillRaffleOptions(opt.dataset.raffleOptions);
+          const price = opt.dataset.rafflePrice;
+          raffleHint.textContent = price
+            ? ("Each raffle ticket is $" + Number(price).toFixed(2) + ". Tell us how many you want. Officers enter this price in Event Studio.")
+            : "Tell us how many raffle tickets you plan to buy on Zeffy so officers can plan the pot.";
+        } else if (raffleSelect) raffleSelect.value = "0";
+        const showMeal = !!(opt && opt.value && opt.dataset.collectMeals === "1" && parseMealOptions(opt.dataset.mealOptions).length);
+        mealWrap.style.display = showMeal ? "block" : "none";
+        if (showMeal) {
+          fillMealOptions(opt.dataset.mealOptions);
+          mealSelect.required = true;
+        } else {
+          mealSelect.required = false;
+          mealSelect.value = "";
+        }
       }
       function syncSignupButton() {
         const opt = eventSelect.selectedOptions[0];
@@ -691,7 +740,9 @@
           "name": ev.name,
           "startDate": ev.start_time,
           "eventStatus": "https://schema.org/EventScheduled",
-          "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+          "eventAttendanceMode": ev.is_online
+            ? "https://schema.org/OnlineEventAttendanceMode"
+            : "https://schema.org/OfflineEventAttendanceMode",
           "organizer": { "@type": "Organization", "name": "Krewe of Shamrock", "url": "https://krewe-of-shamrock.vercel.app/" },
           "url": "https://krewe-of-shamrock.vercel.app/event-signup.html?event=" + encodeURIComponent(ev.id)
         };
@@ -825,7 +876,12 @@
       }
       const guestNamesEl = document.getElementById("guestNames");
       const raffleEl = document.getElementById("raffleTickets");
+      const mealEl = document.getElementById("mealChoice");
+      const mealWrapEl = document.getElementById("mealWrap");
       const ticketLabel = (selected && selected.dataset.ticketLabel) || null;
+      const mealChoice = (mealEl && mealWrapEl && mealWrapEl.style.display !== "none")
+        ? (mealEl.value || "").trim() || null
+        : null;
       const { data, error } = await supabase.rpc("rsvp_to_event", {
         p_event_id: eventSelect.value,
         p_first_name: document.getElementById("firstName").value.trim(),
@@ -838,7 +894,8 @@
         p_raffle_tickets: parseInt((raffleEl && raffleEl.value) || "0", 10),
         p_guest_names: guestNamesEl ? (guestNamesEl.value || "").trim() || null : null,
         p_ticket_type: ticketLabel,
-        p_payment_status: payStatus
+        p_payment_status: payStatus,
+        p_meal_choice: mealChoice
       });
       if (error) {
         btn.disabled = false; resync();
@@ -864,11 +921,14 @@
         return;
       }
       btn.disabled = false;
-      const doneMsg = ticketPurchased && data.status !== "waitlisted"
+      let doneMsg = ticketPurchased && data.status !== "waitlisted"
         ? "You're signed up - no second charge, since your ticket is already covered. See you there!"
         : data.message;
+      if (data.status !== "waitlisted" && data.meeting_url) {
+        doneMsg += " Your join link was emailed to you, and is also here: " + data.meeting_url;
+      }
       if (data.status === "waitlisted") { showMessage(data.message, "waitlist"); }
-      else { form.reset(); document.getElementById("guests").value = "0"; if (raffleEl) raffleEl.value = "0"; resync(); showMessage(doneMsg, "success"); }
+      else { form.reset(); document.getElementById("guests").value = "0"; if (raffleEl) raffleEl.value = "0"; if (mealWrapEl) mealWrapEl.style.display = "none"; resync(); showMessage(doneMsg, "success"); }
     });
 
     loadEvents();
