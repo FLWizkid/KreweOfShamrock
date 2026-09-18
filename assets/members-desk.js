@@ -1684,7 +1684,7 @@
       '<p class="hub-flyer-note" id="hubEventFlyerNote" aria-live="polite">Upload fills the URL above. Then press Save event to attach it. Published public events show on the Events page. Check Featured Event to pin one in the Featured spot (only one at a time).</p>' +
       '<div class="hub-flyer-preview" id="hubEventFlyerPreview"></div>' +
       '<button class="btn" type="button" id="hubEventFlyerClear" style="margin-top:8px;">Clear image / PDF</button></div></div>' +
-      '<p style="font-size:15px;color:var(--muted);margin:10px 0 0;">For paid tickets, create a Zeffy ticketing campaign and paste the public share link here. Sign me up / RSVP will open that checkout.</p>' +
+      '<p style="font-size:15px;color:var(--muted);margin:10px 0 0;">For paid tickets, create a Zeffy ticketing campaign and paste the public share link here. Sign me up / RSVP will open that checkout. Publishing asks you to confirm the name, date and time, location, and ticket price. A draft save does not. Each paid event needs its own Zeffy link.</p>' +
       '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;"><button class="btn btn-primary" type="submit" id="hubEventSave">☘ Save event</button>' +
       '<button class="btn" type="button" id="hubEventNew">New / clear</button></div><p class="hub-event-msg" id="hubEventMsg" aria-live="polite"></p></form></div>';
   }
@@ -1736,6 +1736,7 @@
     document.getElementById("hubEventFeatured").checked = false;
     var rcClear = document.getElementById("hubEventRegCloses"); if (rcClear) rcClear.value = "";
     document.getElementById("hubEventStatus").value = "draft";
+    var payClear = document.getElementById("hubEventPaymentUrl"); if (payClear) payClear.value = "";
     document.getElementById("hubEventType").value = "social";
     document.getElementById("hubEventFormTitle").textContent = "New event";
     document.getElementById("hubEventMsg").textContent = "";
@@ -1845,6 +1846,23 @@
     }
   }
 
+  function confirmPublishDetails(payload) {
+    if (String(payload.status || "") !== "published") return true;
+    var price = payload.ticket_price_cents == null
+      ? "Not set"
+      : "$" + (Number(payload.ticket_price_cents) / 100).toFixed(2);
+    var when = eventLocalDisplay(payload.start_time) || "Not set";
+    var where = payload.location || "Not set";
+    return window.confirm(
+      "Confirm this published event is correct.\n\n" +
+      "Name: " + (payload.name || "Not set") + "\n" +
+      "Date and time: " + when + "\n" +
+      "Location: " + where + "\n" +
+      "Ticket price: " + price + "\n\n" +
+      "OK publishes these details. Cancel does not save and does not notify anyone."
+    );
+  }
+
   async function saveEventStudio(client) {
     var msg = document.getElementById("hubEventMsg");
     var save = document.getElementById("hubEventSave");
@@ -1884,13 +1902,20 @@
       })()
     };
     if (!payload.name) { if (msg) msg.textContent = "Event name is required."; return; }
+    if (!confirmPublishDetails(payload)) {
+      if (msg) msg.textContent = "Not published. Nothing was saved.";
+      return;
+    }
     if (save) { save.disabled = true; save.textContent = "Saving…"; }
     if (msg) msg.textContent = "";
     try {
       var res = await client.rpc("officer_upsert_event", { p: payload });
       if (res.error) throw res.error;
       if (res.data && res.data.ok === false) throw new Error(res.data.message || "Could not save event.");
-      if (msg) msg.textContent = "Event saved. Use RSVP QR or Door check-in QR on the event in the list above.";
+      var cleared = res.data && res.data.ticket_url_cleared
+        ? " The ticket payment link was cleared because another event already uses it. Paste this event's own Zeffy link."
+        : "";
+      if (msg) msg.textContent = "Event saved. Use RSVP QR or Door check-in QR on the event in the list above." + cleared;
       clearEventForm();
       await refreshEventStudio(client);
     } catch (e) { if (msg) msg.textContent = "Couldn't save: " + ((e && e.message) || e); }
