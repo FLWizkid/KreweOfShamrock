@@ -235,3 +235,19 @@ Migrations: `kos_parade_ready_engine`, `kos_checkin_codes_private`.
 Frontend: the members portal's **Parade Ready** card (status gates, waiver signing, hour logging), the
 `?checkin=CODE` QR flow on members.html, and three officer reports (Wristband Pickup List, Volunteer
 Hours Review, Meeting Check-In QR) under the "Parade Readiness" report category.
+
+## QR registry (added 2026-09)
+
+Migration: `sql/kos_qr_registry.sql` (QR_LIBRARY_BUILD_PLAN.md Phase 2).
+
+| Object | Purpose |
+| --- | --- |
+| `qr_codes` | The QR library: one row per printed square (`slug`, `label`, `target_url`, `purpose`, optional `event_id`/`product_id`, `active`). Squares encode `go.html?c=SLUG`, so officers can re-point `target_url` after printing. Officers read via RLS; nobody else. |
+| `qr_scans` | Anonymous scan log: `qr_id` + `scanned_at` only — by krewe decision (2026-09-18) no member id, IP address, or browser details are stored. No direct read/write policies; counts come out through the officer RPC. |
+| `resolve_qr(p_slug)` | Public RPC (anon + authenticated): logs one anonymous scan for an active slug and returns its `target_url`; unknown or retired slugs return `ok:false` without logging. Called by `go.html`. |
+| `officer_upsert_qr_code(...)` | Officer RPC: create or edit a code (validates slug shape and that the destination is `https://` or `mailto:`). |
+| `officer_set_qr_active(id, active)` | Officer RPC: retire or reactivate a code without losing its scan history. |
+| `officer_delete_qr_code(id)` | Officer RPC: delete a code (its scan rows cascade away — prefer deactivating). |
+| `officer_list_qr_codes()` | Officer RPC: every code with `scan_count`, `scans_30d`, and `last_scan_at` — the data source for the Phase 3 QR Library card. |
+
+Frontend: `go.html` (the tracked hop; plain fetch to PostgREST, no third-party scripts).
