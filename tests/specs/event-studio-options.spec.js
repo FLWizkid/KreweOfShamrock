@@ -60,6 +60,71 @@ test.describe("Event Studio optional fields", () => {
   });
 });
 
+test.describe("Event Studio permanent delete", () => {
+  async function openDeleteConfirm(page) {
+    await page.evaluate(() => {
+      document.getElementById("hubEventId").value = "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa";
+      document.getElementById("hubEventName").value = "Mistaken Mixer";
+      document.getElementById("hubEventStart").value = "2026-10-01T18:00";
+      var btn = document.getElementById("hubEventDelete");
+      var hint = document.getElementById("hubEventDeleteHint");
+      if (btn) { btn.hidden = false; btn.style.display = ""; }
+      if (hint) { hint.hidden = false; hint.style.display = ""; }
+    });
+    await page.locator("#hubEventDelete").click();
+    await expect(page.locator("#hubEventDeletePanel")).toBeVisible();
+  }
+
+  test("keeps Cancelled status and requires typed confirm before delete", async ({ page }) => {
+    const report = watchPage(page);
+    await openEventStudio(page);
+
+    await expect(page.locator("#hubEventStatus option[value='cancelled']")).toHaveCount(1);
+    await expect(page.locator("#hubEventDelete")).toBeHidden();
+    await expect(page.locator("#hubEventDeletePanel")).toBeHidden();
+
+    await openDeleteConfirm(page);
+    await expect(page.locator("#hubEventDeletePanel")).toContainText("Mistaken Mixer");
+    await expect(page.locator("#hubEventDeletePanel")).toContainText("Delete permanently");
+    await expect(page.locator("#hubEventDeleteGo")).toBeDisabled();
+
+    await page.locator("#hubEventDeleteTyped").fill("wrong name");
+    await expect(page.locator("#hubEventDeleteGo")).toBeDisabled();
+
+    await page.locator("#hubEventDeleteTyped").fill("Mistaken Mixer");
+    await expect(page.locator("#hubEventDeleteGo")).toBeEnabled();
+
+    await page.locator("#hubEventDeleteCancel").click();
+    await expect(page.locator("#hubEventDeletePanel")).toBeHidden();
+    await expect(page.locator("#hubEventId")).toHaveValue("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
+    await expect(page.locator("#hubEventMsg")).toContainText(/Delete cancelled/i);
+
+    await openDeleteConfirm(page);
+    await page.locator("#hubEventDeleteTyped").fill("Delete permanently");
+    await expect(page.locator("#hubEventDeleteGo")).toBeEnabled();
+    await page.locator("#hubEventDeleteGo").click();
+    await expect(page.locator("#hubEventDeleteErr")).not.toHaveText("", { timeout: 8000 });
+    await expect(page.locator("#hubEventDeletePanel")).toBeVisible();
+    await expect(page.locator("#hubEventId")).toHaveValue("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
+    await expect(page.locator("#hubEventMsg")).toContainText(/Couldn't delete/i);
+
+    assertHealthy(expect, report, "event studio permanent delete confirm");
+  });
+
+  test("delete confirm remains usable on a phone-sized viewport", async ({ page }) => {
+    const report = watchPage(page);
+    await page.setViewportSize({ width: 390, height: 844 });
+    await openEventStudio(page);
+    await openDeleteConfirm(page);
+    await expect(page.locator("#hubEventDeleteSummary")).toBeVisible();
+    await expect(page.locator("#hubEventDeleteTyped")).toBeVisible();
+    await expect(page.locator("#hubEventDeleteCancel")).toBeVisible();
+    await page.locator("#hubEventDeleteCancel").click();
+    await expect(page.locator("#hubEventDeletePanel")).toBeHidden();
+    assertHealthy(expect, report, "event studio permanent delete mobile");
+  });
+});
+
 test("event sign-up hides meal choice until an event with meals is selected", async ({ page }) => {
   const report = watchPage(page);
   await page.goto("/event-signup.html");

@@ -135,6 +135,11 @@
     ".hub-event-optional h4{margin:0 0 6px;font-family:var(--display);color:var(--green-800);font-size:16px;}",
     ".hub-event-optional p.hub-opt-hint{font-size:13px;color:var(--muted);margin:0 0 8px;line-height:1.4;}",
     ".hub-event-optional-fields{display:grid;grid-template-columns:1fr 1fr;gap:0 12px;}",
+    ".btn.btn-danger,.hub-event-form .btn-danger{border-color:#b3452e;color:#8b2e1c;background:#fff5f2;}",
+    ".hub-event-delete-panel{margin-top:16px;padding:14px;border:1px solid #b3452e;border-radius:12px;background:#fff5f2;}",
+    ".hub-event-delete-panel h4{margin:0 0 8px;font-family:var(--display);color:#8b2e1c;font-size:17px;}",
+    ".hub-event-delete-panel p{font-size:15px;color:#5c2b20;line-height:1.45;margin:0 0 8px;}",
+    ".hub-event-delete-panel #hubEventDeleteErr{color:#8b2e1c;min-height:1.2em;}",
     "@media(max-width:620px){.hub-event-grid{grid-template-columns:1fr;}.hub-event-grid .wide{grid-column:auto;}.hub-event-row{flex-direction:column;}.hub-event-optional-fields{grid-template-columns:1fr;}}",
     "@keyframes kosHoursFlash{0%,100%{box-shadow:none}40%{box-shadow:0 0 0 4px rgba(29,107,62,.45)}}",
     "#vhForm.kos-hours-flash{animation:kosHoursFlash 1.6s ease;border-radius:12px;}",
@@ -1774,7 +1779,24 @@
       '<p style="font-size:15px;color:var(--muted);margin:10px 0 0;">For paid tickets, create a Zeffy ticketing campaign and paste the public share link here. Sign me up / RSVP will open that checkout. Save stores a draft and does not publish. After a successful save, review the saved name, date and time, location, and ticket price. Publish appears only after you confirm those details. Cancel that review and the event is not published and nobody is notified. If the event was already public, saving moves it back to a draft until you publish again. Each paid event needs its own Zeffy link.</p>' +
       '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;"><button class="btn btn-primary" type="submit" id="hubEventSave">☘ Save event</button>' +
       '<button class="btn btn-primary" type="button" id="hubEventPublish" hidden style="display:none">Publish</button>' +
-      '<button class="btn" type="button" id="hubEventNew">New / clear</button></div><p class="hub-event-msg" id="hubEventMsg" aria-live="polite"></p></form></div>';
+      '<button class="btn" type="button" id="hubEventNew">New / clear</button>' +
+      '<button class="btn btn-danger" type="button" id="hubEventDelete" hidden style="display:none">Delete permanently</button></div>' +
+      '<p class="hub-flyer-note" id="hubEventDeleteHint" hidden>To hide this event without removing it, set Status to Cancelled. Delete permanently is only for mistaken events.</p>' +
+      '<p class="hub-event-msg" id="hubEventMsg" aria-live="polite"></p></form>' +
+      eventDeletePanelHtml() + '</div>';
+  }
+
+  function eventDeletePanelHtml() {
+    return '<div class="hub-event-delete-panel" id="hubEventDeletePanel" hidden>' +
+      '<h4>Delete this event permanently?</h4>' +
+      '<p id="hubEventDeleteSummary"></p>' +
+      '<p>This removes the event from Event Studio and the public calendar. RSVPs for this event are deleted. Payment records stay; the event link on them is cleared. Linked raffles are unlinked, not deleted. Cancelled status hides an event without destroying it.</p>' +
+      '<label for="hubEventDeleteTyped">Type the event name or Delete permanently to confirm</label>' +
+      '<input id="hubEventDeleteTyped" autocomplete="off" />' +
+      '<div class="hub-appr-btns" style="margin-top:10px;">' +
+      '<button class="btn" type="button" id="hubEventDeleteCancel">Cancel</button>' +
+      '<button class="btn btn-danger" type="button" id="hubEventDeleteGo" disabled>Delete permanently</button></div>' +
+      '<p class="hub-event-msg" id="hubEventDeleteErr" aria-live="polite"></p></div>';
   }
 
 
@@ -1815,6 +1837,7 @@
   }
 
   var eventRaffles = [];
+  var pendingDelete = null;
 
   function showEl(id, on) {
     var el = document.getElementById(id);
@@ -1874,6 +1897,169 @@
     fillRaffleEventSelect(current ? current.value : "");
   }
 
+  function confirmDeleteTextMatches(typed, name) {
+    var t = String(typed || "").trim().toLowerCase();
+    if (!t) return false;
+    if (t === "delete permanently") return true;
+    return t === String(name || "").trim().toLowerCase();
+  }
+
+  function showEventDeleteButton(on) {
+    var btn = document.getElementById("hubEventDelete");
+    var hint = document.getElementById("hubEventDeleteHint");
+    if (btn) {
+      btn.hidden = !on;
+      btn.style.display = on ? "" : "none";
+      btn.disabled = false;
+    }
+    if (hint) {
+      hint.hidden = !on;
+      hint.style.display = on ? "" : "none";
+    }
+  }
+
+  function hideDeletePanel() {
+    pendingDelete = null;
+    var panel = document.getElementById("hubEventDeletePanel");
+    var typed = document.getElementById("hubEventDeleteTyped");
+    var err = document.getElementById("hubEventDeleteErr");
+    var go = document.getElementById("hubEventDeleteGo");
+    if (typed) typed.value = "";
+    if (err) err.textContent = "";
+    if (go) {
+      go.disabled = true;
+      go.textContent = "Delete permanently";
+    }
+    if (panel) {
+      panel.hidden = true;
+      panel.style.display = "none";
+    }
+  }
+
+  function syncDeleteGoEnabled() {
+    var go = document.getElementById("hubEventDeleteGo");
+    var typed = document.getElementById("hubEventDeleteTyped");
+    if (!go) return;
+    go.disabled = !pendingDelete || !confirmDeleteTextMatches(typed && typed.value, pendingDelete.name);
+  }
+
+  function showDeletePanel(event) {
+    var row = event || {};
+    if (!row.id) return;
+    pendingDelete = {
+      id: row.id,
+      name: row.name || "",
+      start_time: row.start_time || ""
+    };
+    var panel = document.getElementById("hubEventDeletePanel");
+    var summary = document.getElementById("hubEventDeleteSummary");
+    var typed = document.getElementById("hubEventDeleteTyped");
+    var err = document.getElementById("hubEventDeleteErr");
+    var when = eventLocalDisplay(pendingDelete.start_time);
+    if (summary) {
+      summary.textContent = (pendingDelete.name || "This event") + (when ? " — " + when : "");
+    }
+    if (typed) typed.value = "";
+    if (err) err.textContent = "";
+    syncDeleteGoEnabled();
+    if (panel) {
+      panel.hidden = false;
+      panel.style.display = "";
+      panel.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    if (typed) typed.focus();
+  }
+
+  function eventFromFormForDelete() {
+    var idEl = document.getElementById("hubEventId");
+    var nameEl = document.getElementById("hubEventName");
+    var startEl = document.getElementById("hubEventStart");
+    var startVal = startEl ? startEl.value.trim() : "";
+    var startIso = "";
+    if (startVal) {
+      var d = new Date(startVal);
+      startIso = isNaN(d.getTime()) ? startVal : d.toISOString();
+    }
+    return {
+      id: idEl ? idEl.value.trim() : "",
+      name: nameEl ? nameEl.value.trim() : "",
+      start_time: startIso
+    };
+  }
+
+  async function runDeleteEvent(client) {
+    var err = document.getElementById("hubEventDeleteErr");
+    var go = document.getElementById("hubEventDeleteGo");
+    var typed = document.getElementById("hubEventDeleteTyped");
+    var msg = document.getElementById("hubEventMsg");
+    var confirm = typed ? typed.value.trim() : "";
+    if (!pendingDelete || !pendingDelete.id) {
+      if (err) err.textContent = "Choose an event to delete.";
+      return;
+    }
+    if (!confirmDeleteTextMatches(confirm, pendingDelete.name)) {
+      if (err) err.textContent = "Type the event name or Delete permanently to confirm.";
+      return;
+    }
+    if (go) {
+      go.disabled = true;
+      go.textContent = "Deleting…";
+    }
+    if (err) err.textContent = "";
+    try {
+      var res = await client.rpc("officer_delete_event", {
+        p_event_id: pendingDelete.id,
+        p_confirm: confirm
+      });
+      if (res.error) throw res.error;
+      if (res.data && res.data.ok === false) throw new Error(res.data.message || "Could not delete event.");
+      var name = (res.data && res.data.name) || pendingDelete.name || "the event";
+      var id = String(pendingDelete.id);
+      hideDeletePanel();
+      var idEl = document.getElementById("hubEventId");
+      if (idEl && String(idEl.value) === id) clearEventForm();
+      if (msg) msg.textContent = "Deleted " + name + ".";
+      await refreshEventStudio(client);
+    } catch (e) {
+      var text = (e && e.message) || String(e);
+      if (err) err.textContent = text;
+      if (msg) msg.textContent = "Couldn't delete: " + text;
+      if (go) go.textContent = "Delete permanently";
+      syncDeleteGoEnabled();
+    }
+  }
+
+  function wireEventDelete(client) {
+    var formBtn = document.getElementById("hubEventDelete");
+    if (formBtn) {
+      formBtn.addEventListener("click", function () {
+        showDeletePanel(eventFromFormForDelete());
+      });
+    }
+    var cancel = document.getElementById("hubEventDeleteCancel");
+    if (cancel) {
+      cancel.addEventListener("click", function () {
+        hideDeletePanel();
+        var msg = document.getElementById("hubEventMsg");
+        if (msg) msg.textContent = "Delete cancelled. Nothing was removed.";
+      });
+    }
+    var go = document.getElementById("hubEventDeleteGo");
+    if (go) {
+      go.addEventListener("click", function () { runDeleteEvent(client); });
+    }
+    var typed = document.getElementById("hubEventDeleteTyped");
+    if (typed) {
+      typed.addEventListener("input", syncDeleteGoEnabled);
+      typed.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          runDeleteEvent(client);
+        }
+      });
+    }
+  }
+
   function clearEventForm() {
     var form = document.getElementById("hubEventForm");
     if (!form) return;
@@ -1899,6 +2085,8 @@
     document.getElementById("hubEventFormTitle").textContent = "New event";
     document.getElementById("hubEventMsg").textContent = "";
     hidePublishButton();
+    showEventDeleteButton(false);
+    hideDeletePanel();
     var note = document.getElementById("hubEventFlyerNote");
     if (note) note.textContent = "Upload fills the URL above. Then press Save event to attach it. Published public events show on the Events page.";
     syncFlyerPreview();
@@ -1947,6 +2135,8 @@
     syncOptionalEventFields();
     get("hubEventFormTitle").textContent = "Edit event";
     get("hubEventMsg").textContent = "";
+    showEventDeleteButton(!!event.id);
+    hideDeletePanel();
     var wrap = document.getElementById("hubEventFormWrap");
     if (wrap) wrap.scrollIntoView({ behavior: "smooth", block: "start" });
   }
@@ -1985,6 +2175,7 @@
           '<button class="btn btn-primary" type="button" data-event-edit="' + eid + '">Edit event</button>' +
           '<button class="btn" type="button" data-event-rsvp-qr="' + eid + '">▦ RSVP QR</button>' +
           '<button class="btn btn-primary" type="button" data-event-checkin-qr="' + eid + '">▦ Door check-in QR</button>' +
+          '<button class="btn btn-danger" type="button" data-event-delete="' + eid + '">Delete permanently</button>' +
         '</div>') +
         '<div class="qr-slot" data-event-qr-slot="' + eid + '" style="flex-basis:100%;margin-top:8px;"></div></div>';
     });
@@ -1994,6 +2185,13 @@
         var id = button.getAttribute("data-event-edit");
         var event = list.find(function (row) { return String(row.id) === String(id); });
         if (event && String(event.source || "").toLowerCase() !== "ikc") fillEventForm(event);
+      });
+    });
+    target.querySelectorAll("[data-event-delete]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        var id = button.getAttribute("data-event-delete");
+        var event = list.find(function (row) { return String(row.id) === String(id); });
+        if (event && String(event.source || "").toLowerCase() !== "ikc") showDeletePanel(event);
       });
     });
     target.querySelectorAll("[data-event-rsvp-qr]").forEach(function (button) {
@@ -2277,6 +2475,7 @@
       e.preventDefault(); saveEventStudio(client);
     });
     document.getElementById("hubEventNew").addEventListener("click", clearEventForm);
+    wireEventDelete(client);
     var publishBtn = document.getElementById("hubEventPublish");
     if (publishBtn) publishBtn.addEventListener("click", function () { publishReviewedEvent(client); });
     var eventForm = document.getElementById("hubEventForm");
