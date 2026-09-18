@@ -66,8 +66,12 @@ test.describe("Event Studio permanent delete", () => {
       document.getElementById("hubEventId").value = "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa";
       document.getElementById("hubEventName").value = "Mistaken Mixer";
       document.getElementById("hubEventStart").value = "2026-10-01T18:00";
+      var btn = document.getElementById("hubEventDelete");
+      var hint = document.getElementById("hubEventDeleteHint");
+      if (btn) { btn.hidden = false; btn.style.display = ""; }
+      if (hint) { hint.hidden = false; hint.style.display = ""; }
     });
-    await page.locator("#hubEventDelete").click({ force: true });
+    await page.locator("#hubEventDelete").click();
     await expect(page.locator("#hubEventDeletePanel")).toBeVisible();
   }
 
