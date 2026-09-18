@@ -227,7 +227,7 @@ Migrations: `kos_parade_ready_engine`, `kos_checkin_codes_private`.
 | `volunteer_hours` | Member-logged service hours toward the 12-hour commitment (`activity`, `hours`, `worked_on`, `approved`). Members insert/read their own; officers approve via RPC. |
 | `v_parade_ready` (view, security invoker) | Per member: `dues_paid` (current year), `waiver_signed`, `meeting_attended` (mandatory meeting this year), `hours_approved`, `hours_logged`. Members see their own row; officers see the roster. |
 | `kos_current_member_id()` | Maps `auth.uid()` to the linked `members.id` via `profiles`. |
-| `meeting_check_in(p_code)` | Member RPC: marks attendance for the meeting whose code matches, within ±12h of its start. |
+| `meeting_check_in(p_code)` | Member RPC: marks attendance for the event whose code matches, until 12 hours after the event ends. Attendance is stored as `event_signups.status = 'attended'` (there is no separate attendance table). Source exported verbatim to `sql/kos_checkin_engine_export.sql` (2026-09-18). |
 | `officer_upsert_meeting(name, start, mandatory)` | Officer RPC: schedules a meeting event. |
 | `officer_enable_checkin(event_id)` | Officer RPC: creates/returns the meeting's check-in code. |
 | `officer_review_hours(id, approved)` | Officer RPC: approves or un-approves a volunteer-hours entry. |
@@ -260,7 +260,7 @@ Migration: `sql/kos_attendance_qr_hours.sql` (QR_LIBRARY_BUILD_PLAN.md Phase 4).
 | --- | --- |
 | `door_checkins` | Committed door log: one row per member per event (`event_id`, `member_id`, `checked_at`, `hours_awarded`). Unique on (event, member) so re-scans never double-count. Locked down; access via RPCs only. |
 | `kos_volunteer_season_year()` | Season-year rule shared with the front end: June onward belongs to the season ending next year. |
-| `kos_checkin_event_for_code(code)` | Guarded dynamic lookup from a check-in code to its event via the uncommitted `meeting_checkin_codes`; if that table's columns differ, check-in still works and hours-on-scan no-ops (the migration prints a warning with the real columns). |
+| `kos_checkin_event_for_code(code)` | Fallback lookup from a check-in code to its event via `meeting_checkin_codes` (columns `code`, `event_id` — confirmed 2026-09-18 by the export in `sql/kos_checkin_engine_export.sql`). `door_check_in` now reads `event_id` straight from `meeting_check_in`'s result and only falls back to this. |
 | `door_check_in(p_code)` | Member RPC used by the `?checkin=CODE` flow: calls the existing `meeting_check_in` (Parade Ready attendance unchanged), records the scan in `door_checkins`, and — for volunteer events or members signed up as volunteers — inserts a PENDING `volunteer_hours` row (planned hours, else event duration, else 2; clamped 0.5–24). Front end falls back to `meeting_check_in` if this migration is not applied. |
 | `officer_door_count(p_event)` | Officer RPC behind the Live door count view: running total, pending hours sum, and the last 12 names. |
 

@@ -103,7 +103,12 @@ begin
   end if;
 
   -- 2) Record the scan in the committed door log (first scan per event only).
-  v_event_id := public.kos_checkin_event_for_code(p_code);
+  -- meeting_check_in returns event_id (confirmed by the exported source in
+  -- sql/kos_checkin_engine_export.sql); the guarded lookup stays as fallback.
+  v_event_id := nullif(v_base->>'event_id','')::uuid;
+  if v_event_id is null then
+    v_event_id := public.kos_checkin_event_for_code(p_code);
+  end if;
   if v_event_id is null or v_mid is null then
     return v_base;
   end if;
