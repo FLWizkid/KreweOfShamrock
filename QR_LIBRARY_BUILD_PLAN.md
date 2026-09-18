@@ -151,6 +151,10 @@ Grow `assets/kos-qr-studio.js` from "tonight's handy squares" into the library v
 - "New QR" form: label + destination + purpose (auto-fills from an event or product
   when opened from Event Studio / Shop Studio, so those studios become thin callers
   of the library instead of parallel implementations).
+  *Shipped 2026-09-18 as the Quick QR picker: one dropdown holding events (added
+  automatically from the events table), tracked library codes, and the handy links,
+  with per-event RSVP QR / Door check-in QR / Live door count and a one-tap
+  "Save tracked RSVP in library" prefill.*
 - A **print-sheet builder**: pick any set of codes, get a `raffle-qr-sheet.html`-style
   page (that page then becomes just a preset of this builder).
 - Scan counts are surfaced directly in the library table (total, last 30 days, last
