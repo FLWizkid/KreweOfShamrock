@@ -179,6 +179,8 @@ upgrades to the existing Door check-in button.
    scanned when signed in? Counts answer "is this flyer working"; member-level answers
    "who engaged" but is personal data — the krewe should decide deliberately and say so
    to members (same spirit as `PHOTO_AND_IMAGE_RELEASE.md`).
+   **Decided 2026-09-18: anonymous counts only.** `qr_scans` stores just the code
+   and the timestamp — no member id, no IP address, no browser details.
 2. **Static vs. tracked squares.** Anything already printed and working (raffle
    baskets, current check-in flow) can stay direct-URL; new print runs should go
    through `go.html`. Both can coexist indefinitely.
@@ -195,7 +197,7 @@ upgrades to the existing Door check-in button.
 | 0 | Self-host the QR library (ships with this plan) | — | done |
 | 1 | Export + commit the missing `kos_parade_ready_engine` / `kos_checkin_codes_private` migrations to `sql/` | database access | tiny |
 | 2 | Phase 1: shared `assets/kos-qr.js`, delete the five copies, add Download PNG | — | done |
-| 3 | Phase 2: `sql/kos_qr_registry.sql` + `go.html` | officer decisions (§4) | medium |
+| 3 | Phase 2: `sql/kos_qr_registry.sql` + `go.html` | run the migration in Supabase | built |
 | 4 | Phase 3: QR Library card + print-sheet builder + scan report | Phase 2 | medium |
 | 5 | Phase 4: hours-on-scan, live door count | — (parallel ok) | medium |
 
