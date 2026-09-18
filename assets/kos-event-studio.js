@@ -92,7 +92,7 @@
       '<div><label for="hubEventStart">Start time *</label><input id="hubEventStart" type="datetime-local" required /></div>' +
       '<div><label for="hubEventEnd">End time</label><input id="hubEventEnd" type="datetime-local" /></div>' +
       '<div><label for="hubEventRegCloses">Close registrations on</label><input id="hubEventRegCloses" type="datetime-local" /></div>' +
-      '<div class="wide" style="margin-top:-4px;"><p style="font-size:12px;color:var(--muted);margin:0 0 6px;line-height:1.4;">Optional. After this date/time, public signup shows Registration closed and blocks new RSVPs and ticket checkout. Leave blank to stay open. Edit address, dates, and this close date anytime, including after publish.</p></div>' +
+      '<div class="wide" style="margin-top:-4px;"><p style="font-size:12px;color:var(--muted);margin:0 0 6px;line-height:1.4;">Optional. After this date/time, public signup shows Registration closed and blocks new RSVPs and ticket checkout. Leave blank to stay open. You can edit address, dates, and this close date. Saving stores a draft and does not publish.</p></div>' +
       '<div><label for="hubEventLocation">Location / address</label><input id="hubEventLocation" placeholder="Venue name and street address" /></div>' +
       '<div><label for="hubEventCapacity">Capacity</label><input id="hubEventCapacity" type="number" min="0" step="1" /></div>' +
       '<div class="wide"><label for="hubEventDescription">Description</label><textarea id="hubEventDescription"></textarea></div></div>' +
@@ -100,7 +100,7 @@
       '<label><input type="checkbox" id="hubEventMandatory" /> Mandatory meeting</label>' +
       '<label><input type="checkbox" id="hubEventFeatured" /> Featured Event</label></div>' +
       '<div class="hub-event-grid">' +
-      '<div><label for="hubEventStatus">Status</label><select id="hubEventStatus"><option value="draft">Draft</option><option value="published">Published</option><option value="cancelled">Cancelled</option></select></div>' +
+      '<div><label for="hubEventStatus">Status</label><select id="hubEventStatus"><option value="draft">Draft</option><option value="cancelled">Cancelled</option></select></div>' +
       '<div><label for="hubEventTicketLabel">Ticket label</label><input id="hubEventTicketLabel" placeholder="e.g. Member ticket" /></div>' +
       '<div><label for="hubEventTicketPrice">Ticket price (dollars)</label><input id="hubEventTicketPrice" type="number" min="0" step="0.01" placeholder="0.00" /></div>' +
       '<div><label for="hubEventPaymentUrl">Ticket payment URL</label><input id="hubEventPaymentUrl" type="url" placeholder="https://www.zeffy.com/en-US/ticketing/..." /></div>' +
@@ -116,8 +116,9 @@
       '<p class="hub-flyer-note" id="hubEventFlyerNote" aria-live="polite">' + FLYER_NOTE_DEFAULT + '</p>' +
       '<div class="hub-flyer-preview" id="hubEventFlyerPreview" aria-live="polite"></div>' +
       '<button class="btn" type="button" id="hubEventFlyerClear" style="margin-top:8px;">Clear image / PDF</button></div></div>' +
-      '<p style="font-size:13px;color:var(--muted);margin:10px 0 0;">For paid tickets, create a Zeffy ticketing campaign and paste the public share link here. Sign me up / RSVP will open that checkout. See PAYMENTS_SETUP.md. Publishing asks you to confirm the name, date and time, location, and ticket price. A draft save does not. Each paid event needs its own Zeffy link.</p>' +
+      '<p style="font-size:13px;color:var(--muted);margin:10px 0 0;">For paid tickets, create a Zeffy ticketing campaign and paste the public share link here. Sign me up / RSVP will open that checkout. See PAYMENTS_SETUP.md. Save stores a draft and does not publish. After a successful save, review the saved name, date and time, location, and ticket price. Publish appears only after you confirm those details. Cancel that review and the event is not published and nobody is notified. If the event was already public, saving moves it back to a draft until you publish again. Each paid event needs its own Zeffy link.</p>' +
       '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;"><button class="btn btn-primary" type="submit" id="hubEventSave">☘ Save event</button>' +
+      '<button class="btn btn-primary" type="button" id="hubEventPublish" hidden style="display:none">Publish</button>' +
       '<button class="btn" type="button" id="hubEventNew">New / clear</button></div><p class="hub-event-msg" id="hubEventMsg" aria-live="polite"></p></form></div>';
   }
 
@@ -179,12 +180,14 @@
     document.getElementById("hubEventType").value = "social";
     document.getElementById("hubEventFormTitle").textContent = "New event";
     document.getElementById("hubEventMsg").textContent = "";
+    hidePublishButton();
     var note = document.getElementById("hubEventFlyerNote");
     if (note) note.textContent = FLYER_NOTE_DEFAULT;
     syncFlyerPreview();
   }
 
   function fillEventForm(event) {
+    hidePublishButton();
     function get(id) { return document.getElementById(id); }
     get("hubEventId").value = event.id || "";
     get("hubEventName").value = event.name || "";
@@ -198,7 +201,7 @@
     get("hubEventPublic").checked = event.is_public !== false;
     get("hubEventMandatory").checked = !!event.is_mandatory;
     var featEl = get("hubEventFeatured"); if (featEl) featEl.checked = !!event.is_featured;
-    get("hubEventStatus").value = event.status || "published";
+    get("hubEventStatus").value = String(event.status || "").toLowerCase() === "cancelled" ? "cancelled" : "draft";
     get("hubEventTicketLabel").value = event.ticket_label || "";
     get("hubEventTicketPrice").value = event.ticket_price_cents == null ? "" : (Number(event.ticket_price_cents) / 100).toFixed(2);
     get("hubEventPaymentUrl").value = event.ticket_payment_url || "";
@@ -268,22 +271,142 @@
     }
   }
 
-  function confirmPublishDetails(payload) {
-    if (String(payload.status || "") !== "published") return true;
-    var price = payload.ticket_price_cents == null
-      ? "Not set"
-      : "$" + (Number(payload.ticket_price_cents) / 100).toFixed(2);
-    var when = eventLocalDisplay(payload.start_time) || "Not set";
-    var where = payload.location || "Not set";
+  var reviewedPublish = null;
+
+  function hidePublishButton() {
+    reviewedPublish = null;
+    var btn = document.getElementById("hubEventPublish");
+    if (!btn) return;
+    btn.hidden = true;
+    btn.style.display = "none";
+    btn.disabled = false;
+    btn.textContent = "Publish";
+  }
+
+  function showPublishButton() {
+    var btn = document.getElementById("hubEventPublish");
+    if (!btn) return;
+    btn.hidden = false;
+    btn.style.display = "";
+    btn.disabled = false;
+    btn.textContent = "Publish";
+  }
+
+  function onEventFormEdited() {
+    if (!reviewedPublish) return;
+    hidePublishButton();
+    var msg = document.getElementById("hubEventMsg");
+    if (msg) msg.textContent = "Details changed. Save and review again before publishing.";
+  }
+
+  function ticketPriceLabel(cents) {
+    if (cents == null || cents === "") return "Not set";
+    var n = Number(cents);
+    if (isNaN(n)) return "Not set";
+    return "$" + (n / 100).toFixed(2);
+  }
+
+  function confirmSavedReview(event, clearedNote) {
+    var row = event || {};
+    var when = eventLocalDisplay(row.start_time) || "Not set";
+    var where = row.location && String(row.location).trim() ? String(row.location).trim() : "Not set";
+    var note = clearedNote ? "\n" + clearedNote + "\n" : "";
     return window.confirm(
-      "Confirm this published event is correct.\n\n" +
-      "Name: " + (payload.name || "Not set") + "\n" +
+      "Review the saved event. Confirm these details are correct.\n\n" +
+      "Name: " + (row.name || "Not set") + "\n" +
       "Date and time: " + when + "\n" +
       "Location: " + where + "\n" +
-      "Ticket price: " + price + "\n\n" +
-      "OK publishes these details. Cancel does not save and does not notify anyone."
+      "Ticket price: " + ticketPriceLabel(row.ticket_price_cents) + "\n" +
+      note + "\n" +
+      "OK means the saved details are correct. It does not publish and does not notify anyone. A Publish button appears after OK.\n" +
+      "Cancel keeps this save. It does not publish and does not notify anyone."
     );
   }
+
+  function finishSavedReview(msg, res, payload, cleared, extra) {
+    var saved = (res && res.data && res.data.event && res.data.event.id) ? res.data.event : null;
+    var sent = String((payload && payload.status) || "draft").toLowerCase();
+    if (saved && String(saved.status || "").toLowerCase() === "published" && sent !== "published") {
+      hidePublishButton();
+      if (msg) msg.textContent = "Saved, but the server marked this event published. It was not left as a draft." + (cleared || "");
+      return;
+    }
+    if (saved && saved.id) {
+      var idEl = document.getElementById("hubEventId");
+      if (idEl) idEl.value = saved.id;
+      var title = document.getElementById("hubEventFormTitle");
+      if (title) title.textContent = "Edit event";
+    }
+    if (res && res.data && res.data.ticket_url_cleared) {
+      var pay = document.getElementById("hubEventPaymentUrl");
+      if (pay) pay.value = (saved && saved.ticket_payment_url) ? String(saved.ticket_payment_url) : "";
+    }
+    var keptStatus = String((saved && saved.status) || sent || "draft").toLowerCase();
+    var statusEl = document.getElementById("hubEventStatus");
+    if (statusEl) statusEl.value = keptStatus === "cancelled" ? "cancelled" : "draft";
+    hidePublishButton();
+    var kept = keptStatus === "cancelled" ? "cancelled" : "a draft";
+    var reviewSource = saved || {
+      name: payload.name,
+      start_time: payload.start_time,
+      location: payload.location,
+      ticket_price_cents: payload.ticket_price_cents
+    };
+    var clearedNote = cleared ? String(cleared).trim() : "";
+    if (!confirmSavedReview(reviewSource, clearedNote)) {
+      if (msg) msg.textContent = "Saved as " + kept + ". Not published. Nobody was notified." + (cleared || "");
+      return;
+    }
+    if (!saved || !saved.id || !saved.name || !saved.start_time) {
+      if (msg) msg.textContent = "Saved as " + kept + ". The review was confirmed, but Publish is not available until the saved event can be found." + (cleared || "");
+      return;
+    }
+    reviewedPublish = {
+      id: saved.id,
+      name: saved.name,
+      start_time: saved.start_time
+    };
+    showPublishButton();
+    var tail = extra ? " " + extra : "";
+    if (msg) msg.textContent = "Saved as " + kept + ". Details confirmed. Use Publish to make this event public." + tail + (cleared || "");
+  }
+
+  async function publishReviewedEvent(client) {
+    var msg = document.getElementById("hubEventMsg");
+    var btn = document.getElementById("hubEventPublish");
+    var save = document.getElementById("hubEventSave");
+    var snap = reviewedPublish;
+    if (!snap || !snap.id || !snap.name || !snap.start_time) {
+      hidePublishButton();
+      if (msg) msg.textContent = "Save the event and confirm the review before publishing.";
+      return;
+    }
+    if (btn) { btn.disabled = true; btn.textContent = "Publishing…"; }
+    if (save) save.disabled = true;
+    try {
+      var res = await client.rpc("officer_upsert_event", {
+        p: {
+          id: snap.id,
+          name: snap.name,
+          start_time: snap.start_time,
+          status: "published"
+        }
+      });
+      if (res.error) throw res.error;
+      if (res.data && res.data.ok === false) throw new Error(res.data.message || "Could not publish event.");
+      var cleared = res.data && res.data.ticket_url_cleared
+        ? " The ticket payment link was cleared because another event already uses it. Paste this event's own Zeffy link."
+        : "";
+      clearEventForm();
+      if (msg) msg.textContent = "Published." + cleared;
+      await refreshEventStudio(client);
+    } catch (e) {
+      if (msg) msg.textContent = "Couldn't publish: " + ((e && e.message) || e);
+      if (btn && reviewedPublish) { btn.disabled = false; btn.textContent = "Publish"; }
+    }
+    if (save) save.disabled = false;
+  }
+
 
   async function saveEventStudio(client) {
     var msg = document.getElementById("hubEventMsg");
@@ -311,7 +434,7 @@
       capacity: capacity, is_public: !!document.getElementById("hubEventPublic").checked,
       is_mandatory: !!document.getElementById("hubEventMandatory").checked,
       is_featured: !!(document.getElementById("hubEventFeatured") && document.getElementById("hubEventFeatured").checked),
-      status: value("hubEventStatus") || "draft",
+      status: value("hubEventStatus") === "cancelled" ? "cancelled" : "draft",
       ticket_label: value("hubEventTicketLabel") || null,
       ticket_price_cents: ticketValue === "" ? null : Math.round(dollars * 100),
       ticket_payment_url: value("hubEventPaymentUrl") || null, flyer_url: value("hubEventFlyerUrl") || null,
@@ -328,10 +451,6 @@
       })()
     };
     if (!payload.name) { if (msg) msg.textContent = "Event name is required."; return; }
-    if (!confirmPublishDetails(payload)) {
-      if (msg) msg.textContent = "Not published. Nothing was saved.";
-      return;
-    }
     if (save) { save.disabled = true; save.textContent = "Saving…"; }
     if (msg) msg.textContent = "";
     try {
@@ -341,9 +460,9 @@
       var cleared = res.data && res.data.ticket_url_cleared
         ? " The ticket payment link was cleared because another event already uses it. Paste this event's own Zeffy link."
         : "";
-      if (msg) msg.textContent = "Event saved." + cleared;
-      clearEventForm();
       await refreshEventStudio(client);
+      if (save) { save.disabled = false; save.textContent = "☘ Save event"; }
+      finishSavedReview(msg, res, payload, cleared, "");
     } catch (e) { if (msg) msg.textContent = "Couldn't save: " + ((e && e.message) || e); }
     if (save) { save.disabled = false; save.textContent = "☘ Save event"; }
   }
@@ -365,13 +484,20 @@
       else panel.appendChild(card);
     }
     card.innerHTML =
-      '<div class="app-head"><span class="ic">📅</span><div><h2>Event Studio</h2><small>Create and edit krewe events (address, dates, registration close) anytime after publish</small></div></div>' +
-      '<div class="app-body"><p style="font-size:14px;color:var(--muted);margin:0 0 12px;line-height:1.45;">Tap <b>Edit event</b> on any published row to change location/address, start/end times, or Close registrations on. Then Save event.</p><div class="hub-event-list"><h3>Events</h3><div id="hubEventList"><p class="empty">Loading events…</p></div></div>' +
+      '<div class="app-head"><span class="ic">📅</span><div><h2>Event Studio</h2><small>Create and edit krewe events. Save stores a draft. Publish only after you review.</small></div></div>' +
+      '<div class="app-body"><p style="font-size:14px;color:var(--muted);margin:0 0 12px;line-height:1.45;">Tap <b>Edit event</b> to change location, dates, or Close registrations on. Then Save event. Saving stores a draft and does not publish.</p><div class="hub-event-list"><h3>Events</h3><div id="hubEventList"><p class="empty">Loading events…</p></div></div>' +
       eventStudioFormHtml() + '</div>';
     document.getElementById("hubEventForm").addEventListener("submit", function (e) {
       e.preventDefault(); saveEventStudio(client);
     });
     document.getElementById("hubEventNew").addEventListener("click", clearEventForm);
+    var publishBtn = document.getElementById("hubEventPublish");
+    if (publishBtn) publishBtn.addEventListener("click", function () { publishReviewedEvent(client); });
+    var eventForm = document.getElementById("hubEventForm");
+    if (eventForm) {
+      eventForm.addEventListener("input", onEventFormEdited);
+      eventForm.addEventListener("change", onEventFormEdited);
+    }
     var flyerFile = document.getElementById("hubEventFlyerFile");
     flyerFile.addEventListener("change", async function () {
       var note = document.getElementById("hubEventFlyerNote");
