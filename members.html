@@ -1684,7 +1684,12 @@
       let code = null;
       try{ code = localStorage.getItem("kos_checkin"); }catch(_){}
       if(!code) return;
-      const { data, error } = await supabase.rpc("meeting_check_in", { p_code: code });
+      /* door_check_in = the Parade Ready engine plus the door log and
+         hours-on-scan (sql/kos_attendance_qr_hours.sql). If that migration
+         isn't applied yet, fall back to the original check-in. */
+      let res = await supabase.rpc("door_check_in", { p_code: code });
+      if(res.error){ res = await supabase.rpc("meeting_check_in", { p_code: code }); }
+      const { data, error } = res;
       try{ localStorage.removeItem("kos_checkin"); }catch(_){}
       const ok = data && data.ok;
       const bar = document.getElementById("memberBar");
@@ -1692,6 +1697,7 @@
         const note = document.createElement("div");
         note.textContent = ok
           ? "✅ Checked in to " + (data.event||"the meeting") + ". Fáilte!"
+            + (data.hours_pending ? " " + data.hours_pending + " volunteer hours logged — pending officer review." : "")
           : "⚠️ Check-in failed: " + ((data && data.error) || (error && error.message) || "unknown error");
         note.style.cssText = "flex:1;font-weight:600;color:" + (ok ? "#14532d" : "#b3452e") + ";";
         bar.prepend(note);
@@ -3085,7 +3091,7 @@
 <script src="assets/members-desk.js?v=20260918memb3" defer></script>
   <script src="assets/kos-event-studio.js?v=20260918memb3" defer></script>
   <script src="assets/kos-shop-studio.js?v=20260910shopfix" defer></script>
-<script src="assets/kos-qr-studio.js?v=20260918qrlib1"></script>
+<script src="assets/kos-qr-studio.js?v=20260918qrlib2"></script>
   <script src="assets/kos-reports.js?v=20260914t1" defer></script>
   <script src="assets/kos-all-krewe-messages.js" defer></script>
   <script src="assets/kos-email-invoices.js?v=20260915ei1" defer></script>

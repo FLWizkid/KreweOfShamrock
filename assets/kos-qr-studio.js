@@ -250,6 +250,48 @@
     });
   }
 
+  /* ================= LIVE DOOR COUNT ================= */
+
+  var doorTimers = {};
+
+  async function paintDoorCount(client, eventId, slot) {
+    if (doorTimers[eventId]) { clearInterval(doorTimers[eventId]); delete doorTimers[eventId]; }
+    async function refresh() {
+      if (!document.body.contains(slot)) {
+        if (doorTimers[eventId]) { clearInterval(doorTimers[eventId]); delete doorTimers[eventId]; }
+        return;
+      }
+      try {
+        var res = await client.rpc("officer_door_count", { p_event: eventId });
+        if (res.error) throw res.error;
+        var d = res.data || {};
+        var recent = (d.recent || []).map(function (r) {
+          return "<li>" + esc(r.name || "Member") +
+            (r.hours ? ' <span style="color:var(--muted);">+' + esc(r.hours) + "h pending</span>" : "") + "</li>";
+        }).join("");
+        slot.innerHTML =
+          '<div style="text-align:center;padding:14px;border:2px solid var(--green-800);border-radius:12px;">' +
+          '<div style="font-family:var(--display);color:var(--green-800);font-size:56px;line-height:1;">' +
+          Number(d.count || 0) + "</div>" +
+          '<div style="color:var(--muted);font-size:14px;">checked in at the door · updates every 10 seconds</div>' +
+          (Number(d.hours_pending) > 0
+            ? '<div style="font-size:13px;color:var(--muted);margin-top:4px;">' + esc(d.hours_pending) + " volunteer hours pending review</div>"
+            : "") +
+          (recent
+            ? '<ul style="list-style:none;padding:0;margin:8px auto 0;font-size:14px;text-align:left;max-width:340px;">' + recent + "</ul>"
+            : "") +
+          "</div>";
+      } catch (e) {
+        slot.innerHTML =
+          '<p class="empty">Couldn&rsquo;t load the door count. ' + esc((e && e.message) || e) +
+          " If this mentions a missing function, run sql/kos_attendance_qr_hours.sql in Supabase.</p>";
+        if (doorTimers[eventId]) { clearInterval(doorTimers[eventId]); delete doorTimers[eventId]; }
+      }
+    }
+    await refresh();
+    if (document.body.contains(slot)) doorTimers[eventId] = setInterval(refresh, 10000);
+  }
+
   /* ================= MEETING CHECK-IN ================= */
 
   async function loadMeetings(client, listEl) {
@@ -281,6 +323,9 @@
             '<button class="btn" type="button" data-checkin-id="' +
             esc(r.id) +
             '">Show check-in QR</button>' +
+            '<button class="btn" type="button" data-doorcount-id="' +
+            esc(r.id) +
+            '">📊 Live door count</button>' +
             '<div class="qr-slot" style="flex-basis:100%;"></div></div>'
           );
         })
@@ -292,6 +337,12 @@
           } else {
             enableCheckinInline(client, btn.getAttribute("data-checkin-id"), btn);
           }
+        };
+      });
+      listEl.querySelectorAll("[data-doorcount-id]").forEach(function (btn) {
+        btn.onclick = function () {
+          var slot = btn.parentElement.querySelector(".qr-slot");
+          paintDoorCount(client, btn.getAttribute("data-doorcount-id"), slot);
         };
       });
     } catch (e) {
