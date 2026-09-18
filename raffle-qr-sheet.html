@@ -34,7 +34,10 @@
   </div>
   <div id="qrGrid" class="qr-grid"><p style="text-align:center;grid-column:1/-1;">Loading…</p></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <!-- Self-hosted QR library: same-origin so ad-blockers and venue networks can't block it.
+       If the local file somehow fails, fall back to the CDN copy. -->
+  <script src="assets/vendor/qrcode.min.js?v=153"
+          onerror="var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js';document.head.appendChild(s);"></script>
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
     const sb = createClient("https://oazwkwflgbthojvnclfc.supabase.co","sb_publishable_aMCyVxkiolMuBt9_R990CA_xQmXLaaS");
