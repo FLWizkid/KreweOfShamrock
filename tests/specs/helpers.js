@@ -63,6 +63,22 @@ function assertHealthy(expect, report, label) {
   expect(report.failedLocal, `${label}: failed local resources`).toEqual([]);
 }
 
+async function unlockMemberHub(page, opts) {
+  opts = opts || {};
+  const target = opts.hash ? `/members.html#${opts.hash}` : "/members.html";
+  await page.goto(target);
+  await page.evaluate((role) => {
+    const auth = document.getElementById("authStage");
+    if (auth) auth.style.display = "none";
+    const content = document.getElementById("memberContent");
+    if (content) content.style.display = "block";
+    if (role && typeof window.__kosHubSetRole === "function") window.__kosHubSetRole(role);
+    if (typeof window.kosUnlock === "function") window.kosUnlock();
+    if (typeof window.kosShowHub === "function") window.kosShowHub("hub", { skipScroll: true });
+  }, opts.role || null);
+  await page.waitForSelector("#hubRoot");
+}
+
 // Every page of the site (raffle-qr-sheet.html is a standalone print sheet
 // without the shared chrome, so it is checked separately).
 const PAGES = [
@@ -83,4 +99,4 @@ const PAGES = [
   { file: "raffle.html", title: /Raffle/ },
 ];
 
-module.exports = { watchPage, assertHealthy, PAGES };
+module.exports = { watchPage, assertHealthy, PAGES, unlockMemberHub };

@@ -26,7 +26,9 @@ function checkRef(fromFile, ref, kind) {
   const path = normalize(ref);
   if (!path) return; // pure fragment link
   if (/\$\{|\{\{/.test(path)) return; // template placeholder in inline JS
-  const target = resolve(join(ROOT, dirname(fromFile)), path);
+  const target = path.startsWith("/")
+    ? resolve(join(ROOT, path.slice(1)))
+    : resolve(join(ROOT, dirname(fromFile)), path);
   const key = `${fromFile} -> ${ref}`;
   if (checked.has(key)) return;
   checked.add(key);

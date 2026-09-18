@@ -60,7 +60,8 @@ test("internal links across pages point at real pages", async ({ request }) => {
       const clean = href.split(/[?#]/)[0];
       if (!clean || seen.has(clean)) continue;
       seen.add(clean);
-      const res = await request.get("/" + clean);
+      const url = clean.startsWith("/") ? clean : "/" + clean;
+      const res = await request.get(url);
       expect(res.status(), `${file} links to missing ${href}`).toBeLessThan(400);
     }
   }
@@ -111,14 +112,31 @@ test("code-of-conduct.html publishes the official Code of Conduct, not a placeho
   await expect(back).toHaveAttribute("href", "../../members.html#docs");
 });
 
+test("parade-rules.html publishes parade rules, not a placeholder", async ({ page, request }) => {
+  await page.goto("/assets/docs/parade-rules.html");
+  await expect(page).toHaveTitle(/Parade Rules/);
+  await expect(page.locator("h1")).toHaveText(/Parade Rules/i);
+  await expect(page.locator("body")).not.toContainText("Awaiting officer upload");
+  await expect(page.locator("body")).not.toContainText("Email digital@ to upload");
+  await expect(page.locator("#gasparilla")).toContainText("Underhand throws only");
+  await expect(page.locator("#pledge")).toContainText("designated drivers");
+
+  const res = await request.get("/assets/docs/parade-rules.html");
+  expect(res.status(), "parade rules page should be served").toBe(200);
+
+  const back = page.getByRole("link", { name: /Back to Documents/i }).first();
+  await expect(back).toHaveAttribute("href", "../../members.html#docs");
+});
+
 test("members.html #docs shows a Documents card with Bylaws and Code of Conduct", async ({ page }) => {
   await page.goto("/members.html#docs");
   await expect(page.locator("#docs")).toBeAttached();
   await expect(page.locator("#docs h2")).toHaveText(/^Documents$/i);
   await expect(page.locator("#docs")).toContainText("Governing documents");
   await expect(page.locator("#docs")).not.toContainText("Awaiting officer upload");
-  await expect(page.locator('#docs a[href="assets/docs/bylaws.html"]')).toHaveText(/Bylaws/);
-  await expect(page.locator('#docs a[href="assets/docs/code-of-conduct.html"]')).toHaveText(/Code of Conduct/);
+  await expect(page.locator('#docs a[href="/assets/docs/bylaws.html"]')).toHaveText(/Bylaws/);
+  await expect(page.locator('#docs a[href="/assets/docs/code-of-conduct.html"]')).toHaveText(/Code of Conduct/);
+  await expect(page.locator('#docs a[href="/assets/docs/parade-rules.html"]')).toHaveText(/Parade Rules/);
 
   await page.evaluate(() => {
     const auth = document.getElementById("authStage");
@@ -136,6 +154,7 @@ test("members.html #docs shows a Documents card with Bylaws and Code of Conduct"
 
   await expect(page.locator("#docs")).toBeVisible();
   await expect(page.locator("#prCard")).toBeVisible();
-  await expect(page.locator("[data-hub-panel='krewe'] .hub-docs a[href='assets/docs/bylaws.html']")).toBeAttached();
-  await expect(page.locator("[data-hub-panel='krewe'] .hub-docs a[href='assets/docs/code-of-conduct.html']")).toBeAttached();
+  await expect(page.locator("[data-hub-panel='krewe'] .hub-docs a[href='/assets/docs/bylaws.html']")).toBeAttached();
+  await expect(page.locator("[data-hub-panel='krewe'] .hub-docs a[href='/assets/docs/code-of-conduct.html']")).toBeAttached();
+  await expect(page.locator("[data-hub-panel='krewe'] .hub-docs a[href='/assets/docs/parade-rules.html']")).toBeAttached();
 });

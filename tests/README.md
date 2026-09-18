@@ -11,7 +11,13 @@ plus Playwright browser tests that load every page.
 - **`specs/pages.spec.js`** — each of the 16 pages loads with no uncaught JS
   errors, no console errors, and no failed same-origin resources; the shared
   chrome (styled nav, music player with the violin icon, correct active-link
-  highlight) is present; all internal links point at real pages.
+  highlight) is present; all internal links point at real pages; governing
+  documents (bylaws, Code of Conduct, parade rules) are published pages, not
+  placeholders.
+- **`specs/hub-quick-links.spec.js`** — Member Hub Quick Links (Directory,
+  Documents card, Event Studio with an officer fixture), `#docs` / All
+  Documents / Documents text links, and Bylaws / Code of Conduct / Parade
+  Rules pills open real published pages.
 - **`specs/interactions.spec.js`** — desktop nav dropdowns (open/close,
   Escape, outside click, one-at-a-time), the mobile hamburger drawer
   (open, backdrop close, link-tap close), and the music player toggle.

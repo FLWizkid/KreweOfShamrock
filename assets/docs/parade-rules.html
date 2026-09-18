@@ -12,12 +12,22 @@
 <title>Parade Rules · Krewe of Shamrock</title>
 <link rel="stylesheet" href="../krewe.css" />
 <style>
-  .doc-sheet{max-width:720px;margin:0 auto;padding:28px 18px 48px;}
-  .doc-sheet h1{font-family:var(--display);color:var(--green-800);font-size:1.65rem;margin:0 0 8px;}
-  .await{background:#fffdf4;border:1px dashed rgba(168,128,28,.55);border-radius:14px;padding:16px 18px;line-height:1.5;}
-  .await b{color:var(--green-800);font-family:var(--display);}
-  .doc-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px;}
+  .doc-sheet{max-width:760px;margin:0 auto;padding:28px 18px 48px;}
+  .doc-sheet h1{font-family:var(--display);color:var(--green-800);font-size:1.65rem;margin:0 0 6px;line-height:1.25;}
+  .doc-sheet h2{font-family:var(--display);color:var(--green-800);font-size:1.18rem;margin:0 0 10px;line-height:1.3;}
+  .doc-sub{color:var(--muted);font-size:.95rem;margin:0 0 16px;}
+  .doc-lead{margin:0 0 12px;line-height:1.55;}
+  .doc-card{background:#fff;border:1px solid rgba(168,128,28,.28);border-radius:14px;padding:16px 18px;margin:0 0 14px;}
+  .doc-card p{margin:0 0 10px;line-height:1.5;}
+  .doc-card p:last-child{margin-bottom:0;}
+  .doc-card ul{margin:0 0 10px;padding-left:1.2em;line-height:1.5;}
+  .doc-card li{margin:0 0 6px;}
+  .doc-actions{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0 18px;}
   .doc-actions a{min-height:44px;display:inline-flex;align-items:center;}
+  @media (max-width:640px){
+    .doc-sheet{padding:20px 14px 40px;}
+    .doc-sheet h1{font-size:1.4rem;}
+  }
 </style>
 </head>
 <body>
@@ -27,20 +37,58 @@
 </nav>
 <main class="doc-sheet">
   <h1>Parade Rules</h1>
-  <div class="await">
-    <p style="margin:0 0 10px;"><b>Awaiting officer upload</b></p>
-    <p style="margin:0;">The formal parade attire and safety rules document is awaiting officer upload. Send the current rules PDF to digital@kreweofshamrock.com to replace this placeholder.</p>
-  </div>
-  
-  <div class="await" style="margin-top:14px;background:#fff;">
-    <p style="margin:0 0 8px;"><b>Meanwhile</b></p>
-    <p style="margin:0;">Parade safety lessons and float know-how already live in the Heritage Library on Learn. Use that while the formal Parade Rules PDF is prepared.</p>
-    <p style="margin:12px 0 0;"><a class="btn" href="../../learn.html">Open Learn / Heritage</a></p>
-  </div>
+  <p class="doc-sub">Safety and route rules for Krewe of Shamrock members. These match the public Parades page. Gasparilla rules are set by the organizers and strictly enforced.</p>
 
   <div class="doc-actions">
-    <a class="btn btn-primary" href="../../members.html#docs">Back to Documents</a>
-    <a class="btn" href="mailto:digital@kreweofshamrock.com?subject=Upload%20Parade%20Rules">Email digital@ to upload</a>
+    <a class="btn btn-primary" href="../../parades.html">Open the Parades page</a>
+    <a class="btn" href="../../members.html#docs">Back to Documents</a>
+  </div>
+
+  <article class="doc-card" id="safety">
+    <h2 style="margin-top:0;">Safety first</h2>
+    <p class="doc-lead">A parade is only a good time if everyone goes home safe. Every Krewe of Shamrock member agrees to follow the parade organizers' rules, the directions of parade marshals and law enforcement, and our own krewe safety practices.</p>
+    <ul>
+      <li><b>Marshals and spotters.</b> Designated krewe marshals walk alongside the unit, keep spacing from the float, and watch the crowd line the entire route.</li>
+      <li><b>Mind the little ones.</b> Children near the curb move fast. Hand beads to small children rather than throw, and never toss toward faces.</li>
+      <li><b>Sober and steady.</b> Drivers and those working around the float stay sober. Plan rides in advance. Designated drivers, always.</li>
+      <li><b>Follow the officials.</b> Obey parade marshals, EventFest staff, and the Tampa Police Department without exception, and report anything suspicious.</li>
+    </ul>
+  </article>
+
+  <article class="doc-card" id="gasparilla">
+    <h2 style="margin-top:0;">Gasparilla parade rules</h2>
+    <p class="doc-lead">The Gasparilla parades are managed by Ye Mystic Krewe of Gasparilla and EventFest. These rules apply to every krewe on the route. We follow them so we are invited back year after year.</p>
+    <ul>
+      <li><b>Underhand throws only.</b> Beads and favors are tossed gently, underhand, never overhand.</li>
+      <li><b>Nothing thrown before Bay to Bay Blvd.</b> Krewes caught throwing early risk not being invited back.</li>
+      <li><b>Keep beads out of the bay.</b> Throwing beads or litter into Tampa Bay is illegal, and we support the #BeadFreeBay campaign.</li>
+      <li><b>No beads in plastic bags.</b> Bags must be removed before staging and the parade route.</li>
+      <li><b>Stay with your unit.</b> Maintain safe spacing from floats and keep the route clear.</li>
+      <li><b>Respect the route and the crowd.</b> Follow all EventFest and Tampa Police directions at all times.</li>
+    </ul>
+    <p>Official details: <a href="https://www.tampa.gov/special-events-coordination/gasparilla-safety" target="_blank" rel="noopener">City of Tampa: Gasparilla Safety</a>
+    · <a href="https://gasparillapiratefest.com/faq/" target="_blank" rel="noopener">Gasparilla Pirate Fest FAQ</a></p>
+  </article>
+
+  <article class="doc-card" id="pledge">
+    <h2 style="margin-top:0;">Key safety rules we follow</h2>
+    <ul>
+      <li>Obey all parade marshals, organizers, and law enforcement.</li>
+      <li>Never drink and drive; designated drivers, always.</li>
+      <li>Throw gently and underhand; aim low, never at faces.</li>
+      <li>Hand beads directly to small children at the curb.</li>
+      <li>Keep safe spacing between people and the float.</li>
+      <li>No glass on the route; pick up after ourselves.</li>
+      <li>Stay hydrated, wear sensible footwear, and pace the day.</li>
+      <li>Watch the crowd line and report anything unsafe immediately.</li>
+      <li>Know the muster point and emergency contacts before we step off.</li>
+      <li>Look out for one another. We march, and leave, as a krewe.</li>
+    </ul>
+  </article>
+
+  <div class="doc-actions">
+    <a class="btn btn-primary" href="../../learn.html">Heritage / Learn</a>
+    <a class="btn" href="../../members.html#docs">Back to Documents</a>
   </div>
   <p style="font-size:14px;color:var(--muted);margin-top:28px;">Questions: <a href="mailto:secretary@kreweofshamrock.com">secretary@kreweofshamrock.com</a>
   · website uploads: <a href="mailto:digital@kreweofshamrock.com">digital@kreweofshamrock.com</a></p>

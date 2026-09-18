@@ -49,6 +49,8 @@
     ".hub-action{text-align:left;background:#fffdf4;border:1px dashed rgba(168,128,28,.55);border-radius:14px;padding:12px 14px;cursor:pointer;font:inherit;}",
     ".hub-action:hover{background:#f7efd8;}",
     ".hub-action b{display:block;color:var(--green-800);font-family:var(--display);margin-bottom:4px;}",
+    ".hub-action b a{color:inherit;text-decoration:underline;}",
+    ".hub-find a[href='#docs']{color:var(--green-800);text-decoration:underline;}",
     ".hub-action span{font-size:15px;color:var(--muted);line-height:1.35;}",
     ".hub-find{margin-top:14px;background:#fff;border:1px solid rgba(168,128,28,.28);border-radius:16px;padding:14px 16px;}",
     ".hub-find h3{font-family:var(--display);color:var(--green-800);margin:0 0 10px;font-size:19px;}",
@@ -71,7 +73,7 @@
     ".hub-docs{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;}",
     ".hub-docs a{display:inline-block;background:#f0e8d2;border:1px solid rgba(168,128,28,.3);color:var(--green-800);border-radius:999px;padding:6px 13px;font-size:16px;font-family:var(--display);text-decoration:none;}",
     ".hub-docs a:hover{background:#e8ddc0;}",
-    "#docs{scroll-margin-top:88px;}",
+    "#docs,#hubMemberDirectory,#hubEventStudio{scroll-margin-top:88px;}",
     ".hub-profile{background:#fff;border:1px solid rgba(168,128,28,.28);border-radius:16px;padding:16px 18px;margin-bottom:14px;}",
     ".hub-profile h3{margin:0 0 6px;font-family:var(--display);color:var(--green-800);}",
     ".hub-fb-members{margin-top:12px;padding:12px 14px;background:#fbf7ec;border:1px solid rgba(168,128,28,.35);border-radius:12px;}",
@@ -340,6 +342,21 @@
     return "Member";
   }
 
+  // Root-absolute so pills work even if the Hub URL has a nested path.
+  var DOC_PAGES = {
+    bylaws: "/assets/docs/bylaws.html",
+    codeOfConduct: "/assets/docs/code-of-conduct.html",
+    paradeRules: "/assets/docs/parade-rules.html"
+  };
+
+  function hubDocsPillsHtml(style) {
+    return '<div class="hub-docs"' + (style ? ' style="' + style + '"' : "") + ">" +
+      '<a href="' + DOC_PAGES.bylaws + '">Bylaws</a>' +
+      '<a href="' + DOC_PAGES.codeOfConduct + '">Code of Conduct</a>' +
+      '<a href="' + DOC_PAGES.paradeRules + '">Parade Rules</a>' +
+      "</div>";
+  }
+
   function headingOf(sec) {
     var h = sec.querySelector("h2");
     return h ? (h.textContent || "").toLowerCase() : "";
@@ -439,10 +456,7 @@
       '<div class="app-body">' +
       '<div class="hub-profile" id="hubProfileCard"><h3>Your profile</h3><p class="empty">Loading…</p></div>' +
       '<h3 style="font-family:var(--display);color:var(--green-800);margin:8px 0;">Governing documents</h3>' +
-      '<div class="hub-docs">' +
-      '<a href="assets/docs/code-of-conduct.html">Code of Conduct</a>' +
-      '<a href="assets/docs/bylaws.html">Bylaws</a>' +
-      '<a href="assets/docs/parade-rules.html">Parade Rules</a>' +
+      hubDocsPillsHtml() +
       "</div></div></section>";
 
     var events = document.getElementById("hubEvents");
@@ -645,13 +659,10 @@
       '<div class="hub-find-grid">' +
       '<button type="button" class="hub-action" data-hub-goto="directory"><b>Member Directory</b><span>Faces and profiles of your krewe under My Krewe.</span></button>' +
       '<div class="hub-action" id="docsHome" style="cursor:default">' +
-      '<b>Documents</b>' +
+      '<b><a href="#docs">Documents</a></b>' +
       '<span>Governing documents for members and officers. Open bylaws and the Code of Conduct in-Hub.</span>' +
-      '<div class="hub-docs" style="margin-top:10px;">' +
-      '<a href="assets/docs/bylaws.html">Bylaws</a>' +
-      '<a href="assets/docs/code-of-conduct.html">Code of Conduct</a>' +
-      '<a href="assets/docs/parade-rules.html">Parade Rules</a>' +
-      "</div>" +
+      hubDocsPillsHtml("margin-top:10px;") +
+      '<p style="margin:10px 0 0;"><a href="#docs">All Documents</a></p>' +
       '<p style="margin:10px 0 0;"><button type="button" class="btn" data-hub-goto="docs">Open Documents card</button></p>' +
       "</div>" +
       ((state.officer || state.canManageEvents)
@@ -701,15 +712,56 @@
   window.__hubShowTab = showTab;
   window.showHubTab = showTab;
   window.kosRevealDocs = revealDocsCard;
+  window.kosOpenDirectory = openDirectoryFromHome;
+  window.kosOpenEventStudio = openEventStudioFromHome;
+
+  function focusHubTarget(el, focusEl) {
+    if (el && el.scrollIntoView) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (!focusEl) return;
+    try { focusEl.focus({ preventScroll: true }); } catch (fe) {
+      try { focusEl.focus(); } catch (fe2) {}
+    }
+  }
 
   function revealDocsCard() {
     try { history.replaceState(null, "", location.pathname + "#docs"); } catch (e) {}
     showTab("parade", { skipScroll: true });
     setTimeout(function () {
-      var el = document.getElementById("docs");
-      if (el && el.scrollIntoView) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      focusHubTarget(document.getElementById("docs"));
     }, 80);
   }
+
+  function openDirectoryFromHome() {
+    try { history.replaceState(null, "", location.pathname + "#directory"); } catch (e) {}
+    showTab("krewe", { skipScroll: true });
+    setTimeout(function () {
+      var card = document.getElementById("hubMemberDirectory") || document.getElementById("dirGrid");
+      focusHubTarget(card, document.getElementById("dirSearch"));
+    }, 80);
+  }
+
+  function openEventStudioFromHome() {
+    if (!state.officer && !state.canManageEvents) return;
+    try { history.replaceState(null, "", location.pathname + "#event-studio"); } catch (e) {}
+    showTab("officer", { skipScroll: true });
+    try { wireOfficerDeskPicker(); } catch (e) {}
+    openOfficerTool("tool:hubEventStudio", true);
+    setTimeout(function () {
+      var card = document.getElementById("hubEventStudio");
+      focusHubTarget(card, document.getElementById("hubEventName"));
+    }, 80);
+  }
+
+  window.__kosHubSetRole = function (flags) {
+    flags = flags || {};
+    if ("officer" in flags) state.officer = !!flags.officer;
+    if ("canManageEvents" in flags) state.canManageEvents = !!flags.canManageEvents;
+    syncOfficerChip();
+    renderHome();
+    if (state.officer || state.canManageEvents) {
+      try { wireOfficerDeskPicker(); } catch (e) {}
+    }
+  };
 
   function showTab(name, opts) {
     var tab = name || TAB_HOME;
@@ -1915,6 +1967,33 @@
       window.addEventListener("hashchange", function () {
         var hash = (location.hash || "").replace(/^#/, "").toLowerCase();
         if (hash === "docs") revealDocsCard();
+        else if (hash === "directory") openDirectoryFromHome();
+        else if (hash === "event-studio") openEventStudioFromHome();
+      });
+    }
+    if (!window.__hubSamePageBound) {
+      window.__hubSamePageBound = true;
+      document.addEventListener("click", function (ev) {
+        var a = ev.target && ev.target.closest ? ev.target.closest("a") : null;
+        if (!a) return;
+        var href = (a.getAttribute("href") || "").trim();
+        if (!href) return;
+        var hash = "";
+        if (href.charAt(0) === "#") hash = href.slice(1).toLowerCase();
+        else {
+          var m = href.match(/(?:^|\/)members\.html#(.+)$/i);
+          if (m) hash = m[1].toLowerCase();
+        }
+        if (hash === "docs") {
+          ev.preventDefault();
+          revealDocsCard();
+        } else if (hash === "directory") {
+          ev.preventDefault();
+          openDirectoryFromHome();
+        } else if (hash === "event-studio") {
+          ev.preventDefault();
+          openEventStudioFromHome();
+        }
       });
     }
   }
