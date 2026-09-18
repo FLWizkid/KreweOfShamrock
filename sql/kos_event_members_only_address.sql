@@ -23,11 +23,23 @@ comment on column public.events.location is
 -- ---------------------------------------------------------------------------
 -- B. Anonymous clients cannot read the private address
 -- ---------------------------------------------------------------------------
-grant select on table public.events to anon, authenticated;
-revoke select (member_address) on table public.events from public;
-revoke select (member_address) on table public.events from anon;
+-- Do not GRANT SELECT ON TABLE to anon. Table-level SELECT/ALL makes
+-- REVOKE SELECT (member_address) a no-op (see kos_event_member_address_anon_lockdown.sql).
+revoke all on table public.events from public;
+revoke all on table public.events from anon;
+grant select (
+  id, name, description, event_type, start_time, end_time, location,
+  capacity, is_mandatory, created_at, is_public, source,
+  external_uid, external_url, ticket_price_cents, ticket_label,
+  ticket_payment_url, flyer_url, status, is_featured,
+  collect_guests, collect_guest_names, collect_raffle, raffle_options,
+  registration_closes_at, raffle_event_id, collect_meals, meal_options,
+  is_online, members_only
+) on table public.events to anon;
+grant select on table public.events to authenticated;
 grant select (member_address) on table public.events to authenticated;
 
+drop policy if exists events_select_auth on public.events;
 drop policy if exists events_select_authenticated on public.events;
 create policy events_select_authenticated on public.events
   for select to authenticated

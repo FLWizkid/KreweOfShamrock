@@ -45,7 +45,13 @@
       const d=document.createElement('div'); d.className='qr-card'+(cls?' '+cls:'');
       d.innerHTML='<h2>'+E(title)+'</h2><div class="sub">'+E(sub)+'</div><canvas></canvas><div class="scan">📷 Scan to enter</div>';
       grid.appendChild(d);
-      QRCode.toCanvas(d.querySelector('canvas'), url, {width:230, margin:1, color:{dark:'#0c3b21',light:'#ffffff'}});
+      if (window.QRCode) {
+        QRCode.toCanvas(d.querySelector('canvas'), url, {width:230, margin:1, color:{dark:'#0c3b21',light:'#ffffff'}});
+      } else {
+        d.querySelector('canvas').replaceWith(Object.assign(document.createElement('p'), {
+          textContent: 'QR library unavailable — use the printed URL or open raffle.html.'
+        }));
+      }
     }
     (async()=>{
       const [{data:events},{data:baskets}] = await Promise.all([

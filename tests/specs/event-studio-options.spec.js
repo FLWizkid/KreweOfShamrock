@@ -35,6 +35,8 @@ test.describe("Event Studio optional fields", () => {
     await expect(page.locator("#hubEventStudio")).toContainText("Public location teaser");
     await expect(page.locator("#hubEventStudio")).toContainText("Private / member address");
     await expect(page.locator("#hubEventStudio")).toContainText("Members only");
+    await expect(page.locator("#hubEventStudio")).toContainText("Door check-in");
+    await expect(page.locator("#hubEventStudio")).toContainText("RSVP QR");
     await expect(page.locator("#hubEventStart")).toBeVisible();
     await expect(page.locator("#hubEventRegCloses")).toBeVisible();
     assertHealthy(expect, report, "event studio optional fields");

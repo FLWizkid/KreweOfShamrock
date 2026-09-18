@@ -2532,6 +2532,7 @@
     if (save) { save.disabled = false; save.textContent = "☘ Save event"; }
   }
   async function loadEventStudio(client) {
+    window.__kosHubOwnsEventStudio = true;
     if (!state.canManageEvents) return;
     var panel = document.getElementById("hubOfficer");
     if (!panel) return;

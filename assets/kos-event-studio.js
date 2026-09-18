@@ -908,6 +908,11 @@
 
   async function bootEventStudio() {
     injectCss();
+    // members-desk.js is the Event Studio that includes Door check-in / RSVP QR.
+    // If this companion also mounts, it overwrites that card and drops those buttons.
+    if (document.querySelector("script[src*='members-desk.js']") || window.__kosHubOwnsEventStudio) {
+      return;
+    }
     var client = window.__kosSb || null;
     for (var i = 0; i < 40 && !client; i++) {
       await new Promise(function (r) { setTimeout(r, 150); });

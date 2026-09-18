@@ -65,8 +65,14 @@ for (const file of cssFiles) {
 }
 
 // --- every page should carry the shared stylesheet and nav ------------------
+const STANDALONE_HTML = new Set([
+  "raffle-qr-sheet.html", // print sheet
+  "tartan-ball-labels.html", // Avery label print sheet
+  "photo-image-release.html", // printable waiver
+  "join.html", // redirect stub to membership-application.html
+]);
 for (const file of htmlFiles) {
-  if (file === "raffle-qr-sheet.html") continue; // standalone print sheet
+  if (STANDALONE_HTML.has(file)) continue;
   const html = readFileSync(join(ROOT, file), "utf8");
   if (!html.includes("assets/krewe.css")) {
     problems.push(`${file}: does not link assets/krewe.css`);

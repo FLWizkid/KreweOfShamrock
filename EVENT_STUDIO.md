@@ -21,6 +21,8 @@ Schema for raffle / meal / online extras is `sql/kos_event_studio_raffle_meal_on
 
 Members-only + private address is `sql/kos_event_members_only_address.sql`. Melissa needs to run that file in the Supabase SQL editor on project `oazwkwflgbthojvnclfc` (same as prior Event Studio scripts). Safe to re-run. Until it is applied, Event Studio can still save other fields, but the new columns, `v_public_events` view, and RSVP email address line will not exist yet.
 
+Anonymous PostgREST lock-down for `member_address` / `meeting_url` is `sql/kos_event_member_address_anon_lockdown.sql`. Run that too (or re-run the updated members-only file). A table-level `GRANT SELECT` to `anon` makes a column revoke a no-op.
+
 IKC-sourced events are read-only. The database authorization is enforced again by `officer_upsert_event`, so hiding the UI is not the security boundary.
 
 ## Cancel vs delete permanently
