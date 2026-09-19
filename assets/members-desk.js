@@ -5,6 +5,15 @@
   var TAB_HOME = "hub";
   var CSS = [
     ".hub-wrap{margin:0 0 18px;}",
+    /* Tartan accent strip: a narrow woven band in the crest's green, navy,
+       and gold across the top of the hub - a nod to Tampa's Original Kilted
+       Krewe. Layers: diagonal weave texture, vertical navy bands with gold
+       pinstripes, a horizontal gold hairline, on a deep green ground. */
+    ".hub-wrap::before{content:'';display:block;height:14px;border-radius:999px;margin:0 0 12px;border:1px solid rgba(169,128,28,.55);box-shadow:inset 0 1px 2px rgba(0,0,0,.3);background:" +
+      "repeating-linear-gradient(45deg,rgba(255,255,255,.09) 0 2px,transparent 2px 4px)," +
+      "repeating-linear-gradient(0deg,transparent 0 4px,rgba(212,175,55,.4) 4px 5px,transparent 5px 14px)," +
+      "repeating-linear-gradient(90deg,transparent 0 26px,rgba(49,55,112,.85) 26px 40px,transparent 40px 52px,rgba(212,175,55,.9) 52px 55px,transparent 55px 68px,rgba(49,55,112,.85) 68px 74px,transparent 74px 96px)," +
+      "linear-gradient(180deg,#1d6b3e,#14532d);}",
     ".hub-welcome{position:relative;overflow:hidden;background:#fff;border:1px solid rgba(168,128,28,.28);border-radius:18px;padding:20px 22px;box-shadow:var(--shadow-sm);}",
     ".hub-welcome::before{content:'☘';position:absolute;top:-8px;right:10px;font-size:64px;opacity:.12;pointer-events:none;transform:rotate(12deg);}",
     ".hub-welcome h2{font-family:var(--display);color:var(--green-800);margin:0 0 12px;font-size:26px;}",
@@ -744,7 +753,7 @@
       '<div class="hub-find">' +
       '<h3>Quick links</h3>' +
       '<div class="hub-find-grid">' +
-      '<button type="button" class="hub-action" data-hub-goto="directory"><b>Member Directory</b><span>Faces and profiles of your krewe under My Krewe.</span></button>' +
+      '<button type="button" class="hub-action" data-hub-goto="directory"><b>My Krewe</b><span>Your member directory - faces and profiles of the whole krewe.</span></button>' +
       '<div class="hub-action" id="docsHome" style="cursor:default">' +
       '<b><a href="#docs">Documents</a></b>' +
       '<span>Governing documents for members and officers. Open bylaws and the Code of Conduct in-Hub.</span>' +
@@ -1075,6 +1084,7 @@
       else if (hash === "docs") { saved = "parade"; wantDocs = true; }
       else if (hash === "events") saved = "events";
       else if (hash === "fun") saved = "fun";
+      else if (hash === "home") saved = TAB_HOME;
       else {
         // Always land on Home after login/refresh unless the URL asks for a tab.
         saved = TAB_HOME;
@@ -2599,12 +2609,27 @@
     wireOfficerDeskPicker();
   }
 
+  // Hub tabs are "pages": every tab click adds a history entry, so the
+  // browser's Back and Forward buttons walk between hub sections instead of
+  // dumping members out of the hub. Back/Forward changes the hash, the
+  // hashchange listener below re-shows the matching tab.
+  var HASH_TABS = { home: "hub", hub: "hub", krewe: "krewe", events: "events", parade: "parade", desk: "parade", fun: "fun", officer: "officer" };
+
+  function pushTabHistory(tab) {
+    try {
+      var want = "#" + (tab === "hub" ? "home" : tab);
+      if (location.hash === want) return;
+      history.pushState({ kosHubTab: tab }, "", want);
+    } catch (e) {}
+  }
+
   function bindTabs() {
     document.querySelectorAll("[data-hub-tab]").forEach(function (btn) {
       btn.addEventListener("click", function () {
         var tab = btn.getAttribute("data-hub-tab");
         if (tab !== "parade") clearHoursIntent();
         showTab(tab);
+        pushTabHistory(tab);
       });
     });
     if (!window.__hubDocsHashBound) {
@@ -2614,6 +2639,9 @@
         if (hash === "docs") revealDocsCard();
         else if (hash === "directory") openDirectoryFromHome();
         else if (hash === "event-studio") openEventStudioFromHome();
+        else if (hash.indexOf("craic") === 0) return; /* the Craic Cup handles its own hashes */
+        else if (HASH_TABS[hash]) showTab(HASH_TABS[hash]);
+        else if (hash === "") showTab(TAB_HOME); /* backed past the first tab entry */
       });
     }
     if (!window.__hubSamePageBound) {

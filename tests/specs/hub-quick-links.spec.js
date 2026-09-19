@@ -28,7 +28,7 @@ async function waitForQuickLinks(page) {
 }
 
 test.describe("Member Hub Quick Links", () => {
-  test("Member Directory Quick Link opens directory UI without console errors", async ({ page }) => {
+  test("My Krewe quick link opens the member directory UI without console errors", async ({ page }) => {
     const report = watchPage(page);
     await unlockMemberHub(page);
     await waitForQuickLinks(page);
@@ -37,7 +37,7 @@ test.describe("Member Hub Quick Links", () => {
 
     await expect(page.locator("[data-hub-panel='krewe']")).toHaveClass(/hub-on/);
     await expect(page.locator("#hubMemberDirectory")).toBeVisible();
-    await expect(page.locator("#hubMemberDirectory h2")).toHaveText(/Member Directory/i);
+    await expect(page.locator("#hubMemberDirectory h2")).toHaveText(/My Krewe/i);
     await expect(page.locator("#dirSearch")).toBeVisible();
     assertHealthy(expect, report, "directory quick link");
   });
