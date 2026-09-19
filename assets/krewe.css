@@ -843,3 +843,18 @@ table{ max-width:100%; }
 .hub .hub-tabs button{ font-size:17px; }
 .hub .modal-x{ width:44px; height:44px; flex:none; }
 .hub .hub-quest-card .btn,.hub .hub-quest-empty .btn{ min-height:44px; }
+
+/* Green top border on hub cards: a 4px deep-green bar across the top of each
+   parchment card with a thin gold outline. It frames content without touching
+   text contrast. The color-coded tool cards (.hub-tool) keep their own hue
+   for the bar, and the Craic Cup card keeps its full gold frame. */
+.hub .app-card,
+.hub .hub-welcome,
+.hub .hub-soft-desk,
+.hub .hub-find,
+.hub .hub-profile,
+.hub .hub-board,
+.hub .hub-install{
+  border:1px solid #c9b57a;
+  border-top:4px solid #14532d;
+}
