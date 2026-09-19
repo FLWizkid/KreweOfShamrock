@@ -665,7 +665,7 @@
     return head + '<div class="hub-quest-grid">' + cards + '</div></div>';
   }
 
-  /* ---- Word from the Board (all-krewe announcements, member view) ---- */
+  /* ---- Krewe Tidings (all-krewe announcements, member view) ---- */
   // The email HTML is reduced to plain paragraphs so the card renders safely
   // and consistently; the first paragraph gets the illuminated drop capital
   // (.dropcap in krewe.css, Cinzel Decorative) from the heritage pages.
@@ -703,8 +703,9 @@
         ' <span class="hub-board-date">' + esc(annDate(m.created_at)) + "</span></summary>" + op + "</details>";
     }).join("");
     return '<section class="hub-board" aria-label="Announcements from the board">' +
-      "<h3>📜 Word from the Board</h3>" +
+      "<h3>📜 Krewe Tidings</h3>" +
       '<div class="hub-board-rule"></div>' +
+      '<div class="hub-board-date">News from the Board</div>' +
       '<div class="hub-board-date">' + esc(annDate(latest.created_at)) +
       (latest.sender_name ? (" · from " + esc(latest.sender_name)) : "") + "</div>" +
       "<h4>" + esc(latest.subject || "Announcement") + "</h4>" +
@@ -1030,7 +1031,7 @@
 
   /* Test fixture: inject announcements and re-render the Home tab, mirroring
      __kosHubSetRole below. Lets the offline Playwright suite exercise the
-     Word from the Board card and its archive without a live database. */
+     Krewe Tidings card and its archive without a live database. */
   window.__kosHubSetAnnouncements = function (list) {
     state.announcements = Array.isArray(list) ? list : [];
     renderHome();

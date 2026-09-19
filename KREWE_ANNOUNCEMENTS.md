@@ -26,7 +26,7 @@ What happens on send (`send_all_krewe_message` in
 
 ## Where members see it in the Hub
 
-On the **Home** tab of the Member Hub, the **📜 Word from the Board** card
+On the **Home** tab of the Member Hub, the **📜 Krewe Tidings** card
 shows the newest announcement in full (with the illuminated drop capital),
 with the next two collapsed underneath. A **“📜 See all announcements”**
 button under the card opens the full archive — up to the 100 most recent
@@ -46,12 +46,12 @@ missed the email can always re-read it in the Hub.
 | Hub card + archive UI | `assets/members-desk.js` | `boardAnnouncementsHtml()` renders the card; `loadBoardArchive()` loads the archive on demand |
 | Tests | `tests/specs/hub-announcements.spec.js` | Offline Playwright coverage of the card and archive |
 
-## Deploying (one-time)
+## Deploying (one-time) — DONE
 
-Run **`sql/kos_board_announcements_archive.sql`** in the Supabase SQL editor
-on project `oazwkwflgbthojvnclfc` (safe to re-run). Everything else in the
-flow is already applied. Until it is applied, the archive button still works
-but returns at most 10 messages (the previous cap).
+**`sql/kos_board_announcements_archive.sql` was applied** in the Supabase SQL
+editor on project `oazwkwflgbthojvnclfc` on 2026-09-19 (safe to re-run if it
+ever needs reapplying). Everything else in the flow was already applied, so
+the whole feature is live end to end.
 
 ## Notes and limits
 

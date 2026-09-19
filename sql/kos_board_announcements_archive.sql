@@ -3,7 +3,7 @@
 --
 -- Officers send information by email from Officer desk → All Krewe Messages,
 -- and each send is saved in all_krewe_messages. The Hub Home tab already shows
--- the three most recent as "Word from the Board" (list_board_announcements,
+-- the three most recent as "Krewe Tidings" (list_board_announcements,
 -- added by kos_board_announcements_member_view.sql), but the function capped
 -- p_limit at 10, so the older messages could never be read in the Hub.
 --
@@ -15,8 +15,8 @@
 -- queue_broadcast in SQL) to the general membership; the Officer desk UI
 -- always sends 'active', so nothing officers send from the Hub is hidden.
 --
--- Safe to run more than once. Apply in the Supabase SQL editor on project
--- oazwkwflgbthojvnclfc (or as migration kos_board_announcements_archive).
+-- Safe to run more than once. APPLIED LIVE: Melissa ran this file in the
+-- Supabase SQL editor on project oazwkwflgbthojvnclfc on 2026-09-19.
 -- ============================================================================
 
 CREATE OR REPLACE FUNCTION public.list_board_announcements(p_limit integer DEFAULT 3)

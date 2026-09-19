@@ -109,7 +109,7 @@ RLS and the RPCs require `is_krewe_officer()`; non-officers see no UI and cannot
 insert or list.
 
 **Members can read every send in the Hub.** Each All Krewe Message also appears
-on the Member Hub Home tab under **📜 Word from the Board** (latest in full,
+on the Member Hub Home tab under **📜 Krewe Tidings** (latest in full,
 full archive behind "See all announcements"), so information sent by email
 also lives in the Members Hub. Details: `KREWE_ANNOUNCEMENTS.md`.
 
