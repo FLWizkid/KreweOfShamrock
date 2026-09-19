@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="../img/favicon-16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../img/apple-touch-icon.png" />
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex" />
+<title>Tampa Bay Parade Calendar · Krewe of Shamrock</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../krewe.css" />
+<style>
+  .doc-sheet{max-width:760px;margin:0 auto;padding:28px 18px 48px;}
+  .doc-sheet h1{font-family:var(--display);color:var(--green-800);font-size:1.65rem;margin:0 0 6px;line-height:1.25;}
+  .doc-sub{color:var(--muted);font-size:.95rem;margin:0 0 16px;}
+  .doc-actions{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0 18px;}
+  .doc-actions a,.doc-actions button{min-height:44px;display:inline-flex;align-items:center;}
+  .egg-note{background:#fffdf4;border:1px solid rgba(168,128,28,.4);border-radius:12px;
+    padding:12px 14px;margin:0 0 18px;font-family:var(--fancy);font-size:1.08rem;line-height:1.5;}
+  .egg-note b{font-family:var(--display);color:var(--green-800);}
+  .cal-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  table.cal{width:100%;min-width:520px;border-collapse:collapse;background:#fff;
+    border:1px solid rgba(168,128,28,.28);border-radius:14px;overflow:hidden;}
+  table.cal th{background:linear-gradient(180deg,var(--green-800),var(--green-900));color:var(--gold-light);
+    font-family:var(--display);font-size:13px;letter-spacing:.8px;text-transform:uppercase;padding:11px 14px;text-align:left;}
+  table.cal td{padding:10px 14px;border-top:1px solid rgba(168,128,28,.18);font-size:15px;vertical-align:top;}
+  table.cal td.mo{font-family:var(--display);font-size:12.5px;letter-spacing:1px;text-transform:uppercase;color:var(--gold-deep);white-space:nowrap;}
+  table.cal td.dt{white-space:nowrap;font-weight:600;color:var(--green-800);}
+  table.cal tr.ours td{background:rgba(212,175,55,.12);}
+  .cal-key{margin-top:12px;font-size:14px;color:var(--muted);}
+  .cal-key .swatch{display:inline-block;width:13px;height:13px;border-radius:4px;background:rgba(212,175,55,.35);
+    border:1px solid var(--gold-deep);vertical-align:-2px;margin-right:6px;}
+  .doc-foot{margin-top:16px;font-size:13.5px;color:var(--muted);line-height:1.5;}
+  @media (max-width:640px){.doc-sheet{padding:20px 14px 40px;}.doc-sheet h1{font-size:1.4rem;}}
+  @media print{
+    nav.krewe-nav,.doc-actions,.egg-note{display:none !important;}
+    body{background:#fff !important;}
+    .doc-sheet{max-width:none;padding:0;}
+    table.cal{min-width:0;border-radius:0;}
+    table.cal th{background:#14532d !important;color:#ecd07e !important;
+      -webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    table.cal tr.ours td{background:rgba(212,175,55,.18) !important;
+      -webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    @page{margin:0.5in;}
+  }
+</style>
+</head>
+<body>
+<nav class="krewe-nav" aria-label="Primary">
+  <a class="brand" href="../../index.html"><span class="name"><b>Krewe of Shamrock</b><small>Members</small></span></a>
+  <div class="krewe-menu"><ul class="krewe-links"><li><a href="../../members.html#docs">Member Hub</a></li></ul></div>
+</nav>
+<main class="doc-sheet">
+  <h1>☘ Tampa Bay Parade Calendar</h1>
+  <p class="doc-sub">Every parade on the Inter-Krewe Council calendar · 2026–27 season · Dates last updated 19 September 2026</p>
+
+  <div class="egg-note">
+    <b>A lucky find!</b> You've discovered one of the Krewe's hidden treasures — the full
+    Tampa Bay parade season on a single page. Print it, pin it to the fridge, and never
+    miss a parade around the bay.
+  </div>
+
+  <div class="doc-actions">
+    <button type="button" class="btn btn-primary" onclick="window.print()">Print this calendar</button>
+    <a class="btn" href="../../members.html#docs">Back to Documents</a>
+  </div>
+
+  <div class="cal-wrap">
+  <table class="cal">
+    <thead><tr><th>Month</th><th>Parade</th><th>Date</th></tr></thead>
+    <tbody>
+      <tr><td class="mo">October</td><td>Fantasy Fest (Key West)</td><td class="dt">October 16–25, 2026</td></tr>
+      <tr><td class="mo">October</td><td>USF Homecoming Parade</td><td class="dt">Friday, October 16, 2026</td></tr>
+      <tr><td class="mo">November</td><td>Tampa Veterans Parade</td><td class="dt">Cancelled for 2026</td></tr>
+      <tr><td class="mo">November</td><td>Ruskin Veterans Parade</td><td class="dt">Date TBA</td></tr>
+      <tr class="ours"><td class="mo">December</td><td>SantaFest</td><td class="dt">Saturday, December 5, 2026</td></tr>
+      <tr><td class="mo">December</td><td>Anna Maria Island Christmas Parade</td><td class="dt">Date TBA</td></tr>
+      <tr><td class="mo">December</td><td>ReliaQuest Bowl Parade</td><td class="dt">Date TBA</td></tr>
+      <tr><td class="mo">January</td><td>Martin Luther King, Jr. Parade</td><td class="dt">Monday, January 18, 2027</td></tr>
+      <tr class="ours"><td class="mo">January</td><td>Children's Gasparilla</td><td class="dt">Saturday, January 23, 2027</td></tr>
+      <tr class="ours"><td class="mo">January</td><td>Gasparilla Parade of Pirates</td><td class="dt">Saturday, January 30, 2027</td></tr>
+      <tr class="ours"><td class="mo">February</td><td>Sant'Yago Knight Parade</td><td class="dt">Saturday, February 13, 2027</td></tr>
+      <tr><td class="mo">February</td><td>Krewe of St. Andrews Mardi Gras</td><td class="dt">Date TBA</td></tr>
+      <tr class="ours"><td class="mo">Spring</td><td>Tampa Pride</td><td class="dt">Date TBA</td></tr>
+      <tr class="ours"><td class="mo">March</td><td>Rough Riders' St. Patrick's Day Parade</td><td class="dt">March 2027 · Date TBA</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="cal-key"><span class="swatch"></span>Gold rows are parades the Krewe of Shamrock marches in.</p>
+
+  <p class="doc-foot">Dates come from the Inter-Krewe Council parade list and can change —
+    always check the official parade page (or the Member Hub events calendar) before heading out.
+    Pencil in updates as they're announced; that's what the margins are for. ☘</p>
+</main>
+</body>
+</html>

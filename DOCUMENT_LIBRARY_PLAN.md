@@ -390,9 +390,21 @@ only phase touching public pages.
 4. **Season calendar art: BUILD NOW** from the site's existing celtic assets
    (`celtic-border.svg`, `kos-crest.png`, the display font). Artwork can be
    restyled later; a keepsake PDF edition remains a possible later addition.
-5. **Which pages hide eggs, and how sneaky — STILL OPEN.**
-   Recommendation: "small but visible" clovers (invisible-until-hover is fun
-   on desktop but undiscoverable on phones). Candidate spots in Section 6.
+5. **Egg placement and sneakiness: DECIDED.** Small-but-visible clovers,
+   **plus** a playful rumor line in the Member Hub ("They say clovers grow in
+   odd corners of this website…"). Three eggs at launch:
+   - `parades.html` → **Tampa Bay Parade Calendar**
+     (`assets/docs/tampa-bay-parades.html` — first version built 2026-09-19)
+   - `krewe-history.html` → **Shamrock Lore** — founding tale, tartan color
+     meanings, Castle of Shenanigans, and a trivia quiz
+     (`assets/docs/shamrock-lore.html` — first version built 2026-09-19)
+   - `poetry.html` → **Irish Blessing Card** — printable 5×7 illuminated card
+     (`assets/docs/irish-blessing-card.html` — first version built 2026-09-19)
+   The three pages exist as content now; the clover links on public pages and
+   the `?found=SLUG` discovery mechanic remain Phase 5 work. All three pages
+   carry `<meta name="robots" content="noindex">` so search engines do not
+   spoil the hunt (the pages are technically public URLs — the surprise is
+   discovery, not secrecy; nothing confidential goes in an egg document).
 
 ---
 
