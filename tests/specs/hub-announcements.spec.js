@@ -1,4 +1,4 @@
-// Word from the Board announcements card and its full archive.
+// Krewe Tidings announcements card and its full archive.
 // The suite runs offline, so announcements are injected through the
 // __kosHubSetAnnouncements test fixture (mirrors __kosHubSetRole); the
 // archive's live fetch then falls back to the injected list gracefully.
@@ -35,14 +35,15 @@ async function openHomeWithAnnouncements(page) {
   await page.evaluate((list) => window.__kosHubSetAnnouncements(list), ANNOUNCEMENTS);
 }
 
-test.describe("Word from the Board announcements", () => {
+test.describe("Krewe Tidings announcements", () => {
   test("card shows the latest announcement with older ones collapsed", async ({ page }) => {
     const report = watchPage(page);
     await openHomeWithAnnouncements(page);
 
     const card = page.locator(".hub-board");
     await expect(card).toBeVisible();
-    await expect(card.locator("h3")).toHaveText(/Word from the Board/);
+    await expect(card.locator("h3")).toHaveText(/Krewe Tidings/);
+    await expect(card).toContainText("News from the Board");
     await expect(card.locator("h4").first()).toHaveText("Tartan Ball tickets are live");
     await expect(card).toContainText("from Melissa Tully");
     await expect(card.locator("details.hub-board-old summary").first())

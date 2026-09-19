@@ -1,11 +1,11 @@
 -- ============================================================================
--- Word from the Board: member-facing view of all-krewe announcements.
+-- Krewe Tidings: member-facing view of all-krewe announcements.
 --
 -- Officers already compose and send all-krewe messages from the Officer desk
 -- (all_krewe_messages -> queue_broadcast -> outbound_emails), but until now
 -- members could only see them in email. This function lets any signed-in
 -- roster member read the most recent announcements so the Hub Home tab can
--- show a "Word from the Board" card (with the illuminated drop capital).
+-- show a "Krewe Tidings" card (with the illuminated drop capital).
 --
 -- list_all_krewe_messages (officer-only, with recipient counts) is untouched;
 -- this member view returns only subject, body, date, and the sender's name.

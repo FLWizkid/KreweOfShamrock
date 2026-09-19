@@ -26,7 +26,7 @@ What happens on send (`send_all_krewe_message` in
 
 ## Where members see it in the Hub
 
-On the **Home** tab of the Member Hub, the **📜 Word from the Board** card
+On the **Home** tab of the Member Hub, the **📜 Krewe Tidings** card
 shows the newest announcement in full (with the illuminated drop capital),
 with the next two collapsed underneath. A **“📜 See all announcements”**
 button under the card opens the full archive — up to the 100 most recent

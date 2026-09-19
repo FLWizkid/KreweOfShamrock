@@ -221,7 +221,7 @@
       '<div class="hub-akm-form" id="hubAkmFormWrap">' +
       "<h3>Compose</h3>" +
       '<p class="hub-akm-note">Messages send in a branded Shamrock template (deep green header, crest, gold accents, and footer). Recipients see the framed version; history below keeps your original wording.</p>' +
-      '<p class="hub-akm-note">Every send is also posted for members on the Hub Home tab under <b>📜 Word from the Board</b> (latest up top, full archive behind “See all announcements”) — so information you email here lives in the Members Hub too.</p>' +
+      '<p class="hub-akm-note">Every send is also posted for members on the Hub Home tab under <b>📜 Krewe Tidings</b> (latest up top, full archive behind “See all announcements”) — so information you email here lives in the Members Hub too.</p>' +
       '<div class="hub-akm-grid">' +
       '<div><label for="hubAkmSubject">Subject *</label><input id="hubAkmSubject" type="text" maxlength="200" placeholder="e.g. Parade lineup is set!" /></div>' +
       '<div><label for="hubAkmBody">Message *</label><textarea id="hubAkmBody" placeholder="Write your note to the krewe. Plain text is fine; short HTML is OK."></textarea></div>' +
