@@ -27,16 +27,15 @@
   .ev-strip-wrap{margin-top:28px;}
   .ev-strip-wrap .section-title{margin-bottom:8px;}
   .ev-strip{
-    display:flex; gap:16px; overflow-x:auto; padding:10px 4px 18px;
-    scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch;
+    display:grid; grid-template-columns:repeat(3,1fr); gap:16px; padding:10px 4px 18px;
   }
-  .ev-strip::-webkit-scrollbar{height:8px;}
-  .ev-strip::-webkit-scrollbar-thumb{background:rgba(46,90,46,.35);border-radius:999px;}
   .ev-card{
-    flex:0 0 min(320px,85vw); scroll-snap-align:start;
     background:rgba(255,252,245,.95); border:1px solid rgba(168,128,28,.3);
     border-radius:14px; box-shadow:var(--shadow); overflow:hidden;
     display:flex; flex-direction:column;
+  }
+  @media (max-width:980px){
+    .ev-strip{grid-template-columns:repeat(2,1fr);}
   }
   .ev-card .ev-media{
     aspect-ratio:16/10; background:linear-gradient(160deg,#1a3a24,#0d1f14);
@@ -55,23 +54,17 @@
   .ev-card .ev-desc{margin:2px 0 0; font-size:16px; color:var(--ink); line-height:1.55; overflow:visible;
     display:block; white-space:pre-wrap; overflow-wrap:anywhere;}
   .ev-card .ev-actions{display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;}
-  .ev-marquee-hint{text-align:center; font-size:13px; color:var(--muted); margin:0 0 6px;}
   #featured-event-content.feature{align-items:start;}
   .feature .ft-text, .feature .ft-media{min-width:0;}
   .feature .ft-text{overflow:visible;}
   .feature .ft-text h2, .feature .ft-text p{overflow-wrap:anywhere; white-space:normal;}
   .feature .ft-text .feat-desc{font-size:17px; line-height:1.6; white-space:pre-wrap;}
-  @media (prefers-reduced-motion: no-preference) {
-    .ev-strip.autoplay { scroll-behavior:smooth; }
-  }
   @media (max-width:680px){
     .ev-strip{
-      flex-direction:column; overflow-x:visible; scroll-snap-type:none;
+      grid-template-columns:1fr;
       padding:4px 0 8px; gap:18px;
     }
-    .ev-card{flex:1 1 auto; width:100%; max-width:100%;}
     .ev-card .ev-media{aspect-ratio:16/9; max-height:220px;}
-    .ev-marquee-hint{display:none;}
     .feature .ft-text h2{font-size:26px; line-height:1.25;}
     .feature .ft-text p{font-size:17px; line-height:1.6;}
   }
@@ -126,6 +119,31 @@
       <a class="nav-cta" href="membership-application.html" data-nav="membership-application.html">☘ Join</a>
     </div>
   </nav>
+
+  <!-- UPCOMING EVENT PREVIEWS: full details + scrolling images -->
+  <section class="wrap ev-strip-wrap" id="event-previews" style="padding-top:28px;" hidden>
+    <div class="section-title">
+      <h2>Upcoming Krewe Events</h2>
+      <p class="sub">Full details and flyers for every upcoming public Krewe event</p>
+    </div>
+    <div class="ev-strip" id="eventPreviewStrip" aria-label="Upcoming event previews"></div>
+  </section>
+
+  <!-- FEATURED EVENT: earliest published public flyer -->
+  <section class="wrap" id="featured-event" style="padding-top:28px;">
+    <div class="section-title">
+      <h2 id="featured-event-title">Featured Event</h2>
+      <p class="sub" id="featured-event-sub">The next Krewe event with a flyer</p>
+    </div>
+    <div class="banner-flourish" aria-hidden="true"></div>
+    <div class="feature" id="featured-event-content">
+      <div class="ft-text">
+        <h2>Event flyers are coming soon</h2>
+        <p>We’ll feature the next public Krewe event here as soon as its flyer is ready.</p>
+        <a class="btn btn-primary" href="#rsvpForm">☘ View RSVP options</a>
+      </div>
+    </div>
+  </section>
 
   <div class="form-stage">
     <div class="form-card">
@@ -224,32 +242,6 @@
       <div class="fc-foot">Sláinte! 🍀 We can't wait to see you.</div>
     </div>
   </div>
-
-  <!-- FEATURED EVENT: earliest published public flyer -->
-  <section class="wrap" id="featured-event" style="padding-top:28px;">
-    <div class="section-title">
-      <h2 id="featured-event-title">Featured Event</h2>
-      <p class="sub" id="featured-event-sub">The next Krewe event with a flyer</p>
-    </div>
-    <div class="banner-flourish" aria-hidden="true"></div>
-    <div class="feature" id="featured-event-content">
-      <div class="ft-text">
-        <h2>Event flyers are coming soon</h2>
-        <p>We’ll feature the next public Krewe event here as soon as its flyer is ready.</p>
-        <a class="btn btn-primary" href="#rsvpForm">☘ View RSVP options</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- UPCOMING EVENT PREVIEWS: full details + scrolling images -->
-  <section class="wrap ev-strip-wrap" id="event-previews" hidden>
-    <div class="section-title">
-      <h2>Upcoming Krewe Events</h2>
-      <p class="sub">Full details and flyers for every upcoming public Krewe event</p>
-    </div>
-    <p class="ev-marquee-hint">Scroll sideways to browse every upcoming public Krewe event</p>
-    <div class="ev-strip" id="eventPreviewStrip" tabindex="0" aria-label="Upcoming event previews"></div>
-  </section>
 
   <!-- KREWE OF SHAMROCK CALENDAR -->
   <section class="wrap" id="krewe-calendar" style="padding-top:28px;">
@@ -453,7 +445,7 @@
       const now = new Date();
       const upcoming = (events || []).filter((ev) =>
         ev.source !== "ikc" && ev.status === "published" && ev.start_time && new Date(ev.start_time) >= now
-      ).sort((a, b) => new Date(a.start_time) - new Date(b.start_time));
+      ).sort((a, b) => new Date(a.start_time) - new Date(b.start_time)).slice(0, 6);
       if (!upcoming.length) {
         wrap.hidden = true;
         strip.innerHTML = "";
@@ -507,19 +499,6 @@
         });
       });
 
-      // Gentle auto-scroll if there are several cards (respects reduced-motion via CSS)
-      if (strip._evTimer) clearInterval(strip._evTimer);
-      if (upcoming.length > 2 && !window.matchMedia("(prefers-reduced-motion: reduce)").matches && !window.matchMedia("(max-width:680px)").matches) {
-        strip.classList.add("autoplay");
-        strip._evTimer = setInterval(() => {
-          if (document.hidden) return;
-          const max = strip.scrollWidth - strip.clientWidth;
-          if (max <= 0) return;
-          const next = strip.scrollLeft + 336;
-          strip.scrollLeft = next >= max - 8 ? 0 : next;
-        }, 4200);
-        strip.addEventListener("pointerdown", () => { if (strip._evTimer) { clearInterval(strip._evTimer); strip._evTimer = null; } }, { once: true });
-      }
     }
 
     async function loadEvents() {
