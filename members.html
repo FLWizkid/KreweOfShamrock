@@ -519,6 +519,26 @@
   .ce-reg{ background:linear-gradient(180deg,var(--cup-gold-light),var(--cup-gold)); color:var(--cup-ink); border:1px solid var(--cup-gold); }
   .ce-reg:hover{ filter:brightness(1.05); }
 
+  /* ---- Color-coded hub tools ----
+     Each everyday tool gets its own crest color: lockers green, carpools
+     navy, van pools rust, directory antique gold. The color always rides
+     with the emoji icon and the card's text heading, so nobody has to
+     rely on color alone to tell the tools apart. */
+  .hub-tool{ border-top:5px solid transparent; }
+  .hub-tool .app-head .ic{
+    width:46px; height:46px; flex:none; display:grid; place-items:center;
+    font-size:24px; background:#fdf6dd; border-radius:14px;
+    border:3px solid transparent; box-shadow:0 2px 6px rgba(0,0,0,.25);
+  }
+  .hub-tool.tool-green{ border-top-color:#1d6b3e; }
+  .hub-tool.tool-green .app-head .ic{ border-color:#1d6b3e; }
+  .hub-tool.tool-navy{ border-top-color:#313770; }
+  .hub-tool.tool-navy .app-head .ic{ border-color:#313770; }
+  .hub-tool.tool-rust{ border-top-color:#8f3b0e; }
+  .hub-tool.tool-rust .app-head .ic{ border-color:#8f3b0e; }
+  .hub-tool.tool-gold{ border-top-color:#a9801c; }
+  .hub-tool.tool-gold .app-head .ic{ border-color:#a9801c; }
+
   /* ---- Members Only: auth, tour, raffles ---- */
   .auth-card .auth-features{ margin-top:18px; text-align:left; display:grid; gap:8px; }
   .afe{ font-size:16px; color:#3a3a2e; } .afe span{ margin-right:6px; }
@@ -1067,7 +1087,7 @@
       </section>
 
       <!-- LOCKERS -->
-      <section class="app-card">
+      <section class="app-card hub-tool tool-green">
         <div class="app-head"><span class="ic">🔑</span><div><h2>Locker Rentals</h2><small>Request and track your krewe locker</small></div></div>
         <div class="app-body">
           <form id="lockerForm" class="krewe-form">
@@ -1087,7 +1107,7 @@
       </section>
 
       <!-- CARPOOLS -->
-      <section class="app-card">
+      <section class="app-card hub-tool tool-navy">
         <div class="app-head"><span class="ic">🚗</span><div><h2>Carpools</h2><small>Offer a ride or ask for one</small></div></div>
         <div class="app-body">
           <div class="seg" role="tablist">
@@ -1120,7 +1140,7 @@
       </section>
 
       <!-- VAN POOLS -->
-      <section class="app-card">
+      <section class="app-card hub-tool tool-rust">
         <div class="app-head"><span class="ic">🚐</span><div><h2>Van Pools</h2><small>Reserve a seat on a krewe van</small></div></div>
         <div class="app-body">
           <div id="vanList"><p class="empty">Loading van pools…</p></div>
@@ -1128,7 +1148,7 @@
       </section>
 
       <!-- DIRECTORY -->
-            <section class="app-card" id="hubMemberDirectory" data-hub="krewe">
+            <section class="app-card hub-tool tool-gold" id="hubMemberDirectory" data-hub="krewe">
         <div class="app-head"><span class="ic">👥</span><div><h2>Member Directory</h2><small>Your krewe - faces first. Find everyone under My Krewe / Directory.</small></div></div>
         <div class="app-body">
           <div id="hubLeaders" class="leaders-board" hidden role="region" aria-label="Shamrock Leaders"></div>
@@ -3328,7 +3348,7 @@
 
 <script src="assets/kos-leadership.js?v=20260916lead6"></script>
 <script src="assets/hub-install.js?v=20260918pwa1"></script>
-<script src="assets/members-desk.js?v=20260918memb3" defer></script>
+<script src="assets/members-desk.js?v=20260919tartan1" defer></script>
   <script src="assets/kos-event-studio.js?v=20260918memb3" defer></script>
   <script src="assets/kos-shop-studio.js?v=20260910shopfix" defer></script>
 <script src="assets/kos-qr-studio.js?v=20260918qrpick1"></script>
