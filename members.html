@@ -1636,10 +1636,10 @@
           ? "🎗️ PARADE READY! Pick up your wristband at the next meeting."
           : "☘ " + gates.filter(Boolean).length + " of 4 requirements complete"}</div>`
         + `<div class="pr-list">`
-        + duesGate(me.dues_paid)
         + gate(me.waiver_signed, "Liability waiver signed", "read the language below, then sign")
-        + gate(me.meeting_attended, "Mandatory meeting attended", "scan the check-in QR at the next mandatory meeting")
         + mediaGate
+        + duesGate(me.dues_paid)
+        + gate(me.meeting_attended, "Mandatory meeting attended", "scan the check-in QR at the next mandatory meeting")
         + `</div>`
         + `<div id="waiverBlock" style="margin-top:4px;"></div>`
         + `<div id="mediaConsentBlock" style="margin-top:14px;"></div>`;
