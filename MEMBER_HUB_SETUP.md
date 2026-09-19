@@ -77,12 +77,31 @@ Official routing lives in `CONTACT_EMAILS.md` (the single source of truth):
   server-side as well.
 - To run a sync by hand: SQL Editor → `select public.sync_ikc_calendar();`
 
-## New member orientation video (added 2026-09-04)
+## Member desk redesign (added 2026-09-19)
+- The **Member desk** tab (`members.html` + `assets/members-desk.js`,
+  `layoutMemberDesk()`) now opens with an Irish-styled masthead (Celtic
+  knotwork trim from `assets/img/celtic-border.svg` / `celtic-corner.svg`)
+  and jump chips, and every everyday member tool files under one of four
+  labeled groups, in reading order:
+  1. **Get Season Ready** — Parade Ready (`#prCard`) and Volunteer hours
+     (`#hubHoursCard`).
+  2. **Share Your Media** — the `#shareCard` (moved here from the Home tab):
+     photo/video uploads for the public site that officers approve, plus
+     artwork, poems, stories, and recipes.
+  3. **Getting There & Your Gear** — Carpools (`#carpoolCard`), Van Pools
+     (`#vanCard`), and Locker Rentals (`#lockerCard`).
+  4. **Learn & Look Up** — the New Member Orientation video
+     (`#orientationCard`, moved here from My Krewe) and Documents (`#docs`).
+- `members.html#share` deep-links to the Share Your Media group, and the
+  Home tab has a "Share your media" quick link beside the Member desk tile.
+  A desk card that no group claims still renders — it files in after the
+  groups instead of disappearing.
+
+## New member orientation video (added 2026-09-04, moved 2026-09-19)
 - The members-only orientation video ("What New Krewe of Shamrock Members
   Must Know") is served from `assets/video/new-member-orientation.mp4` and
-  appears as the **New Member Orientation** card on the **My Krewe** tab of
-  the Member Hub (`members.html`), plus a "Watch the orientation video"
-  quick action on the hub Home tab.
+  appears as the **New Member Orientation** card in the **Learn & Look Up**
+  group of the **Member desk** tab of the Member Hub (`members.html`).
 - `.gitignore` and `.vercelignore` normally exclude every `*.mp4` (raw
   uploads); both now carry a `!assets/video/*.mp4` exception so curated
   site videos in that folder are committed and deployed. To replace the

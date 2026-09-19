@@ -787,6 +787,7 @@
         <div class="afe"><span>🎟️</span> Charity raffles: gift baskets &amp; 50/50</div>
         <div class="afe"><span>📅</span> RSVP to events &amp; log volunteer hours</div>
         <div class="afe"><span>🚗</span> Carpools, lockers &amp; the member directory</div>
+        <div class="afe"><span>📸</span> Share your photos &amp; videos for the public site</div>
       </div>
         </div>
       </div>
@@ -956,8 +957,8 @@
     </div>
     <div class="member-grid">
 
-      <!-- NEW MEMBER ORIENTATION (members-only video, shown on the My Krewe tab) -->
-      <section class="app-card" id="orientationCard" data-hub="krewe">
+      <!-- NEW MEMBER ORIENTATION (members-only video, shown on the Member desk tab) -->
+      <section class="app-card" id="orientationCard" data-hub="parade">
         <div class="app-head"><span class="ic">🎬</span><div><h2>New Member Orientation</h2><small>What new Krewe of Shamrock members must know</small></div></div>
         <div class="app-body">
           <p style="margin-top:0;">New to the Krewe - or want a refresher? This short video walks through
@@ -1056,18 +1057,18 @@
         </div>
       </section>
 
-      <!-- SHARE CONTENT -->
-      <section class="app-card dash-card" role="button" tabindex="0"
+      <!-- SHARE YOUR MEDIA (Member desk) -->
+      <section class="app-card dash-card" id="shareCard" data-hub="parade" role="button" tabindex="0"
                onclick="location.href='share.html'" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.href='share.html';}">
         <div class="app-head">
           <span class="ic">☘</span>
-          <div><h2>Share Content</h2><small>Post videos, photos, artwork, poems, stories, essays &amp; recipes</small></div>
+          <div><h2>Share Your Media</h2><small>Upload photos &amp; videos for the public site - plus artwork, poems, stories, essays &amp; recipes</small></div>
           <span class="dash-go">Open →</span>
         </div>
         <div class="app-body dash-body">
           <p>Share your work with the whole Krewe. Upload an MP4 video or photos, add a piece of artwork, or
              publish a poem, short story, essay, or recipe. Artwork, poems, stories, and recipes go live right away.
-             Photos and videos are submitted for officer review before they appear on the site, and they need a
+             Photos and videos are submitted for officer review before they appear on the public site, and they need a
              signed Photo &amp; Image Release (faces/likeness) in Parade Ready first.</p>
           <div class="dash-chips" onclick="event.stopPropagation()">
               <a href="share.html?type=video" class="dash-chip-link">🎬 Videos</a>
@@ -1081,7 +1082,7 @@
       </section>
 
       <!-- LOCKERS -->
-      <section class="app-card hub-tool tool-green">
+      <section class="app-card hub-tool tool-green" id="lockerCard" data-hub="parade">
         <div class="app-head"><span class="ic">🔑</span><div><h2>Locker Rentals</h2><small>Request and track your krewe locker</small></div></div>
         <div class="app-body">
           <form id="lockerForm" class="krewe-form">
@@ -1101,7 +1102,7 @@
       </section>
 
       <!-- CARPOOLS -->
-      <section class="app-card hub-tool tool-navy">
+      <section class="app-card hub-tool tool-navy" id="carpoolCard" data-hub="parade">
         <div class="app-head"><span class="ic">🚗</span><div><h2>Carpools</h2><small>Offer a ride or ask for one</small></div></div>
         <div class="app-body">
           <div class="seg" role="tablist">
@@ -1134,7 +1135,7 @@
       </section>
 
       <!-- VAN POOLS -->
-      <section class="app-card hub-tool tool-rust">
+      <section class="app-card hub-tool tool-rust" id="vanCard" data-hub="parade">
         <div class="app-head"><span class="ic">🚐</span><div><h2>Van Pools</h2><small>Reserve a seat on a krewe van</small></div></div>
         <div class="app-body">
           <div id="vanList"><p class="empty">Loading van pools…</p></div>
