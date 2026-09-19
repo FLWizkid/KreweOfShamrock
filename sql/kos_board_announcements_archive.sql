@@ -15,8 +15,8 @@
 -- queue_broadcast in SQL) to the general membership; the Officer desk UI
 -- always sends 'active', so nothing officers send from the Hub is hidden.
 --
--- Safe to run more than once. Apply in the Supabase SQL editor on project
--- oazwkwflgbthojvnclfc (or as migration kos_board_announcements_archive).
+-- Safe to run more than once. APPLIED LIVE: Melissa ran this file in the
+-- Supabase SQL editor on project oazwkwflgbthojvnclfc on 2026-09-19.
 -- ============================================================================
 
 CREATE OR REPLACE FUNCTION public.list_board_announcements(p_limit integer DEFAULT 3)

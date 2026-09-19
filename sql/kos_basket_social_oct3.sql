@@ -11,9 +11,9 @@
 -- shared with members directly (all-krewe email / Member Hub) — no external
 -- invitation link is stored on the event.
 --
--- TO GO LIVE: run this file in the Supabase SQL editor on the Krewe project
--- oazwkwflgbthojvnclfc (same as the prior kos_* scripts). Safe to run more
--- than once. Officers can still adjust the date or details afterwards in
+-- APPLIED LIVE: Melissa ran this file in the Supabase SQL editor on the
+-- Krewe project oazwkwflgbthojvnclfc on 2026-09-19. Safe to run more than
+-- once. Officers can still adjust the date or details afterwards in
 -- Event Studio. sql/kos_seed_fall_2026_events.sql was updated to match, so
 -- re-running the seed cannot re-create the old October 17 row.
 -- ============================================================================
