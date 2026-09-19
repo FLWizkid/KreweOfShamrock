@@ -17,6 +17,8 @@
     ".hub-welcome{position:relative;overflow:hidden;background:#fff;border:1px solid rgba(168,128,28,.28);border-radius:18px;padding:20px 22px;box-shadow:var(--shadow-sm);}",
     ".hub-welcome::before{content:'☘';position:absolute;top:-8px;right:10px;font-size:64px;opacity:.12;pointer-events:none;transform:rotate(12deg);}",
     ".hub-welcome h2{font-family:var(--display);color:var(--green-800);margin:0 0 12px;font-size:26px;}",
+    ".hub-welcome .hub-hello{margin:0 0 4px;font-size:16px;color:var(--muted);}",
+    ".hub-welcome .hub-chips{margin:0 0 10px;}",
     ".hub-craic{position:relative;overflow:hidden;background:repeating-linear-gradient(-45deg,rgba(201,162,39,.10) 0 10px,rgba(194,69,30,.09) 10px 20px,transparent 20px 34px),linear-gradient(165deg,#1d6b3e 0%,#14532d 55%,#0f3d22 100%);color:#f6efdc;border-radius:20px;padding:22px 22px 18px;box-shadow:0 6px 18px rgba(23,94,67,.25);border:2px solid #c9a227;}",
     ".hub-craic::before,.hub-craic::after{content:'☘';position:absolute;pointer-events:none;line-height:1;opacity:.16;z-index:0;}",
     ".hub-craic::before{top:-6px;left:8px;font-size:72px;transform:rotate(-18deg);}",
@@ -725,7 +727,7 @@
       ? '<p class="tag" style="margin-top:-6px;opacity:.95;">You\'re off the line with a head start. Now see if you can climb. Kind rivalry only. ☘️</p>'
       : '<p class="tag" style="margin-top:-6px;opacity:.95;">Show up, pitch in, collect Clovers. Cheer your krewe, then try to catch them.</p>';
     return '<div class="hub-craic">' +
-      '<div class="tag">☘ Welcome home, ' + esc(firstName() || 'friend') + '</div>' +
+      '<div class="tag">☘ Our kindly competitive game of showing up</div>' +
       '<h2>This is the Craic Cup</h2>' +
       kickoffNote +
       '<div class="hub-craic-grid">' +
@@ -942,7 +944,10 @@
       "</svg></span>";
   }
 
-  function softMemberDeskHtml() {
+  /* ---- Welcome hero: the home page opens with the member, not the game.
+     Greeting, standing chips, and the season checklist up top; the Craic
+     Cup keeps its own clearly-labeled card further down the stack. */
+  function welcomeDeskHtml() {
     var me = state.parade;
     var needsProfile = !!(window.kosNeedsProfile);
     var bits = [];
@@ -963,8 +968,9 @@
     var profileBtn = needsProfile
       ? '<button type="button" class="btn" id="hubOpenProfile" style="margin-top:8px;width:100%;">Complete My Krewe profile</button>'
       : '';
-    return '<div class="hub-soft-desk">' +
-      '<h3>Member desk</h3>' +
+    return '<div class="hub-welcome" id="hubWelcomeCard">' +
+      '<p class="hub-hello">☘ Fáilte, a chara - welcome, friend</p>' +
+      '<h2>Welcome home, ' + esc(firstName() || 'friend') + '</h2>' +
       '<div class="hub-chips">' + standingChip() + paradeChip() + hoursChip() + '</div>' +
       '<p style="margin:0 0 12px;font-size:16px;color:var(--muted);line-height:1.4;">' + esc(line) + '</p>' +
       '<ul class="hub-status-list" aria-label="Season checklist">' +
@@ -1046,7 +1052,10 @@
         : '') +
       '</div></div>';
     // Only refresh the welcome strip - never wipe the beautiful card grid below.
-    top.innerHTML = craicHeroHtml() + boardAnnouncementsHtml() + softMemberDeskHtml() + officerCard + installCardHtml() + findCards;
+    // Reading order, top to bottom: greet the member and show their season
+    // standing, then news from the board, then the officer's own desk, then
+    // the Craic Cup game, then navigation, and housekeeping last.
+    top.innerHTML = welcomeDeskHtml() + boardAnnouncementsHtml() + officerCard + craicHeroHtml() + findCards + installCardHtml();
 
     renderProfileCard();
 
