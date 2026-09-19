@@ -1336,7 +1336,8 @@
           const sub = head.querySelector("p.sub");
           if(ey) ey.textContent = "Céad míle fáilte";
           if(h1) h1.textContent = "Fáilte";
-          if(sub) sub.textContent = "The leprechaun waves you in.";
+          /* The artwork says it all: no caption under the Fáilte greeting. */
+          if(sub){ sub.textContent = ""; sub.style.display = "none"; }
           if(!head.querySelector(".lep-wave")){
             const fig = document.createElement("figure");
             fig.className = "lep-wave";
