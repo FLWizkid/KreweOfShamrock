@@ -156,13 +156,13 @@ test("waiver All Documents markup uses #docs", async ({ request }) => {
   expect(html).not.toMatch(/href="members\.html#docs">All Documents</);
 });
 
-test("My Krewe governing pills use root-absolute published doc paths", async ({ page }) => {
+test("My Krewe tab does not show the governing document pills", async ({ page }) => {
   const report = watchPage(page);
   await unlockMemberHub(page);
   await waitForQuickLinks(page);
   await page.locator('[data-hub-tab="krewe"]').click();
-  await expect(page.locator("[data-hub-panel='krewe'] .hub-docs a[href='/assets/docs/bylaws.html']")).toBeVisible();
-  await expect(page.locator("[data-hub-panel='krewe'] .hub-docs a[href='/assets/docs/code-of-conduct.html']")).toBeVisible();
-  await expect(page.locator("[data-hub-panel='krewe'] .hub-docs a[href='/assets/docs/parade-rules.html']")).toBeVisible();
-  assertHealthy(expect, report, "krewe governing pills");
+  await expect(page.locator("[data-hub-panel='krewe']")).toHaveClass(/hub-on/);
+  await expect(page.locator("[data-hub-panel='krewe'] .hub-docs")).toHaveCount(0);
+  await expect(page.locator("[data-hub-panel='krewe']")).not.toContainText("Governing documents");
+  assertHealthy(expect, report, "krewe governing pills removed");
 });

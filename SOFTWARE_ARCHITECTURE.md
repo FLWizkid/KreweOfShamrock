@@ -107,7 +107,7 @@ Public data reads (publishable key + RLS/RPC):
 | Tab | Purpose |
 |---|---|
 | **Home** | Craic Cup hero (rank, Clovers, progress, shamrock flourishes), **Next Easy Win** multi-card Shamrock-hosted events, soft Member desk strip; officers also see Officer desk card |
-| **My Krewe** | Your profile (incl. **members-only Facebook** `https://www.facebook.com/groups/1790675004521855`), directory, governing docs |
+| **My Krewe** | Your profile (incl. **members-only Facebook** `https://www.facebook.com/groups/1790675004521855`) and directory; governing docs live on the Member desk Documents card |
 | **Events** | Calendar / RSVP entry |
 | **Member desk** | Parade Ready, dues/waiver cues, volunteer hours |
 | **Fun** | Craic Cup, content share, coordination toys |

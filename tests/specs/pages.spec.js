@@ -154,7 +154,5 @@ test("members.html #docs shows a Documents card with Bylaws and Code of Conduct"
 
   await expect(page.locator("#docs")).toBeVisible();
   await expect(page.locator("#prCard")).toBeVisible();
-  await expect(page.locator("[data-hub-panel='krewe'] .hub-docs a[href='/assets/docs/bylaws.html']")).toBeAttached();
-  await expect(page.locator("[data-hub-panel='krewe'] .hub-docs a[href='/assets/docs/code-of-conduct.html']")).toBeAttached();
-  await expect(page.locator("[data-hub-panel='krewe'] .hub-docs a[href='/assets/docs/parade-rules.html']")).toBeAttached();
+  await expect(page.locator("[data-hub-panel='krewe'] .hub-docs")).toHaveCount(0);
 });
