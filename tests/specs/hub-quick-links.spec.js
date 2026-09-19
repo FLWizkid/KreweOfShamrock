@@ -105,18 +105,55 @@ test.describe("Member Hub Quick Links", () => {
     assertHealthy(expect, report, "all documents link");
   });
 
-  test("underlined Documents links in My Krewe reveal the Documents card", async ({ page }) => {
+  test("underlined Documents links on Member desk reveal the Documents card", async ({ page }) => {
     const report = watchPage(page);
     await unlockMemberHub(page);
     await waitForQuickLinks(page);
 
-    await page.locator('[data-hub-tab="krewe"]').click();
+    await page.locator('[data-hub-tab="parade"]').click();
     await expect(page.locator("#orientationCard")).toBeVisible();
     await page.locator("#orientationCard a[href='#docs']").click();
 
     await expect(page.locator("#docs")).toBeVisible();
     await expect(page.locator("#docs h2")).toHaveText(/^Documents$/i);
     assertHealthy(expect, report, "orientation documents link");
+  });
+
+  test("Member desk shows the Irish masthead and its four labeled groups", async ({ page }) => {
+    const report = watchPage(page);
+    await unlockMemberHub(page);
+    await waitForQuickLinks(page);
+
+    await page.locator('[data-hub-tab="parade"]').click();
+    await expect(page.locator("[data-hub-panel='parade']")).toHaveClass(/hub-on/);
+    await expect(page.locator("#deskHero")).toBeVisible();
+    await expect(page.locator("#deskHero h2")).toHaveText(/Member Desk/i);
+
+    // The four counters, in reading order, each holding its cards.
+    await expect(page.locator("#deskSeason #prCard")).toBeAttached();
+    await expect(page.locator("#deskSeason #hubHoursCard")).toBeAttached();
+    await expect(page.locator("#deskShare #shareCard")).toBeAttached();
+    await expect(page.locator("#deskShare #shareCard h2")).toHaveText(/Share Your Media/i);
+    await expect(page.locator("#deskTravel #carpoolCard")).toBeAttached();
+    await expect(page.locator("#deskTravel #vanCard")).toBeAttached();
+    await expect(page.locator("#deskTravel #lockerCard")).toBeAttached();
+    await expect(page.locator("#deskLearn #orientationCard")).toBeAttached();
+    await expect(page.locator("#deskLearn #docs")).toBeAttached();
+
+    // Orientation video now lives on the desk, not on My Krewe.
+    await expect(page.locator("[data-hub-panel='krewe'] #orientationCard")).toHaveCount(0);
+    assertHealthy(expect, report, "member desk groups");
+  });
+
+  test("Share your media quick link lands on the desk share group", async ({ page }) => {
+    const report = watchPage(page);
+    await unlockMemberHub(page);
+    await waitForQuickLinks(page);
+
+    await page.locator('[data-hub-goto="share"]').click();
+    await expect(page.locator("[data-hub-panel='parade']")).toHaveClass(/hub-on/);
+    await expect(page.locator("#deskShare #shareCard")).toBeVisible();
+    assertHealthy(expect, report, "share quick link");
   });
 });
 

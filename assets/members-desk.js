@@ -342,6 +342,28 @@
     ".hub-officer-chip{order:0;width:100%;justify-content:center;margin-right:0;}",
     "}",
 
+    /* ==== Member desk: one desk, four labeled counters (Irish masthead) ====
+       Knotwork trim comes from the site's own Celtic SVG assets; type and
+       color follow the heritage pages (Cinzel display, parchment, gold rule,
+       crest green), so the desk reads as part of the same illuminated page. */
+    ".desk-hero{position:relative;overflow:hidden;background:linear-gradient(180deg,#fffdf8,#f7f0dd);border:1px solid rgba(168,128,28,.42);border-radius:18px;padding:27px 20px 16px;margin:0 0 16px;box-shadow:var(--shadow-sm);}",
+    ".desk-hero::before{content:'';position:absolute;left:0;right:0;top:0;height:13px;background:url('/assets/img/celtic-border.svg') repeat-x;background-size:auto 100%;}",
+    ".desk-hero::after{content:'';position:absolute;right:-16px;bottom:-16px;width:130px;height:130px;background:url('/assets/img/celtic-corner.svg') no-repeat center/contain;opacity:.15;transform:rotate(180deg);pointer-events:none;}",
+    ".desk-hero>*{position:relative;z-index:1;}",
+    ".desk-kicker{margin:6px 0 2px;font-family:var(--fancy);font-style:italic;font-size:17px;color:var(--gold-text);letter-spacing:.04em;}",
+    ".desk-hero h2{margin:0 0 8px;font-family:var(--display);font-size:clamp(24px,4vw,30px);color:var(--green-800);letter-spacing:.02em;}",
+    ".desk-hero p{margin:0 0 12px;font-size:16px;line-height:1.5;color:#3a3a2e;max-width:52em;}",
+    ".desk-nav{display:flex;flex-wrap:wrap;gap:8px;}",
+    ".desk-nav button{display:inline-flex;align-items:center;gap:7px;min-height:44px;border:1px solid rgba(168,128,28,.45);background:#fff;color:var(--green-800);border-radius:999px;padding:9px 15px;font-family:var(--display);font-size:15px;cursor:pointer;box-shadow:0 1px 3px rgba(42,33,24,.10);}",
+    ".desk-nav button:hover{background:var(--green-800);color:#f6efdc;border-color:var(--green-800);}",
+    ".desk-group-head{display:flex;align-items:center;gap:12px;padding:8px 2px 10px;}",
+    ".desk-group-head .dg-ic{flex:none;width:44px;height:44px;display:grid;place-items:center;font-size:22px;background:#fdf6dd;border:2px solid rgba(168,128,28,.5);border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.12);}",
+    ".desk-group-head h3{margin:0;font-family:var(--display);font-size:22px;color:var(--green-800);letter-spacing:.03em;}",
+    ".desk-group-head .dg-sub{display:block;margin-top:2px;font-size:15px;color:var(--muted);font-family:var(--fancy);font-style:italic;line-height:1.35;}",
+    ".desk-group-rule{height:3px;background:linear-gradient(90deg,#a9801c,#d4af37,#ecd07e,#d4af37,rgba(169,128,28,0));border-radius:2px;margin:0 0 14px;}",
+    ".desk-group > .member-grid{display:grid;gap:18px;}",
+    "#deskSeason,#deskShare,#deskTravel,#deskLearn,#shareCard,#orientationCard{scroll-margin-top:88px;}",
+
   ].join("");
 
   var state = { officer: false, shopOnly: false, socialOnly: false, canViewPayments: false, canManageEvents: false, parade: null, hoursApproved: 0, membershipStatus: null, game: null, nextEvent: null, nextEvents: [], hubEvents: [], announcements: [] };
@@ -467,7 +489,7 @@
         else if (h.indexOf("craic") !== -1) sec.setAttribute("data-hub", "fun");
         else if (h.indexOf("raffle") !== -1) sec.setAttribute("data-hub", "hub");
         else if (h.indexOf("report") !== -1) sec.setAttribute("data-hub", "hub");
-        else if (h.indexOf("share") !== -1) sec.setAttribute("data-hub", "hub");
+        else if (h.indexOf("share") !== -1) sec.setAttribute("data-hub", "parade");
         else if (h.indexOf("locker") !== -1) sec.setAttribute("data-hub", "parade");
         else if (h.indexOf("carpool") !== -1) sec.setAttribute("data-hub", "parade");
         else if (h.indexOf("van") !== -1) sec.setAttribute("data-hub", "parade");
@@ -571,11 +593,89 @@
       else if (homeGrid) homeGrid.appendChild(sec);
       else fun.appendChild(sec);
     });
-    // Member desk = volunteer hours at top, then Parade Ready / other parade sections
+    // Volunteer hours joins the parade grid; layoutMemberDesk() groups it
+    // under "Get Season Ready" right after the Parade Ready card.
     if (give && give.firstChild) parade.insertBefore(give.firstChild, parade.firstChild);
     oldGrid.remove();
     relocateHours();
+    layoutMemberDesk();
     ensureClaimCloversCard();
+  }
+
+  /* ---- Member desk layout: one desk, four labeled counters ----
+     A member who taps Member desk should understand at a glance what lives
+     here, so every everyday tool files under a labeled group with jump chips
+     in an Irish-styled masthead. The flow reads top to bottom: get season
+     ready, share your media for the public site, sort rides and gear, then
+     learn and look things up. Cards keep their ids and internal wiring - only
+     their position changes - and a card no group claims files in last, so
+     future desk cards never vanish. */
+  var DESK_GROUPS = [
+    { id: "deskSeason", icon: "🎗️", chip: "Season checklist", title: "Get Season Ready",
+      sub: "Dues, waiver, meeting, photo release, and your volunteer hours.",
+      cards: ["prCard", "hubHoursCard"] },
+    { id: "deskShare", icon: "📸", chip: "Share your media", title: "Share Your Media & Creativity",
+      sub: "Photos and videos for the public site - an officer approves each one - plus artwork, poems, stories, and recipes.",
+      cards: ["shareCard"] },
+    { id: "deskTravel", icon: "🚐", chip: "Rides & locker", title: "Getting There & Your Gear",
+      sub: "Carpools, seats on the krewe vans, and locker rentals.",
+      cards: ["carpoolCard", "vanCard", "lockerCard"] },
+    { id: "deskLearn", icon: "📜", chip: "Learn & documents", title: "Learn & Look Up",
+      sub: "The new member orientation video and the governing documents.",
+      cards: ["orientationCard", "docs"] }
+  ];
+
+  function layoutMemberDesk() {
+    var grid = document.getElementById("hubParade");
+    if (!grid || document.getElementById("deskHero")) return;
+    var panel = grid.parentElement;
+    if (!panel) return;
+
+    var hero = document.createElement("div");
+    hero.className = "desk-hero";
+    hero.id = "deskHero";
+    hero.innerHTML =
+      '<p class="desk-kicker">Fáilte, a chara - welcome, friend</p>' +
+      "<h2>☘ Your Member Desk</h2>" +
+      "<p>Everything a member needs, on one desk: get Parade Ready and log your volunteer hours, " +
+      "share your photos and videos for the public site (an officer approves each one before it goes live), " +
+      "find a ride or a locker, and look anything up.</p>" +
+      '<nav class="desk-nav" aria-label="Member desk sections">' +
+      DESK_GROUPS.map(function (g) {
+        return '<button type="button" data-desk-goto="' + g.id + '">' + g.icon + " " + g.chip + "</button>";
+      }).join("") +
+      "</nav>";
+    panel.insertBefore(hero, grid);
+
+    DESK_GROUPS.forEach(function (g) {
+      var cards = g.cards.map(function (id) { return document.getElementById(id); })
+        .filter(function (el) { return el && el.parentElement === grid; });
+      if (!cards.length) return;
+      var wrap = document.createElement("section");
+      wrap.className = "desk-group";
+      wrap.id = g.id;
+      wrap.innerHTML =
+        '<header class="desk-group-head"><span class="dg-ic" aria-hidden="true">' + g.icon + "</span>" +
+        "<div><h3>" + g.title + '</h3><span class="dg-sub">' + g.sub + "</span></div></header>" +
+        '<div class="desk-group-rule"></div>';
+      var inner = document.createElement("div");
+      inner.className = "member-grid";
+      cards.forEach(function (el) { inner.appendChild(el); });
+      wrap.appendChild(inner);
+      grid.appendChild(wrap);
+    });
+
+    // Cards no group claimed keep working - they just file in after the groups.
+    Array.prototype.slice.call(grid.children).forEach(function (el) {
+      if (el.classList && el.classList.contains("desk-group")) return;
+      grid.appendChild(el);
+    });
+
+    hero.querySelectorAll("[data-desk-goto]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        focusHubTarget(document.getElementById(btn.getAttribute("data-desk-goto")));
+      });
+    });
   }
 
   function standingChip() {
@@ -821,6 +921,8 @@
     cross: '<circle cx="12" cy="9.5" r="4.2"/><path d="M12 3v18"/><path d="M5.5 9.5h13"/><path d="M9 20.5h6"/>',
     // Quill - officers writing the calendar.
     quill: '<path d="M19.5 4.5c-5.5.2-9.6 3-11.6 8.2L6.2 17l4.2-1.7c5.2-2 8-6.1 8.2-11.6Z"/><path d="M5 19.5 12.5 12"/>',
+    // Triskele (triple spiral) - creativity in motion: Share your media.
+    triskele: '<path d="M12 12c0-3.6 2.7-6.3 6.1-6.3"/><path d="M12 12c3.1 1.8 3.8 5.5 2 8.4"/><path d="M12 12c-3.1 1.8-6.4.8-8.1-2.1"/><circle cx="12" cy="12" r="1.7"/>',
     // Shamrock for the card heading.
     shamrock: '<circle cx="12" cy="7.4" r="3.2"/><circle cx="7.9" cy="12.8" r="3.2"/><circle cx="16.1" cy="12.8" r="3.2"/><path d="M12 13c.3 3.2-.5 5.6-2.6 7.5"/>'
   };
@@ -844,9 +946,9 @@
     if ((state.hoursApproved || 0) < 1) bits.push("hours since July 1");
     if (needsProfile) bits.push("My Krewe profile");
     var ready = !!(me && me.dues_paid && me.waiver_signed && me.meeting_attended);
-    var line = "Parade Ready, hours, and season tools live here.";
+    var line = "Parade Ready, volunteer hours, media sharing, rides, and your locker - all on one desk.";
     if (ready && !needsProfile && (state.hoursApproved || 0) >= 1) {
-      line = "You are set for the season. Open Member desk anytime.";
+      line = "You are set for the season. The desk still has your rides, locker, and media sharing.";
     } else if (bits.length) {
       line = "Still open: " + bits.join(", ") + ".";
     }
@@ -919,7 +1021,8 @@
       '<div class="hub-find-grid">' +
       quickTile("directory", "trinity", "My Krewe", "Your member directory - faces and profiles of the whole krewe.") +
       quickTile("events", "harp", "Events &amp; RSVPs", "See what's coming up and RSVP. Attendance feeds Parade Ready.") +
-      quickTile("desk", "shield", "Member desk", "Parade Ready, waiver, dues, and your volunteer hours.") +
+      quickTile("desk", "shield", "Member desk", "Parade Ready, volunteer hours, rides, your locker, and media sharing.") +
+      quickTile("share", "triskele", "Share your media", "Upload photos &amp; videos for the public site - an officer approves them - plus artwork, poems &amp; recipes.") +
       quickTile("fun", "chalice", "Craic Cup", "Claim clovers, check the leaderboard, and join the fun.") +
       '<div class="hub-action" id="docsHome" style="cursor:default">' +
       qkIcon("cross") +
@@ -956,6 +1059,7 @@
         else if (go === "docs") revealDocsCard();
         else if (go === "events") gotoHubTabFromHome("events", "events");
         else if (go === "desk") gotoHubTabFromHome("parade", "desk");
+        else if (go === "share") revealShareGroup();
         else if (go === "fun") gotoHubTabFromHome("fun", "fun");
       });
     });
@@ -996,6 +1100,14 @@
   function gotoHubTabFromHome(tab, hash) {
     try { history.replaceState(null, "", location.pathname + "#" + hash); } catch (e) {}
     showTab(tab);
+  }
+
+  function revealShareGroup() {
+    try { history.replaceState(null, "", location.pathname + "#share"); } catch (e) {}
+    showTab("parade", { skipScroll: true });
+    setTimeout(function () {
+      focusHubTarget(document.getElementById("deskShare") || document.getElementById("shareCard"));
+    }, 80);
   }
 
   function revealDocsCard() {
@@ -1265,6 +1377,7 @@
     var saved = TAB_HOME;
     var wantHours = hoursIntent();
     var wantDocs = false;
+    var wantShare = false;
     try {
       var hash = (location.hash || "").replace(/^#/, "").toLowerCase();
       if (wantHours) {
@@ -1274,6 +1387,7 @@
       else if (hash === "officer") saved = "officer";
       else if (hash === "krewe" || hash === "directory") saved = "krewe";
       else if (hash === "docs") { saved = "parade"; wantDocs = true; }
+      else if (hash === "share") { saved = "parade"; wantShare = true; }
       else if (hash === "events") saved = "events";
       else if (hash === "fun") saved = "fun";
       else if (hash === "home") saved = TAB_HOME;
@@ -1302,6 +1416,8 @@
       setTimeout(function () { openVolunteerHoursForm(false); }, 280);
     } else if (wantDocs) {
       setTimeout(function () { revealDocsCard(); }, 280);
+    } else if (wantShare) {
+      setTimeout(function () { revealShareGroup(); }, 280);
     }
   }
 
