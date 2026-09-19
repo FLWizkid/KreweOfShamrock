@@ -133,14 +133,13 @@ Anonymous visitors get nothing — consistent with the rest of the member data.
 Reference for Storage policies:
 <https://supabase.com/docs/guides/storage/security/access-control>
 
-### 3.4 Optional (recommended) download log
+### 3.4 Download log — DECIDED: none
 
-A tiny `document_views` table (`document_id`, `member_id` nullable, `viewed_at`)
-answers "does anyone actually use this?" for officers. **Decision needed:** the
-krewe decided on 2026-09-18 that QR scan logging stores *no* member identity.
-The same privacy question applies here. Recommendation: log **counts only**
-(document_id + timestamp, no member id), matching the QR precedent. If even
-that feels like too much, skip this table entirely — nothing else depends on it.
+**Decision (Melissa, 2026-09-19): no download logging at all.** No
+`document_views` table is built. Downloads leave no record of any kind —
+the most private option, consistent with the krewe's QR privacy posture.
+If officers later want usage numbers, an anonymous-counts table can be added
+without touching anything else in this design.
 
 ---
 
@@ -381,19 +380,19 @@ only phase touching public pages.
 
 ---
 
-## 10. Decisions for the product owner (Melissa) before building
+## 10. Product owner decisions (Melissa, 2026-09-19)
 
-1. **Download logging:** none, anonymous counts, or per-member? (Plan
-   recommends anonymous counts, matching the QR privacy decision.)
-2. **Clovers for easter eggs:** yes/no, and the amount (+10 suggested).
-3. **Category list:** are `governing / calendars / forms / newsletters / fun /
-   general` the right starting shelves?
-4. **Season calendar art direction:** built from the site's existing celtic
-   assets, or does the krewe want bespoke artwork first? (The build does not
-   block on art — pages can restyle later.)
-5. **Which pages hide eggs**, and how sneaky: invisible-until-hover is fun for
-   desktop but undiscoverable on phones — recommend "small but visible"
-   clovers.
+1. **Download logging: NONE.** No logging table of any kind (see 3.4).
+2. **Clovers for easter eggs: YES, +10** per member per surprise document,
+   one-time, enforced by the unique constraint on `document_discoveries`.
+3. **Category list: APPROVED** — `governing / calendars / forms /
+   newsletters / fun / general`.
+4. **Season calendar art: BUILD NOW** from the site's existing celtic assets
+   (`celtic-border.svg`, `kos-crest.png`, the display font). Artwork can be
+   restyled later; a keepsake PDF edition remains a possible later addition.
+5. **Which pages hide eggs, and how sneaky — STILL OPEN.**
+   Recommendation: "small but visible" clovers (invisible-until-hover is fun
+   on desktop but undiscoverable on phones). Candidate spots in Section 6.
 
 ---
 
