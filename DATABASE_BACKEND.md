@@ -285,3 +285,36 @@ Same day, the three previously "run manually" migrations were found missing from
 live database (the paste-runs never took) and were applied through the connection's
 migration mechanism, then verified present: `kos_qr_registry`,
 `kos_attendance_qr_hours`, `kos_profile_name_not_email`.
+
+## The Craic Cup game and Supabase (updated 2026-09-19)
+
+The Craic Cup (gamification) is wired straight into this same Supabase
+project — every number a member sees in the game is a live database read:
+
+- **Tables:** `clover_ledger` (append-only points ledger), `clover_requests`
+  (member claims awaiting officer approval), `badge_defs`, `member_badges`.
+- **Season rule:** seasons run **July 1 – June 30**. `craic_season_year()`
+  returns the year the current season started in and stamps `season_year` on
+  every new ledger row and claim (it is the column default);
+  `craic_season_start()` returns the July 1 date the current season began.
+- **Views:** `v_season_leaderboard` and `v_volunteer_leaderboard` both count
+  only the current July-start season.
+- **Functions the Hub calls (RPC):**
+  - `submit_clover_request(activity, …)` — member claims, including
+    `attend_ikc_event` (+25 for attending another IKC krewe's event).
+  - `approve_clover_request` / `deny_clover_request` — officer decisions;
+    approval inserts the ledger row.
+  - `get_member_game_card(email)` — the signed-in member's own snapshot on
+    the Hub Home tab.
+  - `search_craic_members(name)` — Find My Clovers name search
+    (signed-in members only).
+  - `get_craic_member_card(member_id)` — the full card: rank, badges, recent
+    Clovers, and this season's event history (RSVPs, tickets, payments)
+    from `event_signups`/`events`, plus any `legacy_event_registrations`
+    rows since July 1.
+- **In the game UI**, the pill in the Craic Cup window header ("Live Krewe
+  data") turns green after each successful query, so members and officers can
+  see at a glance that the game is connected to the database.
+
+The SQL for all of this is in `sql/kos_craic_cup_ikc_and_find.sql` and is
+applied to the project as migration `kos_craic_cup_ikc_and_find`.

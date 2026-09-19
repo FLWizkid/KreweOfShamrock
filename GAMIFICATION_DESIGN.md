@@ -27,8 +27,10 @@ understand, easy to display.
 - Clovers come in two flavors that we track separately so we can build different
   leaderboards:
   - **Lifetime Clovers** — all-time total. Drives **rank** (below).
-  - **Season Clovers** — reset each krewe year (e.g., Jan 1). Drives the
-    **seasonal leaderboard**, so a new member can still "win this year."
+  - **Season Clovers** — reset each krewe year on **July 1** (the season runs
+    July 1 – June 30, matching the volunteer-hours year; the database function
+    `craic_season_year()` labels each season by the year it started in). Drives
+    the **seasonal leaderboard**, so a new member can still "win this year."
 
 > **Why two counters?** Lifetime rewards loyalty; seasonal keeps the contest fresh
 > and winnable for newcomers. Both read from the same ledger — it's just two views.
@@ -53,6 +55,7 @@ Every value below maps to a row or column you already have. The numbers are a
 | **Refer** a new member who joins | **40** | new `members.referred_by` field (see §7) |
 | Complete the **new-member quest line** (first 60 days) | **50** | derived (see §6) |
 | Attend a **members' meeting** | **15** | `events.event_type = 'meeting'`, attended |
+| Attend **another IKC krewe's event** (support the krewe family) | **25** | member claim, `clover_requests.activity_code = 'attend_ikc_event'`, officer-approved |
 
 **Worked example.** Bridget RSVPs to the St. Patrick's parade (5), shows up and is
 marked attended (20), volunteers (30), and takes the teardown shift — a priority role,

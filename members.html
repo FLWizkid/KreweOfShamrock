@@ -436,23 +436,88 @@
   .rpt-btn.ok{background:var(--green-800);color:#f6efdc;border-color:var(--green-800);}
   .rpt-btn:hover{opacity:.85;}
 
-  /* ---- The Craic Cup (gamification) ---- */
-  .game-head .app-head{ background:linear-gradient(180deg,#b8860b,#6f5300); }
-  .game-tabs{ display:inline-flex; flex-wrap:wrap; border:1px solid var(--green-700); border-radius:10px; overflow:hidden; margin-bottom:16px; }
-  .game-tabs button{ border:0; background:#fff; color:var(--green-800); padding:9px 18px; font-family:var(--display); cursor:pointer; }
-  .game-tabs button.on{ background:var(--green-700); color:#fff; }
-  .lb-table .medal{ font-size:18px; white-space:nowrap; }
-  .rank-pill{ display:inline-flex; align-items:center; gap:6px; background:#f0e8d2; border:1px solid rgba(168,128,28,.4); color:var(--green-800); border-radius:999px; padding:3px 12px; font-family:var(--display); font-size:14px; white-space:nowrap; }
+  /* ---- The Craic Cup (gamification) ----
+     Palette drawn from the krewe's Celtic knotwork artwork: deep field greens,
+     red-orange knot ribbons, and illuminated gold trim on parchment. */
+  :root{
+    --cup-green-deep:#0f3d2a; --cup-green:#175e43; --cup-teal:#1f6f5c;
+    --cup-red:#c2451e; --cup-crimson:#96351a;
+    --cup-gold:#c9a227; --cup-gold-light:#f0d78c; --cup-cream:#f9f3e1; --cup-ink:#2a2118;
+  }
+  /* Braided gold-and-red "knot ribbon" used as trim on the game surfaces */
+  .game-head .app-head, #gameModal .modal-head{
+    background:
+      repeating-linear-gradient(-45deg, rgba(201,162,39,.28) 0 10px, rgba(194,69,30,.24) 10px 20px, transparent 20px 34px),
+      linear-gradient(135deg,var(--cup-green-deep) 0%,var(--cup-green) 55%,var(--cup-teal) 100%);
+    border-bottom:3px solid var(--cup-gold);
+    box-shadow:inset 0 -6px 14px rgba(0,0,0,.22);
+  }
+  .game-head{ border:2px solid var(--cup-gold) !important; box-shadow:0 6px 18px rgba(23,94,67,.25) !important; }
+  .game-head .app-head small{ color:var(--cup-gold-light); }
+  .game-head .dash-go{ background:var(--cup-red); color:var(--cup-cream); border-radius:999px; padding:4px 12px; font-family:var(--display); box-shadow:0 2px 6px rgba(150,53,26,.4); }
+  #gameModal .modal-card{ background:var(--cup-cream); border:2px solid var(--cup-gold); box-shadow:0 0 0 4px rgba(23,94,67,.35), 0 30px 80px rgba(0,0,0,.5); }
+  .game-conn{ margin-left:auto; margin-right:6px; display:inline-flex; align-items:center; gap:6px; font-size:12.5px; font-family:var(--display); letter-spacing:.03em; border-radius:999px; padding:3px 10px; border:1px solid rgba(240,215,140,.5); color:#f6efdc; background:rgba(0,0,0,.18); white-space:nowrap; }
+  .game-conn::before{ content:''; width:8px; height:8px; border-radius:50%; background:#9aa; box-shadow:0 0 6px rgba(255,255,255,.35); }
+  .game-conn.ok::before{ background:#54d98a; box-shadow:0 0 8px rgba(84,217,138,.9); }
+  .game-conn.err::before{ background:#ff7a5c; box-shadow:0 0 8px rgba(255,122,92,.9); }
+  .game-tabs{ display:flex; flex-wrap:wrap; gap:8px; border:0; margin-bottom:16px; }
+  .game-tabs button{ border:1px solid var(--cup-gold); background:#fff; color:var(--cup-green); padding:9px 16px; font-family:var(--display); cursor:pointer; border-radius:999px; font-size:15px; box-shadow:0 1px 3px rgba(42,33,24,.12); transition:transform .12s ease, background .12s ease; }
+  .game-tabs button:hover{ background:var(--cup-gold-light); transform:translateY(-1px); }
+  .game-tabs button.on{ background:linear-gradient(180deg,var(--cup-red),var(--cup-crimson)); color:var(--cup-cream); border-color:var(--cup-crimson); box-shadow:0 3px 8px rgba(150,53,26,.35); }
+  .lb-table .medal{ font-size:20px; white-space:nowrap; }
+  .lb-table thead th{ background:var(--cup-green); color:var(--cup-gold-light); }
+  .lb-table tbody tr:nth-child(1) td{ background:rgba(201,162,39,.18); }
+  .lb-table tbody tr:nth-child(2) td{ background:rgba(201,162,39,.10); }
+  .lb-table tbody tr:nth-child(3) td{ background:rgba(194,69,30,.08); }
+  .rank-pill{ display:inline-flex; align-items:center; gap:6px; background:linear-gradient(180deg,#fdf6dd,#f0e3b8); border:1px solid var(--cup-gold); color:var(--cup-green); border-radius:999px; padding:3px 12px; font-family:var(--display); font-size:14px; white-space:nowrap; box-shadow:inset 0 1px 0 #fff; }
   .badge-gallery{ display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; margin-top:8px; }
-  .badge-chip{ border:1px solid rgba(168,128,28,.3); border-radius:12px; padding:12px; background:#fff; text-align:center; }
+  .badge-chip{ border:1px solid var(--cup-gold); border-radius:12px; padding:12px; background:#fffdf4; text-align:center; box-shadow:inset 0 0 0 3px rgba(194,69,30,.12), 0 1px 4px rgba(42,33,24,.10); transition:transform .15s ease; }
+  .badge-chip:hover{ transform:translateY(-2px) rotate(-1deg); }
   .badge-chip .ic{ font-size:30px; line-height:1; }
-  .badge-chip .nm{ font-family:var(--display); color:var(--green-800); font-size:14px; margin-top:6px; }
+  .badge-chip .nm{ font-family:var(--display); color:var(--cup-green); font-size:14px; margin-top:6px; }
   .badge-chip .ds{ font-size:12px; color:var(--muted); margin-top:3px; line-height:1.35; }
-  .prog{ background:#e7e0c8; border-radius:999px; height:14px; overflow:hidden; margin:8px 0; }
-  .prog > i{ display:block; height:100%; background:linear-gradient(90deg,#2e8b57,#1d6b3e); }
-  .pt-table td:last-child{ text-align:right; font-family:var(--display); color:var(--green-800); white-space:nowrap; }
-  .find-card{ background:#fff; border:1px solid var(--gold); border-radius:16px; padding:20px; margin-top:14px; box-shadow:var(--shadow-sm); }
-  .find-card .big{ font-family:var(--display); color:var(--green-800); font-size:40px; line-height:1; }
+  .prog{ background:#e7e0c8; border-radius:999px; height:15px; overflow:hidden; margin:8px 0; border:1px solid rgba(201,162,39,.45); }
+  .prog > i{ display:block; height:100%; background:linear-gradient(90deg,#fff6c8 0%,var(--cup-gold-light) 35%,var(--cup-gold) 70%,#f7e7a1 100%); position:relative; box-shadow:0 0 10px rgba(240,215,140,.55); }
+  .prog > i::after{ content:''; position:absolute; inset:0; background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.5) 50%,transparent 60%); background-size:200% 100%; animation:cupSparkle 2.8s ease-in-out infinite; }
+  @keyframes cupSparkle{ 0%,100%{background-position:100% 0} 50%{background-position:0 0} }
+  .pt-table td:last-child{ text-align:right; font-family:var(--display); color:var(--cup-green); white-space:nowrap; }
+  .find-card{ background:#fffdf4; border:2px solid var(--cup-gold); border-radius:16px; padding:20px; margin-top:14px; box-shadow:inset 0 0 0 4px rgba(194,69,30,.10), var(--shadow-sm); }
+  .find-card .big{ font-family:var(--display); color:var(--cup-green); font-size:40px; line-height:1; }
+  .find-matches{ display:grid; gap:8px; margin-top:12px; }
+  .find-match{ display:flex; align-items:center; gap:12px; text-align:left; background:#fffdf4; border:1px solid var(--cup-gold); border-radius:12px; padding:10px 14px; cursor:pointer; font:inherit; transition:background .12s ease; }
+  .find-match:hover{ background:var(--cup-gold-light); }
+  .find-match .fm-ic{ font-size:26px; line-height:1; }
+  .find-match .fm-nm{ font-family:var(--display); color:var(--cup-green); font-size:17px; }
+  .find-match .fm-pts{ margin-left:auto; font-family:var(--display); color:var(--cup-crimson); white-space:nowrap; }
+  .cup-hist{ margin:6px 0 0; padding:0; list-style:none; }
+  .cup-hist li{ border-top:1px solid rgba(201,162,39,.35); padding:9px 0; font-size:15px; line-height:1.4; }
+  .cup-hist .ev{ font-family:var(--display); color:var(--cup-green); font-size:16px; }
+  .cup-st{ display:inline-block; border-radius:999px; padding:1px 10px; font-size:12.5px; font-family:var(--display); letter-spacing:.03em; text-transform:uppercase; background:#eee4c8; color:#6b5a1e; border:1px solid rgba(201,162,39,.5); }
+  .cup-st.attended{ background:var(--cup-green); color:var(--cup-cream); border-color:var(--cup-green); }
+  .cup-st.registered,.cup-st.confirmed{ background:#fdf3d8; color:#7a5b00; }
+  .cup-st.paid{ background:var(--cup-gold); color:var(--cup-ink); border-color:var(--cup-gold); }
+  .cup-st.cancelled,.cup-st.denied{ background:#f3d9cf; color:var(--cup-crimson); }
+  /* Events inside the Cup */
+  .cup-remind{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; background:linear-gradient(180deg,#fdf6dd,#f6ecc9); border:1px solid var(--cup-gold); border-left:6px solid var(--cup-red); border-radius:12px; padding:12px 16px; margin:0 0 14px; font-size:15.5px; color:var(--cup-ink); }
+  .cup-remind b{ color:var(--cup-green); font-family:var(--display); }
+  .cup-remind a{ color:var(--cup-crimson); font-weight:700; }
+  .cup-event{ background:#fffdf4; border:1px solid var(--cup-gold); border-radius:14px; padding:14px 16px; margin:10px 0; box-shadow:0 1px 5px rgba(42,33,24,.10); }
+  .cup-event .ce-top{ display:flex; gap:12px; align-items:flex-start; flex-wrap:wrap; }
+  .cup-date{ display:inline-flex; flex-direction:column; align-items:center; justify-content:center; min-width:56px; background:linear-gradient(180deg,var(--cup-red),var(--cup-crimson)); color:var(--cup-cream); border-radius:12px; padding:7px 10px; font-family:var(--display); line-height:1.1; box-shadow:0 2px 6px rgba(150,53,26,.35); }
+  .cup-date .d1{ font-size:12px; letter-spacing:.06em; text-transform:uppercase; }
+  .cup-date .d2{ font-size:22px; font-weight:700; }
+  .cup-event .ce-nm{ font-family:var(--display); color:var(--cup-green); font-size:19px; line-height:1.25; }
+  .cup-event .ce-meta{ font-size:14.5px; color:var(--muted); margin-top:2px; }
+  .cup-event .ce-hint{ font-size:14px; color:var(--cup-crimson); font-weight:700; margin-top:4px; }
+  .cup-event details{ margin-top:8px; }
+  .cup-event summary{ cursor:pointer; font-family:var(--display); color:var(--cup-green); font-size:15px; }
+  .cup-event .ce-detail{ font-size:15px; color:var(--cup-ink); margin-top:6px; line-height:1.45; }
+  .cup-event .ce-btns{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+  .cup-event .ce-btns a{ text-decoration:none; border-radius:999px; padding:8px 16px; font-family:var(--display); font-size:15px; display:inline-block; }
+  .ce-rsvp{ background:var(--cup-green); color:var(--cup-cream); border:1px solid var(--cup-green-deep); box-shadow:0 2px 6px rgba(15,61,42,.3); }
+  .ce-rsvp:hover{ background:var(--cup-teal); }
+  .ce-reg{ background:linear-gradient(180deg,var(--cup-gold-light),var(--cup-gold)); color:var(--cup-ink); border:1px solid var(--cup-gold); }
+  .ce-reg:hover{ filter:brightness(1.05); }
 
   /* ---- Members Only: auth, tour, raffles ---- */
   .auth-card .auth-features{ margin-top:18px; text-align:left; display:grid; gap:8px; }
@@ -698,7 +763,7 @@
               <p>Come back here and sign in with your email and new password. Your browser can remember it for next time. Officers, board members, and committee chairs confirm their directory titles (President, Board Member, Committee Chair of…) on the first-login questionnaire so the right desk tools unlock.</p>
             </div>
           </div>
-          <div class="guide-inside"><b>What&rsquo;s waiting inside:</b> a quick Craic Cup welcome (photo, name, a couple playful prompts) gets you into the game. Title claims (officer, board, committee chair) stay optional and match the Shamrock Leaders directory. Then it&rsquo;s your personal hub &mdash; your standing and next actions on Home, plus tabs for <b>My Krewe</b>, <b>Events</b>, <b>Parade Day</b>, <b>Give Back</b>, and <b>Fun</b>. Officers see an extra Officer desk. Role requests are confirmed by an officer, usually within a day &mdash; the rest of the castle is yours right away.</div>
+          <div class="guide-inside"><b>What&rsquo;s waiting inside:</b> a quick Craic Cup welcome (photo, name, a couple playful prompts) gets you into the game. Title claims (officer, board, committee chair) stay optional and match the Shamrock Leaders directory. Then it&rsquo;s your personal hub &mdash; your standing and next actions on Home, plus tabs for <b>My Krewe</b>, <b>Events</b>, <b>Parade Day</b>, <b>Give Back</b>, and the <b>Craic Cup</b>. Officers see an extra Officer desk. Role requests are confirmed by an officer, usually within a day &mdash; the rest of the castle is yours right away.</div>
           <p class="guide-help">Stuck at the door? Email <a href="mailto:digital@kreweofshamrock.com?subject=Website%20issue%20report">digital@kreweofshamrock.com</a> and a human will let you in.</p>
         </div>
       </details>
@@ -944,10 +1009,10 @@
         </div>
         <div class="app-body dash-body">
           <p>Who’s bringing the most energy this season? Show up, volunteer, and stack
-             <b>Clovers 🍀</b>. They fuel your <b>rank</b> and unlock <b>badges</b>. Cheer your krewe, then try to catch them. Good-natured competition only.</p>
+             <b>Clovers 🍀</b>. They fuel your <b>rank</b> and unlock <b>badges</b>. RSVP to upcoming events right inside the Cup, and earn <b>+25 🍀</b> for cheering on another IKC krewe. Season restarts every July 1 - good-natured competition only.</p>
           <div class="dash-chips">
-            <span>🏆 Leaderboard</span><span>🌱 → 👑 Ranks</span><span>🎖️ Badges</span>
-            <span>🤝 Volunteer bonuses</span><span>🔎 Your Clovers</span>
+            <span>🏆 Leaderboard</span><span>📅 Upcoming events</span><span>🌱 → 👑 Ranks</span><span>🎖️ Badges</span>
+            <span>🤝 Volunteer bonuses</span><span>🔎 Find My Clovers</span>
           </div>
         </div>
       </section>
@@ -1142,11 +1207,13 @@
       <div class="modal-head">
         <span class="ic" style="font-size:24px;">🍀</span>
         <h2>The Craic Cup</h2>
+        <span id="gameConn" class="game-conn" aria-live="polite" title="Craic Cup data connection to the krewe database">Connecting…</span>
         <button class="modal-x" type="button" onclick="closeGame()" aria-label="Close the game">✕</button>
       </div>
       <div class="modal-body">
         <div class="game-tabs" role="tablist">
           <button id="gt-standings" class="on" type="button" onclick="gameTab('standings')">🏆 Standings</button>
+          <button id="gt-events" type="button" onclick="gameTab('events')">📅 Events</button>
           <button id="gt-howto" type="button" onclick="gameTab('howto')">📖 How to Play</button>
           <button id="gt-find" type="button" onclick="gameTab('find')">🔎 Find My Clovers</button>
         </div>
@@ -2326,6 +2393,7 @@
       ["RSVP to an event","5"],
       ["Attend an event (verified)","20"],
       ["Attend a members' meeting","15"],
+      ["Attend another IKC krewe's event (support the krewe family)","25"],
       ["Volunteer at an event","+30"],
       ["Volunteer for a priority shift (setup / teardown / parade day)","+60"],
       ["Organize an event","+50"],
@@ -2335,6 +2403,7 @@
       ["Refer a member who joins","40"]
     ];
     const REASON = { rsvp:"RSVP", attend:"Attended", attend_meeting:"Attended meeting",
+      attend_event:"Attended event", attend_ikc_event:"IKC krewe event",
       volunteer_bonus:"Volunteered", volunteer_priority_bonus:"Priority volunteer shift",
       organizer_bonus:"Organized", guests:"Brought guests", dues_on_time:"Dues on time",
       dues_early:"Dues paid early", referral:"Referred a member", quest:"Quest", manual:"Bonus" };
@@ -2352,11 +2421,30 @@
       document.body.style.overflow="";
     };
     window.gameTab=(t)=>{
-      ["standings","howto","find"].forEach(k=>document.getElementById("gt-"+k).classList.toggle("on",k===t));
+      ["standings","events","howto","find"].forEach(k=>document.getElementById("gt-"+k).classList.toggle("on",k===t));
       if(t==="standings") renderStandings();
+      else if(t==="events") renderCupEvents();
       else if(t==="howto") renderHowto();
       else renderFind();
     };
+
+    /* Live connection badge: proves the Cup is reading the krewe's Supabase
+       database in real time (green = data just loaded, red = a query failed). */
+    function setConn(ok){
+      const el=document.getElementById("gameConn");
+      if(!el) return;
+      el.classList.toggle("ok", ok===true);
+      el.classList.toggle("err", ok===false);
+      el.textContent = ok===true ? "Live Krewe data" : (ok===false ? "Connection trouble" : "Connecting…");
+    }
+
+    /* Craic Cup seasons run July 1 - June 30 (matches the database's
+       craic_season_year()). Label like "2026-27". */
+    function cupSeasonLabel(){
+      const now=new Date();
+      const sy = now.getMonth()>=6 ? now.getFullYear() : now.getFullYear()-1;
+      return sy + "–" + String((sy+1)%100).padStart(2,"0");
+    }
 
     function rtable(headers, rowsHtml){
       return '<div class="rpt-tablewrap"><table class="rpt-table lb-table"><thead><tr>'+
@@ -2370,10 +2458,10 @@
         sb.from("v_season_leaderboard").select("*").order("place",{ascending:true}),
         sb.from("v_volunteer_leaderboard").select("*").order("volunteer_events",{ascending:false})
       ]);
-      if(e1||e2){ box.innerHTML='<p class="msg error">Could not load the standings just now.</p>'; return; }
-      const yr=new Date().getFullYear();
-      let html=`<p style="margin:0 0 12px;color:#3a3a2e;">Welcome to the race for the craic. Earn <b>Clovers 🍀</b> when you show up, volunteer, and pitch in. Standings reset each season, so last year’s champ still has to earn it again. Cheer your krewe, then try to catch them.</p>`;
-      html+=`<h3 class="rpt-cat" style="margin-top:6px;">🍀 ${yr} Season Standings</h3>`;
+      if(e1||e2){ setConn(false); box.innerHTML='<p class="msg error">Could not load the standings just now.</p>'; return; }
+      setConn(true);
+      let html=`<p style="margin:0 0 12px;color:#3a3a2e;">Welcome to the race for the craic. Earn <b>Clovers 🍀</b> when you show up, volunteer, and pitch in. The season runs <b>July 1 to June 30</b> and everyone restarts at zero, so last year’s champ still has to earn it again. Cheer your krewe, then try to catch them.</p>`;
+      html+=`<h3 class="rpt-cat" style="margin-top:6px;">🍀 ${cupSeasonLabel()} Season Standings <small style="font-family:var(--fancy);font-style:italic;text-transform:none;letter-spacing:0;color:var(--muted);">since July 1</small></h3>`;
       html+=rtable(["#","Member","Rank","Season 🍀","Badges"],
         (lb||[]).map(r=>`<tr><td class="medal">${medal(r.place)}</td><td>${E(r.first_name)} ${E(r.last_name)}</td>`+
           `<td><span class="rank-pill">${r.rank_icon} ${E(r.rank_name)}</span></td>`+
@@ -2386,11 +2474,90 @@
       box.innerHTML=html;
     }
 
+    /* ---- Events inside the Cup: see what's coming, open details, RSVP ---- */
+    function cupDateChip(iso){
+      if(!iso) return '<span class="cup-date"><span class="d1">TBA</span><span class="d2">?</span></span>';
+      const d=new Date(iso);
+      if(isNaN(d.getTime())) return '<span class="cup-date"><span class="d1">TBA</span><span class="d2">?</span></span>';
+      const mon=d.toLocaleDateString([], {month:"short"});
+      return '<span class="cup-date"><span class="d1">'+E(mon)+'</span><span class="d2">'+d.getDate()+'</span></span>';
+    }
+    function cupWhen(ev){
+      if(!ev.start_time) return "Date to be announced";
+      const d=new Date(ev.start_time);
+      if(isNaN(d.getTime())) return String(ev.start_time);
+      let s=d.toLocaleString([], {weekday:"short", month:"long", day:"numeric", hour:"numeric", minute:"2-digit"});
+      if(ev.end_time){
+        const e2=new Date(ev.end_time);
+        if(!isNaN(e2.getTime())) s+=" – "+e2.toLocaleTimeString([], {hour:"numeric", minute:"2-digit"});
+      }
+      return s;
+    }
+    async function renderCupEvents(){
+      const box=document.getElementById("gameBody");
+      box.innerHTML='<p class="empty">Fetching the season calendar…</p>';
+      let evs = await sb.from("events")
+        .select("id,name,description,event_type,start_time,end_time,location,member_address,members_only,status,source,ticket_price_cents,ticket_label,ticket_payment_url,external_url,flyer_url,is_online,meeting_url,registration_closes_at")
+        .gte("start_time", new Date().toISOString())
+        .order("start_time",{ascending:true})
+        .limit(24);
+      if(evs.error){
+        evs = await sb.from("events")
+          .select("id,name,description,start_time,end_time,location,status,source,external_url")
+          .gte("start_time", new Date().toISOString())
+          .order("start_time",{ascending:true})
+          .limit(24);
+      }
+      if(evs.error){ setConn(false); box.innerHTML='<p class="msg error">Could not load events just now. Try again in a moment.</p>'; return; }
+      setConn(true);
+      const list=(evs.data||[]).filter(function(e){
+        const st=String(e.status||"published").toLowerCase();
+        return st==="published"||st==="live";
+      });
+      let html='<div class="cup-remind">📣 <div><b>Don’t let easy Clovers pass you by!</b> Every RSVP is an automatic <b>+5 🍀</b> and showing up earns the real points. Check back here, or browse the full calendar on the <a href="event-signup.html">Events page</a>.</div></div>';
+      if(!list.length){
+        html+='<p class="empty">No upcoming events on the calendar just now. New ones land here as soon as officers post them - keep an eye on the <a href="event-signup.html">Events page</a>.</p>';
+      }else{
+        html+=list.map(function(ev){
+          const price = ev.ticket_price_cents ? ("$"+(ev.ticket_price_cents/100).toFixed(2)+(ev.ticket_label?(" · "+ev.ticket_label):"")) : null;
+          const where = ev.member_address || ev.location || (ev.is_online ? "Online" : "");
+          const detailBits=[];
+          if(ev.description) detailBits.push('<div class="ce-detail">'+E(ev.description)+'</div>');
+          const facts=[];
+          facts.push("<b>When:</b> "+E(cupWhen(ev)));
+          if(where) facts.push("<b>Where:</b> "+E(where));
+          if(price) facts.push("<b>Tickets:</b> "+E(price));
+          if(ev.registration_closes_at){
+            const rc=new Date(ev.registration_closes_at);
+            if(!isNaN(rc.getTime())) facts.push("<b>Registration closes:</b> "+E(rc.toLocaleDateString([], {month:"long", day:"numeric"})));
+          }
+          detailBits.push('<div class="ce-detail">'+facts.join("<br>")+'</div>');
+          if(ev.flyer_url) detailBits.push('<div class="ce-detail"><a href="'+E(ev.flyer_url)+'" target="_blank" rel="noopener">Open the event flyer ↗</a></div>');
+          const rsvpHref="event-signup.html?event="+encodeURIComponent(ev.id||"");
+          let btns='<a class="ce-rsvp" href="'+rsvpHref+'">🍀 RSVP · +5 Clovers</a>';
+          if(ev.ticket_payment_url) btns+='<a class="ce-reg" href="'+E(ev.ticket_payment_url)+'" target="_blank" rel="noopener">🎟️ Buy tickets / register ↗</a>';
+          else if(ev.external_url) btns+='<a class="ce-reg" href="'+E(ev.external_url)+'" target="_blank" rel="noopener">🔗 Event page ↗</a>';
+          return '<div class="cup-event"><div class="ce-top">'+
+            cupDateChip(ev.start_time)+
+            '<div style="flex:1;min-width:200px;">'+
+            '<div class="ce-nm">'+E(ev.name||"Krewe event")+(ev.members_only?' <span class="cup-st">members only</span>':'')+'</div>'+
+            '<div class="ce-meta">'+E(cupWhen(ev))+(where?(" · "+E(where)):"")+'</div>'+
+            '<div class="ce-hint">+5 🍀 to RSVP · +20 🍀 when you attend</div>'+
+            '<details><summary>View details</summary>'+detailBits.join("")+'</details>'+
+            '<div class="ce-btns">'+btns+'</div>'+
+            '</div></div></div>';
+        }).join("");
+      }
+      html+='<div class="cup-remind" style="margin-top:14px;">🤝 <div><b>Cheering on the krewe family?</b> Attending another IKC krewe’s event earns <b>+25 🍀</b>. Close this window and use <b>Claim Clovers</b> on the Craic Cup tab afterward - an officer will credit you.</div></div>';
+      box.innerHTML=html;
+    }
+
     async function renderHowto(){
       const box=document.getElementById("gameBody");
       box.innerHTML='<p class="empty">Loading…</p>';
-      const { data:badges } = await sb.from("badge_defs").select("*").order("sort",{ascending:true});
-      let html=`<p style="margin:0 0 14px;color:#3a3a2e;">Every time you take part you earn <b>Clovers 🍀</b>. Stack them to climb <b>ranks</b> and unlock <b>badges</b>. Think recognition with a wink: bragging rights, a nudge to fill the room, and rivalry that’s always kind.</p>`;
+      const { data:badges, error:bErr } = await sb.from("badge_defs").select("*").order("sort",{ascending:true});
+      setConn(!bErr);
+      let html=`<p style="margin:0 0 14px;color:#3a3a2e;">Every time you take part you earn <b>Clovers 🍀</b>. Stack them to climb <b>ranks</b> and unlock <b>badges</b>. The season starts fresh every <b>July 1</b>. Think recognition with a wink: bragging rights, a nudge to fill the room, and rivalry that’s always kind.</p>`;
       html+=`<h3 class="rpt-cat">🍀 How to earn Clovers</h3>`;
       html+='<div class="rpt-tablewrap"><table class="rpt-table pt-table"><tbody>'+
         POINTS.map(p=>`<tr><td>${E(p[0])}</td><td>${E(p[1])} 🍀</td></tr>`).join("")+'</tbody></table></div>';
@@ -2403,49 +2570,110 @@
       box.innerHTML=html;
     }
 
+    /* ---- Find My Clovers: search by NAME, open a full season card ---- */
     function renderFind(){
       const box=document.getElementById("gameBody");
-      box.innerHTML=`<p style="margin:0 0 12px;color:#3a3a2e;">Enter your email to see your Clovers, rank, badges, and how close you are to the next rank.</p>
-        <form id="findForm" class="krewe-form" style="max-width:420px;">
-          <label for="findEmail">Your email</label>
-          <input id="findEmail" type="email" placeholder="you@example.com" autocomplete="email" />
+      box.innerHTML=`<p style="margin:0 0 12px;color:#3a3a2e;">Type a member's <b>name</b> - yours or a krewe-mate's - to see Clovers, rank, badges, and this season's events: every RSVP, ticket, and attendance since <b>July 1</b>.</p>
+        <form id="findForm" class="krewe-form" style="max-width:460px;">
+          <label for="findName">Member name</label>
+          <input id="findName" type="text" maxlength="80" placeholder="e.g. Melissa, or Tully" autocomplete="off" />
           <button class="btn btn-primary" type="submit" style="margin-top:10px;">🍀 Find my Clovers</button>
           <div class="msg" id="findMsg"></div>
         </form>
+        <div id="findMatches" class="find-matches"></div>
         <div id="findResult"></div>`;
       document.getElementById("findForm").addEventListener("submit", async (e)=>{
         e.preventDefault();
-        const email=document.getElementById("findEmail").value.trim();
-        const msg=document.getElementById("findMsg"); const res=document.getElementById("findResult");
-        if(!email){ msg.textContent="Please enter your email."; msg.className="msg error"; return; }
-        msg.textContent="Looking…"; msg.className="msg"; res.innerHTML="";
-        const { data, error } = await sb.rpc("get_member_game_card",{ p_email:email });
-        if(error){ msg.textContent="Something went wrong. Please try again."; msg.className="msg error"; return; }
-        if(!data || !data.found){ msg.textContent="We couldn't find a member with that email. Try the address the krewe has on file."; msg.className="msg error"; return; }
+        const q=document.getElementById("findName").value.trim();
+        const msg=document.getElementById("findMsg");
+        const matches=document.getElementById("findMatches");
+        const res=document.getElementById("findResult");
+        if(q.length<2){ msg.textContent="Type at least two letters of a name."; msg.className="msg error"; return; }
+        msg.textContent="Searching the roster…"; msg.className="msg"; matches.innerHTML=""; res.innerHTML="";
+        const { data, error } = await sb.rpc("search_craic_members",{ p_name:q });
+        if(error || !data){ setConn(false); msg.textContent="Something went wrong. Please try again."; msg.className="msg error"; return; }
+        setConn(true);
+        if(!data.ok){ msg.textContent=data.message||"Could not search just now."; msg.className="msg error"; return; }
+        const rows=data.matches||[];
+        if(!rows.length){ msg.textContent="No member by that name on the roster. Check the spelling, or ask an officer."; msg.className="msg error"; return; }
         msg.textContent="";
-        const total = data.lifetime + (data.clovers_to_next||0);
-        const pct = data.clovers_to_next>0 ? Math.max(6, Math.round(100*data.lifetime/total)) : 100;
-        res.innerHTML=`<div class="find-card">
-          <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
-            <div class="big">${data.rank_icon}</div>
-            <div><div style="font-family:var(--display);color:var(--green-800);font-size:22px;">${E(data.first_name)} ${E(data.last_name)}</div>
-              <span class="rank-pill">${data.rank_icon} ${E(data.rank_name)}</span></div>
-            <div style="margin-left:auto;text-align:right;"><div class="big" style="font-size:34px;">${data.lifetime}</div><div style="font-size:13px;color:var(--muted);">lifetime Clovers 🍀</div></div>
-          </div>
-          <div style="margin-top:14px;">
-            ${ data.clovers_to_next>0
-              ? `<div style="font-size:14px;color:#3a3a2e;"><b>${data.clovers_to_next}</b> 🍀 to <b>${E(data.next_rank_name)}</b></div><div class="prog"><i style="width:${pct}%"></i></div>`
-              : `<div style="font-size:14px;color:#3a3a2e;">🏆 You've reached the top rank, a true legend of the krewe!</div>` }
-            <div style="font-size:13px;color:var(--muted);">${data.season} 🍀 earned this season</div>
-          </div>
-          <h4 style="font-family:var(--display);color:var(--green-800);margin:16px 0 8px;">Your badges</h4>
-          ${ (data.badges&&data.badges.length)
-              ? `<div class="badge-gallery">${data.badges.map(b=>`<div class="badge-chip"><div class="ic">${b.icon}</div><div class="nm">${E(b.name)}</div></div>`).join("")}</div>`
-              : '<p class="empty">No badges yet. Your first event earns one!</p>' }
-          <h4 style="font-family:var(--display);color:var(--green-800);margin:16px 0 8px;">Recent Clovers</h4>
-          <ul class="data-list">${ (data.recent||[]).map(r=>`<li class="data-row"><b>+${r.clovers} 🍀</b> · ${E(REASON[r.reason]||r.reason)}${r.event?(" · "+E(r.event)):""}</li>`).join("") || '<li class="empty">No activity yet.</li>' }</ul>
-        </div>`;
+        if(rows.length===1){ loadFindCard(rows[0].member_id); return; }
+        matches.innerHTML = rows.map(m=>
+          `<button type="button" class="find-match" data-mid="${E(m.member_id)}">`+
+          `<span class="fm-ic">${m.rank_icon||"🌱"}</span>`+
+          `<span><span class="fm-nm">${E(m.first_name)} ${E(m.last_name)}</span><br><span class="rank-pill">${m.rank_icon||"🌱"} ${E(m.rank_name||"Newcomer")}</span></span>`+
+          `<span class="fm-pts">${m.lifetime||0} 🍀<br><small style="color:var(--muted);font-family:var(--body,inherit);">${m.season||0} this season</small></span>`+
+          `</button>`).join("");
+        matches.querySelectorAll("button[data-mid]").forEach(b=>{
+          b.addEventListener("click",()=>loadFindCard(b.getAttribute("data-mid")));
+        });
       });
+    }
+
+    function cupMoney(cents){ return (cents==null||isNaN(Number(cents))) ? null : "$"+(Number(cents)/100).toFixed(2); }
+    function cupHistDate(iso){
+      if(!iso) return "";
+      const d=new Date(iso);
+      return isNaN(d.getTime()) ? String(iso).slice(0,10) : d.toLocaleDateString([], {month:"short", day:"numeric", year:"numeric"});
+    }
+    function cupHistRow(h, fromOldSite){
+      const bits=[];
+      const st=String(h.status||h.payment_state||"").toLowerCase();
+      if(st) bits.push(`<span class="cup-st ${E(st)}">${E(st)}</span>`);
+      if(h.signup_role && h.signup_role!=="attendee") bits.push("as <b>"+E(h.signup_role)+"</b>");
+      if(h.guests) bits.push("+"+Number(h.guests)+(Number(h.guests)===1?" guest":" guests"));
+      if(h.ticket_type) bits.push("ticket: "+E(h.ticket_type));
+      const amt=cupMoney(h.amount_cents);
+      if(amt) bits.push("paid <b>"+amt+"</b>"+(h.payment_status?(" ("+E(h.payment_status)+")"):""));
+      else if(h.payment_status) bits.push("payment: "+E(h.payment_status));
+      if(h.checked_in===true) bits.push("checked in ✓");
+      if(fromOldSite) bits.push('<span style="color:var(--muted);">(old site)</span>');
+      const when=cupHistDate(h.start_time||h.rsvp_at||h.registered_at);
+      return `<li><span class="ev">${E(h.event_name||"Krewe event")}</span>`+
+        (when?` <span style="color:var(--muted);">· ${E(when)}</span>`:"")+
+        (h.location?` <span style="color:var(--muted);">· ${E(h.location)}</span>`:"")+
+        `<div style="margin-top:3px;">${bits.join(" · ")||'<span style="color:var(--muted);">RSVP on file</span>'}</div></li>`;
+    }
+
+    async function loadFindCard(memberId){
+      const res=document.getElementById("findResult");
+      const matches=document.getElementById("findMatches");
+      if(res) res.innerHTML='<p class="empty">Opening the card…</p>';
+      const { data, error } = await sb.rpc("get_craic_member_card",{ p_member_id:memberId });
+      if(error || !data || !data.found){
+        setConn(!error);
+        if(res) res.innerHTML='<p class="msg error">'+E((data&&data.message)||"Could not open that member's card just now.")+'</p>';
+        return;
+      }
+      setConn(true);
+      if(matches) matches.innerHTML="";
+      const total = data.lifetime + (data.clovers_to_next||0);
+      const pct = data.clovers_to_next>0 ? Math.max(6, Math.round(100*data.lifetime/total)) : 100;
+      const history=(data.history||[]).map(h=>cupHistRow(h,false));
+      const legacy=(data.legacy||[]).map(h=>cupHistRow(h,true));
+      const histAll=history.concat(legacy);
+      res.innerHTML=`<div class="find-card">
+        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+          <div class="big">${data.rank_icon}</div>
+          <div><div style="font-family:var(--display);color:var(--green-800);font-size:22px;">${E(data.first_name)} ${E(data.last_name)}</div>
+            <span class="rank-pill">${data.rank_icon} ${E(data.rank_name)}</span></div>
+          <div style="margin-left:auto;text-align:right;"><div class="big" style="font-size:34px;">${data.lifetime}</div><div style="font-size:13px;color:var(--muted);">lifetime Clovers 🍀</div></div>
+        </div>
+        <div style="margin-top:14px;">
+          ${ data.clovers_to_next>0
+            ? `<div style="font-size:14px;color:#3a3a2e;"><b>${data.clovers_to_next}</b> 🍀 to <b>${E(data.next_rank_name)}</b></div><div class="prog"><i style="width:${pct}%"></i></div>`
+            : `<div style="font-size:14px;color:#3a3a2e;">🏆 Top rank reached - a true legend of the krewe!</div>` }
+          <div style="font-size:13px;color:var(--muted);">${data.season} 🍀 earned in the ${cupSeasonLabel()} season (since July 1)</div>
+        </div>
+        <h4 style="font-family:var(--display);color:var(--green-800);margin:16px 0 8px;">Badges</h4>
+        ${ (data.badges&&data.badges.length)
+            ? `<div class="badge-gallery">${data.badges.map(b=>`<div class="badge-chip"><div class="ic">${b.icon}</div><div class="nm">${E(b.name)}</div></div>`).join("")}</div>`
+            : '<p class="empty">No badges yet. The first event earns one!</p>' }
+        <h4 style="font-family:var(--display);color:var(--green-800);margin:16px 0 8px;">Recent Clovers</h4>
+        <ul class="data-list">${ (data.recent||[]).map(r=>`<li class="data-row"><b>+${r.clovers} 🍀</b> · ${E(REASON[r.reason]||r.reason)}${r.event?(" · "+E(r.event)):""}</li>`).join("") || '<li class="empty">No activity yet.</li>' }</ul>
+        <h4 style="font-family:var(--display);color:var(--green-800);margin:16px 0 8px;">This season's events &amp; tickets <small style="font-family:var(--fancy);font-style:italic;color:var(--muted);">RSVPs, tickets bought, and attendance since July 1</small></h4>
+        ${ histAll.length ? `<ul class="cup-hist">${histAll.join("")}</ul>` : '<p class="empty">No RSVPs or tickets yet this season. The Events tab above is full of chances!</p>' }
+      </div>`;
     }
 
     document.addEventListener("keydown",e=>{ if(e.key==="Escape") closeGame(); });
