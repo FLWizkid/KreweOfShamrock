@@ -97,6 +97,21 @@ Official routing lives in `CONTACT_EMAILS.md` (the single source of truth):
   A desk card that no group claims still renders — it files in after the
   groups instead of disappearing.
 
+## Officer desk redesign (added 2026-09-19)
+- The **Officer** tab wears the same Irish masthead as the Member desk, in a
+  gold-washed officer variant (`.desk-hero.desk-officer`), with jump chips
+  that mirror whichever launcher sections the signed-in officer actually
+  sees (committee-limited roles get a shorter desk). Clicking a chip returns
+  to the tool overview first, then scrolls to that section.
+- The launcher's section labels are now illuminated group headers
+  (`.desk-group-head` + gold rule) with a one-line description per section:
+  Events, Approvals, Documents, Shop, Money, Email & invoices, Reports.
+  Section metadata lives in `OFFICER_SECTION_META` and each section carries
+  a stable id (`deskOff-<slug>`, e.g. `deskOff-events`).
+- Everything else is unchanged: one tool open at a time, the "← All tools"
+  bar, the "Jump by name" picker, and the shop-only / social-only
+  role-limited views.
+
 ## New member orientation video (added 2026-09-04, moved 2026-09-19)
 - The members-only orientation video ("What New Krewe of Shamrock Members
   Must Know") is served from `assets/video/new-member-orientation.mp4` and

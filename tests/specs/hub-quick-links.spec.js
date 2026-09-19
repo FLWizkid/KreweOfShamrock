@@ -145,6 +145,31 @@ test.describe("Member Hub Quick Links", () => {
     assertHealthy(expect, report, "member desk groups");
   });
 
+  test("Officer desk shows the Irish masthead, section groups, and jump chips", async ({ page }) => {
+    const report = watchPage(page);
+    await unlockMemberHub(page, { role: { officer: true, canManageEvents: true } });
+    await waitForQuickLinks(page);
+
+    await page.locator('[data-hub-tab="officer"]').click();
+    await expect(page.locator("[data-hub-panel='officer']")).toHaveClass(/hub-on/);
+    await expect(page.locator("#hubOfficerHero")).toBeVisible();
+    await expect(page.locator("#hubOfficerHero h2")).toHaveText(/Officer Desk/i);
+    await expect(page.locator("#hubOfficerDeskNav button").first()).toBeVisible();
+
+    // Illuminated section headers with the labeled groups.
+    await expect(page.locator("#deskOff-events .desk-group-head h3")).toHaveText("Events");
+    await expect(page.locator("#deskOff-approvals")).toBeAttached();
+    await expect(page.locator("#deskOff-reports")).toBeAttached();
+
+    // A tile still opens its tool one-at-a-time, and Back restores the overview.
+    await page.locator('#deskOff-events [data-tool="tool:hubEventStudio"]').click();
+    await expect(page.locator("#hubEventStudio")).toBeVisible();
+    await expect(page.locator("#hubOfficerActiveBar")).toHaveClass(/show/);
+    await page.locator("#hubOfficerBackBtn").click();
+    await expect(page.locator("#hubOfficerLauncher")).toBeVisible();
+    assertHealthy(expect, report, "officer desk masthead");
+  });
+
   test("Share your media quick link lands on the desk share group", async ({ page }) => {
     const report = watchPage(page);
     await unlockMemberHub(page);

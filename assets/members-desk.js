@@ -364,6 +364,14 @@
     ".desk-group > .member-grid{display:grid;gap:18px;}",
     "#deskSeason,#deskShare,#deskTravel,#deskLearn,#shareCard,#orientationCard{scroll-margin-top:88px;}",
 
+    /* Officer desk variant of the same masthead: gold-washed parchment for
+       the officer identity, and the illuminated group headers replace the
+       old small uppercase section labels. */
+    ".desk-hero.desk-officer{background:linear-gradient(180deg,#fffdf4,#f6ecd2);border-color:rgba(166,124,0,.5);}",
+    ".desk-officer .desk-kicker{color:#7a5b00;}",
+    ".desk-group-head h3{text-transform:none;opacity:1;}",
+    "#hubOfficerLauncher .hub-officer-section{scroll-margin-top:88px;}",
+
   ].join("");
 
   var state = { officer: false, shopOnly: false, socialOnly: false, canViewPayments: false, canManageEvents: false, parade: null, hoursApproved: 0, membershipStatus: null, game: null, nextEvent: null, nextEvents: [], hubEvents: [], announcements: [] };
@@ -3219,6 +3227,23 @@
     "Reports"
   ];
 
+  /* Masthead chips and illuminated headers for each launcher section. The
+     sub line tells an officer what the counter holds before they open it. */
+  var OFFICER_SECTION_META = {
+    "Events": { icon: "📅", sub: "Event Studio, QR check-in, and the calendar." },
+    "Approvals": { icon: "✅", sub: "Members' photos and videos, clover claims, roles, and record merges." },
+    "Documents": { icon: "📜", sub: "Upload, publish, and hide library documents." },
+    "Shop": { icon: "🛍️", sub: "Products, Zeffy links, and the shop QR." },
+    "Money": { icon: "💳", sub: "Dues and payment records." },
+    "Email & invoices": { icon: "✉️", sub: "Write the membership and send dues invoices." },
+    "Reports": { icon: "📊", sub: "Attendance, fundraising, and live event numbers." },
+    "More tools": { icon: "☘", sub: "Everything else on the desk." }
+  };
+
+  function officerSectionSlug(sec) {
+    return "deskOff-" + String(sec).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+  }
+
   function officerDeskCards() {
     var panel = document.getElementById("hubOfficer");
     if (!panel) return [];
@@ -3287,10 +3312,15 @@
     if (!hero) {
       hero = document.createElement("div");
       hero.id = "hubOfficerHero";
-      hero.className = "hub-officer-hero";
+      hero.className = "desk-hero desk-officer";
       hero.innerHTML =
-        "<h2>Officer desk</h2>" +
-        "<p>Pick one tool below. Sections: Events, Approvals, Shop, Money, Email & invoices, and Reports.</p>";
+        '<p class="desk-kicker">Céad míle fáilte - a hundred thousand welcomes</p>' +
+        "<h2>🎖️ Your Officer Desk</h2>" +
+        "<p>Everything the krewe trusts you with, on one desk: run events and check-ins, " +
+        "approve members' photos, videos, and clover claims, publish documents, mind the shop " +
+        "and the money, write the membership, and read the numbers. Pick one tool at a time - " +
+        "the desk stays tidy.</p>" +
+        '<nav class="desk-nav" id="hubOfficerDeskNav" aria-label="Officer desk sections"></nav>';
       panel.insertBefore(hero, panel.firstChild);
     }
 
@@ -3415,32 +3445,36 @@
       if (!bySection[sec]) bySection[sec] = [];
       bySection[sec].push({ id: id, meta: meta });
     });
+    function sectionHtml(sec) {
+      var meta = OFFICER_SECTION_META[sec] || { icon: "☘", sub: "" };
+      var h = '<div class="hub-officer-section" id="' + officerSectionSlug(sec) + '">' +
+        '<header class="desk-group-head"><span class="dg-ic" aria-hidden="true">' + meta.icon + "</span>" +
+        "<div><h3>" + sec + "</h3>" +
+        (meta.sub ? '<span class="dg-sub">' + meta.sub + "</span>" : "") +
+        "</div></header>" +
+        '<div class="desk-group-rule"></div>' +
+        '<div class="hub-officer-tiles">';
+      bySection[sec].forEach(function (item) {
+        h +=
+          '<button type="button" class="hub-officer-tile" data-tool="tool:' + item.id + '">' +
+          '<span class="tic" aria-hidden="true">' + (item.meta.icon || "☘") + "</span>" +
+          "<b>" + item.meta.title + "</b>" +
+          "<span>" + (item.meta.desc || "") + "</span></button>";
+      });
+      return h + "</div></div>";
+    }
+
     var html = "";
-    var seen = {};
+    var rendered = [];
     OFFICER_SECTION_ORDER.forEach(function (sec) {
       if (!bySection[sec] || !bySection[sec].length) return;
-      seen[sec] = true;
-      html += '<div class="hub-officer-section"><h3>' + sec + "</h3><div class=\"hub-officer-tiles\">";
-      bySection[sec].forEach(function (item) {
-        html +=
-          '<button type="button" class="hub-officer-tile" data-tool="tool:' + item.id + '">' +
-          '<span class="tic" aria-hidden="true">' + (item.meta.icon || "☘") + "</span>" +
-          "<b>" + item.meta.title + "</b>" +
-          "<span>" + (item.meta.desc || "") + "</span></button>";
-      });
-      html += "</div></div>";
+      rendered.push(sec);
+      html += sectionHtml(sec);
     });
     Object.keys(bySection).forEach(function (sec) {
-      if (seen[sec]) return;
-      html += '<div class="hub-officer-section"><h3>' + sec + "</h3><div class=\"hub-officer-tiles\">";
-      bySection[sec].forEach(function (item) {
-        html +=
-          '<button type="button" class="hub-officer-tile" data-tool="tool:' + item.id + '">' +
-          '<span class="tic" aria-hidden="true">' + (item.meta.icon || "☘") + "</span>" +
-          "<b>" + item.meta.title + "</b>" +
-          "<span>" + (item.meta.desc || "") + "</span></button>";
-      });
-      html += "</div></div>";
+      if (rendered.indexOf(sec) !== -1) return;
+      rendered.push(sec);
+      html += sectionHtml(sec);
     });
     launcher.innerHTML = html;
     launcher.querySelectorAll(".hub-officer-tile").forEach(function (btn) {
@@ -3448,6 +3482,28 @@
         openOfficerTool(btn.getAttribute("data-tool"), true);
       });
     });
+
+    // Masthead jump chips mirror whichever sections this officer actually
+    // sees (committee roles get a shorter desk). A chip first returns to the
+    // overview - the launcher must be visible before the scroll lands.
+    var nav = document.getElementById("hubOfficerDeskNav");
+    if (nav) {
+      nav.innerHTML = rendered.map(function (sec) {
+        var meta = OFFICER_SECTION_META[sec] || { icon: "☘" };
+        return '<button type="button" data-desk-goto="' + officerSectionSlug(sec) + '">' + meta.icon + " " + sec + "</button>";
+      }).join("");
+      nav.querySelectorAll("[data-desk-goto]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          try { sessionStorage.removeItem("kosOfficerTool"); } catch (e) {}
+          var sel = document.getElementById("officerToolSelect");
+          if (sel) { sel.value = ""; sel.selectedIndex = -1; }
+          showOfficerOverview();
+          setTimeout(function () {
+            focusHubTarget(document.getElementById(btn.getAttribute("data-desk-goto")));
+          }, 60);
+        });
+      });
+    }
   }
 
   function wireOfficerDeskPicker() {
