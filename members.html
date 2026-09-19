@@ -1262,9 +1262,21 @@
     // rows can't be filed under someone else's name.
     function kosIdentity(){
       const p = window.kosProfile || {};
-      const name = (p.display_name || [p.first_name,p.last_name].filter(Boolean).join(" ") || "").toString().trim();
+      /* A name prefill must never be an email address. Some early profiles
+         stored the login email in full_name/display_name, so prefer the
+         roster first + last name and reject anything containing "@". */
+      const notEmail = (v)=>{ v = (v==null?"":String(v)).trim(); return v && !v.includes("@") ? v : ""; };
+      const name = notEmail([p.first_name,p.last_name].filter(Boolean).join(" ")) || notEmail(p.display_name);
       const email = (p.email || "").toString().trim();
       return { name, email };
+    }
+    /* The full legal name for signature fields (waiver, Photo & Image
+       Release): the roster row's first + last name when Parade Ready has
+       loaded it, else the profile name. Empty means the member types it. */
+    function kosLegalName(){
+      const m = _prMe || {};
+      const roster = [m.first_name, m.last_name].filter(Boolean).join(" ").trim();
+      return (roster && !roster.includes("@")) ? roster : kosIdentity().name;
     }
     function prefillIdentity(){
       const { name, email } = kosIdentity();
@@ -1341,8 +1353,8 @@
           <div class="seats" style="margin-top:6px;">${left} of ${esc(v.capacity)} seats open</div>
           <div style="font-size:14px;margin-top:4px;"><b>Riders:</b> ${riders}</div>
           <form class="mini-form" data-van="${v.id}">
-            <input name="nm" placeholder="Your name" required value="${esc(kosIdentity().name)}" readonly />
-            <input name="em" type="email" placeholder="Email (optional)" value="${esc(kosIdentity().email)}" readonly />
+            <input name="nm" placeholder="Your name" required value="${esc(kosIdentity().name)}" ${kosIdentity().name ? "readonly" : ""} />
+            <input name="em" type="email" placeholder="Email (optional)" value="${esc(kosIdentity().email)}" ${kosIdentity().email ? "readonly" : ""} />
             <input name="st" type="number" min="1" max="${Math.max(1,left)}" value="1" title="Seats" style="max-width:80px;" />
             <button class="btn btn-green" type="submit" ${left<=0?"disabled":""}>${left<=0?"Full":"Reserve"}</button>
           </form>
@@ -1563,7 +1575,7 @@
         rec = (data && data[0]) || null;
       }catch(_){}
       if(me.waiver_signed || rec){
-        el.innerHTML = waiverSignedCard(rec || { signed_name: kosIdentity().name, signed_at: null });
+        el.innerHTML = waiverSignedCard(rec || { signed_name: kosLegalName(), signed_at: null });
       } else {
         el.innerHTML = waiverForm();
       }
@@ -1579,7 +1591,7 @@
         </div>`;
     }
     function waiverForm(){
-      const nm = esc(kosIdentity().name);
+      const nm = esc(kosLegalName());
       return `<div class="pr-waiver">
         <p style="font-size:14px;color:var(--muted);margin:0 0 8px;"><b>Read before you sign.</b> Scroll the waiver language, then type your name.</p>
         ${waiverReadBlock(SEASON)}
@@ -1620,7 +1632,7 @@
         </div>`;
         return;
       }
-      const nm = esc(kosIdentity().name);
+      const nm = esc(kosLegalName());
       el.innerHTML = `<div class="pr-waiver" style="margin-top:4px;">
         <div class="media-release-scroll" style="max-height:220px;overflow:auto;margin:0 0 10px;padding:10px 12px;background:#fff;border:1px solid rgba(168,128,28,.35);border-radius:10px;font-size:13.5px;color:var(--muted);line-height:1.45;">
           <p style="margin:0 0 10px;"><b>I grant the Krewe of Shamrock permission</b> to create, use, reproduce, display, and distribute photographs, video, audio, and other images or recordings that include me (and, if applicable, my minor child) for Krewe purposes.</p>
