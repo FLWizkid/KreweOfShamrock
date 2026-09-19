@@ -130,10 +130,10 @@
     ".hub-flyer-preview.show{display:flex;}",
     ".hub-flyer-preview img{max-width:160px;max-height:120px;border-radius:10px;border:1px solid rgba(168,128,28,.35);object-fit:cover;background:#fff;}",
     ".hub-event-thumb{width:54px;height:54px;border-radius:10px;object-fit:cover;border:1px solid rgba(168,128,28,.35);background:#f3efe2;flex:none;}",
-    ".hub-event-thumb.ph{display:grid;place-items:center;font-size:13px;color:var(--muted);text-align:center;padding:4px;}",
+    ".hub-event-thumb.ph{display:grid;place-items:center;font-size:15px;color:var(--muted);text-align:center;padding:4px;}",
     ".hub-event-optional{grid-column:1/-1;margin-top:8px;padding:12px;border:1px solid rgba(168,128,28,.28);border-radius:12px;background:#fff;}",
     ".hub-event-optional h4{margin:0 0 6px;font-family:var(--display);color:var(--green-800);font-size:16px;}",
-    ".hub-event-optional p.hub-opt-hint{font-size:13px;color:var(--muted);margin:0 0 8px;line-height:1.4;}",
+    ".hub-event-optional p.hub-opt-hint{font-size:15px;color:var(--muted);margin:0 0 8px;line-height:1.4;}",
     ".hub-event-optional-fields{display:grid;grid-template-columns:1fr 1fr;gap:0 12px;}",
     ".btn.btn-danger,.hub-event-form .btn-danger{border-color:#b3452e;color:#8b2e1c;background:#fff5f2;}",
     ".hub-event-delete-panel{margin-top:16px;padding:14px;border:1px solid #b3452e;border-radius:12px;background:#fff5f2;}",
@@ -1777,7 +1777,7 @@
       '<div><label for="hubEventStart">Start time *</label><input id="hubEventStart" type="datetime-local" required /></div>' +
       '<div><label for="hubEventEnd">End time</label><input id="hubEventEnd" type="datetime-local" /></div>' +
       '<div><label for="hubEventRegCloses">Close registrations on</label><input id="hubEventRegCloses" type="datetime-local" /></div>' +
-      '<div class="wide" style="margin-top:-4px;"><p style="font-size:12px;color:var(--muted);margin:0 0 6px;line-height:1.4;">Optional. After this date/time, public signup shows Registration closed and blocks new RSVPs and ticket checkout. Leave blank to stay open. You can edit address, dates, and this close date. Saving stores a draft and does not publish.</p></div>' +
+      '<div class="wide" style="margin-top:-4px;"><p style="font-size:15px;color:var(--muted);margin:0 0 6px;line-height:1.4;">Optional. After this date/time, public signup shows Registration closed and blocks new RSVPs and ticket checkout. Leave blank to stay open. You can edit address, dates, and this close date. Saving stores a draft and does not publish.</p></div>' +
       '<div class="wide"><label for="hubEventLocation">Public location teaser</label><input id="hubEventLocation" placeholder="Members home, Tampa" />' +
       '<p class="hub-opt-hint" style="margin-top:6px;">Safe for the public site. For a house party, keep this vague. Do not put a street address here.</p></div>' +
       '<div class="wide"><label for="hubEventMemberAddress">Private / member address</label><input id="hubEventMemberAddress" placeholder="Full street address" autocomplete="off" />' +
@@ -1797,7 +1797,7 @@
       '<div class="wide" style="grid-column:1/-1;"><div class="hub-event-checks" style="margin:0;">' +
       '<label><input type="checkbox" id="hubEventCollectGuests" checked /> Ask for guest count</label>' +
       '<label><input type="checkbox" id="hubEventCollectGuestNames" checked /> Ask for guest names</label></div>' +
-      '<p style="font-size:12px;color:var(--muted);margin:6px 0 0;line-height:1.4;">Guest fields default on. Uncheck to hide them on public signup.</p></div>' +
+      '<p style="font-size:15px;color:var(--muted);margin:6px 0 0;line-height:1.4;">Guest fields default on. Uncheck to hide them on public signup.</p></div>' +
       '<div class="wide hub-event-optional" id="hubEventRaffleBox">' +
       '<h4>Raffle tickets (optional)</h4>' +
       '<p class="hub-opt-hint">Uses the existing Raffles tool (raffle_events) plus signup qty. Uncheck to leave this event without raffle tickets. If a price is needed, enter it. Do not leave a made-up amount.</p>' +

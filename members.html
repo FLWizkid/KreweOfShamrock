@@ -20,8 +20,8 @@
 <meta name="robots" content="noindex" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/krewe.css?v=20260915hubcalm1" />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=EB+Garamond:ital@0;1&family=Atkinson+Hyperlegible+Next:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/krewe.css?v=20260919hubread1" />
 <style>
   .gate{ position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center;
     background:linear-gradient(180deg,var(--green-800),var(--green-900)); padding:24px; overflow-y:auto; }
@@ -85,7 +85,7 @@
     background:linear-gradient(180deg, rgba(212,180,90,.30), rgba(212,180,90,.10)); }
   .castle-guide summary::-webkit-details-marker{ display:none; }
   .castle-guide summary .key{ font-size:20px; filter:drop-shadow(0 1px 1px rgba(0,0,0,.25)); }
-  .castle-guide summary .chev{ margin-left:auto; font-size:12px; color:#8a6d1f; transition:transform .25s ease; }
+  .castle-guide summary .chev{ margin-left:auto; font-size:15px; color:var(--gold-text); transition:transform .25s ease; }
   .castle-guide[open] summary .chev{ transform:rotate(90deg); }
   .castle-guide[open] summary{ border-bottom:1px dashed rgba(168,128,28,.45); }
   .castle-guide .guide-body{ padding:16px; }
@@ -100,13 +100,13 @@
   .castle-guide .guide-step a{ color:var(--green-800); }
   .castle-guide .guide-cta{ display:block; width:100%; margin:10px 0 2px; padding:11px 14px; border-radius:12px;
     border:1.5px solid #8a6d1f; background:linear-gradient(180deg,#e9c96a,#caa53d); color:#3a2a05;
-    font-family:var(--display); font-size:14.5px; cursor:pointer;
+    font-family:var(--display); font-size:16px; cursor:pointer;
     box-shadow:0 2px 6px rgba(90,60,10,.25), inset 0 1px 0 rgba(255,255,255,.55); }
   .castle-guide .guide-cta:hover{ filter:brightness(1.05); }
   .castle-guide .guide-inside{ margin-top:16px; padding:10px 12px; background:rgba(255,255,255,.55);
-    border:1px dashed rgba(168,128,28,.45); border-radius:10px; font-size:13px; color:#57513f; line-height:1.5; }
+    border:1px dashed rgba(168,128,28,.45); border-radius:10px; font-size:15px; color:#57513f; line-height:1.5; }
   .castle-guide .guide-inside b{ color:var(--green-800); }
-  .castle-guide .guide-help{ margin:10px 0 0; font-size:13px; color:var(--muted); text-align:center; }
+  .castle-guide .guide-help{ margin:10px 0 0; font-size:15px; color:var(--muted); text-align:center; }
   /* Compact castle on small phones - fit gate + login without painful nested scroll */
   @media (max-width:480px){
     .castle-torch{ display:none; }
@@ -118,7 +118,7 @@
         linear-gradient(180deg, rgba(0,0,0,0) 0 0);
     }
     .castle-wall{ padding:8px 10px 10px; box-shadow:0 14px 36px rgba(0,0,0,.5), inset 0 0 28px rgba(0,0,0,.22); }
-    .castle-banner{ font-size:11.5px; margin:0 0 2px; letter-spacing:.4px; }
+    .castle-banner{ font-size:15px; margin:0 0 2px; letter-spacing:.4px; }
     .gate-card{ padding:14px 14px 12px; }
     .gate-card.auth-card{
       border-radius:68px 68px 10px 10px; border-width:5px; padding-top:20px;
@@ -131,16 +131,16 @@
     .gate-card input, .gate-card textarea{ padding:9px 12px; }
     #authPanelSignin form input[type="password"]{ margin-top:7px !important; }
     #authPanelSignin form .btn, #authPanelCreate form .btn, #authPanelForgot form .btn{ margin-top:8px !important; }
-    #authPanelSignin > p[style], #authPanelCreate > p[style], #authPanelForgot > p[style]{ margin-top:8px !important; font-size:13px !important; }
-    .gate-card .err{ min-height:12px; margin-top:4px; font-size:13px; }
+    #authPanelSignin > p[style], #authPanelCreate > p[style], #authPanelForgot > p[style]{ margin-top:8px !important; font-size:15px !important; }
+    .gate-card .err{ min-height:12px; margin-top:4px; font-size:15px; }
     .castle-guide{ margin-top:8px; border-radius:11px; }
     .castle-guide summary{ padding:9px 12px; font-size:15px; gap:8px; }
     .castle-guide summary .key{ font-size:16px; }
     .castle-guide .guide-body{ padding:12px; }
     .castle-guide .guide-step{ margin:0 0 12px; gap:10px; }
-    .castle-guide .guide-step .num{ flex-basis:26px; width:26px; height:26px; font-size:13px; }
-    .castle-guide .guide-step h3{ font-size:14px; margin:1px 0 2px; }
-    .castle-guide .guide-step p{ font-size:14.5px; }
+    .castle-guide .guide-step .num{ flex-basis:26px; width:26px; height:26px; font-size:15px; }
+    .castle-guide .guide-step h3{ font-size:16px; margin:1px 0 2px; }
+    .castle-guide .guide-step p{ font-size:16px; }
   }
   .gate-card{ background:#fff; border-radius:18px; padding:34px 30px; max-width:380px; width:100%; text-align:center;
     box-shadow:0 20px 60px rgba(0,0,0,.4); border:1px solid var(--gold); }
@@ -151,7 +151,7 @@
   .gate-card textarea{ min-height:64px; resize:vertical; }
   #authStage .gate-card input{ text-align:center; }
   #profileStage .gate-card{ max-height:92vh; overflow:auto; }
-  .gate-card .err{ color:#a12; font-size:14px; min-height:18px; margin-top:8px; }
+  .gate-card .err{ color:#a12; font-size:16px; min-height:18px; margin-top:8px; }
   .member-grid{ display:grid; gap:26px; }
   .app-card{ background:#fff; border:1px solid rgba(168,128,28,.28); border-radius:18px; box-shadow:var(--shadow-sm); overflow:hidden; }
   .app-card > .app-head{ background:linear-gradient(180deg,var(--green-700),var(--green-800)); color:#fff; padding:18px 22px; display:flex; align-items:center; gap:12px; }
@@ -170,8 +170,8 @@
   .data-list{ list-style:none; padding:0; margin:14px 0 0; display:grid; gap:10px; }
   .data-row{ border:1px solid rgba(168,128,28,.25); border-radius:12px; padding:12px 14px; background:#fbf7ec; font-size:17px; }
   .data-row b{ color:var(--green-800); }
-  .badge{ display:inline-block; font-size:12px; font-weight:700; padding:2px 9px; border-radius:999px; text-transform:uppercase; letter-spacing:.5px; }
-  .badge.requested{ background:#f0e2bd; color:#7a5b00; }
+  .badge{ display:inline-block; font-size:15px; font-weight:700; padding:2px 9px; border-radius:999px; text-transform:uppercase; letter-spacing:.5px; }
+  .badge.requested{ background:#f0e2bd; color:var(--gold-text); }
   .badge.assigned{ background:#cfe6d4; color:#1d5b34; }
   .badge.paid{ background:#bfe0c6; color:#14532d; }
   .badge.available{ background:#e6e6e6; color:#444; }
@@ -262,7 +262,7 @@
   .leaders-head{ text-align:center; margin:0 0 16px; position:relative; }
   .leaders-kicker{
     margin:0 0 2px; font-family:var(--fancy); font-style:italic;
-    font-size:17px; color:var(--gold-deep); letter-spacing:.04em;
+    font-size:17px; color:var(--gold-text); letter-spacing:.04em;
   }
   .leaders-head h3{
     margin:0; font-family:var(--display); font-size:clamp(22px,3.4vw,28px);
@@ -285,7 +285,7 @@
   .leaders-officers{ background:linear-gradient(180deg,#fff,#eef6ee); }
   .leaders-col h4{
     margin:0; padding:12px 16px;
-    font-family:var(--display); font-size:14px; font-weight:600;
+    font-family:var(--display); font-size:16px; font-weight:600;
     letter-spacing:.1em; text-transform:uppercase; color:#fff;
     background:linear-gradient(180deg,var(--green-700),var(--green-800));
     border-bottom:2px solid var(--gold);
@@ -307,7 +307,7 @@
     width:36px; height:36px; border-radius:50%; flex:none; overflow:hidden;
     border:2px solid rgba(212,175,55,.6); background:var(--green-800); color:#f6efdc;
     display:flex; align-items:center; justify-content:center;
-    font-family:var(--display); font-size:13px;
+    font-family:var(--display); font-size:15px;
   }
   .leaders-av img{ width:100%; height:100%; object-fit:cover; display:block; }
   .leaders-av-open{
@@ -315,15 +315,15 @@
   }
   .leaders-copy{ display:flex; flex-direction:column; gap:1px; min-width:0; flex:1; }
   .leaders-role{
-    font-family:var(--display); font-size:12px; letter-spacing:.08em;
-    text-transform:uppercase; color:var(--gold-deep);
+    font-family:var(--display); font-size:15px; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--gold-text);
   }
   .leaders-name{
     font-family:var(--display); font-size:17px; color:var(--green-800); line-height:1.25;
   }
   .leaders-committee{
     flex:none; margin-left:auto;
-    font-family:var(--display); font-size:12px; letter-spacing:.04em; text-transform:uppercase;
+    font-family:var(--display); font-size:15px; letter-spacing:.04em; text-transform:uppercase;
     color:var(--green-800); background:var(--green-50);
     border:1px solid rgba(43,139,81,.28); border-radius:999px; padding:5px 10px;
   }
@@ -342,7 +342,7 @@
     .leaders-board{ padding:24px 22px 18px; }
     .leaders-grid{ grid-template-columns:minmax(0,1.05fr) minmax(0,.92fr) minmax(0,1.25fr); gap:16px; }
   }
-  .people-card .people-go{ margin-top:4px; font-size:14px; letter-spacing:.04em; text-transform:uppercase;
+  .people-card .people-go{ margin-top:4px; font-size:16px; letter-spacing:.04em; text-transform:uppercase;
     color:var(--green-800); background:rgba(29,107,62,.08); border:1px solid rgba(168,128,28,.3);
     border-radius:999px; padding:4px 10px; font-family:var(--display); }
   @media (max-width:640px){
@@ -390,11 +390,11 @@
   .rpt-card:hover{ transform:translateY(-2px); box-shadow:0 10px 24px rgba(0,0,0,.12); }
   .rpt-card .t{ font-family:var(--display); color:var(--green-800); font-size:16px; display:flex; align-items:center; gap:7px; }
   .rpt-card .d{ font-size:15px; color:var(--muted); margin-top:4px; line-height:1.4; }
-  .rpt-card .lock{ font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:#7a5b00; background:#f0e2bd; border-radius:999px; padding:2px 9px; display:inline-block; margin-top:9px; }
+  .rpt-card .lock{ font-size:15px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--gold-text); background:#f0e2bd; border-radius:999px; padding:2px 9px; display:inline-block; margin-top:9px; }
   .rpt-picker{ background:#fff; border:1px solid rgba(168,128,28,.35); border-radius:14px; padding:16px 16px 14px; }
   .rpt-picker label{ display:block; font-family:var(--display); color:var(--green-800); font-size:16px; margin:0 0 8px; letter-spacing:.03em; }
   .rpt-picker select{ width:100%; box-sizing:border-box; font:inherit; font-size:16px; padding:12px 14px; border-radius:10px; border:1px solid rgba(168,128,28,.5); background:#fbf7ec; color:var(--green-800); }
-  .rpt-picker .rpt-pick-desc{ margin:10px 0 12px; font-size:14px; color:var(--muted); line-height:1.4; min-height:2.8em; }
+  .rpt-picker .rpt-pick-desc{ margin:10px 0 12px; font-size:16px; color:var(--muted); line-height:1.4; min-height:2.8em; }
   .rpt-picker .rpt-pick-actions{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
   .rpt-back{ background:none; border:0; color:var(--green-700); font-family:var(--display); font-size:15px; cursor:pointer; padding:0; margin-bottom:10px; }
   .rpt-back:hover{ text-decoration:underline; }
@@ -408,7 +408,7 @@
   .rpt-table th{ background:var(--green-700); color:#fff; text-align:left; padding:9px 11px; font-family:var(--display); font-weight:600; white-space:nowrap; }
   .rpt-table td{ padding:8px 11px; border-top:1px solid rgba(168,128,28,.18); }
   .rpt-table tr:nth-child(even) td{ background:#fbf7ec; }
-  .rpt-note{ font-size:14px; color:var(--muted); margin-top:14px; }
+  .rpt-note{ font-size:16px; color:var(--muted); margin-top:14px; }
   .rpt-secure{ background:#fff; border:1px solid rgba(168,128,28,.3); border-left:4px solid var(--gold); border-radius:12px; padding:18px 20px; }
   .rpt-secure h4{ margin:0 0 8px; color:var(--green-800); font-family:var(--display); font-size:18px; }
   .rpt-secure p{ margin:0 0 8px; }
@@ -422,8 +422,8 @@
   .pr-gate.need{background:#fffdf6;border-color:rgba(168,128,28,.45);}
   .pr-gate .pr-mark{flex:none;font-size:16px;line-height:1;}
   .pr-gate .pr-label{font-weight:700;color:var(--green-800);}
-  .pr-gate small,.pr-gate .pr-hint{color:var(--muted);font-size:13.5px;font-weight:400;}
-  .pr-pay{display:inline-flex;align-items:center;justify-content:center;margin-left:auto;padding:8px 14px;border-radius:999px;background:var(--gold,#c9a227);color:var(--green-900,#1a3a24);font-family:var(--display);font-size:14px;font-weight:700;text-decoration:none;border:1px solid rgba(120,90,10,.35);white-space:nowrap;}
+  .pr-gate small,.pr-gate .pr-hint{color:var(--muted);font-size:16px;font-weight:400;}
+  .pr-pay{display:inline-flex;align-items:center;justify-content:center;margin-left:auto;padding:8px 14px;border-radius:999px;background:var(--gold,#c9a227);color:var(--green-900,#1a3a24);font-family:var(--display);font-size:16px;font-weight:700;text-decoration:none;border:1px solid rgba(120,90,10,.35);white-space:nowrap;}
   .pr-pay:hover{filter:brightness(1.05);}
   .pr-pay-alt{flex:1 1 100%;margin:2px 0 0;font-size:15px;color:var(--muted);}
   .pr-pay-alt a{color:var(--green-800);font-weight:600;}
@@ -432,7 +432,7 @@
   @media (max-width:480px){
     .pr-pay{margin-left:0;width:100%;}
   }
-  .rpt-btn{font:inherit;font-size:13.5px;padding:5px 12px;border-radius:14px;border:1px solid rgba(168,128,28,.5);background:#fff;cursor:pointer;}
+  .rpt-btn{font:inherit;font-size:16px;padding:5px 12px;border-radius:14px;border:1px solid rgba(168,128,28,.5);background:#fff;cursor:pointer;}
   .rpt-btn.ok{background:var(--green-800);color:#f6efdc;border-color:var(--green-800);}
   .rpt-btn:hover{opacity:.85;}
 
@@ -456,7 +456,7 @@
   .game-head .app-head small{ color:var(--cup-gold-light); }
   .game-head .dash-go{ background:var(--cup-red); color:var(--cup-cream); border-radius:999px; padding:4px 12px; font-family:var(--display); box-shadow:0 2px 6px rgba(150,53,26,.4); }
   #gameModal .modal-card{ background:var(--cup-cream); border:2px solid var(--cup-gold); box-shadow:0 0 0 4px rgba(23,94,67,.35), 0 30px 80px rgba(0,0,0,.5); }
-  .game-conn{ margin-left:auto; margin-right:6px; display:inline-flex; align-items:center; gap:6px; font-size:12.5px; font-family:var(--display); letter-spacing:.03em; border-radius:999px; padding:3px 10px; border:1px solid rgba(240,215,140,.5); color:#f6efdc; background:rgba(0,0,0,.18); white-space:nowrap; }
+  .game-conn{ margin-left:auto; margin-right:6px; display:inline-flex; align-items:center; gap:6px; font-size:15px; font-family:var(--display); letter-spacing:.03em; border-radius:999px; padding:3px 10px; border:1px solid rgba(240,215,140,.5); color:#f6efdc; background:rgba(0,0,0,.18); white-space:nowrap; }
   .game-conn::before{ content:''; width:8px; height:8px; border-radius:50%; background:#9aa; box-shadow:0 0 6px rgba(255,255,255,.35); }
   .game-conn.ok::before{ background:#54d98a; box-shadow:0 0 8px rgba(84,217,138,.9); }
   .game-conn.err::before{ background:#ff7a5c; box-shadow:0 0 8px rgba(255,122,92,.9); }
@@ -469,13 +469,13 @@
   .lb-table tbody tr:nth-child(1) td{ background:rgba(201,162,39,.18); }
   .lb-table tbody tr:nth-child(2) td{ background:rgba(201,162,39,.10); }
   .lb-table tbody tr:nth-child(3) td{ background:rgba(194,69,30,.08); }
-  .rank-pill{ display:inline-flex; align-items:center; gap:6px; background:linear-gradient(180deg,#fdf6dd,#f0e3b8); border:1px solid var(--cup-gold); color:var(--cup-green); border-radius:999px; padding:3px 12px; font-family:var(--display); font-size:14px; white-space:nowrap; box-shadow:inset 0 1px 0 #fff; }
+  .rank-pill{ display:inline-flex; align-items:center; gap:6px; background:linear-gradient(180deg,#fdf6dd,#f0e3b8); border:1px solid var(--cup-gold); color:var(--cup-green); border-radius:999px; padding:3px 12px; font-family:var(--display); font-size:16px; white-space:nowrap; box-shadow:inset 0 1px 0 #fff; }
   .badge-gallery{ display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; margin-top:8px; }
   .badge-chip{ border:1px solid var(--cup-gold); border-radius:12px; padding:12px; background:#fffdf4; text-align:center; box-shadow:inset 0 0 0 3px rgba(194,69,30,.12), 0 1px 4px rgba(42,33,24,.10); transition:transform .15s ease; }
   .badge-chip:hover{ transform:translateY(-2px) rotate(-1deg); }
   .badge-chip .ic{ font-size:30px; line-height:1; }
-  .badge-chip .nm{ font-family:var(--display); color:var(--cup-green); font-size:14px; margin-top:6px; }
-  .badge-chip .ds{ font-size:12px; color:var(--muted); margin-top:3px; line-height:1.35; }
+  .badge-chip .nm{ font-family:var(--display); color:var(--cup-green); font-size:16px; margin-top:6px; }
+  .badge-chip .ds{ font-size:15px; color:var(--muted); margin-top:3px; line-height:1.35; }
   .prog{ background:#e7e0c8; border-radius:999px; height:15px; overflow:hidden; margin:8px 0; border:1px solid rgba(201,162,39,.45); }
   .prog > i{ display:block; height:100%; background:linear-gradient(90deg,#fff6c8 0%,var(--cup-gold-light) 35%,var(--cup-gold) 70%,#f7e7a1 100%); position:relative; box-shadow:0 0 10px rgba(240,215,140,.55); }
   .prog > i::after{ content:''; position:absolute; inset:0; background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.5) 50%,transparent 60%); background-size:200% 100%; animation:cupSparkle 2.8s ease-in-out infinite; }
@@ -492,9 +492,9 @@
   .cup-hist{ margin:6px 0 0; padding:0; list-style:none; }
   .cup-hist li{ border-top:1px solid rgba(201,162,39,.35); padding:9px 0; font-size:15px; line-height:1.4; }
   .cup-hist .ev{ font-family:var(--display); color:var(--cup-green); font-size:16px; }
-  .cup-st{ display:inline-block; border-radius:999px; padding:1px 10px; font-size:12.5px; font-family:var(--display); letter-spacing:.03em; text-transform:uppercase; background:#eee4c8; color:#6b5a1e; border:1px solid rgba(201,162,39,.5); }
+  .cup-st{ display:inline-block; border-radius:999px; padding:1px 10px; font-size:15px; font-family:var(--display); letter-spacing:.03em; text-transform:uppercase; background:#eee4c8; color:#6b5a1e; border:1px solid rgba(201,162,39,.5); }
   .cup-st.attended{ background:var(--cup-green); color:var(--cup-cream); border-color:var(--cup-green); }
-  .cup-st.registered,.cup-st.confirmed{ background:#fdf3d8; color:#7a5b00; }
+  .cup-st.registered,.cup-st.confirmed{ background:#fdf3d8; color:var(--gold-text); }
   .cup-st.paid{ background:var(--cup-gold); color:var(--cup-ink); border-color:var(--cup-gold); }
   .cup-st.cancelled,.cup-st.denied{ background:#f3d9cf; color:var(--cup-crimson); }
   /* Events inside the Cup */
@@ -504,11 +504,11 @@
   .cup-event{ background:#fffdf4; border:1px solid var(--cup-gold); border-radius:14px; padding:14px 16px; margin:10px 0; box-shadow:0 1px 5px rgba(42,33,24,.10); }
   .cup-event .ce-top{ display:flex; gap:12px; align-items:flex-start; flex-wrap:wrap; }
   .cup-date{ display:inline-flex; flex-direction:column; align-items:center; justify-content:center; min-width:56px; background:linear-gradient(180deg,var(--cup-red),var(--cup-crimson)); color:var(--cup-cream); border-radius:12px; padding:7px 10px; font-family:var(--display); line-height:1.1; box-shadow:0 2px 6px rgba(150,53,26,.35); }
-  .cup-date .d1{ font-size:12px; letter-spacing:.06em; text-transform:uppercase; }
+  .cup-date .d1{ font-size:15px; letter-spacing:.06em; text-transform:uppercase; }
   .cup-date .d2{ font-size:22px; font-weight:700; }
   .cup-event .ce-nm{ font-family:var(--display); color:var(--cup-green); font-size:19px; line-height:1.25; }
-  .cup-event .ce-meta{ font-size:14.5px; color:var(--muted); margin-top:2px; }
-  .cup-event .ce-hint{ font-size:14px; color:var(--cup-crimson); font-weight:700; margin-top:4px; }
+  .cup-event .ce-meta{ font-size:16px; color:var(--muted); margin-top:2px; }
+  .cup-event .ce-hint{ font-size:16px; color:var(--cup-crimson); font-weight:700; margin-top:4px; }
   .cup-event details{ margin-top:8px; }
   .cup-event summary{ cursor:pointer; font-family:var(--display); color:var(--cup-green); font-size:15px; }
   .cup-event .ce-detail{ font-size:15px; color:var(--cup-ink); margin-top:6px; line-height:1.45; }
@@ -521,7 +521,7 @@
 
   /* ---- Members Only: auth, tour, raffles ---- */
   .auth-card .auth-features{ margin-top:18px; text-align:left; display:grid; gap:8px; }
-  .afe{ font-size:14px; color:#3a3a2e; } .afe span{ margin-right:6px; }
+  .afe{ font-size:16px; color:#3a3a2e; } .afe span{ margin-right:6px; }
   .tour-grid{ display:grid; gap:12px; }
   .tour-item{ display:flex; gap:12px; align-items:flex-start; background:#fff; border:1px solid rgba(168,128,28,.25); border-radius:12px; padding:12px 14px; }
   .tour-item span{ font-size:26px; line-height:1; }
@@ -570,17 +570,17 @@
   .castle{ width:min(100%, 430px); padding:6px 0 16px; }
   .castle-wall{ padding:14px 12px 16px; }
   .castle-top{ height:22px; }
-  .castle-banner{ font-size:13px; }
+  .castle-banner{ font-size:15px; }
   /* Door hinges stick out left:-14px and caused horizontal scroll on phones */
   .auth-card::before, .auth-card::after{ display:none; }
   .gate-card{ padding:20px 16px; max-width:100%; }
   .gate-card.auth-card{ border-width:6px; padding-top:30px; }
   .gate-card img{ width:52px; margin-bottom:6px; }
   .gate-card h1{ font-size:20px; }
-  .gate-card p{ margin:0 0 12px; font-size:14.5px; }
+  .gate-card p{ margin:0 0 12px; font-size:16px; }
   .castle-guide{ margin-top:12px; }
   .auth-card .auth-features{ margin-top:10px; gap:4px; }
-  .afe{ font-size:12.5px; line-height:1.35; }
+  .afe{ font-size:15px; line-height:1.35; }
   .app-body{ padding:16px; }
   .app-card > .app-head{ padding:14px 16px; flex-wrap:wrap; }
   .people-row{ grid-template-columns:1fr 1fr; gap:10px; }
@@ -604,7 +604,7 @@
     .gate-card.auth-card{ border-radius:56px 56px 10px 10px; padding-top:16px; }
     .gate-card img{ width:40px; }
     .gate-card h1{ font-size:17px; }
-    .gate-card p{ font-size:13px; margin:0 0 6px; }
+    .gate-card p{ font-size:15px; margin:0 0 6px; }
     #authPanelSignin form input[type="password"]{ margin-top:6px !important; }
     #authPanelSignin form .btn{ margin-top:7px !important; }
     .castle-guide{ margin-top:6px; }
@@ -624,7 +624,7 @@
     padding:18px 16px 20px;
     box-shadow:0 16px 40px rgba(0,0,0,.45), inset 0 0 28px rgba(0,0,0,.18);
   }
-  #authStage .castle-banner{ font-size:14px; letter-spacing:.6px; margin-bottom:8px; }
+  #authStage .castle-banner{ font-size:16px; letter-spacing:.6px; margin-bottom:8px; }
   #authStage .gate-card.auth-card{
     border-width:6px;
     border-radius:72px 72px 14px 14px;
@@ -683,7 +683,7 @@
   }catch(_){}
   </script>
 </head>
-<body>
+<body class="hub">
 
   <!-- AUTH STAGE (email + password sign in), styled as the Krewe Castle door -->
   <div class="gate" id="authStage">
@@ -805,7 +805,7 @@
           <div style="flex:1;">
             <label for="pfPhoto">Your photo *</label>
             <input id="pfPhoto" type="file" accept="image/jpeg,image/png,image/webp,image/gif" />
-            <p style="font-size:12px;color:var(--muted);margin:4px 0 0;">So My Krewe feels like people, not a spreadsheet.</p>
+            <p style="font-size:15px;color:var(--muted);margin:4px 0 0;">So My Krewe feels like people, not a spreadsheet.</p>
           </div>
         </div>
         <div class="row">
@@ -846,15 +846,15 @@
             <input type="checkbox" id="pfHasRole" style="display:none;" />
             <div id="pfRolePanel" style="margin-top:10px;">
               <div id="pfRoleChoices">
-                <p style="font-size:13px;color:var(--muted);margin:0 0 8px;">Pick every title you hold. An officer confirms access — you can use the hub right away.</p>
-                <p style="font-size:13px;font-weight:700;color:var(--green-800);margin:10px 0 6px;">Officers</p>
+                <p style="font-size:15px;color:var(--muted);margin:0 0 8px;">Pick every title you hold. An officer confirms access — you can use the hub right away.</p>
+                <p style="font-size:15px;font-weight:700;color:var(--green-800);margin:10px 0 6px;">Officers</p>
                 <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" data-title="President" data-roles="officer" /> President</label>
                 <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" data-title="Vice President" data-roles="officer" /> Vice President</label>
                 <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" data-title="Treasurer" data-roles="treasurer,officer" /> Treasurer</label>
                 <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" data-title="Secretary" data-roles="secretary,officer" /> Secretary</label>
-                <p style="font-size:13px;font-weight:700;color:var(--green-800);margin:12px 0 6px;">Board</p>
+                <p style="font-size:15px;font-weight:700;color:var(--green-800);margin:12px 0 6px;">Board</p>
                 <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" data-title="Board Member" data-roles="board" /> Board Member</label>
-                <p style="font-size:13px;font-weight:700;color:var(--green-800);margin:12px 0 6px;">Committee Chair of</p>
+                <p style="font-size:15px;font-weight:700;color:var(--green-800);margin:12px 0 6px;">Committee Chair of</p>
                 <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" data-title="Committee Chair of Finance" data-roles="committee" data-committee="Finance" /> Finance</label>
                 <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" data-title="Committee Chair of Bylaws" data-roles="committee" data-committee="Bylaws" /> Bylaws</label>
                 <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" data-title="Committee Chair of Charity" data-roles="committee" data-committee="Charity" /> Charity</label>
@@ -864,14 +864,14 @@
                 <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" data-title="Committee Chair of Float" data-roles="committee" data-committee="Float" /> Float</label>
                 <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" data-title="Committee Chair of Parade" data-roles="committee" data-committee="Parade" /> Parade</label>
                 <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" data-title="Committee Chair of Merchandise" data-roles="committee" data-committee="Merchandise" /> Merchandise</label>
-                <p style="font-size:12px;color:var(--muted);margin:8px 0 0;line-height:1.4;">After an officer approves: <b>Merchandise</b> unlocks Shop Studio; <b>Social</b> and <b>Charity</b> unlock Raffles, Event Studio, and related reports. Officers and board keep the Officer desk. Treasurer (and board) can see payments.</p>
+                <p style="font-size:15px;color:var(--muted);margin:8px 0 0;line-height:1.4;">After an officer approves: <b>Merchandise</b> unlocks Shop Studio; <b>Social</b> and <b>Charity</b> unlock Raffles, Event Studio, and related reports. Officers and board keep the Officer desk. Treasurer (and board) can see payments.</p>
               </div>
               <input id="pfRoleNote" placeholder="Anything that helps verify (optional)" style="margin-top:8px;" />
             </div>
           </div>
         </details>
 
-        <p style="font-size:13px;color:#3a3a2e;background:#fbf6e9;border:1px solid rgba(168,128,28,.35);border-radius:10px;padding:10px 12px;margin:14px 0 0;line-height:1.4;">
+        <p style="font-size:15px;color:#3a3a2e;background:#fbf6e9;border:1px solid rgba(168,128,28,.35);border-radius:10px;padding:10px 12px;margin:14px 0 0;line-height:1.4;">
           <b>You are on step 3 of 4.</b> After you save, finish <b>Total hours since July 1</b> from TrackItForward on Member desk (step 4).
         </p>
         <button class="btn btn-primary" type="submit" style="width:100%;margin-top:14px;">🍀 Start earning Clovers</button>
@@ -992,7 +992,7 @@
             <input type="hidden" id="vhActivity" value="Total hours since July 1" />
             <label for="vhDate" style="margin-top:8px;">As of date (optional)</label>
             <input id="vhDate" type="date" />
-            <p style="font-size:12px;color:var(--muted);margin:6px 0 0;">Tip: copy the number from TrackItForward. Later logs can still use this form for new shifts (change the hours and we will keep the same season label).</p>
+            <p style="font-size:15px;color:var(--muted);margin:6px 0 0;">Tip: copy the number from TrackItForward. Later logs can still use this form for new shifts (change the hours and we will keep the same season label).</p>
             <button class="btn btn-primary" type="submit">☘ Save hours from TrackItForward</button>
             <div class="msg" id="vhMsg"></div>
           </form>
@@ -1649,7 +1649,7 @@
     }
     const WAIVER_TEXT = (season) => `I release and hold harmless the Krewe of Shamrock, its officers, and event organizers from liability arising from my voluntary participation in krewe parades and events during the ${season} season, and I agree to follow all parade safety rules.`;
     function waiverReadBlock(season){
-      return `<div class="media-release-scroll" style="max-height:200px;overflow:auto;margin:0 0 10px;padding:10px 12px;background:#fff;border:1px solid rgba(168,128,28,.35);border-radius:10px;font-size:13.5px;color:var(--muted);line-height:1.45;">
+      return `<div class="media-release-scroll" style="max-height:200px;overflow:auto;margin:0 0 10px;padding:10px 12px;background:#fff;border:1px solid rgba(168,128,28,.35);border-radius:10px;font-size:16px;color:var(--muted);line-height:1.45;">
           <p style="margin:0 0 8px;"><b>Liability waiver · ${season} season</b></p>
           <p style="margin:0;">${WAIVER_TEXT(season)}</p>
           <p style="margin:10px 0 0;"><a href="/assets/docs/liability-waiver.html" target="_blank" rel="noopener">Open full waiver page</a>
@@ -1673,9 +1673,9 @@
       const who = rec && rec.signed_name ? esc(rec.signed_name) : "your name";
       return `<div class="pr-waiver" style="margin-top:12px;">
         <p style="margin:0 0 8px;font-size:14px;color:var(--green-800);"><b>Your ${SEASON} liability waiver is signed</b></p>
-        <p style="margin:0 0 8px;font-size:13.5px;color:var(--muted);">Signed as <b>${who}</b> · ${when}</p>
+        <p style="margin:0 0 8px;font-size:16px;color:var(--muted);">Signed as <b>${who}</b> · ${when}</p>
         ${waiverReadBlock(SEASON)}
-        <p style="margin:0;font-size:13px;color:var(--muted);">Need a different season or a correction? Contact <a href="mailto:secretary@kreweofshamrock.com">secretary@kreweofshamrock.com</a>.</p>
+        <p style="margin:0;font-size:15px;color:var(--muted);">Need a different season or a correction? Contact <a href="mailto:secretary@kreweofshamrock.com">secretary@kreweofshamrock.com</a>.</p>
       </div>`;
     }
     window.kosSignWaiver = async function(){
@@ -1693,7 +1693,7 @@
       if(ok){
         el.innerHTML = `<div class="pr-waiver" style="margin-top:4px;">
           <p style="margin:0 0 8px;font-size:14px;color:var(--green-800);"><b>Photo &amp; Image Release signed</b> · version 2026.1</p>
-          <p style="margin:0;font-size:13.5px;color:var(--muted);"><a href="photo-image-release.html" target="_blank" rel="noopener">Re-read the full release</a>
+          <p style="margin:0;font-size:16px;color:var(--muted);"><a href="photo-image-release.html" target="_blank" rel="noopener">Re-read the full release</a>
           · <a href="#docs">All Documents</a>
           · revoke later via <a href="mailto:digital@kreweofshamrock.com">digital@kreweofshamrock.com</a></p>
         </div>`;
@@ -1701,7 +1701,7 @@
       }
       const nm = esc(kosLegalName());
       el.innerHTML = `<div class="pr-waiver" style="margin-top:4px;">
-        <div class="media-release-scroll" style="max-height:220px;overflow:auto;margin:0 0 10px;padding:10px 12px;background:#fff;border:1px solid rgba(168,128,28,.35);border-radius:10px;font-size:13.5px;color:var(--muted);line-height:1.45;">
+        <div class="media-release-scroll" style="max-height:220px;overflow:auto;margin:0 0 10px;padding:10px 12px;background:#fff;border:1px solid rgba(168,128,28,.35);border-radius:10px;font-size:16px;color:var(--muted);line-height:1.45;">
           <p style="margin:0 0 10px;"><b>I grant the Krewe of Shamrock permission</b> to create, use, reproduce, display, and distribute photographs, video, audio, and other images or recordings that include me (and, if applicable, my minor child) for Krewe purposes.</p>
           <p style="margin:0 0 8px;"><b>1. What this covers.</b> Media from Krewe activities including Gasparilla and other parades; St. Patrick’s Day and Irish heritage events; Tartan Ball and formal events; meetings, volunteer service, fundraisers, and social gatherings; and member-uploaded content to the Krewe website / member hub.</p>
           <p style="margin:0 0 8px;"><b>2. How the Krewe may use the media.</b> Nonprofit krewe purposes only: kreweofshamrock.com (Photo Gallery, events, member features); official email/newsletters/social; print programs, flyers, posters, and banners; Inter-Krewe Council (IKC) and community listings; historical archives. The Krewe will <b>not</b> sell member likeness rights to unrelated third parties for commercial advertising without a separate written agreement.</p>
@@ -1740,7 +1740,7 @@
       const buyout = Math.max(0, goal - done) * 12;
       el.innerHTML = `<div class="pr-hrs"><b>${done}</b> of ${goal} hours approved (season ending ${VH_SEASON})${logged>done?` · ${logged-done} awaiting officer review`:""}</div>
         <div class="prog"><i style="width:${pct}%"></i></div>
-        <p style="font-size:13px;color:var(--muted);margin:8px 0 0;">Event volunteer hours count after an officer confirms attendance. Manual logs below still need review. Shortfall buyout is $12/hr (about $${buyout} if you stop here).</p>`;
+        <p style="font-size:15px;color:var(--muted);margin:8px 0 0;">Event volunteer hours count after an officer confirms attendance. Manual logs below still need review. Shortfall buyout is $12/hr (about $${buyout} if you stop here).</p>`;
     }
     document.getElementById("vhForm").addEventListener("submit", async (e)=>{
       e.preventDefault();
@@ -2657,13 +2657,13 @@
           <div class="big">${data.rank_icon}</div>
           <div><div style="font-family:var(--display);color:var(--green-800);font-size:22px;">${E(data.first_name)} ${E(data.last_name)}</div>
             <span class="rank-pill">${data.rank_icon} ${E(data.rank_name)}</span></div>
-          <div style="margin-left:auto;text-align:right;"><div class="big" style="font-size:34px;">${data.lifetime}</div><div style="font-size:13px;color:var(--muted);">lifetime Clovers 🍀</div></div>
+          <div style="margin-left:auto;text-align:right;"><div class="big" style="font-size:34px;">${data.lifetime}</div><div style="font-size:15px;color:var(--muted);">lifetime Clovers 🍀</div></div>
         </div>
         <div style="margin-top:14px;">
           ${ data.clovers_to_next>0
             ? `<div style="font-size:14px;color:#3a3a2e;"><b>${data.clovers_to_next}</b> 🍀 to <b>${E(data.next_rank_name)}</b></div><div class="prog"><i style="width:${pct}%"></i></div>`
             : `<div style="font-size:14px;color:#3a3a2e;">🏆 Top rank reached - a true legend of the krewe!</div>` }
-          <div style="font-size:13px;color:var(--muted);">${data.season} 🍀 earned in the ${cupSeasonLabel()} season (since July 1)</div>
+          <div style="font-size:15px;color:var(--muted);">${data.season} 🍀 earned in the ${cupSeasonLabel()} season (since July 1)</div>
         </div>
         <h4 style="font-family:var(--display);color:var(--green-800);margin:16px 0 8px;">Badges</h4>
         ${ (data.badges&&data.badges.length)
@@ -3043,7 +3043,7 @@
           "<li><b>Volunteer hours</b>: enter <b>Total hours since July 1</b> from TrackItForward</li>"+
           "</ol>"+
           "<p style=\"margin:0;\">Then you are ready to connect: Craic Cup, events, Share, lockers, and the rest of the castle.</p>"+
-          "<p style=\"margin:10px 0 0;color:var(--muted);font-size:13px;\">Sláinte, and may your Clovers multiply. ☘️</p>";
+          "<p style=\"margin:10px 0 0;color:var(--muted);font-size:15px;\">Sláinte, and may your Clovers multiply. ☘️</p>";
       }
       const o=document.getElementById("lepOverlay");
       if(o){ o.classList.add("open"); o.setAttribute("aria-hidden","false"); document.body.style.overflow="hidden"; }
@@ -3104,7 +3104,7 @@
         html+=`<div class="raffle-event"><h3 class="rpt-cat" style="margin-top:0;">${e.raffle_type==='fifty_fifty'?'💰':'🧺'} ${RE(e.name)} ${e.is_active?'':'<span class="badge available">closed</span>'}</h3>`;
         if(e.description) html+=`<p style="margin:0 0 10px;color:#3a3a2e;">${RE(e.description)}</p>`;
         if(e.charity_blurb) html+=`<p style="margin:0 0 10px;color:#14532b;font-size:14px;">💚 ${RE(e.charity_blurb)}</p>`;
-        if(e.audience && e.audience!=='both') html+=`<p style="margin:0 0 8px;font-size:12px;color:var(--muted);">Audience: ${RE(e.audience)}</p>`;
+        if(e.audience && e.audience!=='both') html+=`<p style="margin:0 0 8px;font-size:15px;color:var(--muted);">Audience: ${RE(e.audience)}</p>`;
         if(e.raffle_type==='fifty_fifty'){
           html+=`<div class="van-card"><div class="seats">50/50 Pot</div>
             <div style="font-size:14px;color:var(--muted);">${e.pot_tickets} tickets in${e.ticket_price?` · $${e.ticket_price} each`:''}</div>`;
@@ -3120,7 +3120,7 @@
             if(b.contents) html+=`<div class="rl" style="margin-top:4px;"><b>Inside:</b> ${RE(b.contents)}</div>`;
             if(b.description) html+=`<div class="rl">${RE(b.description)}</div>`;
             if(b.estimated_value) html+=`<div class="rl">~$${b.estimated_value}</div>`;
-            html+=`<div style="font-size:13px;color:var(--muted);margin-top:4px;">${b.tickets} tickets in · you: <b>${myB[b.id]||0}</b></div>`;
+            html+=`<div style="font-size:15px;color:var(--muted);margin-top:4px;">${b.tickets} tickets in · you: <b>${myB[b.id]||0}</b></div>`;
             if(e.drawn_at){ html+=`<div style="margin-top:6px;"><b>🏆 ${RE(b.winner_name||'TBD')}</b></div>`; }
             else { html+=`<form class="mini-form" data-basket="${b.id}" style="grid-template-columns:1fr auto;margin-top:8px;"><input name="q" type="number" min="1" value="1" /><button class="btn btn-green" type="submit">Enter</button></form>`; }
             html+=`</div>`;
@@ -3155,7 +3155,7 @@
       const PUB = location.origin + "/raffle.html";
       let h='<div class="raffle-event" style="border-top:2px dashed var(--gold);margin-top:18px;padding-top:14px;">';
       h+='<h3 class="rpt-cat" style="margin-top:0;">\ud83d\udd11 Officer tools</h3>';
-      h+='<p style="font-size:13px;color:var(--muted);margin:0 0 10px;">Officers and Social/Charity committee see this. Draw winners (weighted by tickets) and print the basket QR codes.</p>';
+      h+='<p style="font-size:15px;color:var(--muted);margin:0 0 10px;">Officers and Social/Charity committee see this. Draw winners (weighted by tickets) and print the basket QR codes.</p>';
       h+='<p style="margin:0 0 12px;"><a class="btn btn-green" href="raffle-qr-sheet.html" target="_blank" rel="noopener">\ud83d\udda8\ufe0f Print basket QR codes</a> <a class="btn" href="'+PUB+'" target="_blank" rel="noopener">\u2197 Public raffle page</a></p>';
       for(const e of events){
         h+='<div style="margin:10px 0;"><b>'+(e.raffle_type==='fifty_fifty'?'\ud83d\udcb0':'\ud83e\uddfa')+' '+RE(e.name)+'</b>';
@@ -3202,7 +3202,7 @@
       if(up.error) throw up.error;
       return rb.storage.from('raffle-baskets').getPublicUrl(path).data.publicUrl;
     }
-    function mrInput(label,html){ return '<label style="display:block;font-size:13px;color:#3a3a2e;margin:8px 0 2px;font-weight:600;">'+label+'</label>'+html; }
+    function mrInput(label,html){ return '<label style="display:block;font-size:15px;color:#3a3a2e;margin:8px 0 2px;font-weight:600;">'+label+'</label>'+html; }
     function makeBasketForm(eventId, b){
       var IS='__IS__';
       var box=document.createElement('div'); box.className='raffle-panel'; box.style.marginTop='8px';
@@ -3246,7 +3246,7 @@
       var w=document.createElement("div"); w.className="raffle-event"; w.id="mrCreateManage";
       w.style.cssText="border-bottom:2px dashed var(--gold);margin:0 0 18px;padding:0 0 14px;";
       w.innerHTML='<h3 class="rpt-cat" style="margin-top:0;">🛠️ Create &amp; manage raffles</h3>'+
-        '<p style="font-size:13px;color:var(--muted);margin:0 0 10px;">Create a gift-basket or 50/50 raffle for charity. Use baskets as a planning board for donated contents, then draw winners in person at the event.</p>'+
+        '<p style="font-size:15px;color:var(--muted);margin:0 0 10px;">Create a gift-basket or 50/50 raffle for charity. Use baskets as a planning board for donated contents, then draw winners in person at the event.</p>'+
         '<button class="btn btn-primary" id="mrNew" type="button">➕ Create a raffle</button>'+
         '<div id="mrForm" style="margin-top:12px;"></div><div id="mrList" style="margin-top:14px;"></div>';
       if(box.firstChild) box.insertBefore(w, box.firstChild); else box.appendChild(w);
@@ -3283,7 +3283,7 @@
       list.forEach(function(e){
         var card=document.createElement('div'); card.className='raffle-panel'; card.style.marginBottom='12px';
         var head='<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;"><b>'+(e.raffle_type==='fifty_fifty'?'💰':'🧺')+' '+RE(e.name)+'</b>'+
-          '<span style="font-size:12px;color:var(--muted);">'+(e.is_active?'live':'hidden')+(e.mine?'':' · (officer)')+'</span></div>';
+          '<span style="font-size:15px;color:var(--muted);">'+(e.is_active?'live':'hidden')+(e.mine?'':' · (officer)')+'</span></div>';
         var body='';
         if(e.raffle_type==='fifty_fifty'){
           body+='<div style="font-size:14px;margin:6px 0;">'+(e.pot_tickets||0)+' tickets in';
@@ -3303,12 +3303,12 @@
             row.style.cssText='display:flex;gap:10px;align-items:center;border:1px solid rgba(168,128,28,.25);border-radius:10px;padding:8px;';
             row.innerHTML=(b.image_url?'<img src="'+RE(b.image_url)+'" alt="" style="width:54px;height:54px;object-fit:cover;border-radius:8px;" />':'<div style="width:54px;height:54px;border-radius:8px;background:#eee;display:flex;align-items:center;justify-content:center;">🧺</div>')+
               '<div style="flex:1;min-width:0;"><div style="font-weight:600;">'+RE(b.name)+'</div>'+
-              (b.contents?'<div style="font-size:12px;color:#3a3a2e;margin-top:2px;"><b>Inside:</b> '+RE(b.contents)+'</div>':'')+
-              '<div style="font-size:12px;color:var(--muted);">'+(b.estimated_value!=null?'~'+mrMoney(b.estimated_value)+' · ':'')+(b.tickets||0)+' tix'+(b.winner_name?' · 🏆 '+RE(b.winner_name):'')+'</div></div>'+
+              (b.contents?'<div style="font-size:15px;color:#3a3a2e;margin-top:2px;"><b>Inside:</b> '+RE(b.contents)+'</div>':'')+
+              '<div style="font-size:15px;color:var(--muted);">'+(b.estimated_value!=null?'~'+mrMoney(b.estimated_value)+' · ':'')+(b.tickets||0)+' tix'+(b.winner_name?' · 🏆 '+RE(b.winner_name):'')+'</div></div>'+
               '<div style="display:flex;flex-direction:column;gap:4px;">'+
-                '<button class="btn mrEditB" type="button" style="padding:3px 8px;font-size:12px;">Edit</button>'+
-                (b.winner_name?'':'<button class="btn btn-green mrDrawB" type="button" style="padding:3px 8px;font-size:12px;">Draw</button>')+
-                ((b.tickets||0)>0?'':'<button class="btn mrDelB" type="button" style="padding:3px 8px;font-size:12px;">Delete</button>')+
+                '<button class="btn mrEditB" type="button" style="padding:3px 8px;font-size:15px;">Edit</button>'+
+                (b.winner_name?'':'<button class="btn btn-green mrDrawB" type="button" style="padding:3px 8px;font-size:15px;">Draw</button>')+
+                ((b.tickets||0)>0?'':'<button class="btn mrDelB" type="button" style="padding:3px 8px;font-size:15px;">Delete</button>')+
               '</div>';
             row.querySelector('.mrEditB').onclick=function(){ var fm=makeBasketForm(e.id,b); row.parentNode.insertBefore(fm,row.nextSibling); };
             var dr=row.querySelector('.mrDrawB'); if(dr) dr.onclick=async function(){ if(!confirm('Draw a winner for "'+b.name+'" now? This is final.')) return; var res=await rb.rpc('draw_basket_winner',{p_basket_id:b.id,p_redraw:false}); if(res.error){ alert(res.error.message); return; } alert('🏆 Winner: '+(res.data&&res.data.winner_name)); renderRaffles(); };
