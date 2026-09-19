@@ -54,6 +54,9 @@
     ".hub-board-old{border-top:1px solid rgba(168,128,28,.3);padding:10px 0 4px;}",
     ".hub-board-old summary{cursor:pointer;font-family:var(--display);color:var(--green-800);font-size:16px;}",
     ".hub-board-old .hub-board-date{display:inline;margin:0;}",
+    ".hub-board-archive-wrap{margin-top:12px;border-top:1px solid rgba(168,128,28,.3);padding-top:12px;}",
+    ".hub-board-archive-wrap h4{margin:0 0 6px;}",
+    ".hub-board-archive-wrap .empty{color:var(--muted);font-size:14px;}",
     ".hub-soft-desk{margin-top:14px;background:#fff;border:1px solid rgba(168,128,28,.28);border-radius:16px;padding:14px 16px;color:var(--green-800);}",
     ".hub-soft-desk h3{font-family:var(--display);margin:0 0 8px;font-size:19px;}",
     ".hub-soft-desk .hub-chips{margin:0 0 8px;}",
@@ -705,7 +708,69 @@
       '<div class="hub-board-date">' + esc(annDate(latest.created_at)) +
       (latest.sender_name ? (" · from " + esc(latest.sender_name)) : "") + "</div>" +
       "<h4>" + esc(latest.subject || "Announcement") + "</h4>" +
-      body + older + "</section>";
+      body + older +
+      '<div class="hub-board-archive-wrap">' +
+      (boardArchive.open
+        ? '<div id="hubBoardArchive" aria-live="polite">' + boardArchiveInnerHtml() + "</div>"
+        : '<button type="button" class="btn" id="hubBoardArchiveBtn">📜 See all announcements</button>' +
+          '<div id="hubBoardArchive" hidden aria-live="polite"></div>') +
+      "</div></section>";
+  }
+
+  /* Full archive of all-krewe announcements: every message officers email to
+     the membership also lives here, so nothing is lost to the inbox. Loaded
+     on demand (up to 100 via list_board_announcements); if the archive call
+     fails we fall back to the announcements already on hand. State lives
+     outside the card so background Home re-renders keep the archive open. */
+  var boardArchive = { open: false, loading: false, list: null, fellBack: false };
+
+  function boardArchiveListHtml(list) {
+    return list.map(function (m) {
+      var op = annParagraphs(m.body_html).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("");
+      return '<details class="hub-board-old"><summary>' + esc(m.subject || "Announcement") +
+        ' <span class="hub-board-date">' + esc(annDate(m.created_at)) +
+        (m.sender_name ? (" · from " + esc(m.sender_name)) : "") + "</span></summary>" +
+        (op || "<p>(No message text.)</p>") + "</details>";
+    }).join("");
+  }
+
+  function boardArchiveInnerHtml() {
+    if (boardArchive.loading) return '<p class="empty">Loading the announcement archive…</p>';
+    var list = boardArchive.list || [];
+    if (!list.length) return '<p class="empty">No announcements yet.</p>';
+    return '<h4 style="margin-top:14px;">Every announcement (' + list.length + ")</h4>" +
+      boardArchiveListHtml(list) +
+      (boardArchive.fellBack
+        ? '<p class="empty">Showing the announcements already loaded — the full archive needs a connection. Try again in a moment.</p>'
+        : "");
+  }
+
+  function paintBoardArchive() {
+    var box = document.getElementById("hubBoardArchive");
+    var btn = document.getElementById("hubBoardArchiveBtn");
+    if (btn) btn.hidden = boardArchive.open;
+    if (!box) return;
+    box.hidden = !boardArchive.open;
+    box.innerHTML = boardArchive.open ? boardArchiveInnerHtml() : "";
+  }
+
+  async function loadBoardArchive() {
+    boardArchive.open = true;
+    boardArchive.loading = true;
+    paintBoardArchive();
+    var list = null;
+    var client = window.__kosSb || null;
+    if (client) {
+      try {
+        var res = await client.rpc("list_board_announcements", { p_limit: 100 });
+        var data = (res && res.data) || {};
+        if (!res.error && data.ok && Array.isArray(data.messages)) list = data.messages;
+      } catch (e) { /* fall back below */ }
+    }
+    boardArchive.fellBack = !list;
+    boardArchive.list = list || state.announcements || [];
+    boardArchive.loading = false;
+    paintBoardArchive();
   }
 
   function hubAppName() {
@@ -897,6 +962,8 @@
     if (op) op.addEventListener("click", function () {
       if (window.kosOpenProfileStage) window.kosOpenProfileStage();
     });
+    var archBtn = document.getElementById("hubBoardArchiveBtn");
+    if (archBtn) archBtn.addEventListener("click", function () { loadBoardArchive(); });
     var openC = document.getElementById("hubOpenCraic");
     if (openC) openC.addEventListener("click", function () {
       if (typeof window.openGame === "function") window.openGame();
@@ -960,6 +1027,14 @@
   }
 
   var roleFixture = null;
+
+  /* Test fixture: inject announcements and re-render the Home tab, mirroring
+     __kosHubSetRole below. Lets the offline Playwright suite exercise the
+     Word from the Board card and its archive without a live database. */
+  window.__kosHubSetAnnouncements = function (list) {
+    state.announcements = Array.isArray(list) ? list : [];
+    renderHome();
+  };
 
   window.__kosHubSetRole = function (flags) {
     flags = flags || {};

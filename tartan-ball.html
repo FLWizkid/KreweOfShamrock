@@ -24,7 +24,7 @@
   "location": {
     "@type": "Place",
     "name": "Higgins Hall",
-    "address": { "@type": "PostalAddress", "addressLocality": "Tampa", "addressRegion": "FL", "addressCountry": "US" }
+    "address": { "@type": "PostalAddress", "streetAddress": "5225 N. Himes Ave.", "addressLocality": "Tampa", "addressRegion": "FL", "postalCode": "33614", "addressCountry": "US" }
   },
   "organizer": { "@type": "Organization", "name": "Krewe of Shamrock", "url": "https://krewe-of-shamrock.vercel.app/" },
   "offers": { "@type": "Offer", "url": "http://www.tampabaytartanball.com/home.html", "availability": "https://schema.org/InStock", "priceCurrency": "USD" }
@@ -47,6 +47,23 @@
   .ball-facts .fact h3{ margin:0 0 6px; color:var(--gold-light); font-family:var(--display); font-size:18px; letter-spacing:.5px; }
   .ball-facts .fact p{ margin:0; color:#f1ead4; font-size:16px; }
   @media (max-width:760px){ .ball-facts{ grid-template-columns:1fr; } }
+  /* Attend / Promote / Sponsor / Volunteer cards */
+  .ball-help{ display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr)); gap:20px; margin-top:10px; }
+  .ball-help .help{
+    background:rgba(255,255,255,.06); border:1px solid rgba(236,208,126,.45);
+    border-radius:14px; padding:22px 20px; display:flex; flex-direction:column; gap:10px; text-align:left;
+  }
+  .ball-help .help .ic{ font-size:30px; }
+  .ball-help .help h3{ margin:0; color:var(--gold-light); font-family:var(--display); font-size:19px; letter-spacing:.4px; }
+  .ball-help .help p{ margin:0; color:#f1ead4; font-size:15.5px; line-height:1.55; }
+  .ball-help .help .btn{ margin-top:auto; align-self:flex-start; }
+  .basket-social{
+    max-width:760px; margin:26px auto 0; background:rgba(255,255,255,.08);
+    border:1px solid rgba(236,208,126,.55); border-radius:14px; padding:22px 24px; text-align:center;
+  }
+  .basket-social h3{ margin:0 0 8px; color:var(--gold-light); font-family:var(--display); font-size:21px; }
+  .basket-social p{ color:#f1ead4; margin:0 0 10px; font-size:16px; line-height:1.55; }
+  .basket-social .new-date{ display:inline-block; background:#7a1f1f; color:#fff; border-radius:999px; padding:4px 14px; font-size:13px; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
 </style>
 </head>
 <body>
@@ -153,7 +170,7 @@
         <div class="fact">
           <span class="ic">📍</span>
           <h3>Where</h3>
-          <p>Higgins Hall<br>Tampa, Florida</p>
+          <p>Higgins Hall<br>5225 N. Himes Ave.<br>Tampa, FL 33614</p>
         </div>
         <div class="fact">
           <span class="ic">👑</span>
@@ -231,6 +248,65 @@
         <div class="framed ornate"><span class="crn tr"></span><span class="crn bl"></span>
           <img src="assets/img/ball-ballroom.jpg" alt="The grand ballroom set for the Tartan Ball, ready for its sponsors' moment" />
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW TO HELP -->
+  <section class="band band-green">
+    <div class="wrap">
+      <div class="section-title">
+        <h2 style="color:#fff;">Help Make the Ball a Success</h2>
+        <p class="sub">🍀 Attend. Promote. Sponsor. Volunteer. 🍀</p>
+      </div>
+      <div class="knot-divider"><span class="knot"></span></div>
+      <p style="color:#f1ead4;max-width:760px;margin:0 auto;text-align:center;font-size:17px;line-height:1.65;">
+        The Tartan Ball is one of the biggest events of our year, and its success depends on the
+        support and participation of every Krewe member. Here&rsquo;s how you can help.
+      </p>
+
+      <div class="ball-help">
+        <div class="help">
+          <span class="ic">🎟️</span>
+          <h3>Attend &amp; Bring Friends</h3>
+          <p>Purchase your tickets and plan to attend! Invite friends, family, coworkers, and
+             neighbors to join us for a great evening.</p>
+          <a class="btn btn-primary" href="http://www.tampabaytartanball.com/home.html" target="_blank" rel="noopener noreferrer">☘ Buy Tickets</a>
+        </div>
+        <div class="help">
+          <span class="ic">📣</span>
+          <h3>Promote the Ball</h3>
+          <p>Help us spread the word beyond the Krewe: share this page with friends, businesses,
+             and community contacts, and post about the Tartan Ball on social media. The more
+             people we reach, the more successful the evening will be.</p>
+        </div>
+        <div class="help">
+          <span class="ic">🤝</span>
+          <h3>Sponsor &amp; Donate</h3>
+          <p>Know a business, employer, or friend who might support the ball? Sponsorships start
+             at just $50 &mdash; the Irish dancers, the Moon Coin band, photography, the liquor
+             wagon, and corporate packages &mdash; and we&rsquo;re collecting 20+ bottles of
+             premium liquor to fill the wagon.</p>
+          <a class="btn btn-primary" href="tartan-ball-sponsors.html">☘ Sponsorship Opportunities</a>
+        </div>
+        <div class="help">
+          <span class="ic">🙋</span>
+          <h3>Volunteer</h3>
+          <p>We need plenty of helping hands before and during the ball: the sign-in table, event
+             setup, and the raffles. Whether you can help beforehand or on the night, every hand
+             is appreciated.</p>
+          <a class="btn btn-primary" href="mailto:secretary@kreweofshamrock.com?subject=Tartan%20Ball%20volunteer">☘ Volunteer to Help</a>
+        </div>
+      </div>
+
+      <div class="basket-social">
+        <span class="new-date">New date: October 3</span>
+        <h3>🧺 Join Us for the Basket Social</h3>
+        <p>Come help us put everything together! The Basket Social is a fun chance to socialize
+           with fellow Krewe members while preparing the raffle baskets for the big night.
+           <b>Now on Saturday, October 3, 2026.</b> RSVP details are in your krewe email and the
+           Member Hub.</p>
+        <a class="btn btn-primary" href="members.html">☘ Member Hub</a>
       </div>
     </div>
   </section>
