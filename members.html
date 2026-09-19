@@ -1334,7 +1334,8 @@
           const ey = head.querySelector(".eyebrow");
           const h1 = head.querySelector("h1");
           const sub = head.querySelector("p.sub");
-          if(ey) ey.textContent = "Céad míle fáilte";
+          /* English above, Irish below — "fáilte" appears once, in the greeting. */
+          if(ey) ey.textContent = "A hundred thousand welcomes";
           if(h1) h1.textContent = "Fáilte";
           /* The artwork says it all: no caption under the Fáilte greeting. */
           if(sub){ sub.textContent = ""; sub.style.display = "none"; }
