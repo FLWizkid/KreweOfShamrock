@@ -1427,7 +1427,9 @@
     card.innerHTML =
       '<div class="app-head"><span class="ic">🍀</span><div><h2>Claim Clovers</h2><small>Ask officers to credit an activity that is not auto-awarded</small></div></div>' +
       '<div class="app-body hub-claim" id="hubClaimBody"><p class="empty">Loading…</p></div>';
-    fun.insertBefore(card, fun.firstChild);
+    var cup = fun.querySelector(".game-head");
+    if (cup) fun.insertBefore(card, cup.nextSibling);
+    else fun.appendChild(card);
   }
 
   function claimOptionsHtml() {
