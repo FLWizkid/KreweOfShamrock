@@ -829,3 +829,17 @@ table{ max-width:100%; }
 
 /* Visible keyboard focus ring in crest navy. */
 .hub :focus-visible{ outline:3px solid var(--navy); outline-offset:3px; }
+
+/* Larger tap targets in the hub: members use it on phones at parades, so
+   every main button is at least 44px tall with 17px text. */
+.hub .btn{ min-height:44px; font-size:17px; display:inline-flex; align-items:center; justify-content:center; }
+.hub .hub-tabs button,
+.hub .game-tabs button,
+.hub .gn-step,
+.hub .game-exit,
+.hub .seg button,
+.hub .rpt-btn,
+.hub .hub-docs a{ min-height:44px; display:inline-flex; align-items:center; justify-content:center; box-sizing:border-box; }
+.hub .hub-tabs button{ font-size:17px; }
+.hub .modal-x{ width:44px; height:44px; flex:none; }
+.hub .hub-quest-card .btn,.hub .hub-quest-empty .btn{ min-height:44px; }
