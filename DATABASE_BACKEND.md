@@ -16,22 +16,25 @@ automatic web **API**. In plain terms:
   (an "API") so a website or app can read and write data without you writing any
   server code.
 
-The backend currently lives inside your existing Supabase project named
-**Tribe Test**. (A dedicated "Krewe of Shamrock" project could not be created
-because of an overdue invoice on the *Encountive* organization in your Supabase
-account. Once that invoice is settled, the tables here can be copied into a new
-dedicated project — the design is fully portable.)
+The backend lives in the dedicated **Krewe of Shamrock** Supabase project.
+(It originally started inside the old "Tribe Test" project; everything moved to
+the dedicated project on 2026-09-03. Any reference to Tribe Test is stale —
+ignore that project.)
 
-### Connection details
+### Connection details (updated 2026-09-19)
 
 | Item | Value |
 |------|-------|
-| Project | Tribe Test |
-| Project ref / ID | `njfzrnqwbnuhmopgpsud` |
-| API URL | `https://njfzrnqwbnuhmopgpsud.supabase.co` |
-| Publishable (client) key | `sb_publishable_uZB6_Cix3nh7Bl4AC1TUFA_nUbWHwzF` |
+| Project | Krewe of Shamrock |
+| Project ref / ID | `oazwkwflgbthojvnclfc` |
+| API URL | `https://oazwkwflgbthojvnclfc.supabase.co` |
+| Publishable (client) key | `sb_publishable_aMCyVxkiolMuBt9_R990CA_xQmXLaaS` |
 | Region | us-east-1 |
 | Postgres version | 17 |
+
+> The "four tables" below are the original core from the first setup. The
+> backend has grown far beyond them — see the dated sections at the end of
+> this document and the migrations in `sql/` for everything added since.
 
 > **About keys.** The *publishable key* above is safe to put in a website or mobile
 > app — it can only do what your security rules (below) allow. There is also a
@@ -158,7 +161,7 @@ data.
 
 ### Easiest: the Supabase Table Editor (no code)
 
-1. Go to <https://supabase.com> and open the **Tribe Test** project.
+1. Go to <https://supabase.com> and open the **Krewe of Shamrock** project.
 2. Click **Table Editor** in the left sidebar.
 3. You'll see `members`, `dues_payments`, `events`, and `event_signups`, already
    filled with a few sample rows. You can add, edit, and delete rows by hand here.
@@ -169,8 +172,8 @@ data.
 import { createClient } from '@supabase/supabase-js'
 
 const supabase = createClient(
-  'https://njfzrnqwbnuhmopgpsud.supabase.co',
-  'sb_publishable_uZB6_Cix3nh7Bl4AC1TUFA_nUbWHwzF'
+  'https://oazwkwflgbthojvnclfc.supabase.co',
+  'sb_publishable_aMCyVxkiolMuBt9_R990CA_xQmXLaaS'
 )
 
 // Get all active members
@@ -266,3 +269,19 @@ Migration: `sql/kos_attendance_qr_hours.sql` (QR_LIBRARY_BUILD_PLAN.md Phase 4).
 
 Frontend: members.html check-in flow (adds the "volunteer hours logged — pending review" note) and the
 📊 Live door count button on each meeting in the QR Code Studio (refreshes every 10 seconds; projector friendly).
+
+## Check-in engine export completed (2026-09-19)
+
+With the Supabase connection in place, the entire Parade Ready / check-in engine was
+exported verbatim from the live database into `sql/kos_checkin_engine_export.sql`:
+the `waivers`, `volunteer_hours`, `dues_payments`, and `meeting_checkin_codes` tables
+(real columns, constraints, indexes, row-level-security policies), the helper
+functions (`kos_current_member_id`, `krewe_volunteer_season_year`, `is_krewe_officer`,
+`can_manage_events`), the engine functions (`meeting_check_in`,
+`officer_enable_checkin`, `officer_upsert_meeting`, `officer_review_hours`), and the
+`v_parade_ready` view. The whole backend is now reconstructable from `sql/` alone.
+
+Same day, the three previously "run manually" migrations were found missing from the
+live database (the paste-runs never took) and were applied through the connection's
+migration mechanism, then verified present: `kos_qr_registry`,
+`kos_attendance_qr_hours`, `kos_profile_name_not_email`.
