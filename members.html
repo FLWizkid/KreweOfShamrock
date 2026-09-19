@@ -2656,10 +2656,17 @@
       box.innerHTML=html;
     }
 
-    /* ---- Find My Clovers: search by NAME, open a full season card ---- */
+    /* ---- Find My Clovers: the signed-in member's own card opens
+           automatically; the name search stays for looking up krewe-mates ---- */
     function renderFind(){
       const box=document.getElementById("gameBody");
-      box.innerHTML=`<p style="margin:0 0 12px;color:#3a3a2e;">Type a member's <b>name</b> - yours or a krewe-mate's - to see Clovers, rank, badges, and this season's events: every RSVP, ticket, and attendance since <b>July 1</b>.</p>
+      const me=window.kosProfile||{};
+      const myName=`${me.first_name||""} ${me.last_name||""}`.trim();
+      const autoOpen=!!me.member_id;
+      const intro = autoOpen
+        ? `Here's <b>your</b> card - Clovers, rank, badges, and this season's events: every RSVP, ticket, and attendance since <b>July 1</b>. Curious about a krewe-mate? Type their <b>name</b> below to see their card too.`
+        : `Type a member's <b>name</b> - yours or a krewe-mate's - to see Clovers, rank, badges, and this season's events: every RSVP, ticket, and attendance since <b>July 1</b>.`;
+      box.innerHTML=`<p style="margin:0 0 12px;color:#3a3a2e;">${intro}</p>
         <form id="findForm" class="krewe-form" style="max-width:460px;">
           <label for="findName">Member name</label>
           <input id="findName" type="text" maxlength="80" placeholder="e.g. Melissa, or Tully" autocomplete="off" />
@@ -2694,6 +2701,17 @@
           b.addEventListener("click",()=>loadFindCard(b.getAttribute("data-mid")));
         });
       });
+      /* The member is already signed in, so their card opens on its own -
+         no typing needed. Roster-matched profiles carry a member_id and jump
+         straight to the card; otherwise fall back to searching their name. */
+      if(autoOpen){
+        loadFindCard(me.member_id);
+      }else if(myName.length>=2){
+        document.getElementById("findName").value=myName;
+        const f=document.getElementById("findForm");
+        if(f.requestSubmit) f.requestSubmit();
+        else f.dispatchEvent(new Event("submit",{cancelable:true}));
+      }
     }
 
     function cupMoney(cents){ return (cents==null||isNaN(Number(cents))) ? null : "$"+(Number(cents)/100).toFixed(2); }
