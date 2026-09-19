@@ -316,7 +316,7 @@ Each phase deploys on its own and leaves the site working. Follow the repo's
 deploy rule: push to `main` → Vercel Production; after Hub JS changes, bump the
 `members-desk.js?v=…` cache-buster in `krewe.js`.
 
-### Phase 1 — Backend foundation (one SQL migration)
+### Phase 1 — Backend foundation (one SQL migration) — ✅ DONE 2026-09-19
 - Migration `sql/kos_document_library.sql`: the `documents` table,
   `document_discoveries` table, RLS policies, the officer RPCs, the
   `discover_document` RPC, the `krewe-documents` bucket and its Storage
@@ -326,6 +326,13 @@ deploy rule: push to `main` → Vercel Production; after Hub JS changes, bump th
   established habit from the 2026-09-08 hardening).
 - **Done when:** an officer account can list all rows from the SQL editor; a
   member account sees only published, non-surprise rows.
+- **Completed 2026-09-19.** Applied as migrations `kos_document_library` and
+  `kos_document_library_searchpath_fix`. Verified: 8 seed rows present
+  (5 governing published, 3 surprises unpublished), bucket private, RLS
+  policies read exactly as designed, anon cannot execute any new RPC, and
+  the security advisors show no new findings beyond the project's accepted
+  "authenticated can call SECURITY DEFINER RPCs" pattern (bodies gate with
+  `is_krewe_officer()`).
 
 ### Phase 2 — Member library UI
 - Grow the `#docs` card in `assets/members-desk.js` (or a new
