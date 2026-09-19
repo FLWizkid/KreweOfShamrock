@@ -16,7 +16,7 @@ const ANNOUNCEMENTS = [
   {
     id: "a2",
     subject: "Basket Social moved to October 3",
-    body_html: "<p>New date! RSVP on Punchbowl.</p>",
+    body_html: "<p>New date! RSVP details are in your krewe email.</p>",
     created_at: "2026-09-10T18:30:00Z",
     sender_name: "Melissa Tully"
   },
