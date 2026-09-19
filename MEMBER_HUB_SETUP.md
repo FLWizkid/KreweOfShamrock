@@ -58,7 +58,8 @@ Official routing lives in `CONTACT_EMAILS.md` (the single source of truth):
   'social' / 'ball' event types, and the fall 2026 event dates from the
   August general meeting.
 - Public events now live: Mini Golf and Lunch (Sep 19), Tartan Ball
-  Basket-Making Happy Hour (Oct 17), Tartan Ball (Oct 24, Higgins Hall).
+  Basket Social (moved from Oct 17 to Oct 3 with Punchbowl RSVPs —
+  `sql/kos_basket_social_oct3.sql`), Tartan Ball (Oct 24, Higgins Hall).
   King and Queen Breakfast is seeded with `is_public = false` until a date
   is announced — flip that flag in the Table Editor to publish it.
 

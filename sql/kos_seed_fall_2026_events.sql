@@ -17,17 +17,23 @@ WHERE NOT EXISTS (
   WHERE name = 'Mini Golf and Lunch' AND start_time::date = DATE '2026-09-19'
 );
 
-INSERT INTO public.events (name, event_type, start_time, location, is_public, notes)
+-- Basket Social (formerly "Basket-Making Happy Hour", Oct 17): moved to
+-- October 3 with Punchbowl RSVPs — see sql/kos_basket_social_oct3.sql.
+-- The guard matches ANY basket-prep event so re-running this seed can never
+-- re-create the retired October 17 row alongside the moved one.
+INSERT INTO public.events (name, event_type, start_time, location, is_public, external_url, notes)
 SELECT
-  'Tartan Ball Basket-Making Happy Hour',
+  'Tartan Ball Basket Social',
   'social',
-  '2026-10-17 18:00:00-04',
+  '2026-10-03 18:00:00-04',
   'TBA',
   true,
-  'Prep baskets for the Tartan Ball raffle. Time is a placeholder until Social and Charity confirm the hour.'
+  'https://www.punchbowl.com/parties/BasketFullofLaughs2026',
+  'Socialize with fellow Krewe members while preparing raffle baskets for the Tartan Ball. RSVP and event details on Punchbowl.'
 WHERE NOT EXISTS (
   SELECT 1 FROM public.events
-  WHERE name ILIKE '%Basket-Making%' AND start_time::date = DATE '2026-10-17'
+  WHERE name ILIKE '%Basket%'
+    AND start_time::date IN (DATE '2026-10-03', DATE '2026-10-17')
 );
 
 INSERT INTO public.events (name, event_type, start_time, location, is_public, notes)
