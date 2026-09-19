@@ -334,7 +334,7 @@ deploy rule: push to `main` → Vercel Production; after Hub JS changes, bump th
   "authenticated can call SECURITY DEFINER RPCs" pattern (bodies gate with
   `is_krewe_officer()`).
 
-### Phase 2 — Member library UI
+### Phase 2 — Member library UI — ✅ DONE 2026-09-19
 - Grow the `#docs` card in `assets/members-desk.js` (or a new
   `assets/kos-doc-library.js` loaded the same way the other `kos-*.js` helpers
   are) to render categories from the `documents` table, with Open / Download /
@@ -343,6 +343,16 @@ deploy rule: push to `main` → Vercel Production; after Hub JS changes, bump th
   point at the same rows.
 - **Done when:** a member on a phone can open, download, and print a seeded
   governing document.
+- **Completed 2026-09-19.** Built as `assets/kos-doc-library.js` (loaded from
+  `members.html` with its own cache-bust version). Renders categories from the
+  `documents` table into the existing `#docs` card; Open / Download (signed
+  URL) / Print actions; the decided rumor line renders at the card's foot; the
+  static pills remain as the fallback whenever the query returns nothing
+  (signed out, or any error). All eight `assets/docs/*.html` pages gained a
+  `?print=1` auto-print hook so the library's Print button really prints.
+  Verified headless: signed-out fallback intact with zero script errors, and
+  a stubbed signed-in render showing categories, draft chips (officers),
+  download-for-files-only, escaped titles, and formatted sizes.
 
 ### Phase 3 — Officer Document Studio
 - New `assets/kos-doc-studio.js` on the Officer desk: upload, edit, publish,
