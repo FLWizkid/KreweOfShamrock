@@ -73,7 +73,16 @@
     ".hub-find{margin-top:14px;background:#fff;border:1px solid rgba(168,128,28,.28);border-radius:16px;padding:14px 16px;}",
     ".hub-find h3{font-family:var(--display);color:var(--green-800);margin:0 0 10px;font-size:19px;}",
     ".hub-find-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;}",
-    ".hub-find .hub-action{width:100%;}",
+    ".hub-find .hub-action{width:100%;display:flex;align-items:flex-start;gap:12px;}",
+    ".hub-find h3{display:flex;align-items:center;gap:9px;}",
+    ".hub-find h3 .qk-ic{width:32px;height:32px;}",
+    ".hub-find h3 .qk-ic svg{width:20px;height:20px;}",
+    ".hub-find-sub{margin:-4px 0 12px;font-size:15px;color:var(--muted);}",
+    ".qk-ic{flex:none;width:42px;height:42px;border-radius:50%;background:#f4ecd6;border:1px solid rgba(168,128,28,.45);color:var(--green-800);display:inline-flex;align-items:center;justify-content:center;}",
+    ".qk-ic svg{width:24px;height:24px;display:block;}",
+    ".hub-find button.hub-action:hover .qk-ic{background:var(--green-800);border-color:var(--green-800);color:#f0d78c;}",
+    ".qk-copy{flex:1;min-width:0;display:block;}",
+    ".qk-copy > span{display:block;}",
     ".hub-officer-card{margin-top:16px;background:linear-gradient(145deg,#fff4c2 0%,#f0d078 38%,#d4a017 100%);color:#14532d;border-radius:20px;padding:22px 24px;display:flex;flex-direction:column;gap:14px;cursor:pointer;border:2px solid #a67c00;box-shadow:0 6px 18px rgba(166,124,0,.22);}",
     ".hub-officer-card:hover{filter:brightness(1.03);}",
     ".hub-officer-card .go{margin-left:auto;color:#7a5b00;font-family:var(--display);}",
@@ -267,6 +276,9 @@
     ".hub-action{width:100%;text-align:left;background:#fffdf4;border:1px solid rgba(168,128,28,.35);border-radius:14px;padding:14px 16px;cursor:pointer;font:inherit;min-height:56px;}",
     ".hub-action b{font-size:17px;margin-bottom:4px;}",
     ".hub-action span{font-size:15px;}",
+    ".qk-ic{width:40px;height:40px;}",
+    ".qk-ic svg{width:22px;height:22px;}",
+    ".hub-find h3 .qk-ic{width:30px;height:30px;}",
     /* Officer desk calm */
     ".hub-officer-hero{background:#fbf7ec;border:0;border-radius:16px;padding:16px 16px 14px;margin:0 0 14px;}",
     ".hub-officer-hero h2{font-size:24px;margin:0 0 6px;}",
@@ -730,6 +742,32 @@
       "</section>";
   }
 
+  /* Little Celtic line icons for the Quick links tiles. Stroke-only SVGs in
+     currentColor so the disc can invert to green-on-gold on hover. */
+  var QK_ICONS = {
+    // Trinity knot (three interlaced rings) - the krewe, together.
+    trinity: '<circle cx="12" cy="8.6" r="4.6"/><circle cx="8.2" cy="15.2" r="4.6"/><circle cx="15.8" cy="15.2" r="4.6"/>',
+    // Irish harp - music, gatherings, events.
+    harp: '<path d="M6.5 3.5c7.2.3 11 4.5 11 11.2v5.8"/><path d="M6.5 3.5v17"/><path d="M6.5 20.5h11"/><path d="M9.6 8.2v12.3"/><path d="M12.6 10.4v10.1"/><path d="M15 13.2v7.3"/>',
+    // Celtic shield - Parade Ready, waiver, dues: your standing, protected.
+    shield: '<path d="M12 3l7 2.8v5.4c0 4.9-2.9 8-7 9.8-4.1-1.8-7-4.9-7-9.8V5.8Z"/><path d="M12 7.5v7"/><path d="M8.5 11h7"/>',
+    // Chalice - the Craic Cup itself.
+    chalice: '<path d="M7 4h10v3.5a5 5 0 0 1-10 0Z"/><path d="M7 5H4.5a3.2 3.2 0 0 0 3.1 3.8"/><path d="M17 5h2.5a3.2 3.2 0 0 1-3.1 3.8"/><path d="M12 12.5V17"/><path d="M8 20h8"/><path d="M9.5 17h5"/>',
+    // Celtic high cross - the official governing documents.
+    cross: '<circle cx="12" cy="9.5" r="4.2"/><path d="M12 3v18"/><path d="M5.5 9.5h13"/><path d="M9 20.5h6"/>',
+    // Quill - officers writing the calendar.
+    quill: '<path d="M19.5 4.5c-5.5.2-9.6 3-11.6 8.2L6.2 17l4.2-1.7c5.2-2 8-6.1 8.2-11.6Z"/><path d="M5 19.5 12.5 12"/>',
+    // Shamrock for the card heading.
+    shamrock: '<circle cx="12" cy="7.4" r="3.2"/><circle cx="7.9" cy="12.8" r="3.2"/><circle cx="16.1" cy="12.8" r="3.2"/><path d="M12 13c.3 3.2-.5 5.6-2.6 7.5"/>'
+  };
+
+  function qkIcon(name) {
+    return '<span class="qk-ic" aria-hidden="true">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">' +
+      (QK_ICONS[name] || QK_ICONS.shamrock) +
+      "</svg></span>";
+  }
+
   function softMemberDeskHtml() {
     var me = state.parade;
     var needsProfile = !!(window.kosNeedsProfile);
@@ -804,20 +842,32 @@
         '<li>Reports, QR tools, and messages</li>' +
         '</ul></div></div>'
       : "";
+    function quickTile(goto, icon, title, sub) {
+      return '<button type="button" class="hub-action" data-hub-goto="' + goto + '">' +
+        qkIcon(icon) +
+        '<span class="qk-copy"><b>' + title + "</b><span>" + sub + "</span></span>" +
+        "</button>";
+    }
     var findCards =
       '<div class="hub-find">' +
-      '<h3>Quick links</h3>' +
+      '<h3>' + qkIcon("shamrock") + 'Quick links</h3>' +
+      '<p class="hub-find-sub">Tap a tile to jump straight there.</p>' +
       '<div class="hub-find-grid">' +
-      '<button type="button" class="hub-action" data-hub-goto="directory"><b>My Krewe</b><span>Your member directory - faces and profiles of the whole krewe.</span></button>' +
+      quickTile("directory", "trinity", "My Krewe", "Your member directory - faces and profiles of the whole krewe.") +
+      quickTile("events", "harp", "Events &amp; RSVPs", "See what's coming up and RSVP. Attendance feeds Parade Ready.") +
+      quickTile("desk", "shield", "Member desk", "Parade Ready, waiver, dues, and your volunteer hours.") +
+      quickTile("fun", "chalice", "Craic Cup", "Claim clovers, check the leaderboard, and join the fun.") +
       '<div class="hub-action" id="docsHome" style="cursor:default">' +
+      qkIcon("cross") +
+      '<div class="qk-copy">' +
       '<b><a href="#docs">Documents</a></b>' +
       '<span>Governing documents for members and officers. Open bylaws and the Code of Conduct in-Hub.</span>' +
       hubDocsPillsHtml("margin-top:10px;") +
       '<p style="margin:10px 0 0;"><a href="#docs">All Documents</a></p>' +
       '<p style="margin:10px 0 0;"><button type="button" class="btn" data-hub-goto="docs">Open Documents card</button></p>' +
-      "</div>" +
+      "</div></div>" +
       ((state.officer || state.canManageEvents)
-        ? '<button type="button" class="hub-action" data-hub-goto="event-studio"><b>Add or edit events &amp; calendar</b><span>Open Event Studio to change dates (Basket Social and more) without a developer.</span></button>'
+        ? quickTile("event-studio", "quill", "Add or edit events &amp; calendar", "Open Event Studio to change dates (Basket Social and more) without a developer.")
         : '') +
       '</div></div>';
     // Only refresh the welcome strip - never wipe the beautiful card grid below.
@@ -840,6 +890,9 @@
         if (go === "directory") openDirectoryFromHome();
         else if (go === "event-studio") openEventStudioFromHome();
         else if (go === "docs") revealDocsCard();
+        else if (go === "events") gotoHubTabFromHome("events", "events");
+        else if (go === "desk") gotoHubTabFromHome("parade", "desk");
+        else if (go === "fun") gotoHubTabFromHome("fun", "fun");
       });
     });
     var op = document.getElementById("hubOpenProfile");
@@ -872,6 +925,11 @@
     try { focusEl.focus({ preventScroll: true }); } catch (fe) {
       try { focusEl.focus(); } catch (fe2) {}
     }
+  }
+
+  function gotoHubTabFromHome(tab, hash) {
+    try { history.replaceState(null, "", location.pathname + "#" + hash); } catch (e) {}
+    showTab(tab);
   }
 
   function revealDocsCard() {
