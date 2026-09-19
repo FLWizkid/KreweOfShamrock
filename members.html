@@ -566,6 +566,20 @@
   #lepOverlay .lep-burst{position:absolute;inset:auto;pointer-events:none;font-size:22px;animation:lepSpark 1.2s ease-out both;}
   @keyframes lepSpring{0%{transform:translateY(120px) scale(.4) rotate(-12deg);opacity:0;}60%{transform:translateY(-18px) scale(1.08) rotate(4deg);opacity:1;}100%{transform:translateY(0) scale(1) rotate(0);opacity:1;}}
   @keyframes lepSpark{0%{transform:scale(.2);opacity:0;}40%{opacity:1;}100%{transform:scale(1.4);opacity:0;}}
+  /* Painted leprechaun medallion (same artwork as the Fáilte hero and the
+     sign-in door): the art is landscape, so circle-crop it toward his face
+     and raised hand instead of squashing it. */
+  img.lep-medallion{
+    border-radius:50%; box-shadow:0 0 0 5px #3a2712, 0 0 0 8px #8a8d80; background:#fff;
+    aspect-ratio:1; height:auto; object-fit:cover; object-position:50% 24%;
+    width:96px; margin-left:auto; margin-right:auto;
+  }
+  #profileStage .gate-card img.lep-medallion{ width:96px; }
+  #lepOverlay .lep-sprite img.lep-medallion{ width:110px; }
+  @media (max-width:480px){
+    #profileStage .gate-card img.lep-medallion{ width:72px; }
+    #lepOverlay .lep-sprite img.lep-medallion{ width:88px; }
+  }
   #lepOverlay h2{font-family:var(--display);color:var(--green-800);margin:8px 0 6px;font-size:28px;}
   #lepOverlay .lep-body{text-align:left;color:#3a3a2e;font-size:15px;line-height:1.5;margin:0 0 14px;}
   #lepOverlay .lep-body b{color:var(--green-800);}
@@ -808,7 +822,7 @@
   <!-- PROFILE STAGE (light Craic welcome) -->
   <div class="gate" id="profileStage" style="display:none;">
     <div class="gate-card" style="max-width:480px;">
-      <img src="assets/img/emblem-shamrock.png" alt="Krewe of Shamrock emblem" />
+      <img class="lep-medallion" src="assets/img/leprechaun-failte.jpg" alt="A leprechaun waves you in" />
       <h1>Welcome to our Krewe Digital Home</h1>
       <p style="margin:0 0 6px;"><b>This is the Craic Cup</b>. Our kindly competitive game of showing up. Earn Clovers, climb the ranks, collect badges, and chase your friends up the ladder (with a smile). First, let’s get your face in the game.</p>
       <form id="profileForm" class="krewe-form" style="text-align:left;">
@@ -1183,7 +1197,7 @@
         <span class="lep-burst" style="left:18%;top:8px;">✨</span>
         <span class="lep-burst" style="right:20%;top:0;animation-delay:.15s;">☘️</span>
         <span class="lep-burst" style="left:48%;top:-4px;animation-delay:.28s;">✨</span>
-        <div class="lep-sprite" aria-hidden="true" title="Krewe leprechaun">🎩☘️</div>
+        <div class="lep-sprite" aria-hidden="true" title="Krewe leprechaun"><img class="lep-medallion" src="assets/img/leprechaun-failte.jpg" alt="" /></div>
       </div>
       <h2>Fáilte, new friend!</h2>
       <div class="lep-body" id="lepBody"></div>
