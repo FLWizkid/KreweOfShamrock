@@ -354,11 +354,19 @@ deploy rule: push to `main` → Vercel Production; after Hub JS changes, bump th
   a stubbed signed-in render showing categories, draft chips (officers),
   download-for-files-only, escaped titles, and formatted sizes.
 
-### Phase 3 — Officer Document Studio
+### Phase 3 — Officer Document Studio — ✅ DONE 2026-09-19
 - New `assets/kos-doc-studio.js` on the Officer desk: upload, edit, publish,
   replace, retire, surprise toggle + slug + copyable egg link.
 - **Done when:** an officer uploads a PDF end-to-end and a member can download
   it, with no code changes involved.
+- **Completed 2026-09-19.** Built as `assets/kos-doc-studio.js`, registered as
+  the "Document Studio" tool (📜, its own Documents section) in the Officer
+  desk launcher via `members-desk.js`. Upload to the private bucket with type
+  and 20 MB guards, publish/unpublish, edit, replace-file (old file tidied
+  up), delete with confirmation, easter-egg toggle with slug validation and a
+  copyable egg link. Verified headless with a stubbed officer session (list
+  badges, both validation errors, correct RPC parameters on save and on the
+  publish toggle) and signed-out (no studio card, zero script errors).
 
 ### Phase 4 — The two calendars
 - Build `assets/docs/tampa-bay-parades.html` and

@@ -2738,6 +2738,7 @@
     "hubEventStudio",
     "hubShopStudio",
     "hubQrStudio",
+    "hubDocStudio",
     "hubReports",
     "hubAllKrewe",
     "hubEmailMembers",
@@ -2750,6 +2751,7 @@
     hubEventStudio: { title: "Event Studio", desc: "Add or edit events, RSVP QR, door check-in", icon: "📅", section: "Events" },
     hubShopStudio: { title: "Shop Studio", desc: "Products, Zeffy links, shop QR", icon: "🛍️", section: "Shop" },
     hubQrStudio: { title: "QR Code Studio", desc: "Meeting check-in and handy link QRs", icon: "📱", section: "Events" },
+    hubDocStudio: { title: "Document Studio", desc: "Upload, publish, and hide library documents", icon: "📜", section: "Documents" },
     hubReports: { title: "Reports", desc: "Attendance, fundraising, and live event numbers", icon: "📊", section: "Reports" },
     hubAllKrewe: { title: "All Krewe Messages", desc: "Email the full membership", icon: "✉️", section: "Reports" },
     hubEmailMembers: { title: "Email members", desc: "Choose audience, write, preview, and send", icon: "✉️", section: "Email & invoices" },
@@ -2759,6 +2761,7 @@
   var OFFICER_SECTION_ORDER = [
     "Events",
     "Approvals",
+    "Documents",
     "Shop",
     "Money",
     "Email & invoices",
