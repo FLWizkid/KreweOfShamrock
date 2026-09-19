@@ -130,8 +130,8 @@
     .gate-card p{ font-size:15.5px; margin:0 0 8px; line-height:1.35; }
     .gate-card input, .gate-card textarea{ padding:9px 12px; }
     #authPanelSignin form input[type="password"]{ margin-top:7px !important; }
-    #authPanelSignin form .btn, #authPanelCreate form .btn, #authPanelForgot form .btn{ margin-top:8px !important; }
-    #authPanelSignin > p[style], #authPanelCreate > p[style], #authPanelForgot > p[style]{ margin-top:8px !important; font-size:15px !important; }
+    #authPanelSignin form .btn, #authPanelReset form .btn{ margin-top:8px !important; }
+    #authPanelSignin > p[style], #authPanelReset > p[style]{ margin-top:8px !important; font-size:15px !important; }
     .gate-card .err{ min-height:12px; margin-top:4px; font-size:15px; }
     .castle-guide{ margin-top:8px; border-radius:11px; }
     .castle-guide summary{ padding:9px 12px; font-size:15px; gap:8px; }
@@ -728,43 +728,28 @@
 
       <!-- Sign in -->
       <div id="authPanelSignin">
-        <p>Fáilte! Use the email on the krewe roster. Old Wild Apricot passwords do not work here.</p>
-        <p style="font-size:15px;line-height:1.4;">If you are on the roster and never set a Hub password, we email a setup link. If you already have one, enter it below and sign in.</p>
+        <p>Fáilte! Sign in with the email on the krewe roster. Old Wild Apricot passwords do not work here.</p>
         <form id="signinForm">
           <input id="siEmail" type="email" placeholder="Email on the krewe roster" autocomplete="email" required />
-          <input id="siPassword" type="password" placeholder="Hub password (if you already have one)" autocomplete="current-password" style="margin-top:10px;" />
-          <button class="btn btn-primary" type="submit" style="width:100%;margin-top:12px;">☘ Continue</button>
+          <input id="siPassword" type="password" placeholder="Hub password" autocomplete="current-password" style="margin-top:10px;" />
+          <button class="btn btn-primary" type="submit" style="width:100%;margin-top:12px;">☘ Sign in</button>
           <div class="err" id="signinMsg"></div>
         </form>
         <p style="margin-top:12px;">
-          <button type="button" class="btn" id="showCreateBtn" style="width:100%;">☘ Create your password</button>
-        </p>
-        <p style="margin-top:10px;font-size:14px;">
-          <a href="#" id="showForgot">Forgot your password?</a> ·
-          <a href="#" id="showCreate">Create your password</a>
+          <button type="button" class="btn" id="showResetBtn" style="width:100%;">☘ Create or reset your password</button>
         </p>
       </div>
 
-      <!-- Create password (first-time / invited members) -->
-      <div id="authPanelCreate" style="display:none;">
-        <p>New to the Member Hub, or never set a password? Enter the email on the member roster. If you are on the list, we will email a first-login link. If you are not, the door will say so.</p>
-        <form id="createForm">
-          <input id="cpEmail2" type="email" placeholder="you@example.com" autocomplete="email" required />
-          <button class="btn btn-primary" type="submit" style="width:100%;margin-top:12px;">☘ Email me a link to create a password</button>
-          <div class="err" id="createMsg"></div>
+      <!-- Create or reset a password: one email field, one emailed link, both cases -->
+      <div id="authPanelReset" style="display:none;">
+        <p>Enter the email on the member roster and we will email you a secure link. The same link works whether you are creating your first password or resetting one you forgot.</p>
+        <form id="resetForm">
+          <input id="rpEmail" type="email" placeholder="Email on the krewe roster" autocomplete="email" required />
+          <button class="btn btn-primary" type="submit" style="width:100%;margin-top:12px;">☘ Email me a password link</button>
+          <div class="err" id="resetMsg"></div>
         </form>
-        <p style="margin-top:14px;font-size:14px;"><a href="#" id="backFromCreate">← Back to sign in</a></p>
-      </div>
-
-      <!-- Forgot password -->
-      <div id="authPanelForgot" style="display:none;">
-        <p>Enter the email on the member roster. If you already have a Hub login, we send a reset link. If you are on the list but never set a password, we send a first-login link. If you are not on the list, the door will say so.</p>
-        <form id="forgotForm">
-          <input id="fpEmail" type="email" placeholder="you@example.com" autocomplete="email" required />
-          <button class="btn btn-primary" type="submit" style="width:100%;margin-top:12px;">☘ Email me a reset link</button>
-          <div class="err" id="forgotMsg"></div>
-        </form>
-        <p style="margin-top:14px;font-size:14px;"><a href="#" id="backFromForgot">← Back to sign in</a></p>
+        <p style="margin-top:10px;font-size:14px;">Open the link on this device, then choose a password of at least 8 characters.</p>
+        <p style="margin-top:14px;font-size:14px;"><a href="#" id="backFromReset">← Back to sign in</a></p>
       </div>
 
       <details class="castle-guide" id="castleGuide">
@@ -780,9 +765,9 @@
           <div class="guide-step">
             <span class="num" aria-hidden="true">2</span>
             <div>
-              <h3>Forge your key (set a password)</h3>
-              <p>Use the gold button below with the email on the member roster. If you are on the list, we email a first-login link. If that address is not on the roster, the door will say so. Then click the link on this device and choose a password of at least 8 characters.</p>
-              <button type="button" class="guide-cta" id="guideCreateBtn">☘ Email me a link to create my password</button>
+              <h3>Get your password link</h3>
+              <p>Tap the gold button below and enter the email on the member roster. We email you one link that works for both creating your first password and resetting a forgotten one. If that address is not on the roster, the door will say so. Open the link on this device and choose a password of at least 8 characters.</p>
+              <button type="button" class="guide-cta" id="guideResetBtn">☘ Email me a password link</button>
             </div>
           </div>
           <div class="guide-step">
@@ -813,7 +798,7 @@
     <div class="gate-card" style="max-width:400px;">
       <img src="assets/img/emblem-shamrock.png" alt="Krewe of Shamrock emblem" />
       <h1>Choose your password</h1>
-      <p>Set a password for your account. You'll use it to sign in next time.</p>
+      <p>Use at least 8 characters. A longer passphrase — a few words strung together — is easy to remember and hard to guess. You will use it to sign in next time.</p>
       <form id="setPasswordForm">
         <input id="newPassword" type="password" placeholder="New password" autocomplete="new-password" minlength="8" required />
         <button class="btn btn-primary" type="submit" style="width:100%;margin-top:12px;">☘ Save password &amp; continue</button>
@@ -2804,8 +2789,7 @@
     }
     function showAuthPanel(which){
       document.getElementById("authPanelSignin").style.display = which==="signin" ? "block":"none";
-      document.getElementById("authPanelCreate").style.display = which==="create" ? "block":"none";
-      document.getElementById("authPanelForgot").style.display = which==="forgot" ? "block":"none";
+      document.getElementById("authPanelReset").style.display = which==="reset" ? "block":"none";
     }
     async function route(){
       if(awaitingNewPassword){ showStage("setpassword"); return; }
@@ -2903,22 +2887,22 @@
         msg.textContent=door.message; return;
       }
       if(door.status==="needs_invite"){
-        await requestPasswordMail(email, msg, "signin", door);
+        await requestPasswordMail(email, msg, door);
         return;
       }
       if(!password){
-        msg.textContent="You're on the roster and already have a Hub login. Enter your Hub password, or tap Forgot your password.";
+        msg.textContent="You're on the roster and already have a Hub login. Enter your Hub password, or tap Create or reset your password to get a link.";
         return;
       }
       msg.textContent="Signing in…";
       const { error } = await sb.auth.signInWithPassword({ email, password });
       if(error){
-        msg.textContent="That password isn't right. Old Wild Apricot passwords do not work here. Tap Forgot your password if you need a reset.";
+        msg.textContent="That password isn't right. Old Wild Apricot passwords do not work here. Tap Create or reset your password to get a fresh link.";
         return;
       }
       msg.textContent="";
     });
-    async function requestPasswordMail(email, msg, kind, doorHint){
+    async function requestPasswordMail(email, msg, doorHint){
       if(!email){ msg.style.color=""; msg.textContent="Please enter your email."; return; }
       msg.style.color=""; msg.textContent="Checking the member list…";
       var door = doorHint || null;
@@ -2933,7 +2917,7 @@
         msg.textContent=door.message; return;
       }
       if(door.status==="needs_invite"){
-        msg.textContent="You're on the roster. Sending a first-login link…";
+        msg.textContent="You're on the roster. Sending your password link…";
         try{
           const res = await fetch("https://oazwkwflgbthojvnclfc.supabase.co/functions/v1/hub-password-mail", {
             method: "POST",
@@ -2945,17 +2929,17 @@
             const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname });
             if(error){ msg.textContent="Couldn't send the link: "+error.message; return; }
             msg.style.color="#14532d";
-            msg.textContent="Check that inbox for a password link, then click it on this device.";
+            msg.textContent="Check that inbox for your password link, then click it on this device.";
             return;
           }
           if(!res.ok || !body.ok){
-            msg.textContent=body.message || "You're on the roster, but the invite did not send. Write digital@kreweofshamrock.com.";
+            msg.textContent=body.message || "You're on the roster, but the link did not send. Write digital@kreweofshamrock.com.";
             return;
           }
           msg.style.color="#14532d";
-          msg.textContent="You're on the roster. We emailed a first-login link to create your password. Check that inbox (and spam), then click it on this device.";
+          msg.textContent="We emailed your password link. Check that inbox (and spam), then click it on this device.";
         }catch(err){
-          msg.textContent="You're on the roster, but the invite did not send. Write digital@kreweofshamrock.com.";
+          msg.textContent="You're on the roster, but the link did not send. Write digital@kreweofshamrock.com.";
         }
         return;
       }
@@ -2963,17 +2947,11 @@
       const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname });
       if(error){ msg.textContent="Couldn't send the link: "+error.message; return; }
       msg.style.color="#14532d";
-      msg.textContent = kind==="create"
-        ? "Check that inbox for a link to create your password, then click it on this device."
-        : "Check that inbox for a password reset link, then click it on this device.";
+      msg.textContent="We emailed your password link. Check that inbox (and spam), then click it on this device.";
     }
-    document.getElementById("createForm").addEventListener("submit", async (e)=>{
+    document.getElementById("resetForm").addEventListener("submit", async (e)=>{
       e.preventDefault();
-      await requestPasswordMail(document.getElementById("cpEmail2").value.trim(), document.getElementById("createMsg"), "create");
-    });
-    document.getElementById("forgotForm").addEventListener("submit", async (e)=>{
-      e.preventDefault();
-      await requestPasswordMail(document.getElementById("fpEmail").value.trim(), document.getElementById("forgotMsg"), "forgot");
+      await requestPasswordMail(document.getElementById("rpEmail").value.trim(), document.getElementById("resetMsg"));
     });
     document.getElementById("setPasswordForm").addEventListener("submit", async (e)=>{
       e.preventDefault();
@@ -2986,21 +2964,19 @@
       awaitingNewPassword=false;
       await route();
     });
-    document.getElementById("showForgot").addEventListener("click",(e)=>{ e.preventDefault(); showAuthPanel("forgot"); });
-    document.getElementById("showCreate").addEventListener("click",(e)=>{ e.preventDefault(); showAuthPanel("create"); });
-    document.getElementById("showCreateBtn").addEventListener("click",()=>{
+    document.getElementById("showResetBtn").addEventListener("click",()=>{
       var em=document.getElementById("siEmail");
-      var dest=document.getElementById("cpEmail2");
+      var dest=document.getElementById("rpEmail");
       if(dest && em && em.value) dest.value=em.value;
-      showAuthPanel("create");
+      showAuthPanel("reset");
+      if(dest) dest.focus();
     });
-    document.getElementById("guideCreateBtn").addEventListener("click",()=>{
-      showAuthPanel("create");
+    document.getElementById("guideResetBtn").addEventListener("click",()=>{
+      showAuthPanel("reset");
       var cg=document.getElementById("castleGuide"); if(cg) cg.removeAttribute("open");
-      var em=document.getElementById("cpEmail2"); if(em){ em.focus(); em.scrollIntoView({behavior:"smooth",block:"center"}); }
+      var em=document.getElementById("rpEmail"); if(em){ em.focus(); em.scrollIntoView({behavior:"smooth",block:"center"}); }
     });
-    document.getElementById("backFromForgot").addEventListener("click",(e)=>{ e.preventDefault(); showAuthPanel("signin"); });
-    document.getElementById("backFromCreate").addEventListener("click",(e)=>{ e.preventDefault(); showAuthPanel("signin"); });
+    document.getElementById("backFromReset").addEventListener("click",(e)=>{ e.preventDefault(); showAuthPanel("signin"); });
     document.getElementById("pfHasRole").addEventListener("change", (e)=>{
       document.getElementById("pfRolePanel").style.display = e.target.checked ? "block" : "none";
     });
