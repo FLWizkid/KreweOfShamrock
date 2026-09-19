@@ -76,6 +76,9 @@
   .auth-card::before{ top:34%; } .auth-card::after{ top:64%; }
   .auth-card img{
     border-radius:50%; box-shadow:0 0 0 5px #3a2712, 0 0 0 8px #8a8d80; background:#fff;
+    /* The medallion is a circle but the artwork is landscape: crop toward
+       the leprechaun's face and raised hand rather than letterboxing. */
+    aspect-ratio:1; height:auto; object-fit:cover; object-position:50% 24%;
   }
   .castle-guide{ margin-top:18px; text-align:left; background:linear-gradient(180deg,#fdf8e8,#f5ebd0);
     border:1.5px solid rgba(168,128,28,.55); border-radius:14px; overflow:hidden;
@@ -653,6 +656,7 @@
     padding-top:28px;
   }
   #authStage .auth-card::before, #authStage .auth-card::after{ display:none; }
+  #authStage .auth-card img{ width:96px; margin-left:auto; margin-right:auto; }
   #authStage .gate-card h1{ font-size:22px; margin:6px 0 8px; }
   #authStage .gate-card p{ font-size:15px; line-height:1.4; }
   #authStage .castle-guide{ margin-top:12px; border-radius:12px; border-width:1px; box-shadow:none; }
@@ -674,6 +678,7 @@
     #memberContent .mini-form{ grid-template-columns:1fr; }
     #memberContent .dir-grid{ grid-template-columns:1fr; }
     #authStage .gate-card.auth-card{ border-radius:48px 48px 12px 12px; padding-top:20px; }
+    #authStage .auth-card img{ width:72px; }
   }
 </style>
   <!-- Self-hosted QR library: same-origin so ad-blockers and venue networks can't block it.
@@ -715,7 +720,7 @@
         <span class="castle-torch right" aria-hidden="true">🔥</span>
         <p class="castle-banner">☘ The Krewe Castle ☘</p>
         <div class="gate-card auth-card">
-      <img src="assets/img/emblem-shamrock.png" alt="Krewe of Shamrock emblem" />
+      <img src="assets/img/leprechaun-failte.jpg" alt="A leprechaun waves you in from the castle door" />
       <h1>Members Only</h1>
 
       <!-- Sign in -->
