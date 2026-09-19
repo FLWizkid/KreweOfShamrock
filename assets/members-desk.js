@@ -8,7 +8,7 @@
     ".hub-welcome{position:relative;overflow:hidden;background:#fff;border:1px solid rgba(168,128,28,.28);border-radius:18px;padding:20px 22px;box-shadow:var(--shadow-sm);}",
     ".hub-welcome::before{content:'☘';position:absolute;top:-8px;right:10px;font-size:64px;opacity:.12;pointer-events:none;transform:rotate(12deg);}",
     ".hub-welcome h2{font-family:var(--display);color:var(--green-800);margin:0 0 12px;font-size:26px;}",
-    ".hub-craic{position:relative;overflow:hidden;background:linear-gradient(165deg,#1d6b3e 0%,#14532d 55%,#0f3d22 100%);color:#f6efdc;border-radius:20px;padding:22px 22px 18px;box-shadow:var(--shadow-sm);border:1px solid rgba(212,175,55,.45);}",
+    ".hub-craic{position:relative;overflow:hidden;background:repeating-linear-gradient(-45deg,rgba(201,162,39,.10) 0 10px,rgba(194,69,30,.09) 10px 20px,transparent 20px 34px),linear-gradient(165deg,#1d6b3e 0%,#14532d 55%,#0f3d22 100%);color:#f6efdc;border-radius:20px;padding:22px 22px 18px;box-shadow:0 6px 18px rgba(23,94,67,.25);border:2px solid #c9a227;}",
     ".hub-craic::before,.hub-craic::after{content:'☘';position:absolute;pointer-events:none;line-height:1;opacity:.16;z-index:0;}",
     ".hub-craic::before{top:-6px;left:8px;font-size:72px;transform:rotate(-18deg);}",
     ".hub-craic::after{bottom:-10px;right:6px;font-size:84px;transform:rotate(22deg);opacity:.14;}",
@@ -480,7 +480,7 @@
       ["krewe", "My Krewe"],
       ["events", "Events"],
       ["parade", "Member desk"],
-      ["fun", "Fun"],
+      ["fun", "Craic Cup"],
       ["officer", "Officer"]
     ];
     var tabHtml = '<nav class="hub-tabs" id="hubTabs" aria-label="Member hub sections">';
@@ -1337,6 +1337,7 @@
   var CLAIM_ACTIVITIES = [
     { code: "attend_event", label: "Attend an event (verified)", clovers: 20 },
     { code: "attend_meeting", label: "Attend a members' meeting", clovers: 15 },
+    { code: "attend_ikc_event", label: "Attend another IKC krewe's event", clovers: 25 },
     { code: "volunteer_event", label: "Volunteer at an event", clovers: 30 },
     { code: "volunteer_priority", label: "Volunteer for a priority shift (setup / teardown / parade day)", clovers: 60 },
     { code: "organize_event", label: "Organize an event", clovers: 50 },
@@ -1389,7 +1390,7 @@
       listHtml = '<p class="empty" style="margin-top:14px;">No claims yet. RSVPs still earn +5 automatically.</p>';
     }
     body.innerHTML =
-      '<p style="margin:0 0 8px;font-size:16px;color:var(--muted);">Pick an activity. Officers review and credit Clovers to your Craic Cup. RSVP to an event is already automatic, so it is not listed here.</p>' +
+      '<p style="margin:0 0 8px;font-size:16px;color:var(--muted);">Pick an activity. Officers review and credit Clovers to your Craic Cup. RSVP to an event is already automatic, so it is not listed here. Went to another IKC krewe’s event? That one is worth <b>+25 🍀</b> - supporting the krewe family counts.</p>' +
       '<form id="hubClaimForm">' +
       '<label for="hubClaimActivity">Activity</label>' +
       '<select id="hubClaimActivity" required><option value="">Choose one…</option>' + claimOptionsHtml() + "</select>" +
