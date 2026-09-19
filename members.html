@@ -572,20 +572,12 @@
     display:flex; flex-direction:column; align-items:center; justify-content:center;
   }
   .page-head.is-home .lep-wave{
-    margin:0 0 8px; padding:0; position:relative; display:inline-flex;
-    align-items:flex-end; justify-content:center; line-height:1;
-    filter:drop-shadow(0 8px 14px rgba(0,0,0,.35));
+    margin:0 auto 14px; padding:0; position:relative; display:block;
+    width:min(300px, 72vw); border-radius:16px; overflow:hidden;
+    border:3px solid #cda53c;
+    box-shadow:0 12px 28px rgba(0,0,0,.45), 0 0 0 5px rgba(205,165,60,.22);
   }
-  .lep-wave .lep-core{ font-size:58px; line-height:1; display:inline-block; }
-  .lep-wave .lep-arm{
-    position:absolute; right:-10px; top:2px; font-size:30px; line-height:1;
-    display:inline-block; transform-origin:70% 85%;
-    animation:lepWave 1.15s ease-in-out infinite;
-  }
-  @keyframes lepWave{
-    0%,100%{ transform:rotate(-22deg); }
-    50%{ transform:rotate(32deg); }
-  }
+  .lep-wave img{ display:block; width:100%; height:auto; }
   .page-head.is-home h1{ letter-spacing:2px; }
 
   .raffle-head .app-head{ background:linear-gradient(180deg,#7a1f2b,#4a0f17); }
@@ -1331,7 +1323,7 @@
             fig.className = "lep-wave";
             fig.setAttribute("aria-hidden","true");
             fig.title = "Waving leprechaun";
-            fig.innerHTML = '<span class="lep-core">🎩☘️</span><span class="lep-arm">✋</span>';
+            fig.innerHTML = '<img src="assets/img/leprechaun-failte.jpg" alt="" loading="lazy" decoding="async" />';
             const eyNode = head.querySelector(".eyebrow");
             if(eyNode) head.insertBefore(fig, eyNode);
             else head.appendChild(fig);
