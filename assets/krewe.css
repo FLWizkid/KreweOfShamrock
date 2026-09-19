@@ -786,3 +786,46 @@ table{ max-width:100%; }
 @media (max-width:1140px){
   .kos-nav-signed{ margin:8px 12px; }
 }
+
+/* ============================================================
+   MEMBER HUB READABILITY OVERRIDES
+   Only applies to pages whose <body> has class="hub".
+   Colors come from the krewe crest and knotwork art; every text
+   color here clears WCAG AA on the parchment background.
+   ============================================================ */
+.hub{
+  /* New font variable for hub interface text. Verdana is the
+     fallback if Google Fonts fails to load. */
+  --ui:"Atkinson Hyperlegible Next", Verdana, sans-serif;
+
+  /* Redefining these variables here automatically fixes every
+     place in the hub that already uses var(--muted) and so on. */
+  --muted:#4a5546;       /* was #5f6b5a, 6.8 to 1 on cream     */
+  --gold-text:#7a5c12;   /* gold that is safe to use as text   */
+  --navy:#313770;        /* crest navy, for links              */
+  --rust:#8f3b0e;        /* crest orange darkened, deadlines   */
+  --error:#8f1d1d;       /* high-contrast error red            */
+
+  /* Make the readable sans serif the default hub font. */
+  --body:var(--ui);
+  --fancy:var(--ui);     /* stops small italic Cormorant text  */
+  font-size:18px;
+  line-height:1.6;
+}
+
+/* Links use crest navy so they stand apart from green headings.
+   The underline stays so color is never the only signal. */
+.hub a{ color:var(--navy); text-underline-offset:3px; }
+.hub a:hover{ color:var(--green-800); }
+
+/* Form labels: sans serif instead of all capitals Cinzel. */
+.hub .krewe-form label{
+  font-family:var(--ui); font-weight:600; font-size:16px;
+}
+.hub .krewe-form input,
+.hub .krewe-form select,
+.hub .krewe-form textarea{ font-size:17px; }
+.hub .krewe-form .hint{ font-style:normal; font-size:15px; }
+
+/* Visible keyboard focus ring in crest navy. */
+.hub :focus-visible{ outline:3px solid var(--navy); outline-offset:3px; }
