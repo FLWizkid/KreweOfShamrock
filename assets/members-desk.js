@@ -1955,6 +1955,31 @@
       '<label for="hubEventMeetingUrl">Meeting join URL</label>' +
       '<input id="hubEventMeetingUrl" type="url" inputmode="url" autocomplete="url" placeholder="https://..." />' +
       '</div></div>' +
+      '<div class="wide hub-event-optional" id="hubEventEmailsBox">' +
+      '<h4>Scheduled krewe emails (optional)</h4>' +
+      '<p class="hub-opt-hint">Queue up to three automatic emails to active members about this event: an announcement, a buy-your-tickets reminder, and a last-call warning sent two days before registration closes. Nothing sends while the event is a draft; an email that comes due goes out shortly after you publish. Save the event to store the schedule.</p>' +
+      '<div class="hub-event-checks" style="margin:0 0 8px;">' +
+      '<label><input type="checkbox" id="hubEventEmails" /> Schedule krewe emails for this event</label></div>' +
+      '<div id="hubEventEmailFields" hidden>' +
+      '<div class="hub-event-checks" style="margin:0 0 8px;">' +
+      '<label><input type="checkbox" id="hubEventEmailAnnounce" /> 1) Announcement email</label></div>' +
+      '<div class="hub-event-optional-fields" id="hubEventEmailAnnounceFields" hidden>' +
+      '<div><label for="hubEventEmailAnnounceAt">Send announcement on</label><input id="hubEventEmailAnnounceAt" type="datetime-local" /></div>' +
+      '<div><label for="hubEventEmailAnnounceSubject">Subject (optional)</label><input id="hubEventEmailAnnounceSubject" placeholder="New Krewe event: …" /></div></div>' +
+      '<div class="hub-event-checks" style="margin:8px 0 8px;">' +
+      '<label><input type="checkbox" id="hubEventEmailTicket" /> 2) Buy-your-tickets reminder</label></div>' +
+      '<div class="hub-event-optional-fields" id="hubEventEmailTicketFields" hidden>' +
+      '<div><label for="hubEventEmailTicketAt">Send reminder on</label><input id="hubEventEmailTicketAt" type="datetime-local" /></div>' +
+      '<div><label for="hubEventEmailTicketSubject">Subject (optional)</label><input id="hubEventEmailTicketSubject" placeholder="Reminder: get your tickets" /></div>' +
+      '<div style="grid-column:1/-1;"><p class="hub-opt-hint" style="margin:0;">Skips members who already paid for this event.</p></div></div>' +
+      '<div class="hub-event-checks" style="margin:8px 0 8px;">' +
+      '<label><input type="checkbox" id="hubEventEmailClosing" /> 3) Registration-closing warning</label></div>' +
+      '<div class="hub-event-optional-fields" id="hubEventEmailClosingFields" hidden>' +
+      '<div style="grid-column:1/-1;"><p class="hub-opt-hint" style="margin:0 0 6px;" id="hubEventEmailClosingWhen">Sends automatically two days before the &ldquo;Close registrations on&rdquo; date above. Set that date first to use this email.</p></div>' +
+      '<div><label for="hubEventEmailClosingSubject">Subject (optional)</label><input id="hubEventEmailClosingSubject" placeholder="Last call: registration closes soon" /></div>' +
+      '<div style="grid-column:1/-1;"><p class="hub-opt-hint" style="margin:0;">Skips members who already signed up for this event.</p></div></div>' +
+      '<p class="hub-event-msg" id="hubEventEmailStatus" aria-live="polite" style="margin:6px 0 0;"></p>' +
+      '</div></div>' +
       '<div class="wide"><label for="hubEventFlyerUrl">Event image / PDF URL</label><input id="hubEventFlyerUrl" type="url" placeholder="https://… or upload a file below" /></div>' +
       '<div class="wide"><label for="hubEventFlyerFile">Upload event image or PDF</label>' +
       '<input id="hubEventFlyerFile" type="file" accept="application/pdf,image/jpeg,image/png,image/webp" />' +
@@ -2045,6 +2070,127 @@
     if (selectedId) sel.value = selectedId;
   }
 
+  // ---- Scheduled krewe emails: announcement / ticket reminder / closing warning ----
+  var eventStudioClient = null;
+  var eventEmailHadRows = false;
+  var EVENT_EMAIL_KINDS = {
+    announcement: { check: "hubEventEmailAnnounce", at: "hubEventEmailAnnounceAt", subject: "hubEventEmailAnnounceSubject", label: "Announcement" },
+    ticket_reminder: { check: "hubEventEmailTicket", at: "hubEventEmailTicketAt", subject: "hubEventEmailTicketSubject", label: "Ticket reminder" },
+    closing_warning: { check: "hubEventEmailClosing", at: null, subject: "hubEventEmailClosingSubject", label: "Closing warning" }
+  };
+
+  function syncClosingEmailHint() {
+    var hint = document.getElementById("hubEventEmailClosingWhen");
+    if (!hint) return;
+    var fallback = 'Sends automatically two days before the “Close registrations on” date above. Set that date first to use this email.';
+    var rc = document.getElementById("hubEventRegCloses");
+    var raw = rc ? rc.value : "";
+    var d = raw ? new Date(raw) : null;
+    if (!d || isNaN(d.getTime())) { hint.textContent = fallback; return; }
+    var sendAt = new Date(d.getTime() - 2 * 24 * 60 * 60 * 1000);
+    hint.textContent = "Sends automatically two days before registrations close: " +
+      sendAt.toLocaleString([], { dateStyle: "medium", timeStyle: "short" }) + ".";
+  }
+
+  function resetEventEmailFields() {
+    eventEmailHadRows = false;
+    var master = document.getElementById("hubEventEmails");
+    if (master) master.checked = false;
+    Object.keys(EVENT_EMAIL_KINDS).forEach(function (kind) {
+      var m = EVENT_EMAIL_KINDS[kind];
+      var check = document.getElementById(m.check); if (check) check.checked = false;
+      if (m.at) { var at = document.getElementById(m.at); if (at) at.value = ""; }
+      var subject = document.getElementById(m.subject); if (subject) subject.value = "";
+    });
+    var status = document.getElementById("hubEventEmailStatus");
+    if (status) status.textContent = "";
+  }
+
+  function emailScheduleNotes(rows) {
+    var notes = [];
+    (rows || []).forEach(function (row) {
+      var m = EVENT_EMAIL_KINDS[row.email_kind];
+      if (!m || row.status === "cancelled") return;
+      if (row.status === "sent") {
+        notes.push(m.label + " email sent " + eventLocalDisplay(row.sent_at) +
+          (row.recipient_count != null ? " to " + row.recipient_count + " members." : "."));
+      } else {
+        notes.push(m.label + " email scheduled for " + eventLocalDisplay(row.send_at) + ".");
+      }
+    });
+    return notes;
+  }
+
+  async function loadEventEmailSchedule(client, eventId) {
+    var status = document.getElementById("hubEventEmailStatus");
+    try {
+      var res = await client.rpc("officer_list_event_scheduled_emails", { p_event_id: eventId });
+      if (res.error) throw res.error;
+      var data = res.data || {};
+      if (data.ok === false) throw new Error(data.message || "Not authorized.");
+      var rows = Array.isArray(data.emails) ? data.emails : [];
+      // The officer may have opened a different event while this loaded.
+      var idEl = document.getElementById("hubEventId");
+      if (!idEl || String(idEl.value) !== String(eventId)) return;
+      var live = rows.filter(function (row) { return row.status !== "cancelled"; });
+      eventEmailHadRows = rows.length > 0;
+      if (live.length) {
+        var master = document.getElementById("hubEventEmails");
+        if (master) master.checked = true;
+      }
+      live.forEach(function (row) {
+        var m = EVENT_EMAIL_KINDS[row.email_kind];
+        if (!m) return;
+        var check = document.getElementById(m.check); if (check) check.checked = true;
+        if (m.at) { var at = document.getElementById(m.at); if (at) at.value = eventLocalInput(row.send_at); }
+        var subject = document.getElementById(m.subject); if (subject) subject.value = row.subject || "";
+      });
+      if (status) status.textContent = emailScheduleNotes(rows).join(" ");
+      syncOptionalEventFields();
+    } catch (e) {
+      // Schedule RPC missing or unreachable; the rest of the form still works.
+      if (status) status.textContent = "";
+    }
+  }
+
+  async function saveEventEmailSchedule(client, eventId, cfg) {
+    function value(id) { var el = document.getElementById(id); return el ? el.value.trim() : ""; }
+    if (!cfg.emailsOn && !eventEmailHadRows) return "";
+    var status = document.getElementById("hubEventEmailStatus");
+    try {
+      var res = await client.rpc("officer_set_event_scheduled_emails", { p: {
+        event_id: eventId,
+        announcement: {
+          enabled: cfg.announceOn,
+          send_at: cfg.announceAt ? cfg.announceAt.toISOString() : null,
+          subject: value("hubEventEmailAnnounceSubject") || null
+        },
+        ticket_reminder: {
+          enabled: cfg.ticketOn,
+          send_at: cfg.ticketAt ? cfg.ticketAt.toISOString() : null,
+          subject: value("hubEventEmailTicketSubject") || null
+        },
+        closing_warning: {
+          enabled: cfg.closingOn,
+          subject: value("hubEventEmailClosingSubject") || null
+        }
+      } });
+      if (res.error) throw res.error;
+      var data = res.data || {};
+      if (data.ok === false) throw new Error(data.message || "Could not save the email schedule.");
+      var rows = Array.isArray(data.emails) ? data.emails : [];
+      eventEmailHadRows = rows.length > 0;
+      var notes = emailScheduleNotes(rows);
+      if (status) status.textContent = notes.join(" ");
+      if (!cfg.emailsOn) return "";
+      return notes.length ? "Krewe emails: " + notes.join(" ") : "";
+    } catch (e) {
+      var note = "Krewe email schedule not saved: " + ((e && e.message) || e);
+      if (status) status.textContent = note;
+      return note;
+    }
+  }
+
   function syncOptionalEventFields() {
     var typeEl = document.getElementById("hubEventType");
     var onlineBox = document.getElementById("hubEventOnline");
@@ -2055,6 +2201,13 @@
     showEl("hubEventRaffleFields", raffleOn);
     showEl("hubEventMealFields", mealOn);
     showEl("hubEventOnlineFields", onlineOn);
+    function emailChecked(id) { var el = document.getElementById(id); return !!(el && el.checked); }
+    var emailsOn = emailChecked("hubEventEmails");
+    showEl("hubEventEmailFields", emailsOn);
+    showEl("hubEventEmailAnnounceFields", emailsOn && emailChecked("hubEventEmailAnnounce"));
+    showEl("hubEventEmailTicketFields", emailsOn && emailChecked("hubEventEmailTicket"));
+    showEl("hubEventEmailClosingFields", emailsOn && emailChecked("hubEventEmailClosing"));
+    syncClosingEmailHint();
     var loc = document.getElementById("hubEventLocation");
     var membersOnly = !!(document.getElementById("hubEventMembersOnly") && document.getElementById("hubEventMembersOnly").checked);
     if (loc) {
@@ -2271,6 +2424,7 @@
     var onl = document.getElementById("hubEventOnline"); if (onl) onl.checked = false;
     var mu = document.getElementById("hubEventMeetingUrl"); if (mu) mu.value = "";
     var rcClear = document.getElementById("hubEventRegCloses"); if (rcClear) rcClear.value = "";
+    resetEventEmailFields();
     document.getElementById("hubEventStatus").value = "draft";
     var payClear = document.getElementById("hubEventPaymentUrl"); if (payClear) payClear.value = "";
     document.getElementById("hubEventType").value = "social";
@@ -2325,6 +2479,8 @@
     var onl = get("hubEventOnline"); if (onl) onl.checked = !!event.is_online || typeVal === "online";
     var mu = get("hubEventMeetingUrl"); if (mu) mu.value = event.meeting_url || "";
     get("hubEventFlyerUrl").value = event.flyer_url || "";
+    resetEventEmailFields();
+    if (event.id && eventStudioClient) loadEventEmailSchedule(eventStudioClient, event.id);
     syncFlyerPreview();
     syncOptionalEventFields();
     get("hubEventFormTitle").textContent = "Edit event";
@@ -2605,6 +2761,36 @@
       if (msg) msg.textContent = "Meeting join link must start with http:// or https://.";
       return;
     }
+    function boxChecked(id) { var el = document.getElementById(id); return !!(el && el.checked); }
+    var emailsOn = boxChecked("hubEventEmails");
+    var emailCfg = {
+      emailsOn: emailsOn,
+      announceOn: emailsOn && boxChecked("hubEventEmailAnnounce"),
+      ticketOn: emailsOn && boxChecked("hubEventEmailTicket"),
+      closingOn: emailsOn && boxChecked("hubEventEmailClosing"),
+      announceAt: null,
+      ticketAt: null
+    };
+    if (emailCfg.announceOn) {
+      var annValue = value("hubEventEmailAnnounceAt");
+      emailCfg.announceAt = annValue ? new Date(annValue) : null;
+      if (!emailCfg.announceAt || isNaN(emailCfg.announceAt.getTime())) {
+        if (msg) msg.textContent = "Pick a send date/time for the announcement email.";
+        return;
+      }
+    }
+    if (emailCfg.ticketOn) {
+      var tickValue = value("hubEventEmailTicketAt");
+      emailCfg.ticketAt = tickValue ? new Date(tickValue) : null;
+      if (!emailCfg.ticketAt || isNaN(emailCfg.ticketAt.getTime())) {
+        if (msg) msg.textContent = "Pick a send date/time for the ticket reminder email.";
+        return;
+      }
+    }
+    if (emailCfg.closingOn && !regClose) {
+      if (msg) msg.textContent = "Set “Close registrations on” above to schedule the registration-closing warning email.";
+      return;
+    }
     var payload = {
       id: value("hubEventId") || null, name: value("hubEventName"), start_time: start.toISOString(),
       end_time: end ? end.toISOString() : null, location: value("hubEventLocation") || null,
@@ -2648,14 +2834,23 @@
         : "";
       await refreshEventStudio(client);
       await loadEventRaffles(client);
+      var savedEventId = (res.data && res.data.event && res.data.event.id) || payload.id;
+      var emailNote = "";
+      if (savedEventId) {
+        emailNote = await saveEventEmailSchedule(client, savedEventId, emailCfg);
+      } else if (emailCfg.emailsOn) {
+        emailNote = "Krewe email schedule not saved: the saved event id was not returned. Edit the event and save again.";
+      }
       if (save) { save.disabled = false; save.textContent = "☘ Save event"; }
-      finishSavedReview(msg, res, payload, cleared, "You can make an RSVP QR or a Door check-in QR from the list above.");
+      finishSavedReview(msg, res, payload, cleared,
+        "You can make an RSVP QR or a Door check-in QR from the list above." + (emailNote ? " " + emailNote : ""));
     } catch (e) { if (msg) msg.textContent = "Couldn't save: " + ((e && e.message) || e); }
     if (save) { save.disabled = false; save.textContent = "☘ Save event"; }
   }
   async function loadEventStudio(client) {
     window.__kosHubOwnsEventStudio = true;
     if (!state.canManageEvents) return;
+    eventStudioClient = client;
     var panel = document.getElementById("hubOfficer");
     if (!panel) return;
     var card = document.getElementById("hubEventStudio");
@@ -2688,10 +2883,16 @@
       eventForm.addEventListener("input", onEventFormEdited);
       eventForm.addEventListener("change", onEventFormEdited);
     }
-    ["hubEventType", "hubEventCollectRaffle", "hubEventCollectMeals", "hubEventOnline", "hubEventMembersOnly"].forEach(function (id) {
+    ["hubEventType", "hubEventCollectRaffle", "hubEventCollectMeals", "hubEventOnline", "hubEventMembersOnly",
+      "hubEventEmails", "hubEventEmailAnnounce", "hubEventEmailTicket", "hubEventEmailClosing"].forEach(function (id) {
       var el = document.getElementById(id);
       if (el) el.addEventListener("change", syncOptionalEventFields);
     });
+    var regClosesEl = document.getElementById("hubEventRegCloses");
+    if (regClosesEl) {
+      regClosesEl.addEventListener("input", syncClosingEmailHint);
+      regClosesEl.addEventListener("change", syncClosingEmailHint);
+    }
     var rafflePick = document.getElementById("hubEventRaffleEvent");
     if (rafflePick) rafflePick.addEventListener("change", onRaffleEventPicked);
     var flyerFile = document.getElementById("hubEventFlyerFile");

@@ -25,6 +25,18 @@ Anonymous PostgREST lock-down for `member_address` / `meeting_url` is `sql/kos_e
 
 IKC-sourced events are read-only. The database authorization is enforced again by `officer_upsert_event`, so hiding the UI is not the security boundary.
 
+## Scheduled krewe emails
+
+The form's **Scheduled krewe emails (optional)** block queues up to three
+automatic emails to active members about the event: an announcement (at a
+chosen time), a buy-your-tickets reminder (at a chosen time; skips members who
+already paid), and a registration-closing warning sent automatically two days
+before **Close registrations on** (skips members already signed up). Emails
+wait while the event is a draft and go out after publish, through the normal
+`enqueue_email` → `outbound_emails` → Resend pipeline. Schema, RPCs, worker,
+and the pg_cron job are `sql/kos_event_scheduled_emails.sql` (apply live;
+safe to re-run). Full runbook: `EVENT_SCHEDULED_EMAILS.md`.
+
 ## Cancel vs delete permanently
 
 **Cancelled** (Status dropdown) keeps the event row and hides it from public signup. Use that when the gathering is off but the record should stay.
