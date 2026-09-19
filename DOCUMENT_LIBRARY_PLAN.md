@@ -368,13 +368,26 @@ deploy rule: push to `main` → Vercel Production; after Hub JS changes, bump th
   badges, both validation errors, correct RPC parameters on save and on the
   publish toggle) and signed-out (no studio card, zero script errors).
 
-### Phase 4 — The two calendars
+### Phase 4 — The two calendars — ✅ DONE 2026-09-19
 - Build `assets/docs/tampa-bay-parades.html` and
   `assets/docs/season-calendar.html` with print stylesheets; wire the events
   fetch; add both as library rows (calendar published, parade list as
   surprise).
 - **Done when:** the season calendar prints as twelve clean pages from Chrome
   and Safari with room to write.
+- **Completed 2026-09-19.** `assets/docs/season-calendar.html`: computes the
+  July–June season from today's date, fetches this season's `source='krewe'`
+  events over plain PostgREST (anon reads allowed by the `is_public` policy),
+  merges the hard-coded marched-parade dates as the offline fallback, and
+  renders twelve month-grid pages with crest headers, gold-shamrock parade
+  entries, "Watch for dates" notes (Rough Riders, Tampa Pride), and dotted
+  Pencil-it-in lines. IKC events are deliberately NOT pre-printed, preserving
+  writing room. Verified headless: 12 sections July 2026 → June 2027, printed
+  PDF is exactly 12 Letter pages, December page eyeballed. Seeded published
+  in `calendars` via `sql/kos_season_calendar_seed.sql` (applied). Safari
+  print check remains for a human. The Tampa Bay Parade Calendar page was
+  built earlier (with Phase 5's egg content) and stays hand-maintained from
+  parades.html rather than fetching, by design.
 
 ### Phase 5 — Easter eggs + Craic Cup
 - Hide 3–5 egg links across the public pages; implement the `?found=SLUG`
