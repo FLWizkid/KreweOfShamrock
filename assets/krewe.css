@@ -818,6 +818,16 @@ table{ max-width:100%; }
 .hub a{ color:var(--navy); text-underline-offset:3px; }
 .hub a:hover{ color:var(--green-800); }
 
+/* The sticky nav bar sits on dark green, not parchment, so the
+   crest-navy link color above is unreadable there. Restore the
+   nav's own colors (these rules must stay below .hub a). */
+.hub .krewe-nav .krewe-links a{ color:#f3ecd6; }
+.hub .krewe-nav .krewe-links a:hover,
+.hub .krewe-nav .krewe-links a:focus-visible{ color:#fff; }
+.hub .krewe-nav .krewe-links a.active{ color:var(--green-900); }
+.hub .krewe-nav .nav-cta,
+.hub .krewe-nav .nav-cta:hover{ color:var(--green-900); }
+
 /* Form labels: sans serif instead of all capitals Cinzel. */
 .hub .krewe-form label{
   font-family:var(--ui); font-weight:600; font-size:16px;
