@@ -45,6 +45,15 @@
     ".hub-quest-card .btn{margin-top:auto;background:#f0d78c;color:#14532d;border:0;text-decoration:none;display:inline-block;padding:7px 12px;border-radius:999px;font-weight:700;font-size:15px;align-self:flex-start;}",
     ".hub-quest-empty{background:rgba(255,255,255,.12);border:1px solid rgba(240,215,140,.35);border-radius:14px;padding:12px 14px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;}",
     ".hub-quest-empty .btn{background:#f0d78c;color:#14532d;border:0;text-decoration:none;display:inline-block;padding:8px 14px;border-radius:999px;font-weight:700;}",
+    ".hub-board{margin-top:14px;background:#fffdf4;border:1px solid rgba(168,128,28,.4);border-radius:18px;padding:20px 22px;box-shadow:var(--shadow-sm);}",
+    ".hub-board h3{font-family:var(--display);color:var(--green-800);margin:0 0 8px;font-size:21px;}",
+    ".hub-board-rule{height:3px;background:linear-gradient(90deg,#a9801c,#d4af37,#ecd07e,#d4af37,#a9801c);border-radius:2px;margin:0 0 4px;border-bottom:3px solid #fffdf4;box-shadow:0 5px 0 -2px rgba(169,128,28,.55);}",
+    ".hub-board .hub-board-date{font-size:15px;color:var(--muted);font-family:var(--display);letter-spacing:.03em;margin:10px 0 2px;}",
+    ".hub-board h4{font-family:var(--display);color:var(--green-800);margin:4px 0 10px;font-size:19px;}",
+    ".hub-board p{margin:0 0 10px;line-height:1.6;}",
+    ".hub-board-old{border-top:1px solid rgba(168,128,28,.3);padding:10px 0 4px;}",
+    ".hub-board-old summary{cursor:pointer;font-family:var(--display);color:var(--green-800);font-size:16px;}",
+    ".hub-board-old .hub-board-date{display:inline;margin:0;}",
     ".hub-soft-desk{margin-top:14px;background:#fff;border:1px solid rgba(168,128,28,.28);border-radius:16px;padding:14px 16px;color:var(--green-800);}",
     ".hub-soft-desk h3{font-family:var(--display);margin:0 0 8px;font-size:19px;}",
     ".hub-soft-desk .hub-chips{margin:0 0 8px;}",
@@ -320,7 +329,7 @@
 
   ].join("");
 
-  var state = { officer: false, shopOnly: false, socialOnly: false, canViewPayments: false, canManageEvents: false, parade: null, hoursApproved: 0, membershipStatus: null, game: null, nextEvent: null, nextEvents: [], hubEvents: [] };
+  var state = { officer: false, shopOnly: false, socialOnly: false, canViewPayments: false, canManageEvents: false, parade: null, hoursApproved: 0, membershipStatus: null, game: null, nextEvent: null, nextEvents: [], hubEvents: [], announcements: [] };
   var hoursDeepLink = false;
 
   function hoursIntent() {
@@ -643,6 +652,52 @@
     return head + '<div class="hub-quest-grid">' + cards + '</div></div>';
   }
 
+  /* ---- Word from the Board (all-krewe announcements, member view) ---- */
+  // The email HTML is reduced to plain paragraphs so the card renders safely
+  // and consistently; the first paragraph gets the illuminated drop capital
+  // (.dropcap in krewe.css, Cinzel Decorative) from the heritage pages.
+  function annParagraphs(html) {
+    var t = String(html || "")
+      .replace(/<\s*(?:br|\/p|\/div|\/h[1-6]|\/li)[^>]*>/gi, "\n")
+      .replace(/<[^>]+>/g, " ");
+    var ta = document.createElement("textarea");
+    ta.innerHTML = t;
+    t = ta.value;
+    return t.split(/\n+/).map(function (p) {
+      return p.replace(/\s+/g, " ").trim();
+    }).filter(Boolean);
+  }
+
+  function annDate(iso) {
+    if (!iso) return "";
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return String(iso).slice(0, 10);
+    return d.toLocaleDateString([], { month: "long", day: "numeric", year: "numeric" });
+  }
+
+  function boardAnnouncementsHtml() {
+    var list = state.announcements || [];
+    if (!list.length) return "";
+    var latest = list[0];
+    var paras = annParagraphs(latest.body_html);
+    if (!paras.length) paras = ["(No message text.)"];
+    var body = paras.map(function (p, i) {
+      return '<p' + (i === 0 ? ' class="dropcap"' : "") + ">" + esc(p) + "</p>";
+    }).join("");
+    var older = list.slice(1).map(function (m) {
+      var op = annParagraphs(m.body_html).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("");
+      return '<details class="hub-board-old"><summary>' + esc(m.subject || "Announcement") +
+        ' <span class="hub-board-date">' + esc(annDate(m.created_at)) + "</span></summary>" + op + "</details>";
+    }).join("");
+    return '<section class="hub-board" aria-label="Announcements from the board">' +
+      "<h3>📜 Word from the Board</h3>" +
+      '<div class="hub-board-rule"></div>' +
+      '<div class="hub-board-date">' + esc(annDate(latest.created_at)) +
+      (latest.sender_name ? (" · from " + esc(latest.sender_name)) : "") + "</div>" +
+      "<h4>" + esc(latest.subject || "Announcement") + "</h4>" +
+      body + older + "</section>";
+  }
+
   function hubAppName() {
     return (window.KOS_HUB_APP_NAME || "Shamrock").toString();
   }
@@ -766,7 +821,7 @@
         : '') +
       '</div></div>';
     // Only refresh the welcome strip - never wipe the beautiful card grid below.
-    top.innerHTML = craicHeroHtml() + softMemberDeskHtml() + officerCard + installCardHtml() + findCards;
+    top.innerHTML = craicHeroHtml() + boardAnnouncementsHtml() + softMemberDeskHtml() + officerCard + installCardHtml() + findCards;
 
     renderProfileCard();
 
@@ -996,6 +1051,11 @@
         state.game = gc.data || null;
       }
     } catch (e) { state.game = null; }
+    try {
+      var ann = await client.rpc("list_board_announcements", { p_limit: 3 });
+      var annPayload = ann.data || {};
+      state.announcements = (annPayload.ok && Array.isArray(annPayload.messages)) ? annPayload.messages : [];
+    } catch (e) { state.announcements = []; }
     try {
       var evSelect = "id,name,start_time,location,member_address,members_only,status,source";
       var evs = await client.from("events")
