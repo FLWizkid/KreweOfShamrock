@@ -2,6 +2,7 @@
 
 Formal-event playbook for the October Tartan Ball (Higgins Hall).
 Ticket sales: tampabaytartanball.com / Jotform. Member Hub: caterer counts, table numbers, Avery #18660 labels.
+Sponsorships (band, photography, dancers, liquor wagon, corporate): see `TARTAN_BALL_SPONSORSHIPS.md`.
 
 ## Meal to jewel map (provisional)
 

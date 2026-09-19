@@ -86,6 +86,7 @@ const PAGES = [
   { file: "event-signup.html", title: /Event Sign-Up/ },
   { file: "parades.html", title: /Parade/ },
   { file: "tartan-ball.html", title: /Tartan Ball/ },
+  { file: "tartan-ball-sponsors.html", title: /Sponsor the Tartan Ball/ },
   { file: "learn.html", title: /Heritage|Learn/ },
   { file: "krewe-history.html", title: /History/ },
   { file: "poetry.html", title: /Creativity/ },
