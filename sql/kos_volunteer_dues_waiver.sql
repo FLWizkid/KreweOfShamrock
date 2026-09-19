@@ -1,8 +1,15 @@
 -- Volunteer Dues Waiver (Service in Lieu of Dues) — Doug and Melissa Tully
 -- Companion document: VOLUNTEER_DUES_WAIVER.md (read it before running this).
 -- Safe to re-run. Extends dues_payments with a 'waiver' payment method and
--- records the two waived dues rows so finance, dues reminders, and the
+-- records the waived dues rows so finance, dues reminders, and the
 -- parade-ready check all see these members as settled at $0.00.
+--
+-- APPLIED to the live Krewe of Shamrock project (oazwkwflgbthojvnclfc) on
+-- 2026-09-19 as migration 'kos_volunteer_dues_waiver', with v_year = 2026 and
+-- the member rows matched by their verified ids. The roster held a duplicate
+-- Douglas Tully row at the time; both rows received the waiver, and the
+-- duplicate was then merged the same day (migration
+-- 'kos_merge_duplicate_doug_tully'), leaving one waiver row per person.
 
 -- 1) Allow 'waiver' as an official payment method ------------------------------
 -- The original check constraint only allowed cash/check/card/paypal/square/other.
@@ -21,12 +28,14 @@ alter table public.dues_payments
 -- the member drops out of v_outstanding_dues so reminder emails never go to them.
 do $$
 declare
-  v_year integer := 2027;  -- membership year of the current dues cycle.
-                           -- The live Zeffy dues campaigns (see PAYMENTS_SETUP.md)
-                           -- run through June 30 and use membership_year 2027.
-                           -- If your roster's existing dues rows use a different
-                           -- year, change this value to match before running.
+  v_year integer := 2026;  -- membership year of the current dues cycle.
+                           -- Verified against the live database on 2026-09-19:
+                           -- the current season's unpaid dues rows all use
+                           -- membership_year 2026. If a future season's rows
+                           -- use a different year, change this value to match
+                           -- before running.
   v_note text := 'Volunteer Dues Waiver — service in lieu of dues. '
+              || 'Approved by Tim Fitzpatrick, President. '
               || 'Standard dues waived in full; amount due and collected: $0.00. '
               || 'See VOLUNTEER_DUES_WAIVER.md in the repository for the approval '
               || 'record and the finance and accounting treatment.';
@@ -38,6 +47,7 @@ begin
       from public.members
      where lower(last_name) = 'tully'
        and lower(first_name) in ('doug', 'douglas', 'melissa')
+       and merged_into is null  -- skip roster records retired by a merge
   loop
     insert into public.dues_payments
       (member_id, membership_year, amount, paid, paid_date, payment_method, notes)
