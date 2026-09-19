@@ -389,13 +389,29 @@ deploy rule: push to `main` → Vercel Production; after Hub JS changes, bump th
   built earlier (with Phase 5's egg content) and stays hand-maintained from
   parades.html rather than fetching, by design.
 
-### Phase 5 — Easter eggs + Craic Cup
+### Phase 5 — Easter eggs + Craic Cup — ✅ DONE 2026-09-19
 - Hide 3–5 egg links across the public pages; implement the `?found=SLUG`
   handler and the celebration toast; enable the +10 Clover award in
   `discover_document`.
 - **Done when:** finding the parades-page clover as a member pops the
   celebration once, shows the document under Fun finds, and awards Clovers
   exactly once even after repeat visits.
+- **Completed 2026-09-19.** Three small-but-visible clovers planted:
+  parades.html (end of the season-table key → Tampa Bay Parade Calendar),
+  krewe-history.html (after the Céad Míle Fáilte line → Shamrock Lore), and
+  poetry.html (inside the illuminated blessing frame → the printable card of
+  that very blessing). `kos-doc-library.js` handles `?found=SLUG`: calls
+  `discover_document`, pops the celebration (title, +10 🍀 on first find, a
+  wink on repeats), cleans the URL, and refreshes the shelves so Fun finds
+  appears; a signed-out arrival keeps the parameter and retries after login
+  via the `kosUnlock` chain. The three egg rows were published via
+  `sql/kos_publish_easter_eggs.sql` (applied). Verified headless: the
+  discovery flow end to end against a stub (correct RPC slug, celebration
+  content, URL cleaned, Fun finds shelf rendered, veil closes), one clover
+  per page, and all four touched pages load with zero script errors.
+  One-time-award idempotency is enforced by the database unique constraint
+  (verified in Phase 1); a live two-tap check as a real member remains a
+  human test.
 
 Sequencing note: Phases 2 and 3 can swap; nothing else can. Phase 5 is the
 only phase touching public pages.

@@ -303,9 +303,12 @@ Migration: `sql/kos_document_library.sql` (applied as `kos_document_library` +
 
 Seeded: the five governing documents (published, `page_url` rows) and the three
 easter-egg documents (Tampa Bay Parade Calendar `tampa-parades`, Shamrock Lore
-`shamrock-lore`, Irish Blessing Card `irish-blessing`) — the eggs are
-**unpublished** until the Phase 5 clover links go live. By krewe decision
-(2026-09-19) there is **no download logging of any kind**.
+`shamrock-lore`, Irish Blessing Card `irish-blessing`). The eggs were
+**published on 2026-09-19** (`sql/kos_publish_easter_eggs.sql`) when the
+clover links went live on parades.html, krewe-history.html, and poetry.html;
+the Season Calendar row was added the same day
+(`sql/kos_season_calendar_seed.sql`). By krewe decision (2026-09-19) there
+is **no download logging of any kind**.
 
 ## The Craic Cup game and Supabase (updated 2026-09-19)
 

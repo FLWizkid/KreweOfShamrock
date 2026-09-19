@@ -1,10 +1,13 @@
-/* Document Library — companion to members-desk.js (DOCUMENT_LIBRARY_PLAN.md Phase 2).
+/* Document Library — companion to members-desk.js (DOCUMENT_LIBRARY_PLAN.md Phases 2 & 5).
    Fills the #docs card from the `documents` table. Row Level Security decides
    what each member sees: published shelf documents for everyone signed in,
    plus any easter-egg documents that member has personally discovered, and
    everything (drafts included) for officers. Uploaded files live in the
    PRIVATE krewe-documents bucket, so Open/Download go through short-lived
-   signed URLs; in-repo pages (page_url) open directly. */
+   signed URLs; in-repo pages (page_url) open directly.
+   Phase 5: arriving with ?found=SLUG (an egg link hidden on a public page)
+   calls discover_document — the server records the find, awards +10 Clovers
+   once, and this script throws the celebration. */
 (function () {
   "use strict";
 
@@ -43,6 +46,18 @@
     ".hub-doclib-acts button:hover,.hub-doclib-acts a:hover{background:#e8ddc0;}",
     ".hub-doclib-rumor{font-family:var(--fancy);font-style:italic;color:var(--muted);font-size:14.5px;margin:14px 0 0;}",
     ".hub-doclib-msg{font-size:14px;color:var(--green-800);margin:8px 0 0;min-height:1.2em;}",
+    /* Easter-egg celebration */
+    ".hub-egg-veil{position:fixed;inset:0;background:rgba(20,40,25,.55);z-index:9000;display:flex;align-items:center;justify-content:center;padding:20px;}",
+    ".hub-egg-card{background:linear-gradient(180deg,#fbf4df,#f1e4c2);border:2px solid var(--gold);border-radius:18px;max-width:420px;width:100%;padding:26px 24px;text-align:center;box-shadow:0 18px 50px rgba(0,0,0,.35);animation:hubEggPop .45s ease;}",
+    "@keyframes hubEggPop{0%{transform:scale(.7);opacity:0}70%{transform:scale(1.05)}100%{transform:scale(1);opacity:1}}",
+    ".hub-egg-card .big{font-size:52px;line-height:1;animation:hubEggSpin 1.2s ease;}",
+    "@keyframes hubEggSpin{0%{transform:rotate(-30deg) scale(.4)}60%{transform:rotate(12deg) scale(1.15)}100%{transform:rotate(0) scale(1)}}",
+    ".hub-egg-card h3{font-family:var(--display);color:var(--green-800);font-size:22px;margin:10px 0 4px;}",
+    ".hub-egg-card .t{font-family:var(--display);color:var(--gold-deep);font-size:17px;margin:0 0 6px;}",
+    ".hub-egg-card p{font-size:14.5px;color:#3a3a2e;line-height:1.5;margin:0 0 8px;}",
+    ".hub-egg-card .clv{display:inline-block;background:rgba(39,125,76,.14);color:var(--green-800);border-radius:999px;padding:4px 14px;font-family:var(--display);font-weight:700;font-size:15px;margin:4px 0 10px;}",
+    ".hub-egg-card .acts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:8px;}",
+    ".hub-egg-card .acts .btn{min-height:44px;}",
     "@media (max-width:560px){.hub-doclib-row{flex-wrap:wrap;}.hub-doclib-acts{flex-direction:row;width:100%;}.hub-doclib-acts button,.hub-doclib-acts a{flex:1;}}"
   ].join("");
 
@@ -137,13 +152,15 @@
     if (el) el.textContent = text || "";
   }
 
-  function wireActions(host, docs, client) {
+  function wireActions(host, client) {
+    if (host.getAttribute("data-doclib-wired")) return;
+    host.setAttribute("data-doclib-wired", "1");
     host.addEventListener("click", async function (ev) {
       var btn = ev.target.closest ? ev.target.closest("[data-doclib-open],[data-doclib-dl]") : null;
       if (!btn) return;
       var id = btn.getAttribute("data-doclib-open") || btn.getAttribute("data-doclib-dl");
       var wantDownload = btn.hasAttribute("data-doclib-dl");
-      var doc = docs.find(function (d) { return String(d.id) === id; });
+      var doc = (host._docs || []).find(function (d) { return String(d.id) === id; });
       if (!doc) return;
       if (doc.page_url && !wantDownload) {
         window.open(doc.page_url, "_blank", "noopener");
@@ -170,31 +187,109 @@
     });
   }
 
-  async function init() {
+  async function loadLibrary(client) {
     var card = document.getElementById("docs");
     if (!card) return;
     var body = card.querySelector(".app-body");
     if (!body) return;
-    var client = await getClient();
-    if (!client) return; // not signed in yet: static pills keep working
-
     var q = await client.from("documents")
       .select("id,title,description,category,storage_path,page_url,file_type,file_size,is_published,sort_order")
       .order("sort_order", { ascending: true });
     if (q.error || !q.data || !q.data.length) return; // keep the static card on any failure
 
     injectCss();
-    var staticBlock = body.querySelector(".pr-waiver");
-    var host = document.createElement("div");
-    host.id = "docLibList";
-    body.appendChild(host);
+    var host = document.getElementById("docLibList");
+    if (!host) {
+      host = document.createElement("div");
+      host.id = "docLibList";
+      body.appendChild(host);
+    }
+    host._docs = q.data;
     render(host, q.data);
-    wireActions(host, q.data, client);
+    wireActions(host, client);
+    var staticBlock = body.querySelector(".pr-waiver");
     if (staticBlock) staticBlock.style.display = "none";
     var small = card.querySelector(".app-head small");
     if (small) small.textContent = "Open, download, and print krewe documents";
   }
 
+  /* ---------- Phase 5: easter-egg discovery ---------- */
+
+  function cleanFoundParam() {
+    try {
+      var u = new URL(location.href);
+      u.searchParams.delete("found");
+      history.replaceState(null, "", u.pathname + (u.searchParams.toString() ? "?" + u.searchParams.toString() : "") + u.hash);
+    } catch (e) {}
+  }
+
+  function celebrate(data, client) {
+    injectCss();
+    var doc = data.document || {};
+    var veil = document.createElement("div");
+    veil.className = "hub-egg-veil";
+    veil.id = "hubEggVeil";
+    veil.setAttribute("role", "dialog");
+    veil.setAttribute("aria-modal", "true");
+    veil.setAttribute("aria-label", "You found a hidden treasure");
+    veil.innerHTML =
+      '<div class="hub-egg-card">' +
+      '<div class="big" aria-hidden="true">☘</div>' +
+      "<h3>" + (data.newly_found ? "You found a hidden treasure!" : "You’ve been here before…") + "</h3>" +
+      '<p class="t">' + esc(doc.title || "A krewe treasure") + "</p>" +
+      (doc.description ? "<p>" + esc(doc.description) + "</p>" : "") +
+      (data.newly_found && data.clovers_awarded
+        ? '<span class="clv">+' + Number(data.clovers_awarded) + " 🍀 Clovers</span>" +
+          "<p>It now lives in your <b>Fun finds</b> on the Documents card.</p>"
+        : "<p>This treasure is already on your <b>Fun finds</b> shelf — no double Clovers for clever repeat visitors. 😉</p>") +
+      '<div class="acts">' +
+      (doc.page_url ? '<a class="btn btn-primary" href="' + esc(doc.page_url) + '" target="_blank" rel="noopener">Open it now</a>' : "") +
+      '<button class="btn" type="button" id="hubEggClose">Keep exploring</button>' +
+      "</div></div>";
+    document.body.appendChild(veil);
+    function close() { if (veil.parentNode) veil.parentNode.removeChild(veil); }
+    document.getElementById("hubEggClose").onclick = close;
+    veil.addEventListener("click", function (ev) { if (ev.target === veil) close(); });
+    loadLibrary(client); // the new find appears on the Fun finds shelf
+  }
+
+  async function handleFound(client) {
+    var slug = "";
+    try { slug = new URLSearchParams(location.search).get("found") || ""; } catch (e) {}
+    if (!slug || document.getElementById("hubEggVeil")) return;
+    try {
+      var r = await client.rpc("discover_document", { p_slug: slug });
+      if (r.error) return; // signed out / no session yet: keep the param, retry after unlock
+      if (!r.data || r.data.ok !== true) {
+        if (r.data && r.data.error === "not_found") cleanFoundParam(); // dead slug: don't loop
+        return; // not_linked: keep the param for the post-login retry
+      }
+      cleanFoundParam();
+      celebrate(r.data, client);
+    } catch (e) {}
+  }
+
+  /* ---------- boot ---------- */
+
+  var booting = false;
+  async function init() {
+    if (booting) return;
+    booting = true;
+    try {
+      var client = await getClient();
+      if (!client) return; // not signed in yet: static pills keep working
+      await handleFound(client);
+      await loadLibrary(client);
+    } finally {
+      booting = false;
+    }
+  }
+
+  var oldUnlock = window.kosUnlock;
+  window.kosUnlock = function () {
+    if (typeof oldUnlock === "function") oldUnlock();
+    setTimeout(init, 200); // retry ?found= and the shelves once signed in
+  };
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", function () { init(); });
   } else {
