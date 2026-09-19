@@ -185,20 +185,22 @@ this is not a live breach, but admin-shaped functions should not be anon-callabl
 only on the genuinely public ones (`enter_basket_public`, `buy_5050_public`,
 `submit_membership_application`, `rsvp_to_event`).
 
-### B-5. Email is queued but nothing actually sends
+### B-5. Email is queued but nothing actually sends — RESOLVED 2026-09-18
 
-The whole email system (dues reminders, RSVP confirmations, welcome/lapsed
-notices, officer new-application alerts, broadcasts) writes rows into
-`outbound_emails` and a cron job calls the `process-outbound-emails` edge
-function every 5 minutes. But that function is a **no-op until `RESEND_API_KEY`
-is set**. There are already 5 emails sitting `queued` (the oldest from June 15)
-that never went out.
+**This is done.** `RESEND_API_KEY` is set as an edge-function secret and
+delivery is verified working: as of 2026-09-19 the `outbound_emails` queue
+shows 23 rows with status `sent` and zero `queued` or `failed`. The backlog
+flushed on 2026-09-18 around 20:30 UTC, and emails queued after that (RSVP
+confirmations) delivered on their first attempt within about five minutes.
 
-**Fix before launch (or members won't get sign-in-adjacent mail):**
-1. Create a Resend account, verify a sending domain.
-2. Set `RESEND_API_KEY` and `RESEND_FROM` as edge-function secrets.
-3. Decide what to do with the 5 stale queued emails (they'll all send on the
-   next flush — you may want to delete the test ones first).
+Original issue, kept for history: the whole email system (dues reminders,
+RSVP confirmations, welcome/lapsed notices, officer new-application alerts,
+broadcasts) writes rows into `outbound_emails` and a cron job calls the
+`process-outbound-emails` edge function every 5 minutes, but that function
+is a no-op until `RESEND_API_KEY` is set. The fix was: create a Resend
+account, verify the sending domain, and set `RESEND_API_KEY` and
+`RESEND_FROM` as edge-function secrets (Project Settings → Edge Functions →
+Secrets), per `EMAIL_AND_PHASE4_GUIDE.md`.
 
 > Note: Supabase **magic-link auth email** is separate from Resend and is sent by
 > Supabase directly, so sign-in will work without Resend. But it uses Supabase's
