@@ -518,6 +518,15 @@
   .ce-rsvp:hover{ background:var(--cup-teal); }
   .ce-reg{ background:linear-gradient(180deg,var(--cup-gold-light),var(--cup-gold)); color:var(--cup-ink); border:1px solid var(--cup-gold); }
   .ce-reg:hover{ filter:brightness(1.05); }
+  /* Game footer: step back / step forward through the screens, and a big
+     clearly-labeled exit, like any game's pause menu. */
+  .game-nav{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:20px; padding-top:14px; border-top:2px solid rgba(201,162,39,.5); }
+  .game-nav .gn-step{ font-family:var(--display); font-size:15px; border:1px solid var(--cup-gold); background:#fff; color:var(--cup-green); border-radius:999px; padding:9px 16px; cursor:pointer; box-shadow:0 1px 3px rgba(42,33,24,.12); }
+  .game-nav .gn-step:hover:not(:disabled){ background:var(--cup-gold-light); }
+  .game-nav .gn-step:disabled{ opacity:.45; cursor:default; }
+  .game-exit{ margin-left:auto; font-family:var(--display); font-size:15px; border:1px solid var(--cup-crimson); background:linear-gradient(180deg,var(--cup-red),var(--cup-crimson)); color:var(--cup-cream); border-radius:999px; padding:9px 18px; cursor:pointer; box-shadow:0 3px 8px rgba(150,53,26,.35); }
+  .game-exit:hover{ filter:brightness(1.08); }
+  @media (max-width:480px){ .game-exit{ margin-left:0; width:100%; text-align:center; } }
 
   /* ---- Color-coded hub tools ----
      Each everyday tool gets its own crest color: lockers green, carpools
@@ -1149,7 +1158,7 @@
 
       <!-- DIRECTORY -->
             <section class="app-card hub-tool tool-gold" id="hubMemberDirectory" data-hub="krewe">
-        <div class="app-head"><span class="ic">👥</span><div><h2>Member Directory</h2><small>Your krewe - faces first. Find everyone under My Krewe / Directory.</small></div></div>
+        <div class="app-head"><span class="ic">👥</span><div><h2>My Krewe</h2><small>Your member directory - faces first. Every member of the krewe, one card each.</small></div></div>
         <div class="app-body">
           <div id="hubLeaders" class="leaders-board" hidden role="region" aria-label="Shamrock Leaders"></div>
           <div class="people-toolbar">
@@ -1238,6 +1247,11 @@
           <button id="gt-find" type="button" onclick="gameTab('find')">🔎 Find My Clovers</button>
         </div>
         <div id="gameBody"></div>
+        <div class="game-nav" aria-label="Game navigation">
+          <button id="gnPrev" type="button" class="gn-step" aria-label="Previous game screen">← Back</button>
+          <button id="gnNext" type="button" class="gn-step" aria-label="Next game screen">Next →</button>
+          <button id="gnExit" type="button" class="game-exit" onclick="closeGame()">🚪 Exit game</button>
+        </div>
       </div>
     </div>
   </div>
@@ -2428,25 +2442,92 @@
       organizer_bonus:"Organized", guests:"Brought guests", dues_on_time:"Dues on time",
       dues_early:"Dues paid early", referral:"Referred a member", quest:"Quest", manual:"Bonus" };
 
+    /* Game flow: the four screens play in order, the footer steps back and
+       forth between them like game menus, and the whole game is one browser
+       history entry - so the phone's Back button (or the Exit button) leaves
+       the game and lands right back on the hub tab the member came from. */
     let gameLoaded=false;
-    window.openGame=()=>{
+    const GAME_TABS=["standings","events","howto","find"];
+    const GAME_META={
+      standings:{icon:"🏆",label:"Standings"},
+      events:{icon:"📅",label:"Events"},
+      howto:{icon:"📖",label:"How to Play"},
+      find:{icon:"🔎",label:"Find My Clovers"}
+    };
+    let currentGameTab="standings";
+    function gameIsOpen(){ return document.getElementById("gameModal").classList.contains("open"); }
+    function gameUiOpen(){
       const m=document.getElementById("gameModal");
       m.classList.add("open"); m.setAttribute("aria-hidden","false");
       document.body.style.overflow="hidden";
-      if(!gameLoaded){ gameTab("standings"); gameLoaded=true; }
-    };
-    window.closeGame=()=>{
+      if(!gameLoaded){ gameLoaded=true; gameTab(currentGameTab); }
+      else gameNavSync();
+    }
+    function gameUiClose(){
       const m=document.getElementById("gameModal");
       m.classList.remove("open"); m.setAttribute("aria-hidden","true");
       document.body.style.overflow="";
+    }
+    window.openGame=()=>{
+      gameUiOpen();
+      try{
+        if(!(history.state&&history.state.kosCraic))
+          history.pushState({kosCraic:currentGameTab},"","#craic-"+currentGameTab);
+      }catch(e){}
+    };
+    window.closeGame=()=>{
+      try{
+        if(history.state&&history.state.kosCraic){ history.back(); return; }
+      }catch(e){}
+      gameUiClose();
     };
     window.gameTab=(t)=>{
-      ["standings","events","howto","find"].forEach(k=>document.getElementById("gt-"+k).classList.toggle("on",k===t));
+      if(GAME_TABS.indexOf(t)===-1) t="standings";
+      currentGameTab=t;
+      GAME_TABS.forEach(k=>document.getElementById("gt-"+k).classList.toggle("on",k===t));
+      gameNavSync();
+      try{
+        if(history.state&&history.state.kosCraic)
+          history.replaceState({kosCraic:t},"","#craic-"+t);
+      }catch(e){}
       if(t==="standings") renderStandings();
       else if(t==="events") renderCupEvents();
       else if(t==="howto") renderHowto();
       else renderFind();
     };
+    function gameNavSync(){
+      const i=GAME_TABS.indexOf(currentGameTab);
+      const prev=document.getElementById("gnPrev"), next=document.getElementById("gnNext");
+      const p=GAME_TABS[i-1], n=GAME_TABS[i+1];
+      if(prev){
+        prev.disabled=!p;
+        prev.textContent = p ? ("← "+GAME_META[p].icon+" "+GAME_META[p].label) : "← Back";
+      }
+      if(next){
+        next.disabled=!n;
+        next.textContent = n ? (GAME_META[n].icon+" "+GAME_META[n].label+" →") : "You’ve seen it all 🍀";
+      }
+    }
+    document.getElementById("gnPrev").addEventListener("click",()=>{
+      const p=GAME_TABS[GAME_TABS.indexOf(currentGameTab)-1];
+      if(p) gameTab(p);
+    });
+    document.getElementById("gnNext").addEventListener("click",()=>{
+      const n=GAME_TABS[GAME_TABS.indexOf(currentGameTab)+1];
+      if(n) gameTab(n);
+    });
+    window.addEventListener("hashchange",()=>{
+      const h=location.hash||"";
+      if(h.indexOf("#craic-")===0){
+        const t=h.slice(7);
+        if(GAME_TABS.indexOf(t)!==-1){
+          if(!gameIsOpen()) gameUiOpen();
+          if(currentGameTab!==t) gameTab(t);
+        }
+      }else if(gameIsOpen()){
+        gameUiClose();
+      }
+    });
 
     /* Live connection badge: proves the Cup is reading the krewe's Supabase
        database in real time (green = data just loaded, red = a query failed). */
@@ -3348,7 +3429,7 @@
 
 <script src="assets/kos-leadership.js?v=20260916lead6"></script>
 <script src="assets/hub-install.js?v=20260918pwa1"></script>
-<script src="assets/members-desk.js?v=20260919tartan1" defer></script>
+<script src="assets/members-desk.js?v=20260919nav1" defer></script>
   <script src="assets/kos-event-studio.js?v=20260918memb3" defer></script>
   <script src="assets/kos-shop-studio.js?v=20260910shopfix" defer></script>
 <script src="assets/kos-qr-studio.js?v=20260918qrpick1"></script>

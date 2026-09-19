@@ -753,7 +753,7 @@
       '<div class="hub-find">' +
       '<h3>Quick links</h3>' +
       '<div class="hub-find-grid">' +
-      '<button type="button" class="hub-action" data-hub-goto="directory"><b>Member Directory</b><span>Faces and profiles of your krewe under My Krewe.</span></button>' +
+      '<button type="button" class="hub-action" data-hub-goto="directory"><b>My Krewe</b><span>Your member directory - faces and profiles of the whole krewe.</span></button>' +
       '<div class="hub-action" id="docsHome" style="cursor:default">' +
       '<b><a href="#docs">Documents</a></b>' +
       '<span>Governing documents for members and officers. Open bylaws and the Code of Conduct in-Hub.</span>' +
@@ -1084,6 +1084,7 @@
       else if (hash === "docs") { saved = "parade"; wantDocs = true; }
       else if (hash === "events") saved = "events";
       else if (hash === "fun") saved = "fun";
+      else if (hash === "home") saved = TAB_HOME;
       else {
         // Always land on Home after login/refresh unless the URL asks for a tab.
         saved = TAB_HOME;
@@ -2608,12 +2609,27 @@
     wireOfficerDeskPicker();
   }
 
+  // Hub tabs are "pages": every tab click adds a history entry, so the
+  // browser's Back and Forward buttons walk between hub sections instead of
+  // dumping members out of the hub. Back/Forward changes the hash, the
+  // hashchange listener below re-shows the matching tab.
+  var HASH_TABS = { home: "hub", hub: "hub", krewe: "krewe", events: "events", parade: "parade", desk: "parade", fun: "fun", officer: "officer" };
+
+  function pushTabHistory(tab) {
+    try {
+      var want = "#" + (tab === "hub" ? "home" : tab);
+      if (location.hash === want) return;
+      history.pushState({ kosHubTab: tab }, "", want);
+    } catch (e) {}
+  }
+
   function bindTabs() {
     document.querySelectorAll("[data-hub-tab]").forEach(function (btn) {
       btn.addEventListener("click", function () {
         var tab = btn.getAttribute("data-hub-tab");
         if (tab !== "parade") clearHoursIntent();
         showTab(tab);
+        pushTabHistory(tab);
       });
     });
     if (!window.__hubDocsHashBound) {
@@ -2623,6 +2639,9 @@
         if (hash === "docs") revealDocsCard();
         else if (hash === "directory") openDirectoryFromHome();
         else if (hash === "event-studio") openEventStudioFromHome();
+        else if (hash.indexOf("craic") === 0) return; /* the Craic Cup handles its own hashes */
+        else if (HASH_TABS[hash]) showTab(HASH_TABS[hash]);
+        else if (hash === "") showTab(TAB_HOME); /* backed past the first tab entry */
       });
     }
     if (!window.__hubSamePageBound) {
