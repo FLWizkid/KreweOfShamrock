@@ -286,6 +286,30 @@ live database (the paste-runs never took) and were applied through the connectio
 migration mechanism, then verified present: `kos_qr_registry`,
 `kos_attendance_qr_hours`, `kos_profile_name_not_email`.
 
+## Document Library (added 2026-09-19)
+
+Migration: `sql/kos_document_library.sql` (applied as `kos_document_library` +
+`kos_document_library_searchpath_fix`). Plan: `DOCUMENT_LIBRARY_PLAN.md`.
+
+| Object | Purpose |
+| --- | --- |
+| `documents` | The library: one row per document. Points at either `storage_path` (uploaded file in the `krewe-documents` bucket) or `page_url` (in-repo page like `/assets/docs/bylaws.html`). `is_published` gates member visibility; `is_surprise` + `surprise_slug` mark easter eggs. Categories: `governing`, `calendars`, `forms`, `newsletters`, `fun`, `general`. Members read published non-surprise rows plus surprises they personally found; officers read all. Writes go through officer RPCs only. |
+| `document_discoveries` | One row per member per found easter egg (unique on document+member — this is what makes the Clover award one-time). Members read their own rows; inserts happen only inside `discover_document`. |
+| `discover_document(p_slug)` | Member RPC behind the `?found=SLUG` egg links: records the find, awards **+10 Clovers** (`reason = 'easter_egg'`) on first discovery only, and returns the document's metadata for the celebration toast. Anon execute revoked. |
+| `officer_upsert_document(...)` | Officer RPC: create/edit a document row (validates category, surprise slug shape, exactly-one-source rule). |
+| `officer_set_document_published(id, bool)` | Officer RPC: publish/unpublish. |
+| `officer_delete_document(id)` | Officer RPC: delete the metadata row (the Document Studio removes the bucket file; prefer unpublishing). |
+| `krewe-documents` bucket | **First private bucket** in the project (all others are public). 20 MB limit; PDF/DOCX/image types. Members download via signed URLs; only officers write, via storage RLS gated on `is_krewe_officer()`. |
+
+Seeded: the five governing documents (published, `page_url` rows) and the three
+easter-egg documents (Tampa Bay Parade Calendar `tampa-parades`, Shamrock Lore
+`shamrock-lore`, Irish Blessing Card `irish-blessing`). The eggs were
+**published on 2026-09-19** (`sql/kos_publish_easter_eggs.sql`) when the
+clover links went live on parades.html, krewe-history.html, and poetry.html;
+the Season Calendar row was added the same day
+(`sql/kos_season_calendar_seed.sql`). By krewe decision (2026-09-19) there
+is **no download logging of any kind**.
+
 ## The Craic Cup game and Supabase (updated 2026-09-19)
 
 The Craic Cup (gamification) is wired straight into this same Supabase

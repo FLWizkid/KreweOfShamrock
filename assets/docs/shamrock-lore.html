@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="../img/favicon-16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../img/apple-touch-icon.png" />
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex" />
+<title>Shamrock Lore · Krewe of Shamrock</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../krewe.css" />
+<style>
+  .doc-sheet{max-width:760px;margin:0 auto;padding:28px 18px 48px;}
+  .doc-sheet h1{font-family:"Cinzel Decorative",var(--display);color:var(--green-800);font-size:1.7rem;margin:0 0 6px;line-height:1.25;text-align:center;}
+  .doc-sub{color:var(--muted);font-size:.95rem;margin:0 0 16px;text-align:center;}
+  .doc-actions{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0 18px;justify-content:center;}
+  .doc-actions a,.doc-actions button{min-height:44px;display:inline-flex;align-items:center;}
+  .egg-note{background:#fffdf4;border:1px solid rgba(168,128,28,.4);border-radius:12px;
+    padding:12px 14px;margin:0 0 18px;font-family:var(--fancy);font-size:1.08rem;line-height:1.5;}
+  .egg-note b{font-family:var(--display);color:var(--green-800);}
+  .lore-card{background:#fff;border:1px solid rgba(168,128,28,.28);border-radius:14px;padding:16px 18px;margin:0 0 14px;}
+  .lore-card h2{font-family:var(--display);color:var(--green-800);font-size:1.15rem;margin:0 0 10px;}
+  .lore-card p{margin:0 0 10px;line-height:1.55;}
+  .lore-card p:last-child{margin-bottom:0;}
+  .lore-fact{font-family:var(--fancy);font-style:italic;color:var(--gold-deep);font-size:1.05rem;}
+  .colors{width:100%;border-collapse:collapse;font-size:.95rem;margin:8px 0 4px;}
+  .colors th,.colors td{border:1px solid rgba(168,128,28,.35);padding:7px 10px;text-align:left;}
+  .colors th{background:#fbf6e9;font-family:var(--display);color:var(--green-800);font-size:.85rem;}
+  .swatch{display:inline-block;width:13px;height:13px;border-radius:4px;vertical-align:-2px;margin-right:7px;border:1px solid rgba(0,0,0,.2);}
+  .trivia{counter-reset:q;}
+  .trivia .q{margin:0 0 12px;}
+  .trivia .q b{font-family:var(--display);color:var(--green-800);}
+  .trivia details{margin-top:4px;}
+  .trivia summary{cursor:pointer;font-family:var(--display);color:var(--gold-deep);font-size:.9rem;}
+  .trivia .a{font-family:var(--fancy);font-style:italic;margin:6px 0 0;padding-left:14px;border-left:2px solid var(--gold);}
+  .print-answers{display:none;}
+  @media (max-width:640px){.doc-sheet{padding:20px 14px 40px;}.doc-sheet h1{font-size:1.4rem;}}
+  @media print{
+    nav.krewe-nav,.doc-actions,.egg-note,.trivia details{display:none !important;}
+    body{background:#fff !important;}
+    .doc-sheet{max-width:none;padding:0;}
+    .lore-card{break-inside:avoid;border-radius:0;}
+    .colors th{background:#fbf6e9 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .print-answers{display:block;font-size:.8rem;color:#555;margin-top:8px;}
+    @page{margin:0.5in;}
+  }
+</style>
+</head>
+<body>
+<nav class="krewe-nav" aria-label="Primary">
+  <a class="brand" href="../../index.html"><span class="name"><b>Krewe of Shamrock</b><small>Members</small></span></a>
+  <div class="krewe-menu"><ul class="krewe-links"><li><a href="../../members.html#docs">Member Hub</a></li></ul></div>
+</nav>
+<main class="doc-sheet">
+  <h1>Shamrock Lore</h1>
+  <p class="doc-sub">Hidden treasures from the story of Tampa's original kilted krewe · Est. 1999</p>
+
+  <div class="egg-note">
+    <b>A lucky find!</b> You've uncovered the Krewe's book of lore — the founding tale,
+    the secrets in the tartan, and a few questions to test the krewe-mates at your next social.
+  </div>
+
+  <div class="doc-actions">
+    <button type="button" class="btn btn-primary" onclick="window.print()">Print the lore</button>
+    <a class="btn" href="../../members.html#docs">Back to Documents</a>
+    <a class="btn" href="../../krewe-history.html">Read the full history</a>
+  </div>
+
+  <article class="lore-card">
+    <h2>The Founding Tale</h2>
+    <p>The spark came in <b>1998</b>, when five friends — Matt Glow, Tim Hubbell, Hayden Polk,
+      Chris Jenkins, and Steve Hubbell — walked the Ybor City parades as security for
+      Ye Loyal Krewe of Grace O'Malley and thought: <span class="lore-fact">we could march ourselves.</span></p>
+    <p>After the 1999 Gasparilla season they made it official. With Don Cassels as the group's
+      first spokesperson, they petitioned the St. Patrick's Day Parade Committee — and in
+      <b>1999, nineteen founders</b> stepped onto the St. Patrick's Day parade route for the
+      first time. By 2000 the krewe was forty strong with its first float; by 2006, one hundred strong.</p>
+    <p class="lore-fact">The motto said everything from day one: "All for Fun, Fun for All."</p>
+  </article>
+
+  <article class="lore-card">
+    <h2>Secrets in the Tartan</h2>
+    <p>Every color in the krewe's cloth carries a meaning, drawn from the Gaelic Revival that
+      gave Ireland the saffron kilt:</p>
+    <table class="colors">
+      <thead><tr><th>Color</th><th>What it stands for</th></tr></thead>
+      <tbody>
+        <tr><td><span class="swatch" style="background:#14532d"></span>Green</td><td>Ireland's lush land and patriotism</td></tr>
+        <tr><td><span class="swatch" style="background:#1e3a8a"></span>Blue</td><td>The ancient Irish aristocracy and loyalty</td></tr>
+        <tr><td><span class="swatch" style="background:#d4af37"></span>Gold</td><td>Warmth and prosperity</td></tr>
+        <tr><td><span class="swatch" style="background:#991b1b"></span>Red</td><td>Courage and tenacity</td></tr>
+        <tr><td><span class="swatch" style="background:#1c1917"></span>Black</td><td>Power and persistence</td></tr>
+      </tbody>
+    </table>
+    <p>And a quiet signature few ever notice: unlike the back-pleated Scottish standard, Irish
+      kilts here may be <b>side-pleated</b> — the Irish silhouette, hiding in plain sight on
+      every parade route.</p>
+  </article>
+
+  <article class="lore-card">
+    <h2>The Castle of Shenanigans</h2>
+    <p>The krewe's float didn't come from a catalog. In <b>2019</b>, members built the Castle of
+      Shenanigans themselves — weekends of coffee, lumber, and sawdust — engineering it strong
+      enough to carry a crew of bead-throwers, light enough to tow, and low enough to clear
+      every wire on the route.</p>
+    <p class="lore-fact">"We didn't just build a float. It built us."</p>
+  </article>
+
+  <article class="lore-card trivia">
+    <h2>Test Your Lore</h2>
+    <div class="q"><b>1.</b> What year did the nineteen founders first march — and in which parade?
+      <details><summary>Reveal answer</summary><p class="a">1999, in Tampa's St. Patrick's Day parade.</p></details></div>
+    <div class="q"><b>2.</b> Which krewe were the five founding friends working security for when the idea struck?
+      <details><summary>Reveal answer</summary><p class="a">Ye Loyal Krewe of Grace O'Malley, in the Ybor City parades of 1998.</p></details></div>
+    <div class="q"><b>3.</b> What grins down from the Castle of Shenanigans, above the krewe crest?
+      <details><summary>Reveal answer</summary><p class="a">The Leprechaun green skull.</p></details></div>
+    <div class="q"><b>4.</b> What do members call the bond that holds the krewe together?
+      <details><summary>Reveal answer</summary><p class="a">The Emerald Bond.</p></details></div>
+    <p class="print-answers">Answers: 1) 1999, St. Patrick's Day parade · 2) Ye Loyal Krewe of
+      Grace O'Malley (1998) · 3) The Leprechaun green skull · 4) The Emerald Bond</p>
+  </article>
+</main>
+<script>if(new URLSearchParams(location.search).has("print")){addEventListener("load",function(){setTimeout(function(){window.print()},400)});}</script>
+</body>
+</html>

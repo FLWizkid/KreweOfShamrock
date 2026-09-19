@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="../img/favicon-16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../img/apple-touch-icon.png" />
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex" />
+<title>Krewe of Shamrock Season Calendar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../krewe.css" />
+<style>
+  .doc-sheet{max-width:820px;margin:0 auto;padding:28px 18px 48px;}
+  .doc-intro h1{font-family:"Cinzel Decorative",var(--display);color:var(--green-800);font-size:1.7rem;margin:0 0 6px;text-align:center;line-height:1.25;}
+  .doc-sub{color:var(--muted);font-size:.95rem;margin:0 0 14px;text-align:center;}
+  .doc-actions{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0 16px;justify-content:center;}
+  .doc-actions a,.doc-actions button{min-height:44px;display:inline-flex;align-items:center;}
+  .doc-note{background:#fffdf4;border:1px solid rgba(168,128,28,.4);border-radius:12px;
+    padding:12px 14px;margin:0 0 20px;font-size:14.5px;line-height:1.5;color:#3a3a2e;}
+
+  .month{background:#fff;border:1px solid rgba(168,128,28,.3);border-radius:16px;
+    padding:20px 22px;margin:0 0 22px;}
+  .mo-head{display:flex;align-items:center;gap:14px;border-bottom:2px solid var(--gold);
+    padding-bottom:10px;margin-bottom:12px;}
+  .mo-head img{width:44px;height:44px;object-fit:contain;}
+  .mo-head h2{font-family:"Cinzel Decorative",var(--display);color:var(--green-800);
+    font-size:1.45rem;margin:0;line-height:1.2;}
+  .mo-head small{display:block;font-family:var(--fancy);font-style:italic;color:var(--gold-deep);
+    font-size:.95rem;letter-spacing:.4px;}
+
+  table.mgrid{width:100%;border-collapse:collapse;table-layout:fixed;}
+  table.mgrid th{font-family:var(--display);font-size:11px;letter-spacing:1px;text-transform:uppercase;
+    color:var(--gold-deep);border-bottom:1px solid rgba(168,128,28,.35);padding:4px 4px;text-align:left;}
+  table.mgrid td{border:1px solid rgba(168,128,28,.22);vertical-align:top;padding:3px 4px;
+    height:64px;font-size:12px;}
+  table.mgrid td.out{background:#faf7ee;}
+  table.mgrid td .dnum{font-family:var(--display);font-size:12px;color:var(--green-800);}
+  table.mgrid td.out .dnum{color:#b9b1a0;}
+  .ev{margin-top:2px;line-height:1.25;color:#2f4b33;font-size:11px;overflow:hidden;}
+  .ev.parade{color:var(--gold-deep);font-weight:600;}
+  .ev .tag{margin-right:2px;}
+
+  .tba{margin:10px 0 0;font-size:13px;color:#3a3a2e;background:#fbf6e9;
+    border:1px dashed rgba(168,128,28,.45);border-radius:10px;padding:8px 10px;}
+  .tba b{font-family:var(--display);color:var(--green-800);font-size:12.5px;}
+
+  .pencil{margin-top:12px;}
+  .pencil h3{font-family:var(--display);color:var(--green-800);font-size:14px;margin:0 0 6px;letter-spacing:.5px;}
+  .pencil .line{border-bottom:1px dotted rgba(20,83,45,.45);height:24px;}
+
+  .doc-foot{margin-top:6px;font-size:13px;color:var(--muted);line-height:1.5;text-align:center;}
+  .loading{color:var(--muted);text-align:center;font-family:var(--fancy);font-style:italic;}
+
+  @media (max-width:640px){
+    .doc-sheet{padding:20px 12px 40px;}
+    .month{padding:14px 12px;}
+    table.mgrid td{height:52px;font-size:10.5px;}
+    .ev{font-size:10px;}
+  }
+
+  @media print{
+    nav.krewe-nav,.doc-actions,.doc-note{display:none !important;}
+    body{background:#fff !important;}
+    .doc-sheet{max-width:none;padding:0;}
+    .doc-intro{display:none;}
+    .month{border:none;border-radius:0;padding:0;margin:0;break-after:page;page-break-after:always;}
+    .month:last-of-type{break-after:auto;page-break-after:auto;}
+    .mo-head{padding-bottom:8px;margin-bottom:10px;}
+    .mo-head h2{font-size:22pt;}
+    table.mgrid td{height:0.82in;}
+    table.mgrid th{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .pencil .line{height:0.26in;}
+    .doc-foot{display:none;}
+    @page{margin:0.45in;}
+  }
+</style>
+</head>
+<body>
+<nav class="krewe-nav" aria-label="Primary">
+  <a class="brand" href="../../index.html"><span class="name"><b>Krewe of Shamrock</b><small>Members</small></span></a>
+  <div class="krewe-menu"><ul class="krewe-links"><li><a href="../../members.html#docs">Member Hub</a></li></ul></div>
+</nav>
+<main class="doc-sheet">
+  <div class="doc-intro">
+    <h1>☘ Season Calendar</h1>
+    <p class="doc-sub" id="seasonSub">One month per page · parades and krewe events pre-printed · room to pencil in the rest</p>
+    <div class="doc-actions">
+      <button type="button" class="btn btn-primary" onclick="window.print()">Print all 12 pages</button>
+      <a class="btn" href="../../members.html#docs">Back to Documents</a>
+    </div>
+    <div class="doc-note">
+      <b>How to use it:</b> print these twelve pages and you have a paper season planner.
+      Krewe events and our parades are already in their squares; the dotted
+      <b>Pencil it in</b> lines and the roomy day squares are for everything announced later —
+      write events in as they're added. Other krewes' (IKC) events aren't pre-printed on purpose,
+      to keep your writing room; find them on the Hub events calendar.
+    </div>
+  </div>
+  <div id="pages"><p class="loading">Setting the season's table…</p></div>
+  <p class="doc-foot">Dates can change — the Member Hub calendar is always the live source. ☘ All for Fun, Fun for All.</p>
+</main>
+<script>
+(function () {
+  "use strict";
+  var SB_URL = "https://oazwkwflgbthojvnclfc.supabase.co";
+  var SB_KEY = "sb_publishable_aMCyVxkiolMuBt9_R990CA_xQmXLaaS";
+  var MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+  // Season rule (matches the database's kos_volunteer_season_year / craic season):
+  // July 1 through June 30.
+  var today = new Date();
+  var startYear = today.getMonth() >= 6 ? today.getFullYear() : today.getFullYear() - 1;
+  var seasonStart = startYear + "-07-01";
+  var seasonEnd = (startYear + 1) + "-07-01";
+  var sub = document.getElementById("seasonSub");
+  if (sub) sub.textContent = "The " + startYear + "–" + String(startYear + 1).slice(2) +
+    " season · one month per page · parades and krewe events pre-printed · room to pencil in the rest";
+
+  // Parades the krewe marches in, from parades.html. Only entries that fall
+  // inside the computed season are used, so the page ages gracefully.
+  var STATIC_EVENTS = [
+    { day: startYear + "-07-01", name: "New Craic Cup season begins", type: "note" },
+    { day: "2026-12-05", name: "SantaFest parade", type: "parade" },
+    { day: "2027-01-23", name: "Children's Gasparilla", type: "parade" },
+    { day: "2027-01-30", name: "Gasparilla Parade of Pirates", type: "parade" },
+    { day: "2027-02-13", name: "Sant'Yago Knight Parade", type: "parade" },
+    { day: "2027-03-17", name: "St. Patrick's Day ☘", type: "note" }
+  ];
+  // Month notes for dates still to be announced (keyed by YYYY-MM).
+  var TBA_NOTES = {
+    "2027-03": ["Rough Riders' St. Patrick's Day Parade — our home parade; date to be announced"],
+    "2027-04": ["Tampa Pride — the krewe rolls with pride; date to be announced"]
+  };
+
+  function esc(v) {
+    return (v == null ? "" : String(v)).replace(/[&<>"']/g, function (c) {
+      return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c];
+    });
+  }
+  function inSeason(day) { return day >= seasonStart && day < seasonEnd; }
+
+  function fetchKreweEvents() {
+    var url = SB_URL + "/rest/v1/events?select=name,start_time,event_type,source" +
+      "&source=eq.krewe&start_time=gte." + seasonStart + "&start_time=lt." + seasonEnd +
+      "&order=start_time.asc&limit=200";
+    return fetch(url, { headers: { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY } })
+      .then(function (r) { return r.ok ? r.json() : []; })
+      .then(function (rows) {
+        return (rows || []).filter(function (e) {
+          return e && e.name && e.name.trim().toLowerCase() !== "test" && e.start_time;
+        }).map(function (e) {
+          return {
+            day: String(e.start_time).slice(0, 10),
+            name: e.name,
+            type: e.event_type === "parade" ? "parade" : "krewe"
+          };
+        });
+      })
+      .catch(function () { return []; });
+  }
+
+  function mergeEvents(fetched) {
+    var all = fetched.slice();
+    STATIC_EVENTS.forEach(function (s) {
+      if (!inSeason(s.day)) return;
+      var dup = fetched.some(function (f) {
+        return f.day === s.day &&
+          f.name.toLowerCase().slice(0, 8) === s.name.toLowerCase().slice(0, 8);
+      });
+      if (!dup) all.push(s);
+    });
+    var byDay = {};
+    all.forEach(function (e) { (byDay[e.day] = byDay[e.day] || []).push(e); });
+    return byDay;
+  }
+
+  function monthHtml(year, monthIdx, byDay) {
+    var first = new Date(year, monthIdx, 1);
+    var daysInMonth = new Date(year, monthIdx + 1, 0).getDate();
+    var lead = first.getDay(); // 0 = Sunday
+    var html = '<section class="month">' +
+      '<header class="mo-head"><img src="../img/kos-crest.png" alt="" />' +
+      "<div><h2>" + MONTHS[monthIdx] + " " + year + "</h2>" +
+      "<small>Krewe of Shamrock · " + startYear + "–" + String(startYear + 1).slice(2) +
+      " season · All for Fun, Fun for All</small></div></header>";
+    html += '<table class="mgrid"><thead><tr>' +
+      ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(function (d) { return "<th>" + d + "</th>"; }).join("") +
+      "</tr></thead><tbody>";
+    var cells = [];
+    for (var i = 0; i < lead; i++) cells.push('<td class="out"></td>');
+    for (var d = 1; d <= daysInMonth; d++) {
+      var key = year + "-" + String(monthIdx + 1).padStart(2, "0") + "-" + String(d).padStart(2, "0");
+      var evs = (byDay[key] || []).slice(0, 3).map(function (e) {
+        var tag = e.type === "parade" ? "☘" : (e.type === "note" ? "★" : "•");
+        return '<div class="ev ' + (e.type === "parade" ? "parade" : "") + '">' +
+          '<span class="tag">' + tag + "</span>" + esc(e.name) + "</div>";
+      }).join("");
+      cells.push('<td><span class="dnum">' + d + "</span>" + evs + "</td>");
+    }
+    while (cells.length % 7 !== 0) cells.push('<td class="out"></td>');
+    for (var r = 0; r < cells.length; r += 7) {
+      html += "<tr>" + cells.slice(r, r + 7).join("") + "</tr>";
+    }
+    html += "</tbody></table>";
+    var mkey = year + "-" + String(monthIdx + 1).padStart(2, "0");
+    if (TBA_NOTES[mkey]) {
+      html += '<div class="tba"><b>Watch for dates:</b> ' + TBA_NOTES[mkey].map(esc).join(" · ") + "</div>";
+    }
+    html += '<div class="pencil"><h3>✏️ Pencil it in</h3>' +
+      new Array(6).join('<div class="line"></div>') + '<div class="line"></div><div class="line"></div>' +
+      "</div></section>";
+    return html;
+  }
+
+  function render(byDay) {
+    var out = "";
+    for (var i = 0; i < 12; i++) {
+      var m = (6 + i) % 12;               // July (6) through June (5)
+      var y = m >= 6 ? startYear : startYear + 1;
+      out += monthHtml(y, m, byDay);
+    }
+    document.getElementById("pages").innerHTML = out;
+    if (new URLSearchParams(location.search).has("print")) {
+      setTimeout(function () { window.print(); }, 500);
+    }
+  }
+
+  fetchKreweEvents().then(function (fetched) { render(mergeEvents(fetched)); });
+})();
+</script>
+</body>
+</html>
