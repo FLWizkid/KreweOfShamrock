@@ -33,6 +33,33 @@
   .past-list{ list-style:none; padding:0; margin:18px auto 0; max-width:760px; display:grid; grid-template-columns:1fr 1fr; gap:10px 24px; }
   .past-list li{ padding-left:24px; position:relative; font-size:16.5px; }
   .past-list li::before{ content:"☘"; position:absolute; left:0; color:var(--green-600); }
+  .toys-promo{
+    position:relative;
+    overflow:hidden;
+    background:
+      radial-gradient(circle at 10% 0%, rgba(212,175,55,.16), transparent 34%),
+      radial-gradient(circle at 100% 100%, rgba(20,83,45,.08), transparent 40%),
+      linear-gradient(180deg,#f7f1e1 0%, #efe5cc 100%);
+    border-bottom:3px solid var(--gold);
+  }
+  .toys-promo .season-pill{
+    display:inline-block; margin:0 0 10px;
+    padding:5px 14px; border-radius:999px;
+    background:var(--green-800); border:1px solid var(--gold);
+    color:var(--gold-light); font-family:var(--display);
+    font-size:13px; letter-spacing:.8px; text-transform:uppercase;
+  }
+  .toys-promo .card-link{
+    display:block; border-radius:16px; overflow:hidden;
+    box-shadow:var(--shadow); background:
+      linear-gradient(135deg,var(--gold-light),var(--gold) 45%,var(--gold-deep));
+    padding:8px;
+  }
+  .toys-promo .card-link img{ width:100%; height:auto; display:block; border-radius:10px; }
+  .toys-promo-copy{ position:relative; margin-top:26px; text-align:center; max-width:760px; margin-left:auto; margin-right:auto; }
+  .toys-promo-copy h2{ font-size:clamp(28px,4vw,40px); color:var(--green-800); margin:0 0 10px; }
+  .toys-promo .needles{ margin:0 0 18px; color:var(--muted); font-size:18px; font-family:var(--fancy); font-style:italic; }
+  .toys-promo-copy .btns{ justify-content:center; }
   @media (max-width:760px){ .charity-grid,.charity-grid.two,.impact,.past-list{ grid-template-columns:1fr; } }
 </style>
 </head>
@@ -77,6 +104,7 @@
           <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">Get Involved <span class="caret"></span></button>
           <ul class="nav-dropdown">
             <li><a href="volunteer.html" data-nav="volunteer.html">Volunteer</a></li>
+            <li><a href="toys-for-the-flight.html" data-nav="toys-for-the-flight.html">Toys for the Flight</a></li>
             <li><a href="store.html" data-nav="store.html">Shop</a></li>
           </ul>
         </li>
@@ -92,6 +120,24 @@
     <h1>Service &amp; Charity</h1>
     <p class="sub">Giving our time and treasure to Tampa Bay's children and families.</p>
   </header>
+
+  <section class="toys-promo" id="toys-for-the-flight" aria-labelledby="toysPromoTitle">
+    <div class="wrap">
+      <a class="card-link" href="toys-for-the-flight.html">
+        <img src="assets/img/toys-for-the-flight-volunteer-card.jpg" alt="Toys for the Flight: a Christmas toy drive for Johns Hopkins All Children's LifeLine Transport" />
+      </a>
+      <div class="toys-promo-copy">
+        <span class="season-pill">Christmas campaign · Collecting now</span>
+        <h2 id="toysPromoTitle">Toys for the Flight</h2>
+        <p>A Christmas toy drive for Johns Hopkins All Children's LifeLine Transport. Small, new, wipeable toys help comfort critically ill and injured children on ambulance, helicopter, and aircraft transports.</p>
+        <p class="needles">Gathering around Santa Fest · Sat, Dec 5, 2026. Drop and gather locations coming soon.</p>
+        <div class="btns">
+          <a class="btn btn-primary" href="toys-for-the-flight.html">See the drive →</a>
+          <a class="btn btn-green" href="https://www.hopkinsmedicine.org/all-childrens-hospital/services/transport-team" target="_blank" rel="noopener noreferrer">Learn about LifeLine</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <section class="band band-green">
     <div class="wrap">
@@ -191,6 +237,7 @@
       <li>Shriners Children's</li>
       <li>No More Umbrellas</li>
       <li>New Life Warehouse</li>
+      <li>Johns Hopkins All Children's LifeLine</li>
     </ul>
   </section>
 
@@ -225,6 +272,7 @@
 <a href="gallery.html">Gallery</a>
 <a href="videos.html">Videos</a>
 <a href="volunteer.html">Volunteer</a>
+<a href="toys-for-the-flight.html">Toys for the Flight</a>
 <a href="store.html">Shop</a>
 <a href="membership-application.html">Join</a>
 <a href="members.html">Members</a>

@@ -8,12 +8,15 @@ plus Playwright browser tests that load every page.
 - **`static-check.mjs`** — every local `href`/`src`/`poster`/inline-style
   `url(...)` in the HTML pages and `assets/krewe.css` resolves to a real file,
   and every page carries the shared stylesheet and navigation.
-- **`specs/pages.spec.js`** — each of the 16 pages loads with no uncaught JS
+- **`specs/pages.spec.js`** — each of the 17 pages loads with no uncaught JS
   errors, no console errors, and no failed same-origin resources; the shared
   chrome (styled nav, music player with the violin icon, correct active-link
   highlight) is present; all internal links point at real pages; governing
   documents (bylaws, Code of Conduct, parade rules) are published pages, not
   placeholders.
+- **`specs/toys-for-the-flight.spec.js`** — Service & Charity promotes the
+  Christmas toy drive; the shareable campaign page links to LifeLine and
+  offers a share/copy helper.
 - **`specs/hub-quick-links.spec.js`** — Member Hub Quick Links (Directory,
   Documents card, Event Studio with an officer fixture), `#docs` / All
   Documents / Documents text links, and Bylaws / Code of Conduct / Parade
