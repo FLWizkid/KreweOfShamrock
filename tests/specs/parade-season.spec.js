@@ -135,6 +135,12 @@ test("parades.html is a recruiting page with Join CTAs and no public march RSVP"
   await expect(page.locator("#featured-parade")).toHaveCount(0);
   await expect(page.locator("#why-march")).toBeVisible();
   await expect(page.locator("#why-march")).toContainText("Why March With Shamrock");
+  await expect(page.locator("#why-march")).toContainText("join the krewe");
+  await expect(page.locator("#why-march")).toContainText("A season of marches");
+  await expect(page.locator("#why-march")).toContainText("Join");
+  await expect(page.locator("#why-march")).toContainText("Member Login");
+  await expect(page.locator("#why-march")).not.toContainText(/Gasparilla, twice/i);
+  await expect(page.locator("#why-march")).not.toContainText(/RSVP|staging|Member Hub|\bHub\b|muster|mandatory meeting|Door Check-In/i);
   await expect(page.locator("body")).toContainText("See the season");
   await expect(page.locator("#ikc-season")).toBeVisible();
   await expect(page.locator("#ikcSeasonTable")).toBeVisible();
