@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png" />
+<link rel="icon" type="image/png" sizes="48x48" href="assets/img/favicon-48.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png" />
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Krewe of Shamrock · Basket Raffle Demo</title>
+<meta name="description" content="A hands-on demonstration of the Krewe of Shamrock basket raffle app. Sample baskets, pretend tickets, and a live fundraising tally — no real money, no real database." />
+<meta name="robots" content="noindex" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/krewe.css?v=20260909m3" />
+<style>
+  .rf-wrap{ max-width:1040px; margin:0 auto; padding:26px 20px 60px; }
+  .rf-hero{ text-align:center; padding:30px 18px 6px; }
+  .rf-hero h1{ font-family:var(--display); color:var(--green-800); font-size:38px; margin:.2em 0 .1em; }
+  .rf-hero .sub{ font-family:var(--fancy); font-style:italic; color:#7a1f2b; font-size:20px; }
+
+  /* Demo banner */
+  .demo-banner{ max-width:1040px; margin:14px auto 0; padding:0 20px; }
+  .demo-banner .inner{ background:#fdf3d7; border:2px dashed #a8801c; border-radius:14px; padding:14px 18px; color:#5a4a1e; font-size:15px; line-height:1.5; }
+  .demo-banner b{ color:#7a1f2b; }
+  .demo-pill{ display:inline-block; background:#7a1f2b; color:#fff; border-radius:999px; padding:2px 12px; font-family:var(--display); font-size:13px; letter-spacing:.08em; vertical-align:middle; margin-right:8px; }
+
+  /* Fundraising dashboard */
+  .dash{ background:linear-gradient(180deg,var(--green-800,#14532b),#0d3a1e); color:#fff; border-radius:18px; padding:24px; margin:22px 0 10px; }
+  .dash h2{ font-family:var(--display); font-size:24px; margin:0 0 4px; color:#fff; }
+  .dash .sub{ font-family:var(--fancy); font-style:italic; opacity:.9; margin:0 0 16px; }
+  .dash-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-bottom:16px; }
+  .stat{ background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18); border-radius:12px; padding:12px 14px; }
+  .stat .num{ font-family:var(--display); font-size:26px; color:#e8c766; }
+  .stat .lbl{ font-size:13px; opacity:.9; margin-top:2px; }
+  .goalbar{ background:rgba(255,255,255,.15); border-radius:999px; height:20px; overflow:hidden; }
+  .goalbar .fill{ background:linear-gradient(90deg,#e8c766,#c9a02c); height:100%; border-radius:999px; transition:width .6s ease; min-width:8px; }
+  .goal-lbl{ display:flex; justify-content:space-between; font-size:13.5px; margin-top:6px; opacity:.92; }
+
+  /* Baskets */
+  .rf-section-title{ font-family:var(--display); color:var(--green-800); font-size:27px; margin:34px 0 4px; }
+  .rf-section-title small{ display:block; font-family:var(--fancy); font-style:italic; color:var(--muted,#6b6b5e); font-size:16px; }
+  .basket-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:16px; margin-top:14px; }
+  .basket{ background:#fff; border:1px solid rgba(168,128,28,.3); border-radius:14px; padding:18px; box-shadow:0 6px 18px rgba(0,0,0,.06); display:flex; flex-direction:column; }
+  .basket .photo{ width:100%; height:190px; object-fit:cover; border-radius:10px; margin-bottom:10px; }
+  .basket h3{ font-family:var(--display); color:var(--green-800); font-size:20px; margin:0 0 4px; }
+  .basket .val{ color:#7a1f2b; font-weight:600; font-size:14px; }
+  .basket .contents{ font-size:13.5px; color:#3a3a2e; margin:6px 0; }
+  .basket .contents b{ color:var(--green-800); }
+  .basket .count{ font-size:14px; color:var(--green-800); font-weight:600; margin:6px 0 2px; }
+  .basket .raised{ font-size:13px; color:#5a4a1e; margin-bottom:10px; }
+  .basket .spacer{ flex:1; }
+  .buyform{ display:grid; gap:8px; }
+  .buyform input{ width:100%; padding:11px 12px; border:1px solid rgba(168,128,28,.45); border-radius:9px; font-size:15px; box-sizing:border-box; }
+  .qtyrow{ display:flex; gap:8px; }
+  .qtyrow input{ flex:1; min-width:0; }
+  .btn-rf{ background:var(--gold,#c9a02c); color:var(--green-900,#0d3a1e); border:0; border-radius:999px; padding:11px 16px; font-family:var(--display); font-weight:700; font-size:15px; cursor:pointer; white-space:nowrap; }
+  .btn-rf:hover{ filter:brightness(1.05); }
+  .btn-rf:disabled{ opacity:.6; cursor:default; }
+  .rf-msg{ font-size:14px; margin-top:6px; min-height:18px; }
+  .rf-msg.ok{ color:#14532b; } .rf-msg.err{ color:#b3261e; }
+  .won{ background:#eaf5ee; border:1px solid #1c6b3f; color:#14532b; border-radius:10px; padding:8px 12px; font-weight:600; font-size:14px; margin-top:8px; }
+
+  /* 50/50 */
+  .fifty{ background:linear-gradient(180deg,#7a1f2b,#4a0f17); color:#fff; border-radius:16px; padding:24px; margin-top:20px; }
+  .fifty h3{ font-family:var(--display); font-size:26px; margin:0 0 6px; }
+  .fifty .pot{ font-size:15px; opacity:.95; }
+  .fifty .buyform{ margin-top:12px; max-width:480px; }
+  .fifty .buyform input{ background:#fff; border-color:transparent; }
+  .fifty .won{ background:rgba(255,255,255,.12); border-color:#e8c766; color:#fff; }
+
+  /* Drawing */
+  .draw-card{ background:#fff; border:1px solid rgba(168,128,28,.3); border-left:5px solid var(--gold,#c9a02c); border-radius:14px; padding:20px 22px; margin-top:26px; box-shadow:0 6px 18px rgba(0,0,0,.06); }
+  .draw-card h2{ font-family:var(--display); color:var(--green-800); font-size:24px; margin:0 0 6px; }
+  .draw-card p{ color:#3a3a2e; font-size:15px; }
+  .draw-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
+  .btn-ghost{ background:#fff; color:var(--green-800); border:1.5px solid var(--green-800); border-radius:999px; padding:10px 18px; font-family:var(--display); font-weight:700; font-size:15px; cursor:pointer; }
+  .btn-ghost:hover{ background:#eaf5ee; }
+  #drawResults{ margin-top:14px; display:grid; gap:8px; }
+  .draw-row{ background:#fbf6e9; border:1px solid rgba(168,128,28,.4); border-radius:10px; padding:10px 14px; font-size:15px; color:#3a3a2e; }
+  .draw-row b{ color:#7a1f2b; }
+
+  /* Explainers */
+  .explain{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:26px; }
+  .explain .card{ background:#fff; border:1px solid rgba(168,128,28,.3); border-left:5px solid var(--gold,#c9a02c); border-radius:14px; padding:18px 20px; box-shadow:0 4px 14px rgba(0,0,0,.06); }
+  .explain h3{ font-family:var(--display); color:var(--green-800); margin:0 0 6px; font-size:20px; }
+  .explain ol, .explain ul{ margin:8px 0 0; padding-left:20px; }
+  .explain li{ margin:5px 0; color:#3a3a2e; font-size:15px; }
+  .math-note{ background:#fbf6e9; border:1px dashed var(--gold,#c9a02c); border-radius:12px; padding:14px 18px; margin-top:16px; color:#5a4a1e; font-size:15px; line-height:1.55; }
+  .math-note b{ color:#7a1f2b; }
+
+  @media (max-width:640px){ .explain{ grid-template-columns:1fr; } .rf-hero h1{ font-size:30px; } }
+</style>
+</head>
+<body>
+<nav class="krewe-nav" aria-label="Primary">
+    <a class="brand" href="index.html">
+      <img src="assets/img/emblem-shamrock.png" alt="Krewe of Shamrock emblem" />
+      <span class="name"><b>Krewe of Shamrock</b><small>Tampa Bay · Est. 1999</small></span>
+    </a>
+    <button class="nav-toggle" id="kreweNavToggle" aria-label="Open menu" aria-controls="kreweMenu" aria-expanded="false">
+      <span class="nav-toggle-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+    </button>
+    <div class="krewe-menu" id="kreweMenu">
+      <ul class="krewe-links">
+        <li><a href="index.html" data-nav="index.html">Home</a></li>
+        <li class="nav-group">
+          <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">Events <span class="caret"></span></button>
+          <ul class="nav-dropdown">
+            <li><a href="event-signup.html" data-nav="event-signup.html">Upcoming Events</a></li>
+            <li><a href="parades.html" data-nav="parades.html">Parades</a></li>
+            <li><a href="tartan-ball.html" data-nav="tartan-ball.html">Tartan Ball</a></li>
+          </ul>
+        </li>
+        <li class="nav-group">
+          <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">About <span class="caret"></span></button>
+          <ul class="nav-dropdown">
+            <li><a href="learn.html" data-nav="learn.html">Our Heritage</a></li>
+            <li><a href="krewe-history.html" data-nav="krewe-history.html">Krewe History</a></li>
+            <li><a href="poetry.html" data-nav="poetry.html">Krewe Creativity</a></li>
+          </ul>
+        </li>
+        <li class="nav-group">
+          <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">Media <span class="caret"></span></button>
+          <ul class="nav-dropdown">
+            <li><a href="gallery.html" data-nav="gallery.html">Photo Gallery</a></li>
+            <li><a href="videos.html" data-nav="videos.html">Videos</a></li>
+            <li><a href="share.html" data-nav="share.html">Share Yours</a></li>
+          </ul>
+        </li>
+        <li class="nav-group">
+          <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">Get Involved <span class="caret"></span></button>
+          <ul class="nav-dropdown">
+            <li><a href="volunteer.html" data-nav="volunteer.html">Volunteer</a></li>
+            <li><a href="store.html" data-nav="store.html">Shop</a></li>
+          </ul>
+        </li>
+        <li><a href="members.html" data-nav="members.html">Member Login</a></li>
+      </ul>
+      <a class="nav-cta" href="membership-application.html" data-nav="membership-application.html">☘ Join</a>
+    </div>
+  </nav>
+
+  <header class="rf-hero">
+    <h1>Basket Raffle · Fundraising Demo</h1>
+    <p class="sub">Try the raffle app with pretend tickets — watch the charity tally grow ☘</p>
+  </header>
+
+  <div class="demo-banner">
+    <div class="inner">
+      <span class="demo-pill">DEMO</span>
+      <b>This page is a demonstration, not a real raffle.</b>
+      Everything here — baskets, names, ticket counts, dollar totals — is sample data that lives only in your own
+      browser. No money changes hands, nothing is saved to the club database, and refreshing keeps your play data
+      until you press <b>Reset demo</b>. The real raffle runs at <a href="raffle.html">raffle.html</a>.
+    </div>
+  </div>
+
+  <div class="rf-wrap">
+
+    <!-- FUNDRAISING DASHBOARD -->
+    <section class="dash" aria-label="Fundraising dashboard">
+      <h2>💚 Charity Fundraising Tally</h2>
+      <p class="sub">This is the part that makes a raffle a fundraiser — every ticket adds up here, live.</p>
+      <div class="dash-grid">
+        <div class="stat"><div class="num" id="statRaised">$0</div><div class="lbl">Raised for charity so far</div></div>
+        <div class="stat"><div class="num" id="statTickets">0</div><div class="lbl">Basket tickets sold ($5 each)</div></div>
+        <div class="stat"><div class="num" id="statPot">$0</div><div class="lbl">50/50 pot (charity keeps half)</div></div>
+        <div class="stat"><div class="num" id="statPeople">0</div><div class="lbl">People entered</div></div>
+      </div>
+      <div class="goalbar" role="progressbar" aria-labelledby="goalLbl" aria-valuemin="0" aria-valuemax="2500" id="goalBar"><div class="fill" id="goalFill" style="width:0%"></div></div>
+      <div class="goal-lbl" id="goalLbl"><span>Event goal: <b>$2,500</b> for our charity partner</span><span id="goalPct">0%</span></div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <div class="explain">
+      <div class="card">
+        <h3>🎁 Try it: enter a basket raffle</h3>
+        <ol>
+          <li>Pick a basket below and look at what's inside — every item was <b>donated</b>, so the club paid almost nothing for it.</li>
+          <li>Type any name and choose how many $5 tickets to "buy" (this demo won't charge anyone).</li>
+          <li>Watch the ticket count on the basket and the <b>charity tally above</b> both go up instantly.</li>
+          <li>When you're done playing, scroll down and press <b>Run the drawing</b> to see how winners are picked.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h3>💰 Why this raises real money</h3>
+        <ul>
+          <li>Baskets are built from donated goods, so ticket sales are nearly <b>100% proceeds</b>.</li>
+          <li>A basket worth $300 often sells far more than $300 in $5 tickets — people buy chances, not the item.</li>
+          <li>The 50/50 needs no donations at all: the winner takes half the pot, charity keeps the other half.</li>
+          <li>QR codes on each physical basket let guests enter from their phones in seconds — no paper tickets to sell, tear, and count.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- BASKETS -->
+    <h2 class="rf-section-title">Sample Event: "Tampa Bay Treasures" Basket Raffle <small>Five demo baskets · $5 per ticket · draws at the event</small></h2>
+    <div class="basket-grid" id="basketGrid"></div>
+
+    <!-- 50/50 -->
+    <div class="fifty" id="fiftyCard"></div>
+
+    <!-- DRAWING -->
+    <section class="draw-card" aria-label="Drawing demonstration">
+      <h2>🏆 Run the drawing</h2>
+      <p>At the real event, an officer presses one button per basket and the app picks a winning ticket at random —
+         the more tickets someone bought, the better their odds, exactly like pulling a stub from a bowl.
+         Try it here with the demo entries (including any tickets you just added):</p>
+      <div class="draw-actions">
+        <button class="btn-rf" id="drawBtn" type="button">🎲 Run the drawing</button>
+        <button class="btn-ghost" id="resetBtn" type="button">↩︎ Reset demo</button>
+      </div>
+      <div id="drawResults" aria-live="polite"></div>
+    </section>
+
+    <!-- MATH NOTE (live numbers) -->
+    <div class="math-note" id="mathNote"></div>
+
+    <!-- FROM DEMO TO REAL APP -->
+    <div class="explain">
+      <div class="card">
+        <h3>🧭 What the real app adds</h3>
+        <ul>
+          <li><b><a href="raffle.html">raffle.html</a></b> — the live public page. Same look as this demo, but entries are saved to the club's database (Supabase) so every phone sees the same counts.</li>
+          <li><b>QR sheet</b> — officers print one QR code per basket (<i>raffle-qr-sheet.html</i>); guests scan and land right on that basket.</li>
+          <li><b>Members Hub → Raffles</b> — where officers create events, add baskets and photos, confirm payments, and record winners.</li>
+          <li><b>Payments</b> — tickets are recorded digitally, then settled in person (cash or card) with a volunteer before the draw.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>📋 Running one at your event</h3>
+        <ol>
+          <li>Ask members and local shops for themed donations (the five baskets here are realistic examples).</li>
+          <li>Photograph each finished basket and add it in the Members Hub with a value and contents list.</li>
+          <li>Print and tape the QR cards to the baskets on event day.</li>
+          <li>Guests enter all evening from their phones; the tally page shows progress toward the goal.</li>
+          <li>Draw winners in person, record them in the app, and the public page shows 🏆 next to each basket.</li>
+        </ol>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MUSIC PLAYER -->
+  <div class="krewe-music" id="krewePlayer">
+    <audio id="kreweAudio" src="assets/audio/krewe-theme.mp3" loop preload="none"></audio>
+    <button id="kreweMusicBtn" aria-label="Play background music" aria-pressed="false" title="Play our Irish tune"><span class="bars"><i></i><i></i><i></i><i></i></span></button>
+    <span class="label" id="kreweMusicLabel">Tap for a tune ☘</span>
+  </div>
+  <script src="assets/krewe.js" defer></script>
+
+  <script>
+  (function(){
+    "use strict";
+    var TICKET_PRICE = 5;        // dollars per basket ticket
+    var FIFTY_PRICE  = 10;       // dollars per 50/50 ticket
+    var GOAL         = 2500;     // demo fundraising goal
+    var STORE_KEY    = "kosRaffleDemo_v1";
+
+    var E = function(s){ return (s==null?"":String(s)).replace(/[&<>"']/g,function(c){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"})[c]; }); };
+    var fmt = function(n){ return "$" + Number(n||0).toLocaleString("en-US"); };
+
+    // ---- Seed data: five demo baskets + pretend entries so the page looks mid-event ----
+    function seed(){
+      return {
+        baskets: [
+          { id:"gardener", name:"Suncoast Gardener", value:185,
+            img:"assets/img/raffle-demo/suncoast-gardener.jpg",
+            contents:"$100 local nursery gift card, Florida orange-blossom honey, citronella & beeswax candle, floral garden gloves, pruning shears, iced tea & lemonade pitcher set, copper rain gauge",
+            entries:[["Mary O.",6],["Sean K.",4],["Nora G.",8],["Colin T.",3],["Bridget M.",13]] },
+          { id:"gasparilla", name:"Gasparilla Pirate & Fiesta Luxe", value:400,
+            img:"assets/img/raffle-demo/gasparilla-luxe.jpg",
+            contents:"Leather tote & Gasparilla beads, Tampa Theatre tickets (2), Straz Center tickets (2), downtown parking pass, Café Bustelo, artisan chorizo, Spanish olive oil, paella spice kit, flan mix",
+            entries:[["Liam F.",10],["Fiona W.",12],["Declan R.",7],["Aoife B.",15],["Patrick D.",17]] },
+          { id:"ybor", name:"Ybor Cigar, Spirits & Speakeasy", value:300,
+            img:"assets/img/raffle-demo/ybor-cigar-speakeasy.jpg",
+            contents:"Hand-rolled Ybor cigars with leather travel case & cutter, Papa's Pilar dark rum, crystal rocks glasses, ice-sphere molds, speakeasy cocktail gift card, journal & pen",
+            entries:[["Sean K.",9],["Colin T.",11],["Mary O.",5],["Declan R.",14],["Nora G.",9]] },
+          { id:"gulf", name:"Gulf Coast Sunset & Beach Day", value:450,
+            img:"assets/img/raffle-demo/gulf-coast-sunset.jpg",
+            contents:"YETI cooler & two tumblers, waterproof dry bag, Costa sunglasses, reef-safe sunscreen, beach blanket, La Marca prosecco, $150 sunset cruise certificate",
+            entries:[["Bridget M.",8],["Aoife B.",10],["Liam F.",13],["Fiona W.",12],["Patrick D.",14]] },
+          { id:"staycation", name:"Tampa Bay Staycation & Play", value:500,
+            img:"assets/img/raffle-demo/tampa-bay-staycation.jpg",
+            contents:"Boutique hotel gift card, fine-dining voucher for two, Tampa Bay museums pass, Florida Aquarium admission, Joffrey's Tampa Bay blend coffee, Coppertail craft beer 4-pack, tote & cap",
+            entries:[["Nora G.",12],["Patrick D.",11],["Mary O.",16],["Colin T.",9],["Declan R.",18]] }
+        ],
+        fifty: { entries:[["Sean K.",4],["Fiona W.",6],["Bridget M.",5],["Liam F.",8],["Aoife B.",7],["Colin T.",6],["Mary O.",6]] },
+        winners: {}   // filled in by "Run the drawing"
+      };
+    }
+
+    function loadState(){
+      try{
+        var raw = localStorage.getItem(STORE_KEY);
+        if(raw){ var s = JSON.parse(raw); if(s && s.baskets && s.baskets.length===5) return s; }
+      }catch(e){}
+      return seed();
+    }
+    function saveState(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){} }
+    var state = loadState();
+
+    var sum = function(entries){ return entries.reduce(function(t,e){ return t + e[1]; }, 0); };
+    function peopleCount(){
+      var names = {};
+      state.baskets.forEach(function(b){ b.entries.forEach(function(e){ names[e[0].toLowerCase()] = 1; }); });
+      state.fifty.entries.forEach(function(e){ names[e[0].toLowerCase()] = 1; });
+      return Object.keys(names).length;
+    }
+
+    // ---- Rendering ----
+    function renderDash(){
+      var basketTickets = state.baskets.reduce(function(t,b){ return t + sum(b.entries); }, 0);
+      var basketDollars = basketTickets * TICKET_PRICE;
+      var pot = sum(state.fifty.entries) * FIFTY_PRICE;
+      var raised = basketDollars + pot/2;
+      document.getElementById("statRaised").textContent = fmt(raised);
+      document.getElementById("statTickets").textContent = basketTickets.toLocaleString("en-US");
+      document.getElementById("statPot").textContent = fmt(pot);
+      document.getElementById("statPeople").textContent = peopleCount();
+      var pct = Math.min(100, Math.round(raised/GOAL*100));
+      document.getElementById("goalFill").style.width = pct + "%";
+      document.getElementById("goalPct").textContent = pct + "% of goal";
+      document.getElementById("goalBar").setAttribute("aria-valuenow", String(Math.round(raised)));
+
+      var totalValue = state.baskets.reduce(function(t,b){ return t + b.value; }, 0);
+      document.getElementById("mathNote").innerHTML =
+        "<b>The fundraising math, using the numbers on this page right now:</b> " +
+        "the five baskets hold about " + fmt(totalValue) + " in donated goods, which cost the club almost nothing. " +
+        "They have sold <b>" + basketTickets + " tickets × $" + TICKET_PRICE + " = " + fmt(basketDollars) + "</b>. " +
+        "The 50/50 pot is " + fmt(pot) + ", and charity keeps half: <b>" + fmt(pot/2) + "</b>. " +
+        "Total for charity so far: <b>" + fmt(raised) + "</b> — and every extra ticket you add above changes these numbers live. " +
+        "That is the whole idea: donated goods in, nearly pure proceeds out.";
+    }
+
+    function basketCard(b){
+      var tickets = sum(b.entries);
+      var won = state.winners[b.id];
+      var foot = won
+        ? '<div class="won">🏆 Winner: ' + E(won) + '</div>'
+        : '<form class="buyform" data-basket="' + b.id + '">' +
+            '<input name="name" placeholder="Your name (any name works)" required maxlength="80" />' +
+            '<div class="qtyrow"><input name="qty" type="number" min="1" max="200" value="1" required aria-label="Number of tickets" />' +
+            '<button class="btn-rf" type="submit">Get tickets</button></div>' +
+            '<div class="rf-msg" aria-live="polite"></div>' +
+          '</form>';
+      return '<div class="basket" id="b_' + b.id + '">' +
+        '<img class="photo" src="' + b.img + '" alt="' + E(b.name) + ' raffle basket" loading="lazy" />' +
+        '<h3>' + E(b.name) + '</h3>' +
+        '<div class="val">Value ~ ' + fmt(b.value) + ' · donated</div>' +
+        '<div class="contents"><b>Inside:</b> ' + E(b.contents) + '</div>' +
+        '<div class="count">🎟️ ' + tickets + ' ticket' + (tickets===1?'':'s') + ' in this basket</div>' +
+        '<div class="raised">= ' + fmt(tickets*TICKET_PRICE) + ' raised from this basket alone</div>' +
+        '<div class="spacer"></div>' + foot + '</div>';
+    }
+
+    function renderBaskets(){
+      document.getElementById("basketGrid").innerHTML = state.baskets.map(basketCard).join("");
+    }
+
+    function renderFifty(){
+      var pot = sum(state.fifty.entries) * FIFTY_PRICE;
+      var won = state.winners["fifty"];
+      var el = document.getElementById("fiftyCard");
+      var head = '<h3>💰 50/50 Cash Raffle (demo)</h3>' +
+        '<div class="pot">' + sum(state.fifty.entries) + ' tickets in · pot so far ' + fmt(pot) +
+        ' · winner takes ' + fmt(pot/2) + ' · charity keeps ' + fmt(pot/2) + ' · $' + FIFTY_PRICE + ' per ticket</div>';
+      el.innerHTML = won
+        ? head + '<div class="won">🏆 Winner: ' + E(won) + ' — takes home ' + fmt(pot/2) + '</div>'
+        : head +
+          '<form class="buyform" data-fifty="1">' +
+            '<input name="name" placeholder="Your name (any name works)" required maxlength="80" />' +
+            '<div class="qtyrow"><input name="qty" type="number" min="1" max="200" value="1" required aria-label="Number of tickets" />' +
+            '<button class="btn-rf" type="submit">Buy 50/50 tickets</button></div>' +
+            '<div class="rf-msg" aria-live="polite"></div>' +
+          '</form>';
+      wireForms();
+    }
+
+    function wireForms(){
+      Array.prototype.forEach.call(document.querySelectorAll("form.buyform"), function(f){
+        if(f.dataset.wired) return; f.dataset.wired = "1";
+        f.addEventListener("submit", function(ev){
+          ev.preventDefault();
+          var msg = f.querySelector(".rf-msg");
+          var name = f.name.value.trim();
+          var qty = parseInt(f.qty.value,10) || 1;
+          if(!name){ msg.className="rf-msg err"; msg.textContent="Please enter a name."; return; }
+          qty = Math.max(1, Math.min(200, qty));
+          var list = f.dataset.basket
+            ? state.baskets.filter(function(b){ return b.id===f.dataset.basket; })[0].entries
+            : state.fifty.entries;
+          var existing = list.filter(function(e){ return e[0].toLowerCase()===name.toLowerCase(); })[0];
+          if(existing){ existing[1] += qty; } else { list.push([name, qty]); }
+          saveState();
+          renderAll();
+          // re-show the confirmation in the re-rendered card
+          var sel = f.dataset.basket ? '#b_' + f.dataset.basket + ' .rf-msg' : '#fiftyCard .rf-msg';
+          var m2 = document.querySelector(sel);
+          if(m2){ m2.className="rf-msg ok"; m2.textContent = "You're in! " + qty + " pretend ticket" + (qty===1?"":"s") + " added for " + name + ". 🍀"; }
+        });
+      });
+    }
+
+    // ---- Drawing: weighted random pick, exactly like pulling one stub from a bowl ----
+    function drawFrom(entries){
+      var total = sum(entries);
+      if(!total) return null;
+      var n = Math.floor(Math.random()*total);
+      for(var i=0;i<entries.length;i++){
+        n -= entries[i][1];
+        if(n < 0) return entries[i][0];
+      }
+      return entries[entries.length-1][0];
+    }
+
+    document.getElementById("drawBtn").addEventListener("click", function(){
+      var out = [];
+      state.baskets.forEach(function(b){
+        var w = drawFrom(b.entries);
+        if(w){
+          state.winners[b.id] = w;
+          var chance = Math.round(b.entries.filter(function(e){return e[0]===w;})[0][1] / sum(b.entries) * 100);
+          out.push('<div class="draw-row">🎁 <b>' + E(b.name) + '</b> → winner <b>' + E(w) + '</b> (held ' + chance + '% of the ' + sum(b.entries) + ' tickets)</div>');
+        }
+      });
+      var fw = drawFrom(state.fifty.entries);
+      if(fw){
+        var pot = sum(state.fifty.entries)*FIFTY_PRICE;
+        state.winners["fifty"] = fw;
+        out.push('<div class="draw-row">💰 <b>50/50</b> → winner <b>' + E(fw) + '</b> takes ' + fmt(pot/2) + '; charity keeps ' + fmt(pot/2) + '</div>');
+      }
+      out.push('<div class="draw-row">✅ In the real app an officer records these winners, and the public page shows the 🏆 badge on each basket. Press <b>Reset demo</b> to play again.</div>');
+      saveState();
+      renderAll();
+      document.getElementById("drawResults").innerHTML = out.join("");
+    });
+
+    document.getElementById("resetBtn").addEventListener("click", function(){
+      state = seed();
+      saveState();
+      document.getElementById("drawResults").innerHTML = "";
+      renderAll();
+    });
+
+    function renderAll(){ renderBaskets(); renderFifty(); renderDash(); wireForms(); }
+    renderAll();
+  })();
+  </script>
+<p style="margin:8px 0 0;"><a href="mailto:secretary@kreweofshamrock.com" style="color:var(--gold-light);">Contact: secretary@kreweofshamrock.com</a></p>
+</body>
+</html>
