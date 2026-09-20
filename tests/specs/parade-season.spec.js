@@ -101,9 +101,29 @@ test("Member desk includes the parade season card", async ({ page }) => {
   assertHealthy(expect, report, "member desk parade season");
 });
 
-test("parades.html is a recruiting page with Join CTAs and no public march RSVP", async ({ page }) => {
+test("parades.html is a recruiting page with Join CTAs and no public march RSVP", async ({ page, request }) => {
   const report = watchPage(page);
+  const html = await (await request.get("/parades.html")).text();
+  expect(html.indexOf('id="parade-season"'), "march cards should lead the page").toBeLessThan(html.indexOf('id="featured-parade"'));
+  expect(html.indexOf('id="parade-season"')).toBeLessThan(html.indexOf('id="ikc-season"'));
+  for (const file of [
+    "santafest",
+    "childrens-gasparilla",
+    "gasparilla-pirates",
+    "santyago-knight",
+    "tampa-pride",
+    "st-patricks"
+  ]) {
+    expect(html, "static march cards must include " + file).toContain("assets/img/parades/" + file);
+  }
+
   await page.goto("/parades.html");
+  const firstSection = page.locator("header.page-head + section");
+  await expect(firstSection).toHaveAttribute("id", "parade-season");
+  await expect(page.locator("#parade-season")).toBeVisible();
+  const firstArt = page.locator("#parade-season .parade-media img").first();
+  await expect(firstArt).toBeVisible();
+  await expect.poll(async () => firstArt.evaluate((el) => el.complete && el.naturalWidth > 0)).toBe(true);
   await expect(page.locator("#featured-parade")).toBeVisible();
   await expect(page.locator("#featured-parade")).toContainText("Children's Gasparilla");
   await expect(page.locator("#featured-parade")).toContainText("Parade of Pirates");
@@ -112,15 +132,19 @@ test("parades.html is a recruiting page with Join CTAs and no public march RSVP"
   await expect(page.locator("#why-march")).toBeVisible();
   await expect(page.locator("#why-march")).toContainText("Why March With Shamrock");
   await expect(page.locator("body")).toContainText("See the season");
-  await expect(page.locator("#parade-season")).toBeVisible();
-  await expect(page.locator("#paradeStaticGrid")).toBeVisible();
+  await expect(page.locator("#ikc-season")).toBeVisible();
   await expect(page.locator("#ikcSeasonTable")).toBeVisible();
   await expect(page.locator("#ikcSeasonTable tr.ours")).toHaveCount(5);
+  const cardsBox = await page.locator("#parade-season").boundingBox();
+  const tableBox = await page.locator("#ikcSeasonTable").boundingBox();
+  expect(cardsBox && tableBox, "march cards should sit above the IKC table").toBeTruthy();
+  expect(tableBox.y).toBeGreaterThan(cardsBox.y);
   await expect(page.locator("body")).toContainText("Safety & Security");
   await expect(page.locator("body")).toContainText("Castle of Shenanigans");
-  await expect(page.locator("#paradeStaticGrid")).toContainText("Join");
-  await expect(page.locator("#paradeStaticGrid")).toContainText("Member Login");
-  await expect(page.locator("#paradeStaticGrid")).not.toContainText(/Sign me up|Buy Tickets|march RSVP/i);
+  const cardActions = page.locator("#parade-season .parade-actions");
+  await expect(cardActions.first()).toContainText("Join");
+  await expect(cardActions.first()).toContainText("Member Login");
+  await expect(cardActions.filter({ hasText: /Sign me up|Buy Tickets|march RSVP/i })).toHaveCount(0);
   await expect(page.locator("body")).not.toContainText("member_address");
   await expect(page.locator("body")).not.toContainText(/staging on (4th|5th|Howard)/i);
   assertHealthy(expect, report, "public parades marketing");

@@ -791,6 +791,7 @@ begin
         timestamp '2026-12-05 10:00:00',
         'Downtown Tampa',
         'https://www.friendsoftamparec.org/santa-fest--tree-lighting.html',
+        'assets/img/parades/santafest.webp',
         false
       ),
       (
@@ -799,6 +800,7 @@ begin
         timestamp '2027-01-23 10:00:00',
         'Bayshore Boulevard, Tampa',
         'https://gasparillapiratefest.com/childrens-schedule-of-events/',
+        'assets/img/parades/childrens-gasparilla.webp',
         false
       ),
       (
@@ -807,6 +809,7 @@ begin
         timestamp '2027-01-30 14:00:00',
         'Bayshore Boulevard, Tampa',
         'https://gasparillapiratefest.com/pirate-fest-schedule-of-events/',
+        'assets/img/parades/gasparilla-pirates.webp',
         false
       ),
       (
@@ -815,9 +818,10 @@ begin
         timestamp '2027-02-13 19:00:00',
         'Ybor City, Tampa',
         'https://krewesantyago.org/knight-parade',
+        'assets/img/parades/santyago-knight.webp',
         false
       )
-    ) as t(name, description, start_local, location, external_url, is_featured)
+    ) as t(name, description, start_local, location, external_url, flyer_url, is_featured)
   loop
     if exists (
       select 1 from public.events e
@@ -831,7 +835,7 @@ begin
 
     insert into public.events (
       name, description, event_type, start_time, location,
-      is_public, members_only, status, source, is_featured, external_url, notes
+      is_public, members_only, status, source, is_featured, external_url, flyer_url, notes
     ) values (
       r.name,
       r.description,
@@ -844,7 +848,25 @@ begin
       'krewe',
       r.is_featured,
       r.external_url,
+      r.flyer_url,
       'Seeded parade-season marketing card. Add the private staging address in Event Studio. Never put a street address in the public teaser.'
     );
   end loop;
+
+  -- Attach castle-float card art to existing Shamrock marches that have no flyer yet.
+  update public.events e
+  set flyer_url = v.flyer_url
+  from (values
+    ('SantaFest', 'assets/img/parades/santafest.webp'),
+    ('Children''s Gasparilla', 'assets/img/parades/childrens-gasparilla.webp'),
+    ('Gasparilla Parade of Pirates', 'assets/img/parades/gasparilla-pirates.webp'),
+    ('Sant''Yago Knight Parade', 'assets/img/parades/santyago-knight.webp'),
+    ('Tampa Pride', 'assets/img/parades/tampa-pride.webp'),
+    ('Rough Riders'' St. Patrick''s Day', 'assets/img/parades/st-patricks.webp'),
+    ('Rough Riders'' St. Patrick''s Day Parade', 'assets/img/parades/st-patricks.webp')
+  ) as v(name, flyer_url)
+  where e.event_type = 'parade'
+    and coalesce(e.source, 'krewe') = 'krewe'
+    and lower(e.name) = lower(v.name)
+    and (e.flyer_url is null or e.flyer_url = '');
 end $$;

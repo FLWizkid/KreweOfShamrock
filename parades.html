@@ -14,9 +14,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/krewe.css?v=20260920p1" />
+<link rel="stylesheet" href="assets/krewe.css?v=20260920p2" />
 <style>
-  .parade-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:20px; }
+  .parade-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:20px; }
   .parade-card{ background:#fff; border:1px solid rgba(168,128,28,.28); border-radius:16px; padding:22px; box-shadow:var(--shadow-sm); display:flex; flex-direction:column; overflow:hidden; }
   .parade-card .mo{ font-family:var(--display); font-size:13px; letter-spacing:1px; text-transform:uppercase; color:var(--gold-deep); }
   .parade-card h3{ color:var(--green-800); font-size:20px; margin:6px 0 8px; }
@@ -24,8 +24,9 @@
   .parade-card a{ font-family:var(--display); font-weight:600; color:var(--green-700); text-decoration:none; font-size:14px; }
   .parade-card a:hover{ color:var(--gold-deep); }
   .parade-card .dt{ font-weight:600; color:var(--green-800); font-size:15px; margin:-2px 0 10px; }
-  .parade-card .parade-media{ margin:-22px -22px 14px; aspect-ratio:16/10; background:linear-gradient(160deg,#1a3a24,#0d1f14); display:grid; place-items:center; overflow:hidden; color:#f5e6b8; font-family:var(--display); }
-  .parade-card .parade-media img{ width:100%; height:100%; object-fit:cover; }
+  .parade-card .parade-media{ margin:-22px -22px 14px; aspect-ratio:16/7.2; background:linear-gradient(160deg,#1a3a24,#0d1f14); display:grid; place-items:center; overflow:hidden; color:#f5e6b8; font-family:var(--display); }
+  .parade-card .parade-media picture{ display:block; width:100%; height:100%; }
+  .parade-card .parade-media img{ width:100%; height:100%; object-fit:cover; display:block; }
   .parade-card .parade-actions{ display:flex; flex-wrap:wrap; gap:8px; margin-top:auto; }
   .parade-card .parade-actions .btn{ font-size:14px; }
   .parade-card .ev-meta{ font-size:15px; margin:0 0 6px; }
@@ -67,6 +68,13 @@
   .safety-list li{ position:relative; padding-left:30px; font-size:16px; }
   .safety-list li::before{ content:"☘"; position:absolute; left:0; top:1px; color:var(--green-600); font-size:18px; }
   @media (max-width:720px){ .rules-grid,.safety-list{ grid-template-columns:1fr; } }
+  .page-head{ padding:40px 22px 34px; }
+  #parade-season > .wrap{ padding-top:32px; padding-bottom:40px; }
+  #parade-season .parade-lead{ max-width:760px; margin:0 auto 14px; text-align:center; font-size:17px; }
+  @media (max-width:720px){
+    .page-head{ padding:32px 14px 28px; }
+    #parade-season > .wrap{ padding-top:24px; }
+  }
 </style>
 </head>
 <body>
@@ -126,20 +134,127 @@
     <p class="sub">Every parade we march &mdash; plus how we keep the route safe.</p>
   </header>
 
-  <!-- INTRO -->
-  <section class="wrap narrow">
-    <div class="section-title">
-      <h2>Marching With the Krewe</h2>
-      <p class="sub">Tampa Bay's grandest processions</p>
-    </div>
-    <div class="banner-flourish" aria-hidden="true"></div>
-    <p style="text-align:center;font-size:17px;">As Tampa's original kilted krewe, we bring music, kilts, and a whole lot of
-       good craic to the biggest parades in the bay. Full membership includes a place in every krewe parade of the season.
-       March RSVP and staging stay in the Member Hub.</p>
-    <div class="btns" style="margin-top:18px;justify-content:center;display:flex;flex-wrap:wrap;gap:10px;">
-      <a class="btn btn-primary" href="membership-application.html">☘ Join</a>
-      <a class="btn" href="members.html">Member Login</a>
-      <a class="btn" href="#parade-season">See the season</a>
+  <!-- PARADES WE MARCH IN — first section, recruiting cards with float art -->
+  <section class="band band-cream" id="parade-season">
+    <div class="wrap">
+      <div class="section-title">
+        <h2>Parades We March In</h2>
+        <p class="sub">Every Shamrock march this season</p>
+      </div>
+      <div class="knot-divider"><span class="knot"></span></div>
+      <p class="parade-lead">
+        Full membership includes a place in every krewe parade of the season.
+        March RSVP and staging stay in the Member Hub.
+      </p>
+      <div class="btns" style="margin:0 0 16px;justify-content:center;display:flex;flex-wrap:wrap;gap:10px;">
+        <a class="btn btn-primary" href="membership-application.html">☘ Join</a>
+        <a class="btn" href="members.html">Member Login</a>
+        <a class="btn" href="#ikc-season">See the season</a>
+      </div>
+      <div class="parade-grid" id="paradeStaticGrid">
+        <article class="parade-card">
+          <div class="parade-media">
+            <picture>
+              <source type="image/webp" srcset="assets/img/parades/santafest.webp" />
+              <img src="assets/img/parades/santafest.jpg" alt="Krewe of Shamrock castle float decorated with garland and gifts at SantaFest" width="1632" height="736" fetchpriority="high" />
+            </picture>
+          </div>
+          <div class="mo">December</div><h3>SantaFest</h3>
+          <p class="ev-meta"><b>When:</b> Saturday, December 5, 2026</p>
+          <p class="ev-meta"><b>Where:</b> Downtown Tampa</p>
+          <p>Tampa's downtown holiday kickoff parade, a festive start to the krewe's marching season.</p>
+          <div class="parade-actions">
+            <a class="btn btn-primary" href="membership-application.html">☘ Join</a>
+            <a class="btn" href="members.html">Member Login</a>
+            <a href="https://www.friendsoftamparec.org/santa-fest--tree-lighting.html" target="_blank" rel="noopener">Parade info →</a>
+          </div>
+        </article>
+        <article class="parade-card">
+          <div class="parade-media">
+            <picture>
+              <source type="image/webp" srcset="assets/img/parades/childrens-gasparilla.webp" />
+              <img src="assets/img/parades/childrens-gasparilla.jpg" alt="Krewe of Shamrock castle float on Bayshore at Children's Gasparilla with families along the route" width="1632" height="736" fetchpriority="high" />
+            </picture>
+          </div>
+          <div class="mo">January</div><h3>Children's Gasparilla</h3>
+          <p class="ev-meta"><b>When:</b> Saturday, January 23, 2027</p>
+          <p class="ev-meta"><b>Where:</b> Bayshore Boulevard, Tampa</p>
+          <p>The family-friendly, alcohol-free daytime parade along Bayshore: beads, pirates, and big smiles for the little ones.</p>
+          <div class="parade-actions">
+            <a class="btn btn-primary" href="membership-application.html">☘ Join</a>
+            <a class="btn" href="members.html">Member Login</a>
+            <a href="https://gasparillapiratefest.com/childrens-schedule-of-events/" target="_blank" rel="noopener">Parade info →</a>
+          </div>
+        </article>
+        <article class="parade-card">
+          <div class="parade-media">
+            <picture>
+              <source type="image/webp" srcset="assets/img/parades/gasparilla-pirates.webp" />
+              <img src="assets/img/parades/gasparilla-pirates.jpg" alt="Krewe of Shamrock castle float on Bayshore at the Gasparilla Parade of Pirates" width="1632" height="736" loading="lazy" />
+            </picture>
+          </div>
+          <div class="mo">January</div><h3>Gasparilla Parade of Pirates</h3>
+          <p class="ev-meta"><b>When:</b> Saturday, January 30, 2027</p>
+          <p class="ev-meta"><b>Where:</b> Bayshore Boulevard, Tampa</p>
+          <p>The crown jewel: the legendary invasion and grand pirate parade down Bayshore Boulevard.</p>
+          <div class="parade-actions">
+            <a class="btn btn-primary" href="membership-application.html">☘ Join</a>
+            <a class="btn" href="members.html">Member Login</a>
+            <a href="https://gasparillapiratefest.com/pirate-fest-schedule-of-events/" target="_blank" rel="noopener">Parade info →</a>
+          </div>
+        </article>
+        <article class="parade-card">
+          <div class="parade-media">
+            <picture>
+              <source type="image/webp" srcset="assets/img/parades/santyago-knight.webp" />
+              <img src="assets/img/parades/santyago-knight.jpg" alt="Krewe of Shamrock castle float at dusk in the Sant'Yago Knight Parade" width="1632" height="736" loading="lazy" />
+            </picture>
+          </div>
+          <div class="mo">February</div><h3>Sant'Yago Knight Parade</h3>
+          <p class="ev-meta"><b>When:</b> Saturday, February 13, 2027</p>
+          <p class="ev-meta"><b>Where:</b> Ybor City, Tampa</p>
+          <p>The dazzling night parade through historic Ybor City: lights, floats, and Latin-quarter energy.</p>
+          <div class="parade-actions">
+            <a class="btn btn-primary" href="membership-application.html">☘ Join</a>
+            <a class="btn" href="members.html">Member Login</a>
+            <a href="https://krewesantyago.org/knight-parade" target="_blank" rel="noopener">Parade info →</a>
+          </div>
+        </article>
+        <article class="parade-card">
+          <div class="parade-media">
+            <picture>
+              <source type="image/webp" srcset="assets/img/parades/tampa-pride.webp" />
+              <img src="assets/img/parades/tampa-pride.jpg" alt="Krewe of Shamrock castle float at night with a Pride flag at Tampa Pride" width="1632" height="736" loading="lazy" />
+            </picture>
+          </div>
+          <div class="mo">Spring</div><h3>Tampa Pride</h3>
+          <p class="ev-meta"><b>When:</b> Date to be announced</p>
+          <p class="ev-meta"><b>Where:</b> Ybor City, Tampa</p>
+          <p>Ybor City's joyful celebration of Tampa's LGBTQ+ community; the krewe rolls with pride.</p>
+          <div class="parade-actions">
+            <a class="btn btn-primary" href="membership-application.html">☘ Join</a>
+            <a class="btn" href="members.html">Member Login</a>
+            <a href="https://tampapride.org/" target="_blank" rel="noopener">Parade info →</a>
+          </div>
+        </article>
+        <article class="parade-card">
+          <div class="parade-media">
+            <picture>
+              <source type="image/webp" srcset="assets/img/parades/st-patricks.webp" />
+              <img src="assets/img/parades/st-patricks.jpg" alt="Krewe of Shamrock castle float on the Tampa waterfront at the Rough Riders St. Patrick's Day Parade" width="1632" height="736" loading="lazy" />
+            </picture>
+          </div>
+          <div class="mo">March</div><h3>Rough Riders' St. Patrick's Day</h3>
+          <p class="ev-meta"><b>When:</b> March 2027 · date to be announced</p>
+          <p class="ev-meta"><b>Where:</b> Tampa</p>
+          <p>Our home holiday, the parade where the Krewe of Shamrock was born in 1999. Pipes, kilts, and a sea of green.</p>
+          <div class="parade-actions">
+            <a class="btn btn-primary" href="membership-application.html">☘ Join</a>
+            <a class="btn" href="members.html">Member Login</a>
+            <a href="https://tamparoughriders.org/stpats" target="_blank" rel="noopener">Parade info →</a>
+          </div>
+        </article>
+      </div>
     </div>
   </section>
 
@@ -171,7 +286,7 @@
     <div class="btns" style="margin-top:22px;justify-content:center;display:flex;flex-wrap:wrap;gap:10px;">
       <a class="btn btn-primary" href="membership-application.html">☘ Join</a>
       <a class="btn" href="members.html">Member Login</a>
-      <a class="btn" href="#parade-season">See the season</a>
+      <a class="btn" href="#ikc-season">See the season</a>
     </div>
   </section>
 
@@ -195,86 +310,14 @@
     <div class="btns" style="margin-top:22px;justify-content:center;display:flex;flex-wrap:wrap;gap:10px;">
       <a class="btn btn-primary" href="membership-application.html">☘ Join</a>
       <a class="btn" href="members.html">Member Login</a>
-      <a class="btn" href="#parade-season">See the season</a>
+      <a class="btn" href="#ikc-season">See the season</a>
     </div>
   </section>
 
-  <!-- PARADES WE MARCH IN -->
-  <section class="band band-cream" id="parade-season">
+  <!-- FULL IKC PARADE SEASON -->
+  <section class="band band-cream" id="ikc-season">
     <div class="wrap">
-      <div class="section-title"><h2>Parades We March In</h2><p class="sub">Every Shamrock march this season · marketing cards, not staging maps</p></div>
-      <div class="knot-divider"><span class="knot"></span></div>
-      <div class="parade-grid" id="paradeLiveGrid" hidden></div>
-      <div class="parade-grid" id="paradeStaticGrid">
-        <div class="parade-card">
-          <div class="mo">December</div><h3>SantaFest</h3>
-          <p class="ev-meta"><b>When:</b> Saturday, December 5, 2026</p>
-          <p class="ev-meta"><b>Where:</b> Downtown Tampa</p>
-          <p>Tampa's downtown holiday kickoff parade, a festive start to the krewe's marching season.</p>
-          <div class="parade-actions">
-            <a class="btn btn-primary" href="membership-application.html">☘ Join</a>
-            <a class="btn" href="members.html">Member Login</a>
-            <a href="https://www.friendsoftamparec.org/santa-fest--tree-lighting.html" target="_blank" rel="noopener">Parade info →</a>
-          </div>
-        </div>
-        <div class="parade-card">
-          <div class="mo">January</div><h3>Children's Gasparilla</h3>
-          <p class="ev-meta"><b>When:</b> Saturday, January 23, 2027</p>
-          <p class="ev-meta"><b>Where:</b> Bayshore Boulevard, Tampa</p>
-          <p>The family-friendly, alcohol-free daytime parade along Bayshore: beads, pirates, and big smiles for the little ones.</p>
-          <div class="parade-actions">
-            <a class="btn btn-primary" href="membership-application.html">☘ Join</a>
-            <a class="btn" href="members.html">Member Login</a>
-            <a href="https://gasparillapiratefest.com/childrens-schedule-of-events/" target="_blank" rel="noopener">Parade info →</a>
-          </div>
-        </div>
-        <div class="parade-card">
-          <div class="mo">January</div><h3>Gasparilla Parade of Pirates</h3>
-          <p class="ev-meta"><b>When:</b> Saturday, January 30, 2027</p>
-          <p class="ev-meta"><b>Where:</b> Bayshore Boulevard, Tampa</p>
-          <p>The crown jewel: the legendary invasion and grand pirate parade down Bayshore Boulevard.</p>
-          <div class="parade-actions">
-            <a class="btn btn-primary" href="membership-application.html">☘ Join</a>
-            <a class="btn" href="members.html">Member Login</a>
-            <a href="https://gasparillapiratefest.com/pirate-fest-schedule-of-events/" target="_blank" rel="noopener">Parade info →</a>
-          </div>
-        </div>
-        <div class="parade-card">
-          <div class="mo">February</div><h3>Sant'Yago Knight Parade</h3>
-          <p class="ev-meta"><b>When:</b> Saturday, February 13, 2027</p>
-          <p class="ev-meta"><b>Where:</b> Ybor City, Tampa</p>
-          <p>The dazzling night parade through historic Ybor City: lights, floats, and Latin-quarter energy.</p>
-          <div class="parade-actions">
-            <a class="btn btn-primary" href="membership-application.html">☘ Join</a>
-            <a class="btn" href="members.html">Member Login</a>
-            <a href="https://krewesantyago.org/knight-parade" target="_blank" rel="noopener">Parade info →</a>
-          </div>
-        </div>
-        <div class="parade-card">
-          <div class="mo">Spring</div><h3>Tampa Pride</h3>
-          <p class="ev-meta"><b>When:</b> Date to be announced</p>
-          <p class="ev-meta"><b>Where:</b> Ybor City, Tampa</p>
-          <p>Ybor City's joyful celebration of Tampa's LGBTQ+ community; the krewe rolls with pride.</p>
-          <div class="parade-actions">
-            <a class="btn btn-primary" href="membership-application.html">☘ Join</a>
-            <a class="btn" href="members.html">Member Login</a>
-            <a href="https://tampapride.org/" target="_blank" rel="noopener">Parade info →</a>
-          </div>
-        </div>
-        <div class="parade-card">
-          <div class="mo">March</div><h3>Rough Riders' St. Patrick's Day</h3>
-          <p class="ev-meta"><b>When:</b> March 2027 · date to be announced</p>
-          <p class="ev-meta"><b>Where:</b> Tampa</p>
-          <p>Our home holiday, the parade where the Krewe of Shamrock was born in 1999. Pipes, kilts, and a sea of green.</p>
-          <div class="parade-actions">
-            <a class="btn btn-primary" href="membership-application.html">☘ Join</a>
-            <a class="btn" href="members.html">Member Login</a>
-            <a href="https://tamparoughriders.org/stpats" target="_blank" rel="noopener">Parade info →</a>
-          </div>
-        </div>
-      </div>
-      <!-- FULL IKC PARADE SEASON -->
-      <div class="section-title" style="margin-top:48px;">
+      <div class="section-title">
         <h2>The Full Parade Season, Around the Bay</h2>
         <p class="sub">Every parade on the Inter-Krewe Council calendar · 2026&ndash;27 season</p>
       </div>
@@ -426,7 +469,7 @@
       <div class="btns" style="margin-top:22px;">
         <a class="btn btn-primary" href="membership-application.html">☘ Join</a>
         <a class="btn btn-outline" href="members.html">Member Login</a>
-        <a class="btn btn-outline" href="#parade-season">See the season</a>
+        <a class="btn btn-outline" href="#ikc-season">See the season</a>
       </div>
     </div>
   </section>
@@ -531,11 +574,37 @@
         info + "</div>";
     }
 
-    function cardMedia(ev) {
-      if (ev.flyer_url && !/\.pdf(?:$|[?#])/i.test(ev.flyer_url)) {
-        return '<div class="parade-media"><img src="' + esc(ev.flyer_url) + '" alt="" loading="lazy" /></div>';
+    function paradeArtFor(name) {
+      const n = normalizeName(name);
+      if (!n) return null;
+      if (n.includes("santa") && n.includes("fest")) {
+        return { src: "assets/img/parades/santafest.webp", alt: "Krewe of Shamrock castle float decorated with garland and gifts at SantaFest" };
       }
-      return "";
+      if (n.includes("gasparilla") && n.includes("children")) {
+        return { src: "assets/img/parades/childrens-gasparilla.webp", alt: "Krewe of Shamrock castle float on Bayshore at Children's Gasparilla with families along the route" };
+      }
+      if (n.includes("gasparilla") && !n.includes("children")) {
+        return { src: "assets/img/parades/gasparilla-pirates.webp", alt: "Krewe of Shamrock castle float on Bayshore at the Gasparilla Parade of Pirates" };
+      }
+      if (n.includes("yago") || (n.includes("knight") && n.includes("parade"))) {
+        return { src: "assets/img/parades/santyago-knight.webp", alt: "Krewe of Shamrock castle float at dusk in the Sant'Yago Knight Parade" };
+      }
+      if (n.includes("pride")) {
+        return { src: "assets/img/parades/tampa-pride.webp", alt: "Krewe of Shamrock castle float at night with a Pride flag at Tampa Pride" };
+      }
+      if (n.includes("patrick") || n.includes("st pat")) {
+        return { src: "assets/img/parades/st-patricks.webp", alt: "Krewe of Shamrock castle float on the Tampa waterfront at the Rough Riders St. Patrick's Day Parade" };
+      }
+      return null;
+    }
+
+    function cardMedia(ev) {
+      const flyer = ev.flyer_url && !/\.pdf(?:$|[?#])/i.test(ev.flyer_url) ? ev.flyer_url : "";
+      const art = flyer
+        ? { src: flyer, alt: ev.name || "Parade" }
+        : paradeArtFor(ev && ev.name);
+      if (!art) return "";
+      return '<div class="parade-media"><img src="' + esc(art.src) + '" alt="' + esc(art.alt || ev.name || "") + '" loading="lazy" width="1632" height="736" /></div>';
     }
 
     function paradeCardHtml(ev) {
@@ -575,8 +644,7 @@
     }
 
     async function loadParades() {
-      const liveGrid = document.getElementById("paradeLiveGrid");
-      const staticGrid = document.getElementById("paradeStaticGrid");
+      const grid = document.getElementById("paradeStaticGrid");
       let { data, error } = await supabase
         .from("v_public_events")
         .select("id, name, description, start_time, end_time, location, source, external_url, flyer_url, status, is_featured, event_type, members_only")
@@ -598,18 +666,14 @@
         return;
       }
       renderGasparillaSpotlight(ours);
-      if (liveGrid) {
-        liveGrid.hidden = false;
-        liveGrid.innerHTML = ours.map(paradeCardHtml).join("");
-      }
-      if (staticGrid) {
+      if (grid) {
         const liveNames = ours.map((ev) => normalizeName(ev.name));
-        Array.from(staticGrid.querySelectorAll(".parade-card")).forEach((card) => {
+        Array.from(grid.querySelectorAll(".parade-card")).forEach((card) => {
           const h = card.querySelector("h3");
           const n = normalizeName(h && h.textContent);
           if (liveNames.some((live) => live === n || live.includes(n) || n.includes(live))) card.remove();
         });
-        if (!staticGrid.querySelector(".parade-card")) staticGrid.hidden = true;
+        grid.insertAdjacentHTML("afterbegin", ours.map(paradeCardHtml).join(""));
       }
       highlightIkcRows(ours);
     }
