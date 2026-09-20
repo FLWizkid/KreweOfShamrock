@@ -135,7 +135,6 @@
     <div class="rf-pay" id="rfPay">
       <b>Paying:</b> Tickets are tracked digitally; payment is in person. Settle up with any Krewe volunteer at the table (cash or card).
       Your entries are recorded when you submit — a volunteer confirms payment before the draw. Sláinte! 🍀
-      <br><b>New to raffles?</b> <a href="raffle-demo.html" style="color:#7a1f2b;font-weight:600;">Try the interactive demo</a> — pretend tickets, a live fundraising tally, and a practice drawing. No real money involved.
     </div>
 
     <div id="raffleRoot"><p class="empty">Loading raffles…</p></div>
@@ -186,7 +185,7 @@
       const active=(events||[]).filter(e=>e.is_active && (e.audience||'both')!=='internal');
       const basketEvents=active.filter(e=>e.raffle_type==='basket');
       const potEvents=active.filter(e=>e.raffle_type==='fifty_fifty');
-      if(!basketEvents.length && !potEvents.length){ root.innerHTML='<p class="rf-empty-note">No public raffles are running right now. Check back soon — or <a href="raffle-demo.html" style="color:#7a1f2b;font-weight:600;">try the interactive demo</a> to see how our basket raffles raise money for charity. 🍀</p>'; return; }
+      if(!basketEvents.length && !potEvents.length){ root.innerHTML='<p class="rf-empty-note">No public raffles are running right now. Check back soon! 🍀</p>'; return; }
       let html='';
       for(const ev of basketEvents){
         const bs=(baskets||[]).filter(b=>b.raffle_event_id===ev.id);
