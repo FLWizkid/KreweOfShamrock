@@ -104,8 +104,13 @@ test("Member desk includes the parade season card", async ({ page }) => {
 test("parades.html is a recruiting page with Join CTAs and no public march RSVP", async ({ page, request }) => {
   const report = watchPage(page);
   const html = await (await request.get("/parades.html")).text();
-  expect(html.indexOf('id="parade-season"'), "march cards should lead the page").toBeLessThan(html.indexOf('id="featured-parade"'));
+  expect(html, "Gasparilla dual-card spotlight should be gone").not.toContain('id="featured-parade"');
+  expect(html).not.toContain("gas-spot");
+  expect(html).not.toContain("gas-card");
+  expect(html.indexOf('id="parade-season"')).toBeLessThan(html.indexOf('id="why-march"'));
   expect(html.indexOf('id="parade-season"')).toBeLessThan(html.indexOf('id="ikc-season"'));
+  expect(html).toMatch(/Children'?s Gasparilla/);
+  expect(html).toContain("Parade of Pirates");
   for (const file of [
     "santafest",
     "childrens-gasparilla",
@@ -121,14 +126,13 @@ test("parades.html is a recruiting page with Join CTAs and no public march RSVP"
   const firstSection = page.locator("header.page-head + section");
   await expect(firstSection).toHaveAttribute("id", "parade-season");
   await expect(page.locator("#parade-season")).toBeVisible();
+  await expect(page.locator("header.page-head")).toContainText("Gasparilla");
+  await expect(page.locator("#parade-season")).toContainText("Children's Gasparilla");
+  await expect(page.locator("#parade-season")).toContainText("Parade of Pirates");
   const firstArt = page.locator("#parade-season .parade-media img").first();
   await expect(firstArt).toBeVisible();
   await expect.poll(async () => firstArt.evaluate((el) => el.complete && el.naturalWidth > 0)).toBe(true);
-  await expect(page.locator("#featured-parade")).toBeVisible();
-  await expect(page.locator("#featured-parade")).toContainText("Children's Gasparilla");
-  await expect(page.locator("#featured-parade")).toContainText("Parade of Pirates");
-  await expect(page.locator("#featured-parade")).toContainText("January 23, 2027");
-  await expect(page.locator("#featured-parade")).toContainText("January 30, 2027");
+  await expect(page.locator("#featured-parade")).toHaveCount(0);
   await expect(page.locator("#why-march")).toBeVisible();
   await expect(page.locator("#why-march")).toContainText("Why March With Shamrock");
   await expect(page.locator("body")).toContainText("See the season");
@@ -148,6 +152,41 @@ test("parades.html is a recruiting page with Join CTAs and no public march RSVP"
   await expect(page.locator("body")).not.toContainText("member_address");
   await expect(page.locator("body")).not.toContainText(/staging on (4th|5th|Howard)/i);
   assertHealthy(expect, report, "public parades marketing");
+});
+
+test("parades.html march cards put the next upcoming parade first", async ({ page }) => {
+  const report = watchPage(page);
+  await page.goto("/parades.html");
+  await page.waitForFunction(() => typeof window.__kosOrderMarchGrid === "function");
+
+  const afterSantaFest = Date.parse("2027-01-10T12:00:00-05:00");
+  await page.evaluate((now) => window.__kosOrderMarchGrid(now), afterSantaFest);
+  await expect(page.locator("#parade-season .parade-card h3").first()).toHaveText("Children's Gasparilla");
+  await expect(page.locator("#parade-season .parade-card h3").last()).toHaveText("SantaFest");
+
+  const midJanuary = Date.parse("2027-01-25T12:00:00-05:00");
+  await page.evaluate((now) => window.__kosOrderMarchGrid(now), midJanuary);
+  await expect(page.locator("#parade-season .parade-card h3").first()).toHaveText("Gasparilla Parade of Pirates");
+
+  const titles = await page.locator("#parade-season .parade-card h3").allTextContents();
+  const starts = await page.locator("#parade-season .parade-card").evaluateAll((els) =>
+    els.map((el) => el.getAttribute("data-start"))
+  );
+  const now = midJanuary;
+  const items = titles.map((title, i) => {
+    const ms = starts[i] ? Date.parse(starts[i]) : null;
+    return { title, ms: Number.isNaN(ms) ? null : ms };
+  });
+  const expected = [...items].sort((a, b) => {
+    const rank = (ms) => (ms == null ? 1 : ms >= now ? 0 : 2);
+    const ra = rank(a.ms);
+    const rb = rank(b.ms);
+    if (ra !== rb) return ra - rb;
+    if (a.ms != null && b.ms != null) return a.ms - b.ms;
+    return 0;
+  });
+  expect(titles).toEqual(expected.map((item) => item.title));
+  assertHealthy(expect, report, "parade cards upcoming-first");
 });
 
 test("calendar helper writes a teaser-only .ics", async ({ page }) => {

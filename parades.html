@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/krewe.css?v=20260920p2" />
+<link rel="stylesheet" href="assets/krewe.css?v=20260920p3" />
 <style>
   .parade-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:20px; }
   .parade-card{ background:#fff; border:1px solid rgba(168,128,28,.28); border-radius:16px; padding:22px; box-shadow:var(--shadow-sm); display:flex; flex-direction:column; overflow:hidden; }
@@ -31,21 +31,11 @@
   .parade-card .parade-actions .btn{ font-size:14px; }
   .parade-card .ev-meta{ font-size:15px; margin:0 0 6px; }
   .parade-card .ev-meta b{ color:var(--green-800); }
-  .gas-spot{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; margin-top:8px; }
-  .gas-card{ background:#fff; border:1px solid rgba(168,128,28,.28); border-radius:16px; padding:22px; box-shadow:var(--shadow-sm); }
-  .gas-card .mo{ font-family:var(--display); font-size:13px; letter-spacing:1px; text-transform:uppercase; color:var(--gold-deep); }
-  .gas-card h3{ color:var(--green-800); font-size:22px; margin:6px 0 8px; }
-  .gas-card .dt{ font-weight:600; color:var(--green-800); font-size:16px; margin:0 0 10px; }
-  .gas-card p{ font-size:16px; margin:0; color:var(--ink); }
   .why-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:16px; max-width:860px; margin:0 auto; }
   .why-item{ background:rgba(255,255,255,.7); border:1px solid rgba(168,128,28,.22); border-radius:14px; padding:16px 18px; }
   .why-item h3{ margin:0 0 6px; font-family:var(--display); font-size:17px; color:var(--green-800); }
   .why-item p{ margin:0; font-size:15.5px; }
-  @media (max-width:720px){ .gas-spot,.why-grid{ grid-template-columns:1fr; } }
-  #featured-parade-content.feature{ align-items:start; }
-  #featured-parade-content .ft-text, #featured-parade-content .ft-media{ min-width:0; }
-  #featured-parade-content .feat-desc{ font-size:17px; line-height:1.6; white-space:pre-wrap; }
-  @media (max-width:680px){ #featured-parade .ft-text h2{ font-size:26px; } }
+  @media (max-width:720px){ .why-grid{ grid-template-columns:1fr; } }
   .season-wrap{ overflow-x:auto; margin-top:34px; }
   table.season{ width:100%; min-width:560px; border-collapse:collapse; background:#fff;
     border:1px solid rgba(168,128,28,.28); border-radius:16px; overflow:hidden; box-shadow:var(--shadow-sm); }
@@ -131,7 +121,7 @@
     <div class="ph-bg" style="background-image:url('assets/img/parade-crowd.jpg')"></div>
     <p class="eyebrow">Green flags flying, pipes in the air</p>
     <h1>Parades &amp; Safety</h1>
-    <p class="sub">Every parade we march &mdash; plus how we keep the route safe.</p>
+    <p class="sub">Every parade we march &mdash; including both Gasparilla Saturdays &mdash; plus how we keep the route safe.</p>
   </header>
 
   <!-- PARADES WE MARCH IN — first section, recruiting cards with float art -->
@@ -143,7 +133,8 @@
       </div>
       <div class="knot-divider"><span class="knot"></span></div>
       <p class="parade-lead">
-        Full membership includes a place in every krewe parade of the season.
+        Full membership includes a place in every krewe parade of the season,
+        including Children's Gasparilla and the Parade of Pirates.
         March RSVP and staging stay in the Member Hub.
       </p>
       <div class="btns" style="margin:0 0 16px;justify-content:center;display:flex;flex-wrap:wrap;gap:10px;">
@@ -152,7 +143,7 @@
         <a class="btn" href="#ikc-season">See the season</a>
       </div>
       <div class="parade-grid" id="paradeStaticGrid">
-        <article class="parade-card">
+        <article class="parade-card" data-start="2026-12-05T10:00:00-05:00">
           <div class="parade-media">
             <picture>
               <source type="image/webp" srcset="assets/img/parades/santafest.webp" />
@@ -169,7 +160,7 @@
             <a href="https://www.friendsoftamparec.org/santa-fest--tree-lighting.html" target="_blank" rel="noopener">Parade info →</a>
           </div>
         </article>
-        <article class="parade-card">
+        <article class="parade-card" data-start="2027-01-23T10:00:00-05:00">
           <div class="parade-media">
             <picture>
               <source type="image/webp" srcset="assets/img/parades/childrens-gasparilla.webp" />
@@ -186,7 +177,7 @@
             <a href="https://gasparillapiratefest.com/childrens-schedule-of-events/" target="_blank" rel="noopener">Parade info →</a>
           </div>
         </article>
-        <article class="parade-card">
+        <article class="parade-card" data-start="2027-01-30T14:00:00-05:00">
           <div class="parade-media">
             <picture>
               <source type="image/webp" srcset="assets/img/parades/gasparilla-pirates.webp" />
@@ -203,7 +194,7 @@
             <a href="https://gasparillapiratefest.com/pirate-fest-schedule-of-events/" target="_blank" rel="noopener">Parade info →</a>
           </div>
         </article>
-        <article class="parade-card">
+        <article class="parade-card" data-start="2027-02-13T19:00:00-05:00">
           <div class="parade-media">
             <picture>
               <source type="image/webp" srcset="assets/img/parades/santyago-knight.webp" />
@@ -237,7 +228,7 @@
             <a href="https://tampapride.org/" target="_blank" rel="noopener">Parade info →</a>
           </div>
         </article>
-        <article class="parade-card">
+        <article class="parade-card" data-start="2027-03-01T12:00:00-05:00">
           <div class="parade-media">
             <picture>
               <source type="image/webp" srcset="assets/img/parades/st-patricks.webp" />
@@ -255,38 +246,6 @@
           </div>
         </article>
       </div>
-    </div>
-  </section>
-
-  <!-- GASPARILLA SPOTLIGHT: Children's + Parade of Pirates -->
-  <section class="wrap" id="featured-parade" style="padding-top:28px;">
-    <div class="section-title">
-      <h2 id="featured-parade-title">Gasparilla With Shamrock</h2>
-      <p class="sub" id="featured-parade-sub">Tampa's pirate season · Children's Saturday + the Parade of Pirates</p>
-    </div>
-    <div class="banner-flourish" aria-hidden="true"></div>
-    <p style="text-align:center;font-size:17px;max-width:760px;margin:0 auto 22px;">
-      Two Saturdays, one krewe. We march the family-friendly Children's parade and the legendary Parade of Pirates
-      down Bayshore &mdash; kilts, pipes, and the Castle of Shenanigans. Come for the beads; stay for the craic.
-    </p>
-    <div class="gas-spot" id="featured-parade-content">
-      <article class="gas-card" data-gas="children">
-        <div class="mo">January</div>
-        <h3>Children's Gasparilla</h3>
-        <p class="dt">Saturday, January 23, 2027</p>
-        <p>The alcohol-free daytime parade along Bayshore: beads, pirates, and big smiles for the little ones.</p>
-      </article>
-      <article class="gas-card" data-gas="pirates">
-        <div class="mo">January</div>
-        <h3>Gasparilla Parade of Pirates</h3>
-        <p class="dt">Saturday, January 30, 2027</p>
-        <p>The crown jewel: the invasion and grand pirate parade down Bayshore Boulevard.</p>
-      </article>
-    </div>
-    <div class="btns" style="margin-top:22px;justify-content:center;display:flex;flex-wrap:wrap;gap:10px;">
-      <a class="btn btn-primary" href="membership-application.html">☘ Join</a>
-      <a class="btn" href="members.html">Member Login</a>
-      <a class="btn" href="#ikc-season">See the season</a>
     </div>
   </section>
 
@@ -540,29 +499,41 @@
       return String(name || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
     }
 
-    function isChildrensGasparilla(ev) {
-      const n = normalizeName(ev && ev.name);
-      return n.includes("gasparilla") && n.includes("children");
+    function cardStartMs(card) {
+      const raw = card && card.getAttribute("data-start");
+      if (!raw) return null;
+      const ms = Date.parse(raw);
+      return Number.isNaN(ms) ? null : ms;
     }
 
-    function isParadeOfPirates(ev) {
-      const n = normalizeName(ev && ev.name);
-      return n.includes("gasparilla") && (n.includes("pirate") || n.includes("pirates")) && !n.includes("children");
+    function marchCardRank(card, now) {
+      const start = cardStartMs(card);
+      if (start == null) return 1;
+      return start >= now ? 0 : 2;
     }
 
-    function fillGasCard(kind, ev) {
-      const card = document.querySelector('#featured-parade-content [data-gas="' + kind + '"]');
-      if (!card || !ev) return;
-      const d = ev.start_time ? new Date(ev.start_time) : null;
-      const mo = card.querySelector(".mo");
-      const h = card.querySelector("h3");
-      const dt = card.querySelector(".dt");
-      const p = card.querySelector("p:not(.dt)");
-      if (mo) mo.textContent = monthLabel(d);
-      if (h) h.textContent = ev.name || h.textContent;
-      if (dt) dt.textContent = dateLabel(ev);
-      if (p && ev.description) p.textContent = ev.description;
+    function compareMarchCards(a, b, now) {
+      const ra = marchCardRank(a, now);
+      const rb = marchCardRank(b, now);
+      if (ra !== rb) return ra - rb;
+      const aMs = cardStartMs(a);
+      const bMs = cardStartMs(b);
+      if (aMs != null && bMs != null) return aMs - bMs;
+      if (aMs != null) return -1;
+      if (bMs != null) return 1;
+      return 0;
     }
+
+    function orderMarchGrid(nowMs) {
+      const grid = document.getElementById("paradeStaticGrid");
+      if (!grid) return;
+      if (Number.isFinite(nowMs)) window.__kosParadeSortNow = nowMs;
+      const now = Number.isFinite(window.__kosParadeSortNow) ? window.__kosParadeSortNow : Date.now();
+      const cards = Array.from(grid.querySelectorAll(".parade-card"));
+      cards.sort((a, b) => compareMarchCards(a, b, now));
+      cards.forEach((card) => grid.appendChild(card));
+    }
+    window.__kosOrderMarchGrid = orderMarchGrid;
 
     function cardActions(ev) {
       const info = ev.external_url
@@ -609,8 +580,9 @@
 
     function paradeCardHtml(ev) {
       const d = ev.start_time ? new Date(ev.start_time) : null;
+      const startAttr = ev.start_time ? ' data-start="' + esc(ev.start_time) + '"' : "";
       const blurb = ev.description || "March with Tampa's original kilted krewe. Members RSVP in the Member Hub.";
-      return '<article class="parade-card ev-card">' +
+      return '<article class="parade-card ev-card"' + startAttr + ">" +
         cardMedia(ev) +
         '<div class="mo">' + esc(monthLabel(d)) + "</div>" +
         "<h3>" + esc(ev.name || "Krewe parade") + "</h3>" +
@@ -619,15 +591,6 @@
         "<p>" + esc(blurb) + "</p>" +
         cardActions(ev) +
         "</article>";
-    }
-
-    function renderGasparillaSpotlight(parades) {
-      const list = parades || [];
-      fillGasCard("children", list.find(isChildrensGasparilla));
-      fillGasCard("pirates", list.find(isParadeOfPirates) || list.find((ev) => {
-        const n = normalizeName(ev && ev.name);
-        return n.includes("gasparilla") && !n.includes("children");
-      }));
     }
 
     function highlightIkcRows(parades) {
@@ -665,7 +628,6 @@
       if (!ours.length) {
         return;
       }
-      renderGasparillaSpotlight(ours);
       if (grid) {
         const liveNames = ours.map((ev) => normalizeName(ev.name));
         Array.from(grid.querySelectorAll(".parade-card")).forEach((card) => {
@@ -673,11 +635,13 @@
           const n = normalizeName(h && h.textContent);
           if (liveNames.some((live) => live === n || live.includes(n) || n.includes(live))) card.remove();
         });
-        grid.insertAdjacentHTML("afterbegin", ours.map(paradeCardHtml).join(""));
+        grid.insertAdjacentHTML("beforeend", ours.map(paradeCardHtml).join(""));
+        orderMarchGrid();
       }
       highlightIkcRows(ours);
     }
 
+    orderMarchGrid();
     loadParades();
   </script>
 </body>
