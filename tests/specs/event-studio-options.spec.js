@@ -16,6 +16,8 @@ test.describe("Event Studio optional fields", () => {
     await openEventStudio(page);
 
     await expect(page.locator("#hubEventType option[value='online']")).toHaveCount(1);
+    await expect(page.locator("#hubEventType option[value='parade']")).toHaveCount(1);
+    await expect(page.locator("#hubEventParadeBox")).toBeHidden();
     await expect(page.locator("#hubEventCollectRaffle")).toBeVisible();
     await expect(page.locator("#hubEventCollectMeals")).toBeVisible();
     await expect(page.locator("#hubEventOnline")).toBeVisible();
@@ -242,8 +244,11 @@ test("Member Hub Events tab has a member event list for signed-in members", asyn
 test("public event pages never request the private member address column", async ({ request }) => {
   const signup = await (await request.get("/event-signup.html")).text();
   const home = await (await request.get("/index.html")).text();
+  const parades = await (await request.get("/parades.html")).text();
   expect(signup, "event-signup must not select member_address").not.toMatch(/member_address/);
   expect(home, "index must not select member_address").not.toMatch(/member_address/);
+  expect(parades, "parades.html must not select member_address").not.toMatch(/member_address/);
   expect(signup).toMatch(/v_public_events/);
   expect(home).toMatch(/v_public_events/);
+  expect(parades).toMatch(/v_public_events/);
 });

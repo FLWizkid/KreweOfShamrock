@@ -155,6 +155,12 @@
     ".hub-event-copy{flex:1 1 220px;min-width:0;}",
     ".hub-event-row .hub-appr-btns{flex:1 1 auto;justify-content:flex-end;}",
     ".hub-event-row .qr-slot{flex:1 1 100%;width:100%;}",
+    ".hub-parade-status{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 4px;}",
+    ".hub-parade-status span{display:inline-flex;align-items:center;border-radius:999px;padding:3px 9px;font-size:12px;font-family:var(--display);letter-spacing:.02em;border:1px solid rgba(168,128,28,.35);background:#fff;color:var(--green-800);}",
+    ".hub-parade-status span.ok{background:var(--green-800);color:#f6efdc;border-color:var(--green-800);}",
+    ".hub-parade-status span.warn{background:#f0e2bd;color:#7a5b00;border-color:#d4b45a;}",
+    ".hub-parade-warn{margin:8px 0 0;padding:8px 10px;border-radius:10px;background:#fff5f2;border:1px solid #e0b4a8;color:#8b2e1c;font-size:14px;line-height:1.4;}",
+    ".hub-parade-msg{min-height:1.2em;margin:8px 0 0;font-size:14px;color:var(--green-800);}",
     ".hub-event-msg{min-height:1.2em;color:var(--green-800);font-size:16px;margin:8px 0 0;}",
     ".hub-event-form{margin-top:18px;padding-top:16px;border-top:1px dashed rgba(168,128,28,.4);}",
     ".hub-flyer-note{font-size:14px;color:var(--muted);margin:4px 0 0;}",
@@ -453,6 +459,229 @@
     }).join("");
   }
 
+  function whenLabel(value) {
+    if (!value) return "Date to be announced";
+    var d = new Date(value);
+    return isNaN(d.getTime()) ? String(value) : d.toLocaleString([], { dateStyle: "medium", timeStyle: "short" });
+  }
+
+  function statusPill(ok, yesText, noText) {
+    return '<span class="' + (ok ? "ok" : "warn") + '">' + esc(ok ? yesText : noText) + "</span>";
+  }
+
+  function calendarBtn(ev, label) {
+    if (!ev || !ev.start_time) return "";
+    return '<button type="button" class="btn" data-hub-ics="' + esc(ev.id || ev.name || "") + '">' +
+      esc(label || "Add to calendar") + "</button>";
+  }
+
+  function paradeSeasonCardHtml(row) {
+    var meeting = row.meeting || null;
+    var eligible = !!row.eligible;
+    var gated = !!row.soft_gate_checkin;
+    var paradeWhere = "";
+    if (row.member_address) paradeWhere = '<div style="margin:4px 0 0;"><b>Staging:</b> ' + esc(row.member_address) + "</div>";
+    else if (row.location) paradeWhere = '<div style="margin:4px 0 0;">' + esc(row.location) + "</div>";
+    var meetLine = "";
+    if (meeting) {
+      var meetWhere = meeting.member_address
+        ? ('<div style="margin:2px 0 0;"><b>Meeting address:</b> ' + esc(meeting.member_address) + "</div>")
+        : (meeting.location ? '<div class="muted">' + esc(meeting.location) + "</div>" : "");
+      meetLine = '<div style="margin-top:10px;"><b>Mandatory meeting:</b> ' + esc(meeting.name || "Briefing") +
+        '<div class="muted">' + esc(whenLabel(meeting.start_time)) + "</div>" + meetWhere + "</div>";
+    }
+    var warn = gated
+      ? '<p class="hub-parade-warn">Door Check-In for this parade will warn and stay blocked until you check in at the mandatory meeting. RSVP is still open.</p>'
+      : "";
+    var btns = [];
+    if (meeting && !meeting.rsvpd) {
+      btns.push('<button type="button" class="btn btn-primary" data-hub-parade-rsvp="' + esc(meeting.id) + '">RSVP to meeting</button>');
+    }
+    if (!row.parade_rsvpd) {
+      btns.push('<button type="button" class="btn btn-primary" data-hub-parade-rsvp="' + esc(row.id) + '">RSVP to parade</button>');
+    }
+    if (meeting) btns.push(calendarBtn(meeting, "Add meeting to calendar"));
+    btns.push(calendarBtn(row, "Add parade to calendar"));
+    return '<div class="hub-event-row" data-parade-card="' + esc(row.id) + '">' +
+      '<div style="flex:1;min-width:0;"><b>' + esc(row.name || "Parade") + "</b>" +
+      '<div class="muted">' + esc(whenLabel(row.start_time)) + (row.members_only ? " · Members only" : "") + "</div>" +
+      paradeWhere +
+      (row.location && row.member_address ? '<div class="muted" style="margin-top:2px;">Public note: ' + esc(row.location) + "</div>" : "") +
+      (row.notes ? '<div style="margin:6px 0 0;"><b>Role notes:</b> ' + esc(row.notes) + "</div>" : "") +
+      '<div class="hub-parade-status">' +
+      statusPill(!!(meeting && meeting.rsvpd), "Meeting RSVP’d", meeting ? "Meeting not RSVP’d" : "No meeting linked") +
+      statusPill(!!(meeting && meeting.checked_in), "Meeting checked in", meeting ? "Meeting not checked in" : "Meeting check-in n/a") +
+      statusPill(!!row.parade_rsvpd, "Parade RSVP’d", "Parade not RSVP’d") +
+      statusPill(eligible, "Eligible", "Not yet eligible") +
+      statusPill(!!row.parade_checked_in, "Parade checked in", "Parade not checked in") +
+      "</div>" +
+      meetLine + warn +
+      '<p class="hub-parade-msg" data-parade-msg="' + esc(row.id) + '"></p></div>' +
+      '<div class="hub-appr-btns">' + btns.join("") + "</div></div>";
+  }
+
+  function wireParadeSeasonList(root, list) {
+    if (!root) return;
+    root.querySelectorAll("[data-hub-parade-rsvp]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        hubRsvpParadeEvent(btn.getAttribute("data-hub-parade-rsvp"), btn);
+      });
+    });
+    root.querySelectorAll("[data-hub-ics]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var key = btn.getAttribute("data-hub-ics");
+        var ev = null;
+        (list || []).forEach(function (row) {
+          if (String(row.id) === String(key)) ev = row;
+          else if (row.meeting && String(row.meeting.id) === String(key)) ev = row.meeting;
+        });
+        if (!ev) return;
+        if (window.kosCalendar && typeof window.kosCalendar.download === "function") {
+          window.kosCalendar.download({
+            id: ev.id,
+            name: ev.name,
+            start_time: ev.start_time,
+            end_time: ev.end_time,
+            location: ev.location,
+            description: ev.description || ""
+          });
+        }
+      });
+    });
+  }
+
+  function renderHubParadeSeason(list) {
+    var rows = list || [];
+    var html = rows.length
+      ? rows.map(paradeSeasonCardHtml).join("")
+      : '<p class="empty">No published Shamrock parades on the calendar yet. Officers add them in Event Studio.</p>';
+    document.querySelectorAll(".hub-parade-season-list").forEach(function (target) {
+      target.innerHTML = html;
+      wireParadeSeasonList(target, rows);
+    });
+  }
+  window.__kosRenderParadeSeason = renderHubParadeSeason;
+
+  async function hubRsvpParadeEvent(eventId, btn) {
+    var client = window.__kosSb;
+    var card = btn && btn.closest ? btn.closest("[data-parade-card]") : null;
+    var msg = card ? card.querySelector("[data-parade-msg]") : null;
+    if (!client || !eventId) return;
+    var p = window.kosProfile || {};
+    var first = p.first_name || firstName();
+    var last = p.last_name || "";
+    var email = p.email || "";
+    if (!email || !last) {
+      if (msg) msg.textContent = "Your member profile needs a first name, last name, and email to RSVP.";
+      return;
+    }
+    if (btn) { btn.disabled = true; btn.textContent = "Saving…"; }
+    try {
+      var res = await client.rpc("rsvp_to_event", {
+        p_event_id: eventId,
+        p_first_name: first,
+        p_last_name: last,
+        p_email: email,
+        p_guests_count: 0,
+        p_signup_role: "attendee"
+      });
+      if (res.error) throw res.error;
+      if (res.data && res.data.ok === false) throw new Error(res.data.message || "Could not RSVP.");
+      if (msg) msg.textContent = (res.data && res.data.message) || "You're signed up.";
+      await loadParadeSeason(client);
+    } catch (e) {
+      if (msg) msg.textContent = (e && e.message) || "Could not RSVP. Try again.";
+      if (btn) { btn.disabled = false; btn.textContent = "RSVP"; }
+    }
+  }
+
+  function signupStatusMap(rows) {
+    var map = {};
+    (rows || []).forEach(function (r) {
+      if (!r || !r.event_id) return;
+      map[r.event_id] = r.status || "";
+    });
+    return map;
+  }
+
+  function deriveParadeSeason(events, signups) {
+    var status = signupStatusMap(signups);
+    var byId = {};
+    (events || []).forEach(function (e) { if (e && e.id) byId[e.id] = e; });
+    return (events || []).filter(function (e) {
+      return String(e.event_type || "").toLowerCase() === "parade";
+    }).map(function (e) {
+      var meet = e.linked_meeting_id ? byId[e.linked_meeting_id] : null;
+      var paradeStatus = status[e.id] || "";
+      var meetStatus = meet ? (status[meet.id] || "") : "";
+      var meetAttended = meetStatus === "attended";
+      return {
+        id: e.id,
+        name: e.name,
+        description: e.description,
+        start_time: e.start_time,
+        end_time: e.end_time,
+        location: e.location,
+        member_address: e.member_address,
+        members_only: e.members_only,
+        notes: e.notes || "",
+        linked_meeting_id: e.linked_meeting_id,
+        parade_rsvpd: !!paradeStatus,
+        parade_checked_in: paradeStatus === "attended",
+        parade_rsvp_status: paradeStatus || null,
+        eligible: !meet || meetAttended,
+        soft_gate_checkin: !!(meet && !meetAttended),
+        meeting: meet ? {
+          id: meet.id,
+          name: meet.name,
+          start_time: meet.start_time,
+          end_time: meet.end_time,
+          location: meet.location,
+          member_address: meet.member_address,
+          rsvpd: !!meetStatus,
+          checked_in: meetAttended,
+          rsvp_status: meetStatus || null
+        } : null
+      };
+    });
+  }
+
+  async function loadParadeSeason(client) {
+    if (window.__kosParadeSeasonLocked) return;
+    if (!client) return;
+    try {
+      var res = await client.rpc("member_parade_season");
+      if (!res.error && res.data && res.data.ok) {
+        renderHubParadeSeason(res.data.parades || []);
+        return;
+      }
+    } catch (e) {}
+    try {
+      var evs = await client.from("events")
+        .select("id,name,description,start_time,end_time,location,member_address,members_only,event_type,linked_meeting_id,status,source,notes")
+        .eq("source", "krewe")
+        .order("start_time", { ascending: true })
+        .limit(40);
+      if (evs.error) throw evs.error;
+      var list = (evs.data || []).filter(function (e) {
+        var st = String(e.status || "published").toLowerCase();
+        return st === "published" || st === "live";
+      });
+      var meId = (window.kosProfile || {}).member_id || null;
+      var signed = [];
+      if (meId) {
+        var su = await client.from("event_signups")
+          .select("event_id,status")
+          .eq("member_id", meId)
+          .in("status", ["registered", "confirmed", "attended", "waitlisted"]);
+        signed = su.data || [];
+      }
+      renderHubParadeSeason(deriveParadeSeason(list, signed));
+    } catch (e2) {
+      renderHubParadeSeason([]);
+    }
+  }
+
   function firstName() {
     var p = window.kosProfile || {};
     if (p.first_name) return String(p.first_name);
@@ -582,7 +811,9 @@
       '<div class="app-body"><p>RSVP to krewe events, track attendance, and keep your calendar current.</p>' +
       '<div id="hubMemberEventList"><p class="empty">Loading events…</p></div>' +
       '<p><a class="btn btn-primary" href="event-signup.html">Open event signup</a></p>' +
-      '<p style="font-size:16px;color:var(--muted);margin-top:12px;">Attendance feeds Parade Ready and the Craic Cup.</p></div></section>';
+      '<p style="font-size:16px;color:var(--muted);margin-top:12px;">Attendance feeds Parade Ready and the Craic Cup.</p></div></section>' +
+      '<section class="app-card" id="hubParadeSeasonEvents"><div class="app-head"><span class="ic">🥁</span><div><h2>Parade season</h2><small>Meeting and parade RSVP, eligibility, and your calendar</small></div></div>' +
+      '<div class="app-body"><div class="hub-parade-season-list" id="hubParadeSeasonList"><p class="empty">Loading parade season…</p></div></div></section>';
 
     var give = document.getElementById("hubGive");
     if (give) give.innerHTML =
@@ -590,6 +821,15 @@
       '<div class="app-body" id="hubHoursBody"><p class="empty">Loading hours…</p></div></section>';
 
     var parade = document.getElementById("hubParade");
+    if (parade && !document.getElementById("hubParadeSeasonCard")) {
+      var seasonCard = document.createElement("section");
+      seasonCard.className = "app-card";
+      seasonCard.id = "hubParadeSeasonCard";
+      seasonCard.innerHTML =
+        '<div class="app-head"><span class="ic">🥁</span><div><h2>Parade season</h2><small>Meeting RSVP, parade eligibility, and add-to-calendar</small></div></div>' +
+        '<div class="app-body"><div class="hub-parade-season-list" id="hubParadeSeasonDeskList"><p class="empty">Loading parade season…</p></div></div>';
+      parade.appendChild(seasonCard);
+    }
     var fun = document.getElementById("hubFun");
     var officer = document.getElementById("hubOfficer");
     var homeGrid = document.getElementById("hubHomeGrid");
@@ -622,8 +862,8 @@
      future desk cards never vanish. */
   var DESK_GROUPS = [
     { id: "deskSeason", icon: "🎗️", chip: "Season checklist", title: "Get Season Ready",
-      sub: "Dues, waiver, meeting, photo release, and your volunteer hours.",
-      cards: ["prCard", "hubHoursCard"] },
+      sub: "Dues, waiver, parade RSVP, meeting check-in, photo release, and your volunteer hours.",
+      cards: ["prCard", "hubParadeSeasonCard", "hubHoursCard"] },
     { id: "deskShare", icon: "📸", chip: "Share your media", title: "Share Your Media & Creativity",
       sub: "Photos and videos for the public site - an officer approves each one - plus artwork, poems, stories, and recipes.",
       cards: ["shareCard"] },
@@ -1318,7 +1558,7 @@
       state.announcements = (annPayload.ok && Array.isArray(annPayload.messages)) ? annPayload.messages : [];
     } catch (e) { state.announcements = []; }
     try {
-      var evSelect = "id,name,start_time,location,member_address,members_only,status,source";
+      var evSelect = "id,name,start_time,end_time,location,member_address,members_only,status,source,event_type,linked_meeting_id,description";
       var evs = await client.from("events")
         .select(evSelect)
         .eq("source", "krewe")
@@ -1340,6 +1580,7 @@
       });
       state.hubEvents = list.slice(0, 12);
       renderHubMemberEvents(state.hubEvents);
+      await loadParadeSeason(client);
       var open = list.slice();
       var meId = (window.kosProfile || {}).member_id || null;
       if (meId && open.length) {
@@ -1360,6 +1601,7 @@
       state.nextEvent = null;
       state.hubEvents = [];
       renderHubMemberEvents([]);
+      try { await loadParadeSeason(client); } catch (pe) { renderHubParadeSeason([]); }
     }
     try {
       var meId = (window.kosProfile || {}).member_id || null;
@@ -2164,6 +2406,24 @@
       '<label for="hubEventMeetingUrl">Meeting join URL</label>' +
       '<input id="hubEventMeetingUrl" type="url" inputmode="url" autocomplete="url" placeholder="https://..." />' +
       '</div></div>' +
+      '<div class="wide hub-event-optional" id="hubEventParadeBox" hidden>' +
+      '<h4>Parade season</h4>' +
+      '<p class="hub-opt-hint">A Parade is the krewe march. Keep it Public so it appears as a recruiting card on parades.html, and Members only so there is no public march RSVP. Public teaser location only — put staging streets in Private staging address. Description is the recruiting blurb on the Parades page.</p>' +
+      '<label for="hubEventRoleNotes">Role notes</label>' +
+      '<textarea id="hubEventRoleNotes" placeholder="March, float, hospitality, etc."></textarea>' +
+      '<p class="hub-opt-hint" style="margin-top:6px;">Shown to signed-in members on the Hub parade card. Not shown on the public Parades page.</p>' +
+      '<label for="hubEventLinkedMeeting">Mandatory meeting</label>' +
+      '<select id="hubEventLinkedMeeting"><option value="">None (no Door Check-In meeting gate)</option></select>' +
+      '<p class="hub-opt-hint" style="margin-top:6px;">Members can still RSVP to the parade if they missed the meeting. Parade Door Check-In warns and stays blocked until they check in at this meeting.</p>' +
+      '<div class="hub-event-checks" style="margin:10px 0 8px;">' +
+      '<label><input type="checkbox" id="hubEventCreateMeeting" /> Create a new mandatory meeting with this parade</label></div>' +
+      '<div id="hubEventCreateMeetingFields" hidden>' +
+      '<div class="hub-event-optional-fields">' +
+      '<div><label for="hubEventCreateMeetingName">Meeting name</label><input id="hubEventCreateMeetingName" placeholder="Gasparilla briefing" /></div>' +
+      '<div><label for="hubEventCreateMeetingStart">Meeting start</label><input id="hubEventCreateMeetingStart" type="datetime-local" /></div></div>' +
+      '<div class="hub-event-checks" style="margin:8px 0 0;">' +
+      '<label><input type="checkbox" id="hubEventCreateMeetingMandatory" checked /> Meeting is mandatory</label></div>' +
+      '</div></div>' +
       '<div class="wide hub-event-optional" id="hubEventEmailsBox">' +
       '<h4>Scheduled krewe emails (optional)</h4>' +
       '<p class="hub-opt-hint">Queue up to three automatic emails to active members about this event: an announcement, a buy-your-tickets reminder, and a last-call warning sent two days before registration closes. Nothing sends while the event is a draft; an email that comes due goes out shortly after you publish. Save the event to store the schedule.</p>' +
@@ -2256,6 +2516,7 @@
   }
 
   var eventRaffles = [];
+  var eventStudioList = [];
   var pendingDelete = null;
 
   function showEl(id, on) {
@@ -2419,11 +2680,50 @@
     syncClosingEmailHint();
     var loc = document.getElementById("hubEventLocation");
     var membersOnly = !!(document.getElementById("hubEventMembersOnly") && document.getElementById("hubEventMembersOnly").checked);
+    var paradeOn = !!(typeEl && typeEl.value === "parade");
+    showEl("hubEventParadeBox", paradeOn);
+    var createMeet = !!(document.getElementById("hubEventCreateMeeting") && document.getElementById("hubEventCreateMeeting").checked);
+    showEl("hubEventCreateMeetingFields", paradeOn && createMeet);
+    if (paradeOn) {
+      var moBox = document.getElementById("hubEventMembersOnly");
+      if (moBox && !moBox.dataset.kosTouched) moBox.checked = true;
+      membersOnly = !!(moBox && moBox.checked);
+    }
+    setFieldLabel("hubEventStart", paradeOn ? "Muster / step-off start *" : "Start time *");
+    setFieldLabel("hubEventEnd", paradeOn ? "Step-off window end" : "End time");
+    setFieldLabel("hubEventLocation", paradeOn ? "Public teaser location" : "Public location teaser");
+    setFieldLabel("hubEventMemberAddress", paradeOn ? "Private staging address" : "Private / member address");
     if (loc) {
       if (onlineOn) loc.placeholder = "Optional for online events";
+      else if (paradeOn) loc.placeholder = "Bayshore Boulevard, Tampa";
       else if (membersOnly) loc.placeholder = "Members home, Tampa";
       else loc.placeholder = "Venue name or city (public)";
     }
+    var addr = document.getElementById("hubEventMemberAddress");
+    if (addr) addr.placeholder = paradeOn ? "Staging street (Hub + RSVP email only)" : "Full street address";
+  }
+
+  function setFieldLabel(inputId, text) {
+    var lab = document.querySelector('label[for="' + inputId + '"]');
+    if (lab) lab.textContent = text;
+  }
+
+  function fillLinkedMeetingSelect(selectedId) {
+    var sel = document.getElementById("hubEventLinkedMeeting");
+    if (!sel) return;
+    var currentId = document.getElementById("hubEventId");
+    var selfId = currentId ? currentId.value : "";
+    var html = '<option value="">None (no Door Check-In meeting gate)</option>';
+    (eventStudioList || []).forEach(function (ev) {
+      if (!ev || !ev.id) return;
+      if (String(ev.id) === String(selfId)) return;
+      if (String(ev.source || "").toLowerCase() === "ikc") return;
+      if (String(ev.event_type || "").toLowerCase() !== "meeting") return;
+      var label = (ev.name || "Meeting") + (ev.start_time ? " · " + eventLocalDisplay(ev.start_time) : "");
+      html += '<option value="' + esc(ev.id) + '"' + (String(ev.id) === String(selectedId || "") ? " selected" : "") + ">" + esc(label) + "</option>";
+    });
+    sel.innerHTML = html;
+    if (selectedId) sel.value = selectedId;
   }
 
   function onRaffleEventPicked() {
@@ -2618,7 +2918,8 @@
     form.reset();
     document.getElementById("hubEventId").value = "";
     document.getElementById("hubEventPublic").checked = true;
-    var moOnly = document.getElementById("hubEventMembersOnly"); if (moOnly) moOnly.checked = false;
+    var moOnly = document.getElementById("hubEventMembersOnly");
+    if (moOnly) { moOnly.checked = false; delete moOnly.dataset.kosTouched; }
     var ma = document.getElementById("hubEventMemberAddress"); if (ma) ma.value = "";
     document.getElementById("hubEventMandatory").checked = false;
     document.getElementById("hubEventFeatured").checked = false;
@@ -2632,6 +2933,12 @@
     var mo = document.getElementById("hubEventMealOptions"); if (mo) mo.value = "";
     var onl = document.getElementById("hubEventOnline"); if (onl) onl.checked = false;
     var mu = document.getElementById("hubEventMeetingUrl"); if (mu) mu.value = "";
+    var lm = document.getElementById("hubEventLinkedMeeting"); if (lm) lm.value = "";
+    var cmMeet = document.getElementById("hubEventCreateMeeting"); if (cmMeet) cmMeet.checked = false;
+    var cmn = document.getElementById("hubEventCreateMeetingName"); if (cmn) cmn.value = "";
+    var cms = document.getElementById("hubEventCreateMeetingStart"); if (cms) cms.value = "";
+    var cmm = document.getElementById("hubEventCreateMeetingMandatory"); if (cmm) cmm.checked = true;
+    var rn = document.getElementById("hubEventRoleNotes"); if (rn) rn.value = "";
     var rcClear = document.getElementById("hubEventRegCloses"); if (rcClear) rcClear.value = "";
     resetEventEmailFields();
     document.getElementById("hubEventStatus").value = "draft";
@@ -2662,7 +2969,8 @@
     get("hubEventCapacity").value = event.capacity == null ? "" : event.capacity;
     get("hubEventDescription").value = event.description || "";
     get("hubEventPublic").checked = event.is_public !== false;
-    var monly = get("hubEventMembersOnly"); if (monly) monly.checked = !!event.members_only;
+    var monly = get("hubEventMembersOnly");
+    if (monly) { monly.checked = !!event.members_only; monly.dataset.kosTouched = "1"; }
     get("hubEventMandatory").checked = !!event.is_mandatory;
     get("hubEventFeatured").checked = !!event.is_featured;
     get("hubEventStatus").value = String(event.status || "").toLowerCase() === "cancelled" ? "cancelled" : "draft";
@@ -2687,6 +2995,11 @@
     if (get("hubEventType").value !== typeVal && typeVal) get("hubEventType").value = "other";
     var onl = get("hubEventOnline"); if (onl) onl.checked = !!event.is_online || typeVal === "online";
     var mu = get("hubEventMeetingUrl"); if (mu) mu.value = event.meeting_url || "";
+    fillLinkedMeetingSelect(event.linked_meeting_id || "");
+    var rnFill = get("hubEventRoleNotes"); if (rnFill) rnFill.value = event.notes || "";
+    var cmMeetFill = get("hubEventCreateMeeting"); if (cmMeetFill) cmMeetFill.checked = false;
+    var cmnFill = get("hubEventCreateMeetingName"); if (cmnFill) cmnFill.value = "";
+    var cmsFill = get("hubEventCreateMeetingStart"); if (cmsFill) cmsFill.value = "";
     get("hubEventFlyerUrl").value = event.flyer_url || "";
     resetEventEmailFields();
     if (event.id && eventStudioClient) loadEventEmailSchedule(eventStudioClient, event.id);
@@ -2713,6 +3026,7 @@
       if (event.location) details.push(event.location);
       if (event.member_address) details.push("Member address set");
       if (event.members_only) details.push("Members only");
+      if (event.linked_meeting_id) details.push("Linked meeting");
       if (event.registration_closes_at) details.push("Regs close " + eventLocalDisplay(event.registration_closes_at));
       var ticket = event.ticket_price_cents != null ? " · $" + (Number(event.ticket_price_cents) / 100).toFixed(2) : "";
       var readOnly = String(event.source || "").toLowerCase() === "ikc";
@@ -2783,6 +3097,9 @@
       var data = res.data || {};
       var list = Array.isArray(data) ? data : (data.events || []);
       if (data.ok === false) throw new Error(data.message || "Not authorized.");
+      eventStudioList = list;
+      var linked = document.getElementById("hubEventLinkedMeeting");
+      fillLinkedMeetingSelect(linked ? linked.value : "");
       renderEventList(list);
     } catch (e) {
       target.innerHTML = '<p class="empty">Couldn&rsquo;t load events. ' + esc((e && e.message) || "Try again in a moment.") + '</p>';
@@ -3023,6 +3340,8 @@
       meal_options: collectMeals ? mealOptions : null,
       is_online: isOnline,
       meeting_url: isOnline ? (meetingUrl || null) : null,
+      notes: value("hubEventRoleNotes") || null,
+      linked_meeting_id: value("hubEventType") === "parade" ? (value("hubEventLinkedMeeting") || null) : null,
       registration_closes_at: (function () {
         var rv = value("hubEventRegCloses");
         if (!rv) return null;
@@ -3031,6 +3350,16 @@
         return rd.toISOString();
       })()
     };
+    if (payload.event_type === "parade" && document.getElementById("hubEventCreateMeeting") && document.getElementById("hubEventCreateMeeting").checked) {
+      var meetName = value("hubEventCreateMeetingName");
+      var meetStartVal = value("hubEventCreateMeetingStart");
+      var meetStart = meetStartVal ? new Date(meetStartVal) : null;
+      if (!meetName) { if (msg) msg.textContent = "Give the new mandatory meeting a name, or uncheck create meeting."; return; }
+      if (!meetStart || isNaN(meetStart.getTime())) { if (msg) msg.textContent = "Give the new mandatory meeting a start date and time."; return; }
+      payload.create_meeting_name = meetName;
+      payload.create_meeting_start = meetStart.toISOString();
+      payload.create_meeting_mandatory = !!(document.getElementById("hubEventCreateMeetingMandatory") && document.getElementById("hubEventCreateMeetingMandatory").checked);
+    }
     if (!payload.name) { if (msg) msg.textContent = "Event name is required."; return; }
     if (save) { save.disabled = true; save.textContent = "Saving…"; }
     if (msg) msg.textContent = "";
@@ -3093,10 +3422,13 @@
       eventForm.addEventListener("change", onEventFormEdited);
     }
     ["hubEventType", "hubEventCollectRaffle", "hubEventCollectMeals", "hubEventOnline", "hubEventMembersOnly",
+      "hubEventCreateMeeting",
       "hubEventEmails", "hubEventEmailAnnounce", "hubEventEmailTicket", "hubEventEmailClosing"].forEach(function (id) {
       var el = document.getElementById(id);
       if (el) el.addEventListener("change", syncOptionalEventFields);
     });
+    var moTouch = document.getElementById("hubEventMembersOnly");
+    if (moTouch) moTouch.addEventListener("change", function () { moTouch.dataset.kosTouched = "1"; });
     var regClosesEl = document.getElementById("hubEventRegCloses");
     if (regClosesEl) {
       regClosesEl.addEventListener("input", syncClosingEmailHint);

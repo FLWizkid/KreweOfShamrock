@@ -1810,7 +1810,9 @@
         note.textContent = ok
           ? "✅ Checked in to " + (data.event||"the meeting") + ". Fáilte!"
             + (data.hours_pending ? " " + data.hours_pending + " volunteer hours logged — pending officer review." : "")
-          : "⚠️ Check-in failed: " + ((data && data.error) || (error && error.message) || "unknown error");
+          : ((data && data.soft_gated)
+            ? "⚠️ " + ((data && data.error) || "Parade Door Check-In is waiting on the mandatory meeting. RSVP is still open.")
+            : "⚠️ Check-in failed: " + ((data && data.error) || (error && error.message) || "unknown error"));
         note.style.cssText = "flex:1;font-weight:600;color:" + (ok ? "#14532d" : "#b3452e") + ";";
         bar.prepend(note);
       }
@@ -3441,7 +3443,8 @@
 
 <script src="assets/kos-leadership.js?v=20260916lead6"></script>
 <script src="assets/hub-install.js?v=20260918pwa1"></script>
-<script src="assets/members-desk.js?v=20260919homeorder1" defer></script>
+<script src="assets/kos-calendar.js?v=20260920p1"></script>
+<script src="assets/members-desk.js?v=20260920parade2" defer></script>
 <script src="assets/kos-doc-library.js?v=20260919eggs1" defer></script>
 <script src="assets/kos-doc-studio.js?v=20260919docstudio1" defer></script>
   <script src="assets/kos-event-studio.js?v=20260918memb3" defer></script>

@@ -152,6 +152,21 @@
       '<label for="hubEventMeetingUrl">Meeting join URL</label>' +
       '<input id="hubEventMeetingUrl" type="url" inputmode="url" autocomplete="url" placeholder="https://..." />' +
       '</div></div>' +
+      '<div class="hub-event-optional" id="hubEventParadeBox" hidden>' +
+      '<h4>Parade season</h4>' +
+      '<p class="hub-opt-hint">Keep a Parade public for parades.html recruiting cards, and Members only so there is no public march RSVP. Staging streets go in Private staging address.</p>' +
+      '<label for="hubEventRoleNotes">Role notes</label>' +
+      '<textarea id="hubEventRoleNotes" placeholder="March, float, hospitality, etc."></textarea>' +
+      '<p class="hub-opt-hint" style="margin-top:6px;">Shown to signed-in members on the Hub parade card. Not shown on the public Parades page.</p>' +
+      '<label for="hubEventLinkedMeeting">Mandatory meeting</label>' +
+      '<select id="hubEventLinkedMeeting"><option value="">None (no Door Check-In meeting gate)</option></select>' +
+      '<div class="hub-event-checks" style="margin:10px 0 8px;">' +
+      '<label><input type="checkbox" id="hubEventCreateMeeting" /> Create a new mandatory meeting with this parade</label></div>' +
+      '<div id="hubEventCreateMeetingFields" hidden>' +
+      '<label for="hubEventCreateMeetingName">Meeting name</label><input id="hubEventCreateMeetingName" placeholder="Parade briefing" />' +
+      '<label for="hubEventCreateMeetingStart">Meeting start</label><input id="hubEventCreateMeetingStart" type="datetime-local" />' +
+      '<div class="hub-event-checks"><label><input type="checkbox" id="hubEventCreateMeetingMandatory" checked /> Meeting is mandatory</label></div>' +
+      '</div></div>' +
       '<div class="wide"><label for="hubEventFlyerUrl">Event image / PDF URL</label><input id="hubEventFlyerUrl" type="url" placeholder="https://… or upload a file below" /></div>' +
       '<div class="wide"><label for="hubEventFlyerFile">Upload event image or PDF</label>' +
       '<input id="hubEventFlyerFile" type="file" accept="application/pdf,image/jpeg,image/png,image/webp" />' +
@@ -222,6 +237,7 @@
   }
 
   var eventRaffles = [];
+  var eventStudioList = [];
   var pendingDelete = null;
 
   function showEl(id, on) {
@@ -245,6 +261,24 @@
     if (selectedId) sel.value = selectedId;
   }
 
+  function fillLinkedMeetingSelect(selectedId) {
+    var sel = document.getElementById("hubEventLinkedMeeting");
+    if (!sel) return;
+    var currentId = document.getElementById("hubEventId");
+    var selfId = currentId ? currentId.value : "";
+    var html = '<option value="">None (no Door Check-In meeting gate)</option>';
+    (eventStudioList || []).forEach(function (ev) {
+      if (!ev || !ev.id) return;
+      if (String(ev.id) === String(selfId)) return;
+      if (String(ev.source || "").toLowerCase() === "ikc") return;
+      if (String(ev.event_type || "").toLowerCase() !== "meeting") return;
+      var label = (ev.name || "Meeting") + (ev.start_time ? " · " + eventLocalDisplay(ev.start_time) : "");
+      html += '<option value="' + esc(ev.id) + '"' + (String(ev.id) === String(selectedId || "") ? " selected" : "") + ">" + esc(label) + "</option>";
+    });
+    sel.innerHTML = html;
+    if (selectedId) sel.value = selectedId;
+  }
+
   function syncOptionalEventFields() {
     var typeEl = document.getElementById("hubEventType");
     var onlineBox = document.getElementById("hubEventOnline");
@@ -255,13 +289,28 @@
     showEl("hubEventRaffleFields", raffleOn);
     showEl("hubEventMealFields", mealOn);
     showEl("hubEventOnlineFields", onlineOn);
+    var paradeOn = !!(typeEl && typeEl.value === "parade");
+    showEl("hubEventParadeBox", paradeOn);
+    showEl("hubEventCreateMeetingFields", paradeOn && !!(document.getElementById("hubEventCreateMeeting") && document.getElementById("hubEventCreateMeeting").checked));
+    setFieldLabel("hubEventStart", paradeOn ? "Muster / step-off start *" : "Start time *");
+    setFieldLabel("hubEventEnd", paradeOn ? "Step-off window end" : "End time");
+    setFieldLabel("hubEventLocation", paradeOn ? "Public teaser location" : "Public location teaser");
+    setFieldLabel("hubEventMemberAddress", paradeOn ? "Private staging address" : "Private / member address");
     var loc = document.getElementById("hubEventLocation");
     var membersOnly = !!(document.getElementById("hubEventMembersOnly") && document.getElementById("hubEventMembersOnly").checked);
     if (loc) {
       if (onlineOn) loc.placeholder = "Optional for online events";
+      else if (paradeOn) loc.placeholder = "Bayshore Boulevard, Tampa";
       else if (membersOnly) loc.placeholder = "Members home, Tampa";
       else loc.placeholder = "Venue name or city (public)";
     }
+    var addr = document.getElementById("hubEventMemberAddress");
+    if (addr) addr.placeholder = paradeOn ? "Staging street (Hub + RSVP email only)" : "Full street address";
+  }
+
+  function setFieldLabel(inputId, text) {
+    var lab = document.querySelector('label[for="' + inputId + '"]');
+    if (lab) lab.textContent = text;
   }
 
   function onRaffleEventPicked() {
@@ -474,6 +523,9 @@
     document.getElementById("hubEventStatus").value = "draft";
     var payClear = document.getElementById("hubEventPaymentUrl"); if (payClear) payClear.value = "";
     document.getElementById("hubEventType").value = "social";
+    var lm = document.getElementById("hubEventLinkedMeeting"); if (lm) lm.value = "";
+    var cmMeet = document.getElementById("hubEventCreateMeeting"); if (cmMeet) cmMeet.checked = false;
+    var rn = document.getElementById("hubEventRoleNotes"); if (rn) rn.value = "";
     document.getElementById("hubEventFormTitle").textContent = "New event";
     document.getElementById("hubEventMsg").textContent = "";
     hidePublishButton();
@@ -526,6 +578,8 @@
     }
     var onl = get("hubEventOnline"); if (onl) onl.checked = !!event.is_online || typeVal === "online";
     var mu = get("hubEventMeetingUrl"); if (mu) mu.value = event.meeting_url || "";
+    fillLinkedMeetingSelect(event.linked_meeting_id || "");
+    var rnFill = get("hubEventRoleNotes"); if (rnFill) rnFill.value = event.notes || "";
     get("hubEventFlyerUrl").value = event.flyer_url || "";
     syncFlyerPreview();
     syncOptionalEventFields();
@@ -599,6 +653,9 @@
       var data = res.data || {};
       var list = Array.isArray(data) ? data : (data.events || []);
       if (data.ok === false) throw new Error(data.message || "Not authorized.");
+      eventStudioList = list;
+      var linked = document.getElementById("hubEventLinkedMeeting");
+      fillLinkedMeetingSelect(linked ? linked.value : "");
       renderEventList(list);
     } catch (e) {
       target.innerHTML = '<p class="empty">Couldn&rsquo;t load events. ' + esc((e && e.message) || "Try again in a moment.") + '</p>';
@@ -809,6 +866,8 @@
       meal_options: collectMeals ? mealOptions : null,
       is_online: isOnline,
       meeting_url: isOnline ? (meetingUrl || null) : null,
+      notes: value("hubEventRoleNotes") || null,
+      linked_meeting_id: value("hubEventType") === "parade" ? (value("hubEventLinkedMeeting") || null) : null,
       registration_closes_at: (function () {
         var rv = value("hubEventRegCloses");
         if (!rv) return null;
@@ -817,6 +876,16 @@
         return rd.toISOString();
       })()
     };
+    if (payload.event_type === "parade" && document.getElementById("hubEventCreateMeeting") && document.getElementById("hubEventCreateMeeting").checked) {
+      var meetName = value("hubEventCreateMeetingName");
+      var meetStartVal = value("hubEventCreateMeetingStart");
+      var meetStart = meetStartVal ? new Date(meetStartVal) : null;
+      if (!meetName) { if (msg) msg.textContent = "Give the new mandatory meeting a name, or uncheck create meeting."; return; }
+      if (!meetStart || isNaN(meetStart.getTime())) { if (msg) msg.textContent = "Give the new mandatory meeting a start date and time."; return; }
+      payload.create_meeting_name = meetName;
+      payload.create_meeting_start = meetStart.toISOString();
+      payload.create_meeting_mandatory = !!(document.getElementById("hubEventCreateMeetingMandatory") && document.getElementById("hubEventCreateMeetingMandatory").checked);
+    }
     if (!payload.name) { if (msg) msg.textContent = "Event name is required."; return; }
     if (save) { save.disabled = true; save.textContent = "Saving…"; }
     if (msg) msg.textContent = "";
@@ -867,7 +936,7 @@
       eventForm.addEventListener("input", onEventFormEdited);
       eventForm.addEventListener("change", onEventFormEdited);
     }
-    ["hubEventType", "hubEventCollectRaffle", "hubEventCollectMeals", "hubEventOnline", "hubEventMembersOnly"].forEach(function (id) {
+    ["hubEventType", "hubEventCollectRaffle", "hubEventCollectMeals", "hubEventOnline", "hubEventMembersOnly", "hubEventCreateMeeting"].forEach(function (id) {
       var el = document.getElementById(id);
       if (el) el.addEventListener("change", syncOptionalEventFields);
     });

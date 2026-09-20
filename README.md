@@ -25,6 +25,17 @@ Open `index.html` in a browser, or serve the folder with any static server.
 Hosted on Vercel as a static site. Connecting this repository to Vercel
 (Import Git Repository) will redeploy automatically on every push to `main`.
 
+## Parade season (officers)
+
+Apply `sql/kos_parade_season.sql` in the Supabase SQL editor (safe to re-run), then:
+
+1. Event Studio → create the **mandatory meeting** (or use create-pair on the parade).
+2. Event Studio → type **Parade**, keep it public + members only, set the muster / step-off window, link the meeting, put staging in the private staging address, add role notes, publish.
+3. Make Door check-in QRs for the meeting and the parade. Parade door check-in warns/blocks if the meeting was missed; parade RSVP stays open.
+4. Public `parades.html` shows every Shamrock march as a recruiting card (Join / Member Login / See the season), plus a Gasparilla spotlight. Staging streets never go on the public page.
+
+Full steps: `EVENT_STUDIO.md` (Parade season how-to).
+
 ## Notes
 - The backend is a Supabase project; only the public "publishable" key ships in the
   client — no secrets are stored in this repository.

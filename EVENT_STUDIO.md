@@ -15,7 +15,18 @@ Event Studio lives in the authenticated Member Hub under **Officer desk**. Membe
    - **Raffle tickets.** Reuses `raffle_events` plus the signup raffle qty field. Offer tickets, attach an existing raffle, or enter a ticket price (officer-entered; nothing is hardcoded). Leave the box unchecked for no raffle.
    - **Meal choice.** Turn it on and list meal options (one per line). Members pick one at signup; the choice is stored on `event_signups.meal_choice`.
    - **Online meeting.** Set type to Online or check "This is an online event" and paste the join URL. Signup emails that link only to the member who just registered, through `enqueue_email` / `outbound_emails`.
+   - **Parade.** Set type to Parade. Keep **Public event** on (so `parades.html` can show the recruiting card) and **Members only** on (so there is no public march RSVP). Start/end labels become muster / step-off. Description is the public recruiting blurb. Public teaser location only — staging streets go in Private staging address. Role notes (march, float, hospitality) stay on the Hub card. Link a mandatory meeting, or check **Create a new mandatory meeting with this parade**.
 6. Save. The list refreshes from `officer_list_events()`. Published events stay editable (address, dates, Close registrations on).
+
+## Parade season how-to
+
+1. **Create the meeting.** New event, type Meeting (or use the create-pair checkbox on the parade). Mark it mandatory. Put the briefing address in Private / member address. Publish, then make a Door check-in QR from the Event Studio row.
+2. **Create the parade.** Type Parade. Public + Members only. Muster / step-off window. Teaser location (for example "Bayshore Boulevard, Tampa"). Staging streets only in Private staging address. Role notes for march / float / hospitality. Link the meeting. Description = recruiting blurb for the Parades page. Optional flyer. No Zeffy parade tickets and no public march RSVP.
+3. **Publish.** After save-and-review, Publish. The parade appears on `parades.html` as a Join / Member Login / See the season card. Members see it on Hub **Events** and **Member desk** with Meeting RSVP’d / Checked in and Parade RSVP’d / Eligible / Checked in.
+4. **Check-in.** Meeting Door Check-In works as usual. Parade Door Check-In warns and stays blocked if the linked meeting was not attended. Parade RSVP is not hard-blocked. Officers can still confirm attendance from Reports.
+5. **Calendar.** Members can add the meeting and the parade to a personal calendar (`.ics`). The file uses the public teaser location only.
+
+Schema: `sql/kos_parade_season.sql` (apply live; safe to re-run). Until it is applied, Event Studio can still save a Parade type, but the meeting link, Hub eligibility RPC, and Door Check-In soft gate will not exist yet.
 
 Schema for raffle / meal / online extras is `sql/kos_event_studio_raffle_meal_online.sql` (applied live; safe to re-run).
 
