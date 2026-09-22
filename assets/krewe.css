@@ -167,6 +167,35 @@ h1,h2,h3{ font-family:var(--display); letter-spacing:.4px; line-height:1.2; }
 .btn-green{ background:linear-gradient(180deg,var(--green-600),var(--green-800)); color:#fff; box-shadow:var(--shadow-sm); }
 .btn-green:hover{ background:linear-gradient(180deg,var(--green-700),var(--green-900)); }
 
+.hero-links{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:4px;
+  margin-top:20px;
+}
+.hero-links a{
+  color:#fff;
+  font-family:var(--display);
+  font-size:clamp(16px,2vw,20px);
+  font-weight:600;
+  line-height:1.35;
+  text-decoration-line:underline;
+  text-decoration-thickness:1px;
+  text-underline-offset:3px;
+  text-shadow:0 2px 8px rgba(0,0,0,.7);
+  transition:color .15s, text-decoration-color .15s;
+}
+.hero-links a:hover,
+.hero-links a:focus-visible{
+  color:var(--gold-light);
+  text-decoration-color:var(--gold-light);
+}
+.hero-links a:focus-visible{
+  outline:2px solid #fff;
+  outline-offset:4px;
+}
+
 /* ============================================================
    PAGE HEAD (sub pages)
    ============================================================ */
