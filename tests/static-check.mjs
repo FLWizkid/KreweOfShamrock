@@ -81,6 +81,10 @@ for (const file of htmlFiles) {
   if (!html.includes('class="krewe-nav"')) {
     problems.push(`${file}: missing shared navigation`);
   }
+  // Full public header (Member Login) carries the previous-site archive.
+  if (html.includes(">Member Login<") && !html.includes("https://kreweofshamrock.wildapricot.org")) {
+    problems.push(`${file}: public header is missing the previous-site Archive link`);
+  }
 }
 
 // --- Member Hub web app manifest (home-screen install) ----------------------

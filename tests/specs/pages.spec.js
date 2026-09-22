@@ -16,6 +16,14 @@ for (const { file, title } of PAGES) {
       const navPosition = await nav.evaluate((el) => getComputedStyle(el).position);
       expect(navPosition, "krewe.css should style the nav (sticky)").toBe("sticky");
 
+      // Previous-site archive stays a normal nav link, not a Join-style CTA.
+      const archive = nav.getByRole("link", { name: "Archive of the previous site" });
+      await expect(archive).toBeVisible();
+      await expect(archive).toHaveAttribute("href", "https://kreweofshamrock.wildapricot.org");
+      await expect(archive).toHaveAttribute("target", "_blank");
+      await expect(archive).toHaveText("Archive");
+      await expect(archive).not.toHaveClass(/nav-cta/);
+
       // Music player: krewe.js injects the violin icon; audio starts paused.
       const musicBtn = page.locator("#kreweMusicBtn");
       await expect(musicBtn).toBeVisible();
