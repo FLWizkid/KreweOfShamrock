@@ -329,8 +329,8 @@ const esc = (s)=> (s??"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&g
     more.className = "empty";
     more.style.gridColumn = "1/-1";
     more.style.textAlign = "center";
-    more.innerHTML = `Plus ${data.length - shown.length} more on the <a href="event-signup.html" style="color:var(--green-700);font-weight:600;">full Krewe calendar &#8594;</a>` +
-      ` &mdash; gold events are ours, purple events are our friends across the Inter-Krewe Council.`;
+    more.innerHTML = `Plus ${data.length - shown.length} more on the <a href="event-signup.html" style="color:var(--green-700);font-weight:600;">full events page &#8594;</a>` +
+      ` &mdash; the month calendar is Krewe of Shamrock, and Dates to Remember also lists Inter-Krewe Council events.`;
     list.appendChild(more);
   }
 })();

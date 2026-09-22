@@ -254,9 +254,11 @@
         Our perpetual season at a glance: <span id="kcal-year">2026</span>
       </p>
       <div id="kcal-legend" style="display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin-top:12px;font-size:14px;color:var(--ink);">
-        <span style="display:inline-flex;align-items:center;gap:7px;"><i style="width:14px;height:14px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 2px rgba(169,128,28,.35);"></i> Krewe of Shamrock events</span>
-        <span style="display:inline-flex;align-items:center;gap:7px;"><i style="width:14px;height:14px;border-radius:50%;background:#7c5cae;box-shadow:0 0 0 2px rgba(124,92,174,.35);"></i> Inter-Krewe Council events</span>
+        <span style="display:inline-flex;align-items:center;gap:7px;"><i style="width:14px;height:14px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 2px rgba(169,128,28,.35);"></i> Krewe of Shamrock</span>
       </div>
+      <p style="margin:8px auto 0;max-width:42rem;font-size:14px;color:var(--muted);">
+        Month view shows Krewe of Shamrock events. Dates to Remember also lists Inter-Krewe Council events.
+      </p>
     </div>
 
     <div id="kcal-grids" style="display:grid;gap:22px;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));"></div>
@@ -267,9 +269,9 @@
     </div>
   </section>
 
-  <!-- The Krewe calendar above is rendered from the same Supabase `events`
-       data that fills the RSVP dropdown (see the module script below), so the
-       two never disagree. -->
+  <!-- Month grids show Krewe of Shamrock events only (events.source <> 'ikc').
+       Dates to Remember lists Krewe and Inter-Krewe Council events from the
+       same Supabase query. RSVP stays Krewe-only. -->
 
   <!-- IKC CALENDAR -->
   <section class="wrap" style="padding-top:10px;">
@@ -290,9 +292,9 @@
                style="display:block;width:100%;height:auto;" />
         </a>
         <p style="margin:14px 4px 0;text-align:center;font-size:15px;color:#f1ead4;">
-          IKC events also sync automatically onto our Krewe calendar above — look for the
-          <b style="color:#cdb9ec;">purple</b> dates. For the most up-to-date schedule,
-          <a href="https://interkrewe.com/Calendar" target="_blank" rel="noopener" style="color:var(--gold-light);font-weight:600;">open the live IKC Calendar ↗</a>
+          Inter-Krewe Council events are listed in Dates to Remember. They are not marked on the Krewe of Shamrock month calendar.
+          For the live schedule,
+          <a href="https://interkrewe.com/Calendar" target="_blank" rel="noopener" style="color:var(--gold-light);font-weight:600;">open the IKC Calendar ↗</a>
         </p>
       </div>
     </details>
@@ -529,8 +531,8 @@
         return;
       }
       eventSelect.innerHTML = '<option value="">Select an event…</option>';
-      // IKC events show on the calendar below, but you RSVP to those on the
-      // host krewe's own site — keep them out of our RSVP dropdown.
+      // Month grids below are Krewe-only. Dates to Remember keeps IKC.
+      // RSVP stays Krewe-only — IKC details live on the host krewe's site.
       const ours = data.filter((ev)=> ev.source !== "ikc");
       let rafflePrices = {};
       try {
@@ -800,19 +802,10 @@
       for (let i = 0; i < first; i++) html += '<div></div>';
       for (let d = 1; d <= days; d++) {
         const evs = daysMap[d];
-        if (evs) {
-          const tip = evs.map((e)=> (e.ikc ? "[IKC] " : "") + (hasTime(e.date) ? timeStr(e.date) + " · " : "") + e.name + (e.location ? " (" + e.location + ")" : "")).join(" · ");
-          // Gold = our events, purple = Inter-Krewe Council, split = both that day
-          const hasOurs = evs.some((e)=> !e.ikc), hasIkc = evs.some((e)=> e.ikc);
-          let look;
-          if (hasOurs && hasIkc) {
-            look = 'background:linear-gradient(135deg,var(--gold) 0 50%,#7c5cae 50% 100%);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.4);box-shadow:0 0 0 2px rgba(124,92,174,.35);';
-          } else if (hasIkc) {
-            look = 'background:#7c5cae;color:#fff;box-shadow:0 0 0 2px rgba(124,92,174,.35);';
-          } else {
-            look = 'background:var(--gold);color:var(--green-900);box-shadow:0 0 0 2px rgba(169,128,28,.35);';
-          }
-          html += '<div title="' + esc(tip) + '" style="aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:50%;font-weight:600;cursor:default;' + look + '">' + d + '</div>';
+        if (evs && evs.length) {
+          const tip = evs.map((e)=> (hasTime(e.date) ? timeStr(e.date) + " · " : "") + e.name + (e.location ? " (" + e.location + ")" : "")).join(" · ");
+          const look = 'background:var(--gold);color:var(--green-900);box-shadow:0 0 0 2px rgba(169,128,28,.35);';
+          html += '<div title="' + esc(tip) + '" data-kos-day="1" style="aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:50%;font-weight:600;cursor:default;' + look + '">' + d + '</div>';
         } else {
           html += '<div style="aspect-ratio:1;display:flex;align-items:center;justify-content:center;color:var(--ink);font-size:15px;">' + d + '</div>';
         }
@@ -821,31 +814,49 @@
       return html;
     }
 
+    function isIkcEvent(ev) {
+      return String((ev && ev.source) || "").toLowerCase() === "ikc";
+    }
+
+    function groupByMonth(datedEvents) {
+      const byYM = {};
+      for (const ev of datedEvents) {
+        const y = ev.date.getFullYear(), m = ev.date.getMonth(), day = ev.date.getDate();
+        const key = y + "-" + m;
+        (byYM[key] = byYM[key] || { y, m, days: {} });
+        (byYM[key].days[day] = byYM[key].days[day] || []).push(ev);
+      }
+      const keys = Object.keys(byYM).sort((a, b)=>{ const [ay, am] = a.split("-").map(Number), [by, bm] = b.split("-").map(Number); return (ay - by) || (am - bm); });
+      return { byYM, keys };
+    }
+
     function buildCalendar(events) {
       const gridsEl = document.getElementById("kcal-grids");
       const listEl = document.getElementById("kcal-list");
       const yearEl = document.getElementById("kcal-year");
       const dated = (events || [])
         .filter((e)=> e.start_time)
-        .map((e)=> ({ date: new Date(e.start_time), name: e.name, location: publicWhere(e), ikc: e.source === "ikc", url: e.external_url || "", membersOnly: !!e.members_only }))
+        .map((e)=> ({ date: new Date(e.start_time), name: e.name, location: publicWhere(e), ikc: isIkcEvent(e), url: e.external_url || "", membersOnly: !!e.members_only }))
         .filter((e)=> !isNaN(e.date))
         .sort((a, b)=> a.date - b.date);
+      // Month grids are Krewe of Shamrock only. The list below keeps both.
+      const kosDated = dated.filter((e)=> !e.ikc);
       if (!dated.length) {
         if (gridsEl) gridsEl.innerHTML = '<p class="empty" style="grid-column:1/-1;text-align:center;">No dated events on the calendar yet. Check back soon!</p>';
         if (listEl) listEl.innerHTML = '';
         return;
       }
-      const byYM = {};
-      for (const ev of dated) {
-        const y = ev.date.getFullYear(), m = ev.date.getMonth(), day = ev.date.getDate();
-        const key = y + "-" + m;
-        (byYM[key] = byYM[key] || { y, m, days: {} });
-        (byYM[key].days[day] = byYM[key].days[day] || []).push(ev);
-      }
-      const years = [...new Set(dated.map((e)=> e.date.getFullYear()))].sort();
+      const yearSource = kosDated.length ? kosDated : dated;
+      const years = [...new Set(yearSource.map((e)=> e.date.getFullYear()))].sort();
       if (yearEl) yearEl.textContent = years.length === 1 ? years[0] : years[0] + "–" + years[years.length - 1];
-      const keys = Object.keys(byYM).sort((a, b)=>{ const [ay, am] = a.split("-").map(Number), [by, bm] = b.split("-").map(Number); return (ay - by) || (am - bm); });
-      if (gridsEl) gridsEl.innerHTML = keys.map((k)=> buildMonth(byYM[k].y, byYM[k].m, byYM[k].days)).join("");
+      if (gridsEl) {
+        if (!kosDated.length) {
+          gridsEl.innerHTML = '<p class="empty" style="grid-column:1/-1;text-align:center;">No Krewe of Shamrock dates on the month calendar yet.</p>';
+        } else {
+          const grouped = groupByMonth(kosDated);
+          gridsEl.innerHTML = grouped.keys.map((k)=> buildMonth(grouped.byYM[k].y, grouped.byYM[k].m, grouped.byYM[k].days)).join("");
+        }
+      }
       if (listEl) {
         listEl.innerHTML = dated.map((ev)=>{
           const dateStr = MONTH_NAMES[ev.date.getMonth()] + " " + ev.date.getDate() + ", " + ev.date.getFullYear();
@@ -857,7 +868,7 @@
           const name = ev.ikc && ev.url
             ? '<a href="' + esc(ev.url) + '" target="_blank" rel="noopener" style="color:#cdb9ec;text-decoration:none;">' + esc(ev.name) + ' &#8599;</a>'
             : esc(ev.name);
-          return '<li style="display:flex;gap:14px;align-items:baseline;padding:9px 14px;border-bottom:1px solid rgba(236,208,126,.16);">' +
+          return '<li data-source="' + (ev.ikc ? "ikc" : "krewe") + '" style="display:flex;gap:14px;align-items:baseline;padding:9px 14px;border-bottom:1px solid rgba(236,208,126,.16);">' +
                  '<span style="flex:0 0 150px;font-family:var(--display);font-size:14px;color:var(--gold-light);">' + esc(when) + '</span>' +
                  '<span style="flex:1;">' + chip + name + loc + '</span></li>';
         }).join("");
