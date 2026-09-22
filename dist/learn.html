@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" href="/assets/favicon-C6Ez-gVw.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32-IFtF2Ie4.png" />
+<link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48-P2fbaPU4.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16-gRalTiZy.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon-BHghyMl4.png" />
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Krewe of Shamrock · Learn</title>
+<meta name="description" content="Irish heritage, Celtic symbols, kilts, Gasparilla and the Inter-Krewe Council, parade-day know-how, music, Gaelic blessings, festivals, and legends: learn with the Krewe of Shamrock of Tampa Bay." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* ---- Learn modules (lm-*) + Heritage School lessons (hs-*) ---- */
+.visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+.lm-intro .lm-eyebrow{margin:0 0 6px;font-family:var(--display);font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-deep);}
+.lm-intro h2{margin-bottom:10px;}
+.lm-intro .sub{max-width:42rem;margin-left:auto;margin-right:auto;}
+
+/* Sticky module menu */
+.lm-mods{position:sticky;top:68px;z-index:40;background:rgba(255,253,244,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(168,128,28,.28);border-radius:16px;padding:10px 12px;margin:0 0 22px;box-shadow:var(--shadow-sm);}
+.lm-mods-scroll{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;padding:2px 2px 6px;scrollbar-width:thin;}
+.lm-mods-scroll::-webkit-scrollbar{height:6px;}
+.lm-pill{flex:0 0 auto;scroll-snap-align:start;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;border:1px solid rgba(168,128,28,.4);background:#fff;color:var(--green-800);font-family:var(--display);font-size:13.5px;letter-spacing:.3px;text-decoration:none;white-space:nowrap;transition:background .2s,border-color .2s,color .2s;}
+.lm-pill:hover,.lm-pill:focus-visible{background:rgba(212,175,55,.18);border-color:var(--gold);outline:none;}
+.lm-pill.is-active{background:var(--green-800);color:#f6efdc;border-color:var(--green-800);}
+.lm-mods-select-wrap{display:none;margin:0;}
+.lm-mods-select{width:100%;font:inherit;font-family:var(--display);color:var(--green-800);padding:10px 12px;border-radius:12px;border:1px solid rgba(168,128,28,.45);background:#fff;appearance:auto;}
+@media(max-width:720px){
+  .lm-mods-scroll{display:none;}
+  .lm-mods-select-wrap{display:block;}
+  .lm-mods{padding:10px;}
+}
+
+/* Category accordion */
+.lm-cat{background:#fffdf4;border:1px solid rgba(168,128,28,.35);border-radius:16px;margin:0 0 14px;overflow:hidden;box-shadow:var(--shadow-sm);scroll-margin-top:140px;}
+.lm-cat + .lm-cat{margin-top:12px;}
+.lm-cat-sum{display:flex;align-items:center;gap:14px;padding:16px 18px;cursor:pointer;list-style:none;min-height:64px;box-sizing:border-box;}
+.lm-cat-sum::-webkit-details-marker{display:none;}
+.lm-cat-sum:hover{background:rgba(212,175,55,.08);}
+.lm-cat-sum:focus-visible{outline:2px solid var(--gold);outline-offset:-2px;}
+.lm-cat-ico{flex:0 0 40px;height:40px;border-radius:12px;background:rgba(20,83,45,.08);display:flex;align-items:center;justify-content:center;font-size:20px;}
+.lm-cat-t{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0;}
+.lm-cat-t b{font-family:var(--display);color:var(--green-800);font-size:20px;letter-spacing:.4px;}
+.lm-cat-t small{color:var(--muted);font-family:var(--fancy);font-style:italic;font-size:15px;}
+.lm-cat-caret{color:var(--gold-deep);font-size:18px;transition:transform .25s ease;margin-left:auto;}
+.lm-cat[open] > .lm-cat-sum .lm-cat-caret{transform:rotate(180deg);}
+.lm-cat[open]{box-shadow:var(--shadow);}
+.lm-cat-body{padding:4px 12px 14px;border-top:1px dashed rgba(168,128,28,.35);display:flex;flex-direction:column;gap:10px;}
+
+/* Uniform lesson / reading rows */
+.hs-progress{text-align:center;font-family:var(--display);color:var(--green-800);font-size:18px;margin:0 0 18px;}
+.hs-bar{max-width:340px;height:8px;margin:-8px auto 24px;background:rgba(20,83,45,.12);border-radius:6px;overflow:hidden;}
+.hs-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green-700),var(--gold));border-radius:6px;transition:width .5s ease;}
+.lm-lesson,.hs-mod{background:#fff;border:1px solid rgba(168,128,28,.3);border-radius:14px;box-shadow:none;margin:0;overflow:hidden;transition:box-shadow .25s ease,border-color .2s;scroll-margin-top:150px;}
+.lm-lesson summary,.hs-mod summary{display:flex;align-items:center;gap:14px;padding:14px 16px;cursor:pointer;list-style:none;min-height:72px;box-sizing:border-box;}
+.lm-lesson summary::-webkit-details-marker,.hs-mod summary::-webkit-details-marker{display:none;}
+.lm-lesson summary:hover,.hs-mod summary:hover{background:rgba(212,175,55,.08);}
+.lm-lesson summary:focus-visible,.hs-mod summary:focus-visible{outline:2px solid var(--gold);outline-offset:-2px;}
+.hs-num{flex:0 0 36px;height:36px;border-radius:50%;background:var(--green-800);color:#f6efdc;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:16px;}
+.hs-t{flex:1;display:flex;flex-direction:column;min-width:0;}
+.hs-t b{font-family:var(--display);color:var(--green-800);font-size:18px;letter-spacing:.3px;line-height:1.25;}
+.hs-t small{color:var(--muted);font-family:var(--fancy);font-style:italic;font-size:14.5px;margin-top:2px;}
+.hs-badge{opacity:.15;font-size:20px;transition:opacity .3s;flex:0 0 auto;}
+.hs-mod.done .hs-badge{opacity:1;}
+.hs-mod.done .hs-num{background:var(--gold);color:#23420f;}
+.hs-more{margin-left:auto;flex:0 0 auto;color:var(--gold-deep);font-family:var(--fancy);font-style:italic;font-size:14.5px;white-space:nowrap;}
+details[open] > summary .hs-more{display:none;}
+.lm-lesson[open],.hs-mod[open]{box-shadow:var(--shadow-sm);border-color:rgba(168,128,28,.5);}
+.hs-body{padding:4px 18px 18px;border-top:1px dashed rgba(168,128,28,.3);}
+.lm-reading-body .dropcap{margin-top:8px;}
+.lm-reading .hs-num{background:rgba(20,83,45,.12);color:var(--green-800);}
+.lm-reading .hs-badge{opacity:.55;}
+
+.hs-learn h4{font-family:var(--display);color:var(--green-800);margin:14px 0 6px;font-size:15px;text-transform:uppercase;letter-spacing:1px;}
+.hs-learn ul{margin:0 0 14px;padding-left:20px;}
+.hs-learn li{margin:4px 0;}
+.hs-video{margin:8px 0 4px;}
+.hs-play{position:relative;display:block;width:100%;padding:0;border:0;cursor:pointer;border-radius:12px;overflow:hidden;box-shadow:var(--shadow-sm);background:#000;}
+.hs-play img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;opacity:.85;}
+.hs-playbtn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:50%;background:rgba(20,83,45,.92);color:#f6efdc;display:flex;align-items:center;justify-content:center;font-size:24px;padding-left:5px;border:2px solid var(--gold);}
+.hs-play:hover .hs-playbtn{background:var(--green-700);}
+.hs-frame{position:relative;padding-top:56.25%;border-radius:12px;overflow:hidden;box-shadow:var(--shadow-sm);}
+.hs-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+.hs-credit{display:block;text-align:center;color:var(--muted);font-size:12.5px;margin-top:6px;}
+.hs-fact{background:rgba(20,83,45,.06);border-left:3px solid var(--gold);padding:10px 14px;border-radius:0 10px 10px 0;margin:14px 0;}
+.hs-q{margin:0 0 8px;}
+.hs-opts{display:flex;flex-wrap:wrap;gap:8px;}
+.hs-opts button{font:inherit;padding:8px 14px;border-radius:20px;border:1px solid rgba(168,128,28,.5);background:#fff;cursor:pointer;}
+.hs-opts button:hover{background:rgba(212,175,55,.15);}
+.hs-opts button.right{background:var(--green-800);color:#f6efdc;border-color:var(--green-800);}
+.hs-opts button.wrong{background:#b3452e;color:#fff;border-color:#b3452e;}
+.hs-verdict{min-height:1.2em;font-family:var(--fancy);font-style:italic;color:var(--green-800);font-size:18px;margin:8px 0 0;}
+.hs-phrases{display:grid;gap:8px;margin:8px 0 14px;}
+.hs-ph{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid rgba(168,128,28,.3);border-radius:10px;padding:10px 14px;}
+.hs-say{font:inherit;font-size:17px;border:1px solid rgba(168,128,28,.5);background:#fffdf4;border-radius:50%;width:38px;height:38px;flex:0 0 38px;cursor:pointer;}
+.hs-say:hover{background:rgba(212,175,55,.2);}
+.ph-w{min-width:230px;}
+.ph-w i{color:var(--muted);font-size:14px;}
+.ph-m{color:#3a3a2e;}
+.hs-terms{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:12px 0 4px;}
+.hs-terms span{background:rgba(20,83,45,.08);border:1px solid rgba(20,83,45,.18);color:var(--green-800);border-radius:14px;padding:3px 10px;font-size:13.5px;}
+.hs-terms .lbl{background:none;border:0;color:var(--muted);font-family:var(--display);text-transform:uppercase;letter-spacing:1px;font-size:12px;padding:0;}
+.hs-listen{display:flex;flex-direction:column;gap:6px;background:#fff;border:1px solid rgba(168,128,28,.3);border-radius:12px;padding:12px 14px;margin:12px 0;}
+.hs-listen b{font-family:var(--display);color:var(--green-800);font-size:16px;}
+.hs-listen audio{width:100%;}
+.hs-goto{display:inline-block;margin-top:12px;font-weight:600;}
+.hs-download{margin:16px 0 4px;padding:14px 16px;background:rgba(212,180,90,.12);border:1px dashed rgba(168,128,28,.5);border-radius:12px;text-align:center;}
+.hs-download .btn{width:100%;max-width:420px;}
+.hs-download small{display:block;margin-top:10px;color:var(--muted);font-size:13px;line-height:1.45;}
+
+.lm-empty{padding:18px 16px 8px;text-align:center;}
+.lm-empty-title{font-family:var(--display);color:var(--green-800);font-size:18px;margin:0 0 8px;}
+.lm-empty p{margin:0 auto 10px;max-width:36rem;color:#3a3a2e;}
+
+@media(max-width:640px){
+  .hs-ph{flex-wrap:wrap;}
+  .ph-w{min-width:0;}
+  .lm-lesson summary,.hs-mod summary,.lm-cat-sum{gap:10px;padding:12px;align-items:flex-start;}
+  .lm-lesson summary,.hs-mod summary{min-height:64px;}
+  .hs-more{display:none;}
+  .hs-badge{display:none;}
+  .hs-t b,.lm-cat-t b{font-size:16.5px;letter-spacing:0;}
+  .hs-t small,.lm-cat-t small{font-size:13px;}
+  .hs-num{flex:0 0 32px;height:32px;font-size:15px;}
+  .hs-body{padding:4px 12px 14px;}
+  .hs-opts button{width:100%;text-align:left;}
+  .lm-cat-ico{flex:0 0 34px;height:34px;font-size:17px;}
+}
+</style>
+  <link rel="stylesheet" crossorigin href="/assets/members-5fxORm81.css">
+</head>
+<body>
+
+  <nav class="krewe-nav" aria-label="Primary">
+    <a class="brand" href="index.html">
+      <img src="/assets/emblem-shamrock-C25sUmyu.png" alt="Krewe of Shamrock emblem" />
+      <span class="name"><b>Krewe of Shamrock</b><small>Tampa Bay · Est. 1999</small></span>
+    </a>
+    <button class="nav-toggle" id="kreweNavToggle" aria-label="Open menu" aria-controls="kreweMenu" aria-expanded="false">
+      <span class="nav-toggle-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+    </button>
+    <div class="krewe-menu" id="kreweMenu">
+      <ul class="krewe-links">
+        <li><a href="index.html" data-nav="index.html">Home</a></li>
+        <li class="nav-group">
+          <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">Events <span class="caret"></span></button>
+          <ul class="nav-dropdown">
+            <li><a href="event-signup.html" data-nav="event-signup.html">Upcoming Events</a></li>
+            <li><a href="parades.html" data-nav="parades.html">Parades</a></li>
+            <li><a href="tartan-ball.html" data-nav="tartan-ball.html">Tartan Ball</a></li>
+          </ul>
+        </li>
+        <li class="nav-group">
+          <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">About <span class="caret"></span></button>
+          <ul class="nav-dropdown">
+            <li><a href="learn.html" data-nav="learn.html">Our Heritage</a></li>
+            <li><a href="krewe-history.html" data-nav="krewe-history.html">Krewe History</a></li>
+            <li><a href="poetry.html" data-nav="poetry.html">Krewe Creativity</a></li>
+          </ul>
+        </li>
+        <li class="nav-group">
+          <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">Media <span class="caret"></span></button>
+          <ul class="nav-dropdown">
+            <li><a href="gallery.html" data-nav="gallery.html">Photo Gallery</a></li>
+            <li><a href="videos.html" data-nav="videos.html">Videos</a></li>
+            <li><a href="share.html" data-nav="share.html">Share Yours</a></li>
+          </ul>
+        </li>
+        <li class="nav-group">
+          <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">Get Involved <span class="caret"></span></button>
+          <ul class="nav-dropdown">
+            <li><a href="volunteer.html" data-nav="volunteer.html">Volunteer</a></li>
+            <li><a href="store.html" data-nav="store.html">Shop</a></li>
+          </ul>
+        </li>
+        <li><a href="members.html" data-nav="members.html">Member Login</a></li>
+        <li><a href="https://kreweofshamrock.wildapricot.org" target="_blank" rel="noopener noreferrer" title="Archive of the previous site" aria-label="Archive of the previous site">Archive</a></li>
+      </ul>
+      <a class="nav-cta" href="membership-application.html" data-nav="membership-application.html">☘ Join</a>
+    </div>
+  </nav>
+
+    <header class="page-head">
+    <div class="ph-bg" style="background-image:url('/assets/celtic-cross-CqT4Fi5c.jpg')"></div>
+    <p class="eyebrow">Wisdom of the Gael</p>
+    <h1>Learn</h1>
+    <p class="sub">From the filí and the seanchaí to the Salmon of Knowledge, Celtic tradition prized those who sought wisdom. Welcome to our Heritage Library.</p>
+  </header>
+
+  <main class="wrap narrow">
+    <!-- THE HERITAGE LIBRARY: wisdom, lessons, and stories by module -->
+    <div class="section-title lm-intro">
+      <p class="lm-eyebrow">The Heritage Library</p>
+      <h2>Learn with the Krewe</h2>
+      <p class="sub">Celtic tradition has always prized wisdom. The filí kept the poems, the seanchaí kept the stories, and the Salmon of Knowledge rewarded those who sought understanding. Our Heritage Library follows that same path: lessons and lore for every Shamrock, shelved by subject so you can learn at your own pace.</p>
+    </div>
+    <div class="banner-flourish" aria-hidden="true"></div>
+    <p class="hs-progress" id="hsProgress">☘ 0 of 15 lessons complete</p>
+    <div class="hs-bar" aria-hidden="true"><i id="hsBarFill"></i></div>
+
+    <nav class="lm-mods" id="lmMods" aria-label="Learning modules">
+      <div class="lm-mods-scroll" role="list">
+      <a class="lm-pill" href="#cat-kilts" data-cat="cat-kilts">☘ Kilts & Style</a>
+      <a class="lm-pill" href="#cat-gasparilla" data-cat="cat-gasparilla">🏴‍☠️ Gasparilla & IKC</a>
+      <a class="lm-pill" href="#cat-parade" data-cat="cat-parade">🛡 Parade Day</a>
+      <a class="lm-pill" href="#cat-krewe-life" data-cat="cat-krewe-life">💚 Krewe Life</a>
+      <a class="lm-pill" href="#cat-music" data-cat="cat-music">🎻 Music & Dance</a>
+      <a class="lm-pill" href="#cat-heritage" data-cat="cat-heritage">📜 Heritage & History</a>
+      <a class="lm-pill" href="#cat-legends" data-cat="cat-legends">🏰 Legends & Myth</a>
+      <a class="lm-pill" href="#cat-language" data-cat="cat-language">🗣 Language & Symbols</a>
+      <a class="lm-pill" href="#cat-member" data-cat="cat-member">🌿 Member Knowledge</a>
+      </div>
+      <label class="lm-mods-select-wrap">
+        <span class="visually-hidden">Jump to module</span>
+        <select class="lm-mods-select" id="lmModSelect" aria-label="Jump to module">
+          <option value="">Jump to a module…</option>
+        <option value="#cat-kilts">☘ Kilts &amp; Krewe Style</option>
+        <option value="#cat-gasparilla">🏴‍☠️ Gasparilla &amp; the Inter-Krewe Council</option>
+        <option value="#cat-parade">🛡 Parade Day Know-How</option>
+        <option value="#cat-krewe-life">💚 Krewe Life &amp; Giving Back</option>
+        <option value="#cat-music">🎻 Music &amp; Dance</option>
+        <option value="#cat-heritage">📜 Irish Heritage &amp; History</option>
+        <option value="#cat-legends">🏰 Legends &amp; Myth</option>
+        <option value="#cat-language">🗣 Language &amp; Symbols</option>
+        <option value="#cat-member">🌿 Member Knowledge</option>
+        </select>
+      </label>
+    </nav>
+
+    <details class="lm-cat" id="cat-kilts">
+      <summary class="lm-cat-sum">
+        <span class="lm-cat-ico" aria-hidden="true">☘</span>
+        <span class="lm-cat-t"><b>Kilts &amp; Krewe Style</b><small>7 modules</small></span>
+        <span class="lm-cat-caret" aria-hidden="true">▾</span>
+      </summary>
+      <div class="lm-cat-body">
+    <details class="hs-mod lm-lesson" data-mod="kilts">
+      <summary><span class="hs-num">1</span><span class="hs-t"><b>The Kilt: Two Gaelic Traditions</b><small>☘ Krewe style · start here</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">☘</span></summary>
+      <div class="hs-body">
+        <div class="hs-learn"><h4>What you'll learn</h4>
+          <ul>
+            <li>A kilt is not a costume; it's Gaelic heritage you can wear, and the Krewe of Shamrock welcomes both great traditions on the parade route.</li>
+            <li>The Irish tradition favors saffron and solid-color kilts and county tartans, patterns tied to place rather than family.</li>
+            <li>The Scottish tradition marches in clan tartans, patterns tied to family names and handed down the generations.</li>
+            <li>On parade day, most of our men pair the kilt with a ghillie shirt, the loose lace-up shirt of the old Gaelic style that stays comfortable in the Florida sun.</li>
+          </ul>
+        </div>
+        <img loading="lazy" src="/assets/kilt-guide-B4HSfbnV.jpg" alt="Infographic comparing Irish and Scottish kilt styles, tartans, jackets, and footwear" style="width:100%;border-radius:12px;box-shadow:var(--shadow-sm);margin:8px 0;" />
+        <small class="hs-credit">The krewe's field guide: Irish and Scottish kilt styles side by side</small>
+        <div class="hs-terms"><span class="lbl">Key terms</span><span>Saffron kilt</span><span>County tartan</span><span>Clan tartan</span><span>Ghillie shirt</span></div>
+        <p class="hs-fact">☘ <b>Fun fact:</b> We're Tampa's original kilted krewe: marching in tartan since 1999, long before Celtic style was everywhere at the bay's festivals.</p>
+        <div class="hs-quiz" data-answer="b">
+          <p class="hs-q"><b>Quick check:</b> Which look belongs to the Irish kilt tradition?</p>
+          <div class="hs-opts">
+            <button type="button" data-k="a">Clan tartans only</button>
+            <button type="button" data-k="b">Saffron and solid colors</button>
+            <button type="button" data-k="c">Neon green sequins</button>
+          </div>
+          <p class="hs-verdict" aria-live="polite"></p>
+        </div>
+        <a class="hs-goto" href="#art-kilts">☘ Keep learning: read "Kilts in the Krewe" just below</a>
+      </div>
+    </details>
+
+    <details class="hs-mod lm-lesson" data-mod="formal">
+      <summary><span class="hs-num">2</span><span class="hs-t"><b>Formal Kilt Wear</b><small>🥂 Krewe style · watch and dress the part</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">☘</span></summary>
+      <div class="hs-body">
+        <div class="hs-learn"><h4>What you'll learn</h4>
+          <ul>
+            <li>A kilt is true formal wear: at a black-tie evening like our Tartan Ball, it stands equal to any tuxedo.</li>
+            <li>The Scottish formal standard is the Prince Charlie jacket and waistcoat, often with a fly plaid pinned at the shoulder with a brooch.</li>
+            <li>The Irish formal answer is the Brian Boru jacket, a braided cutaway worn with a waistcoat and its own understated elegance.</li>
+            <li>The finishing touches: a dress sporran, kilt hose with flashes, ghillie brogues laced up the calf, and a kilt pin to hold the apron true.</li>
+          </ul>
+        </div>
+        <div class="hs-video" data-yt="WcB7jZEWpHg" data-vtitle="Formal kilt wear">
+          <button type="button" class="hs-play" aria-label="Play video: formal kilt wear">
+            <img loading="lazy" src="https://i.ytimg.com/vi/WcB7jZEWpHg/hqdefault.jpg" alt="Video thumbnail: dressing the formal kilt" />
+            <span class="hs-playbtn" aria-hidden="true">▶</span>
+          </button>
+          <small class="hs-credit">Video: dressing the formal kilt, from hose and flashes to jacket</small>
+        </div>
+        <div class="hs-terms"><span class="lbl">Key terms</span><span>Prince Charlie</span><span>Brian Boru jacket</span><span>Fly plaid</span><span>Dress sporran</span><span>Flashes</span></div>
+        <p class="hs-fact">☘ <b>Fun fact:</b> The little "flashes" peeking below the fold of the kilt hose began life as garters that kept a marching Gael's hose from sliding down.</p>
+        <div class="hs-quiz" data-answer="c">
+          <p class="hs-q"><b>Quick check:</b> Which jacket is the classic Irish formal kilt jacket?</p>
+          <div class="hs-opts">
+            <button type="button" data-k="a">Prince Charlie</button>
+            <button type="button" data-k="b">Dinner blazer</button>
+            <button type="button" data-k="c">Brian Boru</button>
+          </div>
+          <p class="hs-verdict" aria-live="polite"></p>
+        </div>
+        <a class="hs-goto" href="tartan-ball.html">☘ Keep learning: see formal kilts in their element at the Tartan Ball</a>
+      </div>
+    </details>
+
+    <details class="hs-mod lm-lesson" data-mod="women">
+      <summary><span class="hs-num">3</span><span class="hs-t"><b>Women in Kilts: A Guide for the Ladies</b><small>👑 Krewe style · wear it your way</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">☘</span></summary>
+      <div class="hs-body">
+        <div class="hs-learn"><h4>What you'll learn</h4>
+          <ul>
+            <li>Yes, women wear kilts, and in the Krewe of Shamrock they do so proudly. Women across Ireland, Scotland, and the diaspora have worn kilts and kilted skirts for well over a century.</li>
+            <li>Know your three terms: a true <b>kilt</b> is one wrapped length of pleated wool with straps and buckles; a <b>kilted skirt</b> is built the same way but lighter, closer-fitting, and offered in mini, knee, midi, and ankle lengths; a <b>tartan skirt</b> is any skirt sewn from tartan cloth. All three are welcome on the route.</li>
+            <li>Choosing your cloth: an Irish county or family tartan, the green-gold-and-white Irish National tartan, traditional solid saffron, a Scottish clan tartan, or a universal tartan like Black Watch that anyone may wear.</li>
+            <li>The signature parade look for many Krewe women is a corset or bodice over a white Celtic blouse; a Krewe t-shirt is always welcome too. A tartan sash pinned at the shoulder with a brooch is the classic women's alternative to a man's fly plaid.</li>
+            <li>Practical wisdom: the parade route is about four miles, so comfortable shoes win; kilts sit at the natural waist, so measure before ordering; and custom kilts from Scotland or Ireland can take six to twelve weeks, so order early.</li>
+          </ul>
+        </div>
+        <img loading="lazy" src="/assets/krewe-lady-green-DE17Kfxu.jpg" alt="A Krewe of Shamrock member dressed in green Celtic parade style" style="width:100%;border-radius:12px;box-shadow:var(--shadow-sm);margin:8px 0;" />
+        <small class="hs-credit">Krewe style is personal style: from saffron and county tartan to corsets and sashes</small>
+        <div class="hs-terms"><span class="lbl">Key terms</span><span>Kilted skirt</span><span>Irish National tartan</span><span>Tartan sash</span><span>Corset &amp; blouse</span><span>Hostess length</span></div>
+        <p class="hs-fact">☘ <b>Fun fact:</b> Princess Diana, Emma Watson, and Madonna have all worn kilts in public, helping show the world that this traditional garment belongs to everyone.</p>
+        <div class="hs-quiz" data-answer="b">
+          <p class="hs-q"><b>Quick check:</b> Which tartan is considered "universal," open for anyone to wear?</p>
+          <div class="hs-opts">
+            <button type="button" data-k="a">Only a tartan from your own bloodline</button>
+            <button type="button" data-k="b">Black Watch</button>
+            <button type="button" data-k="c">No tartan may be worn without permission</button>
+          </div>
+          <p class="hs-verdict" aria-live="polite"></p>
+        </div>
+        <div class="hs-download">
+          <a class="btn btn-primary" href="assets/docs/kilts-and-celtic-style-women.pdf" download="Kilts-and-Celtic-Style-Krewe-of-Shamrock-Women.pdf">📜 Download the full guide (PDF)</a>
+          <small>The complete "Kilts and Celtic Style" guide for the women of the krewe &mdash; heritage, choosing your kilt, styling, parade rules, ball attire, and a parade day checklist. Print it or save it to your phone.</small>
+        </div>
+        <a class="hs-goto" href="#art-colors">☘ Keep learning: read "The Colors of the Cloth" just below</a>
+      </div>
+    </details>
+
+    <details class="lm-lesson lm-reading" id="art-kilts">
+      <summary><span class="hs-num">4</span><span class="hs-t"><b>Kilts in the Krewe</b><small>📖 Reading · What we wear on parade day</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">📖</span></summary>
+      <div class="hs-body lm-reading-body">
+<p class="dropcap">In the Krewe of Shamrock, the kilt is the uniform of the day, and both great Gaelic
+         traditions are welcome on the route. Some members march Irish, in saffron or solid-color kilts and
+         county tartans. Others march Scottish, in clan tartans handed down the family line. Wear whichever
+         tradition calls to you; the only requirement is that you wear it proudly.</p>
+      <p>On parade morning you'll see every version of it rolling out together: saffron beside clan plaid,
+         county tartan beside solid green, and ghillie shirts everywhere in the Florida sun. Add a sporran,
+         kilt hose, and a good handful of beads, and you're parade-ready. New to kilts? The lesson cards above
+         sort the styles, and any member will happily talk tartan with you.</p>
+      </div>
+    </details>
+
+    <details class="lm-lesson lm-reading" id="art-colors">
+      <summary><span class="hs-num">5</span><span class="hs-t"><b>The Colors of the Cloth</b><small>📖 Reading · What the hues of a tartan mean</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">📖</span></summary>
+      <div class="hs-body lm-reading-body">
+<img src="/assets/kilt-grid-BNl7xkJ5.jpg" alt="Grid of tartan kilt patterns in many colors" />
+      <p class="dropcap">Every color woven into a kilt carries a story. <b>Green</b> speaks of Ireland's lush
+         scenery and of patriotism, tying the wearer to the land itself and the spirit of Saint Patrick.
+         <b>Blue</b> recalls the ancient Irish aristocracy and loyalty; long before green took over, blue was
+         the color of Gaelic kings. <b>Gold</b> stands for warmth and prosperity, the richness of the culture
+         and the success of the Irish abroad.</p>
+      <p><b>Red</b> honors courage and tenacity, the sacrifices made through every hard chapter of Irish
+         history. <b>Black</b> represents power and persistence, the enduring strength of a people who would
+         not be worn down. And <b>saffron</b>, that warm golden-orange of the traditional Irish kilt, is the
+         banner of the Gaelic revival: a color chosen deliberately to say <i>we are Irish, and proudly so</i>.</p>
+      <p>So when the Krewe rolls out on parade morning in green and gold, saffron and plaid, it isn't just a
+         pretty picture. It's a whole history told in thread, and every member wearing it becomes part of
+         the telling.</p>
+      </div>
+    </details>
+
+    <details class="lm-lesson lm-reading" id="art-kiltmyths">
+      <summary><span class="hs-num">6</span><span class="hs-t"><b>Kilt Myths &amp; Legends</b><small>📖 Reading · Sorting fact from folklore</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">📖</span></summary>
+      <div class="hs-body lm-reading-body">
+<img src="/assets/kilt-grid-BNl7xkJ5.jpg" alt="Grid of tartan kilt patterns" />
+      <p class="dropcap">Few garments carry as many tall tales as the kilt. Did the Irish bring it to Scotland?
+         Did tartan begin in the Highlands? Does the number of colors mark the wearer's rank, or hide a secret
+         Ogham message woven into the cloth? The truth is often older, and stranger, than the legend.</p>
+      <p>The kilt-makers at Keltoi Gaelic Clothing have gathered the best-loved myths about kilts, tartan, and
+         Highland wear and weighed each one against the historical record, from the Gaels of Dál Riata in their
+         saffron <i>léine</i> and <i>brat</i> to the clan tartans devised in the weavers' sample books of the
+         1700s. A grand read for anyone proud of their Gaelic threads.</p>
+      <p style="text-align:center;margin-top:18px;">
+        <a class="btn btn-green" href="https://www.gaelicclothing.com/myths-and-legends"
+           target="_blank" rel="noopener">Read the myths &amp; legends ☘</a>
+      </p>
+      </div>
+    </details>
+
+    <details class="lm-lesson lm-reading" id="art-invent">
+      <summary><span class="hs-num">7</span><span class="hs-t"><b>Did the Irish Invent the Kilt?</b><small>📖 Reading · From the Celtic Fire blog</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">📖</span></summary>
+      <div class="hs-body lm-reading-body">
+<img src="/assets/krewe-parade-kilts-dGZGnGRC.jpg" alt="Krewe members marching in kilts on the Tampa parade route" />
+      <p class="dropcap">Around 432 AD, in the days of Saint Patrick, what did the Irish actually wear? Author
+         Erin O'Quinn paints the picture from old manuscripts, Roman accounts, Ireland's earliest legends, and
+         garments pulled from the preserving depths of the bog: the linen <i>léine</i> belted at the waist, the
+         woolen <i>brat</i> cloak, leather <i>bróga</i>, and the bright, status-marking colors a person was
+         allowed to wear.</p>
+      <p>And the big question her headline asks: did the Irish Gaels, pushing into Scotland in the fifth century,
+         hand the skirt-like léine to the Scots, or borrow it from the roaming <i>Scoti</i>? It's a debate that
+         has "raged for over a hundred years," and her warm, witty post is a lovely corner of a blog full of
+         all things Irish.</p>
+      <p style="text-align:center;margin-top:18px;">
+        <a class="btn btn-green" href="https://erinsromance.wordpress.com/2012/06/21/did-the-irish-invent-the-kilt/"
+           target="_blank" rel="noopener">Read the blog post ☘</a>
+      </p>
+      </div>
+    </details>
+      </div>
+    </details>
+
+    <details class="lm-cat" id="cat-gasparilla">
+      <summary class="lm-cat-sum">
+        <span class="lm-cat-ico" aria-hidden="true">🏴‍☠️</span>
+        <span class="lm-cat-t"><b>Gasparilla &amp; the Inter-Krewe Council</b><small>3 modules</small></span>
+        <span class="lm-cat-caret" aria-hidden="true">▾</span>
+      </summary>
+      <div class="lm-cat-body">
+    <details class="hs-mod lm-lesson" data-mod="gasparilla">
+      <summary><span class="hs-num">1</span><span class="hs-t"><b>Gasparilla: Tampa's Pirate Invasion</b><small>🏴‍☠️ Parade culture · know the season</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">☘</span></summary>
+      <div class="hs-body">
+        <div class="hs-learn"><h4>What you'll learn</h4>
+          <ul>
+            <li>Gasparilla is Tampa's signature celebration, held nearly every year since 1904 and named for José Gaspar, a legendary pirate said to have terrorized the waters of the Gulf.</li>
+            <li>Ye Mystic Krewe of Gasparilla, the city's first krewe, stages the famous "invasion": a flotilla sails into downtown, the mayor surrenders the key to the city, and the pirates parade in triumph.</li>
+            <li>The Gasparilla Parade of Pirates rolls along Bayshore Boulevard before hundreds of thousands of spectators, making it one of the largest parades in the United States.</li>
+            <li>A week earlier, the Children's Gasparilla parade gives families an alcohol-free day of floats, beads, and pirate fun; the Krewe of Shamrock marches in both.</li>
+            <li>Since 2019, our multi-level medieval castle float, complete with its signature top-hat-wearing skull, has carried the green and gold down the route.</li>
+          </ul>
+        </div>
+        <img loading="lazy" src="/assets/float-parade-CWPS9zy3.jpg" alt="The Krewe of Shamrock castle float rolling down the parade route" style="width:100%;border-radius:12px;box-shadow:var(--shadow-sm);margin:8px 0;" />
+        <small class="hs-credit">Parade season in Tampa Bay: where a kilted krewe marches with pirates</small>
+        <div class="hs-terms"><span class="lbl">Key terms</span><span>José Gaspar</span><span>Ye Mystic Krewe</span><span>The Invasion</span><span>Bayshore Boulevard</span><span>Children's Gasparilla</span></div>
+        <p class="hs-fact">☘ <b>Fun fact:</b> José Gaspar himself is almost certainly a legend; no solid historical record of the pirate exists. Tampa threw a century of parades for a myth, and we think that's wonderfully Irish of them.</p>
+        <div class="hs-quiz" data-answer="c">
+          <p class="hs-q"><b>Quick check:</b> What happens during the Gasparilla "invasion"?</p>
+          <div class="hs-opts">
+            <button type="button" data-k="a">The krewes race sailboats across the bay</button>
+            <button type="button" data-k="b">A fireworks show over Ybor City</button>
+            <button type="button" data-k="c">Pirates sail in and the mayor surrenders the key to the city</button>
+          </div>
+          <p class="hs-verdict" aria-live="polite"></p>
+        </div>
+        <a class="hs-goto" href="parades.html">☘ Keep learning: see every parade we march on the Parades page</a>
+        <p style="margin-top:10px;display:flex;flex-wrap:wrap;gap:12px;">
+          <a class="hs-goto" href="membership-application.html">Join the Krewe</a>
+          <a class="hs-goto" href="members.html">Member Login</a>
+          <a class="hs-goto" href="parades.html#parade-season">See the season</a>
+        </p>
+      </div>
+    </details>
+
+    <details class="hs-mod lm-lesson" data-mod="ikc">
+      <summary><span class="hs-num">2</span><span class="hs-t"><b>The Inter-Krewe Council &amp; Tampa's Krewes</b><small>🤝 Parade culture · our wider family</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">☘</span></summary>
+      <div class="hs-body">
+        <div class="hs-learn"><h4>What you'll learn</h4>
+          <ul>
+            <li>A "krewe" is a social organization that parades and celebrates together; the word (an old-fashioned spelling of "crew") comes from the New Orleans Mardi Gras tradition of the 1850s.</li>
+            <li>Tampa Bay is home to dozens of krewes, and the Inter-Krewe Council (IKC) is the association that brings them together: coordinating the shared parade calendar, promoting goodwill between krewes, and championing charitable work across the bay.</li>
+            <li>Our "Big Four" parades each season are Children's Gasparilla, the Gasparilla Parade of Pirates, the Knights of Sant' Yago Knight Parade in historic Ybor City, and the Rough Riders St. Patrick's Day Parade.</li>
+            <li>Our own story began inside this krewe family: in 1998 our five founders walked the Ybor City parades as security for Ye Loyal Krewe of Grace O'Malley before petitioning to march as a krewe of their own in 1999.</li>
+            <li>Beyond the Big Four, the krewe also turns out for Santa Fest, Tampa Pride, and community events throughout the year.</li>
+          </ul>
+        </div>
+        <div class="hs-terms"><span class="lbl">Key terms</span><span>Krewe</span><span>Inter-Krewe Council</span><span>The Big Four</span><span>Ybor City</span><span>Knight Parade</span></div>
+        <p class="hs-fact">☘ <b>Fun fact:</b> Ye Loyal Krewe of Grace O'Malley, the krewe our founders once guarded, is named for the real 16th-century Irish "pirate queen" Gráinne Ní Mháille, who commanded her own fleet and famously parleyed face-to-face with Queen Elizabeth I.</p>
+        <div class="hs-quiz" data-answer="b">
+          <p class="hs-q"><b>Quick check:</b> Which of these is one of the Krewe of Shamrock's "Big Four" parades?</p>
+          <div class="hs-opts">
+            <button type="button" data-k="a">The Macy's Thanksgiving Day Parade</button>
+            <button type="button" data-k="b">The Knights of Sant' Yago Knight Parade</button>
+            <button type="button" data-k="c">The Rose Parade</button>
+          </div>
+          <p class="hs-verdict" aria-live="polite"></p>
+        </div>
+        <a class="hs-goto" href="#art-founding">☘ Keep learning: read how a security detail became a krewe, just below</a>
+      </div>
+    </details>
+
+    <details class="lm-lesson lm-reading" id="art-founding">
+      <summary><span class="hs-num">3</span><span class="hs-t"><b>From Grace O'Malley's Guard to a Krewe of Our Own</b><small>📖 Reading · The founding story, 1998–1999</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">📖</span></summary>
+      <div class="hs-body lm-reading-body">
+<img src="/assets/krewe-pub-cheers-D0U5ZclM.jpg" alt="Krewe of Shamrock friends raising a toast together" />
+      <p class="dropcap">Every krewe has an origin story, and ours begins on someone else's parade route. In 1998,
+         five friends, Matt Glow, Tim Hubbell, Hayden Polk, Chris Jenkins, and Steve Hubbell, walked the Ybor City
+         parades as security for Ye Loyal Krewe of Grace O'Malley. They kept the route safe, watched the krewe
+         they guarded having the time of their lives, and came away with one shared thought: <i>we should have a
+         krewe of our own.</i></p>
+      <p>After the 1999 Gasparilla season they made it official. With Don Cassels serving as the group's first
+         spokesperson, they petitioned the St. Patrick's Day Parade Committee, and in 1999 the Krewe of Shamrock
+         marched for the first time, kilts on and bagpipes playing. From the very beginning the krewe was built
+         as an Irish-themed social and charitable organization, and from the very beginning the motto has been
+         the same: <b>All for Fun, Fun for All.</b></p>
+      <p>Today the krewe continues to welcome new faces, and while we celebrate Irish and Scottish traditions with everything we've got, Irish or Scottish ancestry has never been required. What's required is much simpler: show up, pitch in, and bring the craic.</p>
+      <p style="text-align:center;margin-top:18px;">
+        <a class="btn btn-green" href="krewe-history.html">Read the full Krewe history ☘</a>
+      </p>
+      </div>
+    </details>
+      </div>
+    </details>
+
+    <details class="lm-cat" id="cat-parade">
+      <summary class="lm-cat-sum">
+        <span class="lm-cat-ico" aria-hidden="true">🛡</span>
+        <span class="lm-cat-t"><b>Parade Day Know-How</b><small>4 modules</small></span>
+        <span class="lm-cat-caret" aria-hidden="true">▾</span>
+      </summary>
+      <div class="lm-cat-body">
+    <details class="hs-mod lm-lesson" data-mod="paradeday">
+      <summary><span class="hs-num">1</span><span class="hs-t"><b>Parade Day Rules &amp; Safety</b><small>🛡 Member know-how · required reading</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">☘</span></summary>
+      <div class="hs-body">
+        <div class="hs-learn"><h4>What you'll learn</h4>
+          <ul>
+            <li>Boarding and leaving the float takes extreme caution: always step off <b>backwards</b>, and a designated safety person will be stationed there to assist you. Never stand on speaker or storage boxes.</li>
+            <li>Walkers stay to the sides or behind the float, never directly in front of it and never in the gap between the float and the tow vehicle. Krewe marshals and spotters walk the whole route to keep spacing safe.</li>
+            <li>Respect earned spots: don't move another member's bead bags or spot designations, including bags hanging from the hooks.</li>
+            <li>Drinks stay in opaque cups or tumblers; glass containers and visible alcohol branding are banned, smoking is forbidden on the float, and float drivers and float crew remain completely sober.</li>
+            <li>Everyone obeys law enforcement, parade officials, and Krewe security, full stop. Failure to comply means immediate ejection from the parade and suspension from the next one, and members are 100% responsible for their guests' behavior and attire.</li>
+          </ul>
+        </div>
+        <img loading="lazy" src="/assets/float-castle-BY3IDzUJ.jpg" alt="The Krewe of Shamrock multi-level castle float" style="width:100%;border-radius:12px;box-shadow:var(--shadow-sm);margin:8px 0;" />
+        <small class="hs-credit">The castle float: a privilege to ride, a responsibility to ride safely</small>
+        <div class="hs-terms"><span class="lbl">Key terms</span><span>Staging</span><span>Marshals &amp; spotters</span><span>Opaque cups</span><span>Sergeant at arms</span><span>Guest responsibility</span></div>
+        <p class="hs-fact">☘ <b>Fun fact:</b> Our castle float is a rolling clubhouse: multiple levels, a bar with a kegerator, two bathrooms, and the krewe's signature top-hat-wearing skull keeping watch over it all.</p>
+        <div class="hs-quiz" data-answer="a">
+          <p class="hs-q"><b>Quick check:</b> What is the correct way to step off the float?</p>
+          <div class="hs-opts">
+            <button type="button" data-k="a">Backwards, with the safety person assisting</button>
+            <button type="button" data-k="b">A quick hop off the front</button>
+            <button type="button" data-k="c">Any way, as long as the float is moving slowly</button>
+          </div>
+          <p class="hs-verdict" aria-live="polite"></p>
+        </div>
+        <a class="hs-goto" href="parades.html">☘ Keep learning: the full parade rules live on the Parades page</a>
+      </div>
+    </details>
+
+    <details class="hs-mod lm-lesson" data-mod="beads">
+      <summary><span class="hs-num">2</span><span class="hs-t"><b>Bead Etiquette &amp; the Bead-Free Bay</b><small>📿 Member know-how · throw like a pro</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">☘</span></summary>
+      <div class="hs-body">
+        <div class="hs-learn"><h4>What you'll learn</h4>
+          <ul>
+            <li>All beads are tossed gently and <b>underhand</b>. Overhand throws are strictly forbidden: aim low and never toward anyone's face.</li>
+            <li>No early throws: beads don't fly until the parade officially reaches its starting point (Bay to Bay Boulevard for Gasparilla).</li>
+            <li>De-bag before you stage: no plastic bags are allowed on the parade route, so all beads come out of their packaging before the parade begins.</li>
+            <li>Hand beads directly to small children near the curb rather than throwing, stay out of arm's reach of the crowd line, and never hand beads to police officers; they are working and need their full attention.</li>
+            <li>Throwing beads into the bay is illegal, and the Krewe proudly supports the <b>#BeadFreeBay</b> conservation campaign with the City of Tampa and The Florida Aquarium, keeping our celebration out of our waterways.</li>
+          </ul>
+        </div>
+        <img loading="lazy" src="/assets/krewe-green-beads-ZvssH9gG.jpg" alt="Krewe of Shamrock members with piles of green parade beads" style="width:100%;border-radius:12px;box-shadow:var(--shadow-sm);margin:8px 0;" />
+        <small class="hs-credit">The good stuff: green and gold, thrown underhand with a smile</small>
+        <div class="hs-terms"><span class="lbl">Key terms</span><span>Underhand toss</span><span>De-bagging</span><span>Crowd line</span><span>#BeadFreeBay</span></div>
+        <p class="hs-fact">☘ <b>Fun fact:</b> Traditional parade seasons can send thousands of plastic beads into local waterways. "Purposeful celebration" means we bring the joy and take the plastic home.</p>
+        <div class="hs-quiz" data-answer="b">
+          <p class="hs-q"><b>Quick check:</b> How should beads be thrown to the crowd?</p>
+          <div class="hs-opts">
+            <button type="button" data-k="a">Overhand, as far as possible</button>
+            <button type="button" data-k="b">Gently underhand, aimed low</button>
+            <button type="button" data-k="c">Straight up in the air over the crowd</button>
+          </div>
+          <p class="hs-verdict" aria-live="polite"></p>
+        </div>
+        <a class="hs-goto" href="#art-creed">☘ Keep learning: read "The Creed of the Krewe" just below</a>
+      </div>
+    </details>
+
+    <details class="hs-mod lm-lesson" data-mod="eligibility">
+      <summary><span class="hs-num">3</span><span class="hs-t"><b>Earning Your Wristband: Parade Eligibility</b><small>🎟 Member know-how · how you make the roster</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">☘</span></summary>
+      <div class="hs-body">
+        <div class="hs-learn"><h4>What you'll learn</h4>
+          <ul>
+            <li>Marching in our parades isn't automatic with membership; it's a status earned through good standing, and it starts with annual dues paid in full.</li>
+            <li>Every member attends the season's mandatory safety briefing; QR codes verify attendance at the meeting, along with the digital safety and logistics training.</li>
+            <li>Full Members contribute 12 volunteer hours per Krewe year, verified by the Charity Chair with photos or site-coordinator sign-off. If life gets in the way, hours may be fulfilled through an in-kind donation of $12 per hour.</li>
+            <li>A signed liability waiver and Code of Conduct must be on file, and guests must be pre-registered with their own paid fee and waiver before a guest wristband is issued.</li>
+            <li>The golden rule is absolute: <b>No Wristband, No Boarding.</b> No exceptions, for the float or the march, and your wristband stays visible the whole route.</li>
+          </ul>
+        </div>
+        <div class="hs-terms"><span class="lbl">Key terms</span><span>Good standing</span><span>Safety briefing</span><span>Volunteer hours</span><span>Liability waiver</span><span>Wristband</span></div>
+        <p class="hs-fact">☘ <b>Fun fact:</b> The krewe's volunteer hours add up fast: members give hundreds of service hours and thousands of dollars to Tampa Bay charities every season, and every hour counts toward your parade eligibility.</p>
+        <div class="hs-quiz" data-answer="c">
+          <p class="hs-q"><b>Quick check:</b> What is the absolute rule for boarding the float on parade day?</p>
+          <div class="hs-opts">
+            <button type="button" data-k="a">First come, first served</button>
+            <button type="button" data-k="b">Members may board any time; guests wait</button>
+            <button type="button" data-k="c">No wristband, no boarding, no exceptions</button>
+          </div>
+          <p class="hs-verdict" aria-live="polite"></p>
+        </div>
+        <a class="hs-goto" href="volunteer.html">☘ Keep learning: find volunteer hours on the Service &amp; Charity page</a>
+      </div>
+    </details>
+
+    <details class="lm-lesson lm-reading" id="art-creed">
+      <summary><span class="hs-num">4</span><span class="hs-t"><b>The Creed of the Krewe</b><small>📖 Reading · Our Code of Conduct, and why it matters</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">📖</span></summary>
+      <div class="hs-body lm-reading-body">
+<img src="/assets/krewe-friends-group-j9Lc5aVW.jpg" alt="Krewe of Shamrock friends gathered together" />
+      <p class="dropcap">A krewe built on friendship needs a few clear rules to protect it. Our Code of Conduct
+         is the quiet backbone of everything we do in public: it keeps the fun safe, the friendships strong, and
+         the krewe's good name untarnished in front of the whole bay. Verbal intimidation, illegal substances,
+         and behavior that puts others at risk have no place on our route or at our tables.</p>
+      <p>The standard comes with real teeth. A first infraction can bring a reprimand, a fine, or suspension
+         from a parade. A second brings automatic suspension from at least one parade plus a fine. A third means
+         revocation of membership. Excessive drunkenness is never tolerated, and anyone who crosses the line on
+         parade day can be placed on the float for the remainder of the route at the discretion of a board
+         member, the sergeant at arms, or security.</p>
+      <p>None of this exists to spoil the craic; it exists so there can be craic at all, season after season.
+         When the public sees a krewe that celebrates hard and carries itself well, the whole heritage we
+         represent stands a little taller.</p>
+      </div>
+    </details>
+      </div>
+    </details>
+
+    <details class="lm-cat" id="cat-krewe-life">
+      <summary class="lm-cat-sum">
+        <span class="lm-cat-ico" aria-hidden="true">💚</span>
+        <span class="lm-cat-t"><b>Krewe Life &amp; Giving Back</b><small>3 modules</small></span>
+        <span class="lm-cat-caret" aria-hidden="true">▾</span>
+      </summary>
+      <div class="lm-cat-body">
+    <details class="lm-lesson lm-reading" id="art-morning">
+      <summary><span class="hs-num">1</span><span class="hs-t"><b>The morning the floats roll</b><small>📖 Reading · Parade day</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">📖</span></summary>
+      <div class="hs-body lm-reading-body">
+<img src="/assets/krewe-group-parade-Ca35Cbey.jpg" alt="Krewe of Shamrock members in kilts gathered before a parade" />
+      <p class="dropcap">There's a particular kind of magic to parade morning. The kilts come out of their garment
+         bags, the beads get untangled, and somebody's always missing a sporran. Then the pipes start to tune,
+         that first wheezy drone fills the air, and a hundred neighbors suddenly become one krewe.</p>
+      <p>Watch a first-year member on that morning. They arrived early and a little nervous, fussing with an
+         unfamiliar kilt, wondering if they'd fit in. Three hours later they're waving to strangers like old
+         friends, tossing beads to kids riding high on shoulders, and walking taller than they did at dawn.
+         Nobody teaches that. The route does.</p>
+      <p>That's the secret we relearn every season: the parade we give Tampa Bay gives back double. Strangers on
+         the curb wave their little flags, children dash for beads, and for a few green-and-gold hours the whole
+         bay feels like family. We march to bring the joy, and we come home carrying more of it than we brought.</p>
+      </div>
+    </details>
+
+    <details class="lm-lesson lm-reading" id="art-family">
+      <summary><span class="hs-num">2</span><span class="hs-t"><b>The Family You Choose</b><small>📖 Reading · Our welcome</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">📖</span></summary>
+      <div class="hs-body lm-reading-body">
+<img src="/assets/krewe-big-group-CTzC-ay1.jpg" alt="A large group of smiling Krewe of Shamrock members together" />
+      <p class="dropcap">Ask almost anyone in the Krewe what kept them, and they won't say the parades or the
+         party. They'll say the people. Folks arrive knowing one member, or none, and within a season they've got
+         a whole table of friends saving them a seat. Irish or not, kilted or not, everyone's welcome.</p>
+      <p>Then something quietly wonderful happens. The shy one ends up running a committee. The one who swore
+         they'd never sing in public is the one starting the songs. The couple who joined "just for the parade"
+         is hosting the planning dinner. Nobody sets out to become more here; there's simply room to try, and a
+         whole krewe cheering the moment you do.</p>
+      <p>"All for Fun, Fun for All" isn't just our motto; it's how a stranger at their first meeting becomes the
+         one tuning the pipes a few years on. New faces, as we like to say, are simply old friends we haven't met
+         yet. Pull up a chair. Yours is next.</p>
+      </div>
+    </details>
+
+    <details class="lm-lesson lm-reading" id="art-giving">
+      <summary><span class="hs-num">3</span><span class="hs-t"><b>More Than a Good Time</b><small>📖 Reading · Service &amp; charity</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">📖</span></summary>
+      <div class="hs-body lm-reading-body">
+<img src="/assets/krewe-ladies-group-Bc2G0Cjx.jpg" alt="Krewe of Shamrock members together at a community gathering" />
+      <p class="dropcap">For all the craic, the Krewe has always believed a good time should do some good. Over the
+         years our members have given thousands of dollars and countless hours to Tampa Bay: unloading delivery
+         trucks for families starting over, standing beside children fighting illness, and filling food drives
+         and every gap in between.</p>
+      <p>It's quiet work, mostly, far from the parade route. No beads, no crowds. Just a Saturday morning, a
+         borrowed truck, and a family stepping into a furnished home for the first time. Ask the members who were
+         there which day of the season they'd never trade, and that's the one they name. It works in a way that's
+         hard to explain and easy to feel: show up to carry someone else's load, and you walk out lighter.</p>
+      <p>Every hour given is a thread, and the threads become the same strong weave that holds a krewe, and a
+         community, together. If that sounds like your kind of morning, our
+         <a href="volunteer.html">Service &amp; Charity</a> page is the place to start. Bring a friend. Come see
+         what a good time can build.</p>
+      </div>
+    </details>
+      </div>
+    </details>
+
+    <details class="lm-cat" id="cat-music">
+      <summary class="lm-cat-sum">
+        <span class="lm-cat-ico" aria-hidden="true">🎻</span>
+        <span class="lm-cat-t"><b>Music &amp; Dance</b><small>4 modules</small></span>
+        <span class="lm-cat-caret" aria-hidden="true">▾</span>
+      </summary>
+      <div class="lm-cat-body">
+    <details class="hs-mod lm-lesson" data-mod="pipes">
+      <summary><span class="hs-num">1</span><span class="hs-t"><b>The Pipes &amp; the Session</b><small>🎻 Music · watch and listen</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">☘</span></summary>
+      <div class="hs-body">
+        <div class="hs-learn"><h4>What you'll learn</h4>
+          <ul>
+            <li>Ireland's uilleann pipes are gentler cousins of the Highland bagpipe, played sitting down.</li>
+            <li>"Uilleann" comes from the Irish word for elbow: the piper pumps a bellows with one arm instead of blowing.</li>
+            <li>The bodhrán, a goatskin frame drum struck with a small tipper, is the heartbeat under the tunes.</li>
+            <li>Put a few players in the corner of a pub and you have a session: tunes traded by ear, no sheet music in sight.</li>
+          </ul>
+        </div>
+        <div class="hs-listen">
+          <b>♪ Press play for a session tune while you read</b>
+          <audio controls preload="none" src="/assets/C%C3%A9il%C3%AD%20Hearth-C-wMlXnK.mp3"></audio>
+          <small class="hs-credit" style="text-align:left;margin-top:2px;">"Céilí Hearth", a tune from the krewe's own hearth</small>
+        </div>
+        <div class="hs-video" data-yt="IXJ4QZPNc94" data-vtitle="David Power, uilleann pipes at Dillon's Bar, Dungarvan">
+          <button type="button" class="hs-play" aria-label="Play video: David Power playing the uilleann pipes">
+            <img loading="lazy" src="https://i.ytimg.com/vi/IXJ4QZPNc94/hqdefault.jpg" alt="Video thumbnail of an uilleann piper performing in an Irish pub" />
+            <span class="hs-playbtn" aria-hidden="true">▶</span>
+          </button>
+          <small class="hs-credit">Video: David Power, uilleann pipes at Dillon's Bar, Dungarvan, Ireland</small>
+        </div>
+        <div class="hs-terms"><span class="lbl">Key terms</span><span>Uilleann pipes</span><span>Bodhrán</span><span>Session</span><span>Céilí</span></div>
+        <p class="hs-fact">☘ <b>Fun fact:</b> The uilleann chanter can play two full chromatic octaves, nearly twice the range of the Scottish pipes' nine notes.</p>
+        <div class="hs-quiz" data-answer="c">
+          <p class="hs-q"><b>Quick check:</b> How does an uilleann piper power the pipes?</p>
+          <div class="hs-opts">
+            <button type="button" data-k="a">Blowing into a mouthpiece</button>
+            <button type="button" data-k="b">A foot pedal</button>
+            <button type="button" data-k="c">A bellows pumped by the elbow</button>
+          </div>
+          <p class="hs-verdict" aria-live="polite"></p>
+        </div>
+        <a class="hs-goto" href="#art-session">☘ Keep learning: read "Pipes, Drums &amp; the Music Session" just below</a>
+      </div>
+    </details>
+
+    <details class="hs-mod lm-lesson" data-mod="dance">
+      <summary><span class="hs-num">2</span><span class="hs-t"><b>Seven Minutes That Changed Irish Dance</b><small>👞 Dance · a 7-minute watch</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">☘</span></summary>
+      <div class="hs-body">
+        <div class="hs-learn"><h4>What you'll learn</h4>
+          <ul>
+            <li>In 1994, an unknown act called Riverdance filled the intermission of the Eurovision Song Contest in Dublin.</li>
+            <li>Those seven minutes electrified the world and relaunched Irish dance as a global phenomenon.</li>
+            <li>The stiff arms and flying feet come from the old dance-master tradition; the costumes from the Celtic Revival.</li>
+          </ul>
+        </div>
+        <div class="hs-video" data-yt="RAtkcHpSHCw" data-vtitle="Riverdance, the 1994 Eurovision interval act">
+          <button type="button" class="hs-play" aria-label="Play video: the original Riverdance Eurovision performance">
+            <img loading="lazy" src="https://i.ytimg.com/vi/RAtkcHpSHCw/hqdefault.jpg" alt="Video thumbnail of the original 1994 Riverdance performance" />
+            <span class="hs-playbtn" aria-hidden="true">▶</span>
+          </button>
+          <small class="hs-credit">Video: Riverdance, the original 1994 Eurovision interval act, Dublin</small>
+        </div>
+        <div class="hs-terms"><span class="lbl">Key terms</span><span>Léine</span><span>Crios</span><span>Celtic Revival</span><span>Dance master</span></div>
+        <p class="hs-fact">☘ <b>Fun fact:</b> Riverdance was created to fill a seven-minute TV intermission. It grew into a show seen live by over 25 million people.</p>
+        <div class="hs-quiz" data-answer="a">
+          <p class="hs-q"><b>Quick check:</b> Where did Riverdance premiere?</p>
+          <div class="hs-opts">
+            <button type="button" data-k="a">The 1994 Eurovision Song Contest</button>
+            <button type="button" data-k="b">Broadway</button>
+            <button type="button" data-k="c">A Dublin street parade</button>
+          </div>
+          <p class="hs-verdict" aria-live="polite"></p>
+        </div>
+        <a class="hs-goto" href="#art-dance">☘ Keep learning: read "Dancing Irish Women" just below</a>
+      </div>
+    </details>
+
+    <details class="lm-lesson lm-reading" id="art-session">
+      <summary><span class="hs-num">3</span><span class="hs-t"><b>Pipes, Drums &amp; the Music Session</b><small>📖 Reading · Irish &amp; Scottish tradition</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">📖</span></summary>
+      <div class="hs-body lm-reading-body">
+<img loading="lazy" src="images/a-session.gif" alt="A lively pub music session: friends playing tunes together around the table" />
+      <p class="dropcap">There is no mistaking the first skirl of the pipes. Whether it's the Great Highland
+         bagpipe of the Scottish tradition or the gentler Irish uilleann pipes, bellows-blown and played
+         sitting down, the sound carries centuries in it. Add the heartbeat of the bodhrán, the goatskin
+         frame drum struck with a little wooden tipper, and you have the engine of any good krewe.</p>
+      <p>Gather a few players in a corner of a pub and you have a "session": tunes traded by ear, jigs and
+         reels rolling one into the next, no sheet music in sight. And when the fiddle strikes up, the
+         céilí dancing begins: lines and circles and the whirl of a good time shared. It's participation,
+         not performance, and that's exactly the spirit we march in.</p>
+      </div>
+    </details>
+
+    <details class="lm-lesson lm-reading" id="art-dance">
+      <summary><span class="hs-num">4</span><span class="hs-t"><b>Dancing Irish Women</b><small>📖 Reading · Steps through time</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">📖</span></summary>
+      <div class="hs-body lm-reading-body">
+<img src="/assets/irish-dancers-BiG0cCYa.jpg" alt="Traditional Irish dance costume on a mannequin: a cream léine gown with deep red and gold Celtic knotwork, a woven gold crios belt, and a flowing gold-trimmed cape" />
+      <p class="dropcap">From the curled hair and embroidered dresses to the fancy footwork, women's Irish dance
+         carries centuries of heritage in every step. The costumes themselves tell the story: born of the late-19th
+         century Celtic Revival, when a full-length <i>léine</i>, woven <i>crios</i> belt, and flowing <i>brat</i>
+         cape became a proud emblem of Irish identity, and Celtic knotwork from the <i>Book of Kells</i> first
+         found its way onto the dancers' dresses.</p>
+      <p>Over the decades those costumes have evolved from school uniforms into dazzling, crystal-covered solo
+         dresses, a tradition kept alive by generations of women who march, pipe, and dance right alongside the men.
+         The Smithsonian's Center for Folklife &amp; Cultural Heritage tells the full story beautifully.</p>
+      <p style="text-align:center;margin-top:18px;">
+        <a class="btn btn-green" href="https://folklife.si.edu/magazine/women-irish-dance-costume-evolution"
+           target="_blank" rel="noopener">Read the Smithsonian article ☘</a>
+      </p>
+      </div>
+    </details>
+      </div>
+    </details>
+
+    <details class="lm-cat" id="cat-heritage">
+      <summary class="lm-cat-sum">
+        <span class="lm-cat-ico" aria-hidden="true">📜</span>
+        <span class="lm-cat-t"><b>Irish Heritage &amp; History</b><small>5 modules</small></span>
+        <span class="lm-cat-caret" aria-hidden="true">▾</span>
+      </summary>
+      <div class="lm-cat-body">
+    <details class="hs-mod lm-lesson" data-mod="patrick">
+      <summary><span class="hs-num">1</span><span class="hs-t"><b>The Real St. Patrick</b><small>📜 History · a 3-minute watch</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">☘</span></summary>
+      <div class="hs-body">
+        <div class="hs-learn"><h4>What you'll learn</h4>
+          <ul>
+            <li>Patrick wasn't born Irish: he came from Britain, first as a captive, later as a missionary.</li>
+            <li>The famous "driving out the snakes" story is an allegory; Ireland never had snakes at all.</li>
+            <li>The parade tradition began in America, long before Ireland held one of its own.</li>
+          </ul>
+        </div>
+        <div class="hs-video" data-yt="h5KNQ1xciMQ" data-vtitle="St. Patrick's Day: Bet You Didn't Know (HISTORY)">
+          <button type="button" class="hs-play" aria-label="Play video: St. Patrick's Day, Bet You Didn't Know">
+            <img loading="lazy" src="https://i.ytimg.com/vi/h5KNQ1xciMQ/hqdefault.jpg" alt="Video thumbnail for the history of St. Patrick's Day" />
+            <span class="hs-playbtn" aria-hidden="true">▶</span>
+          </button>
+          <small class="hs-credit">Video: HISTORY, "St. Patrick's Day: Bet You Didn't Know"</small>
+        </div>
+        <div class="hs-terms"><span class="lbl">Key terms</span><span>Missionary</span><span>Allegory</span><span>Feast day: March 17</span></div>
+        <p class="hs-fact">☘ <b>Fun fact:</b> New York City marched a St. Patrick's Day parade in 1762, more than a century before Ireland held its own.</p>
+        <div class="hs-quiz" data-answer="b">
+          <p class="hs-q"><b>Quick check:</b> Where was St. Patrick born?</p>
+          <div class="hs-opts">
+            <button type="button" data-k="a">Dublin</button>
+            <button type="button" data-k="b">Britain</button>
+            <button type="button" data-k="c">Boston</button>
+          </div>
+          <p class="hs-verdict" aria-live="polite"></p>
+        </div>
+        <a class="hs-goto" href="#art-crosses">☘ Keep learning: read "High Crosses &amp; the Fields of Clover" just below</a>
+      </div>
+    </details>
+
+    <details class="hs-mod lm-lesson" data-mod="revival">
+      <summary><span class="hs-num">2</span><span class="hs-t"><b>The Gaelic Revival &amp; the Saffron Kilt</b><small>📜 Heritage · why we wear what we wear</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">☘</span></summary>
+      <div class="hs-body">
+        <div class="hs-learn"><h4>What you'll learn</h4>
+          <ul>
+            <li>In the late 1800s and early 1900s, the Gaelic Revival swept Ireland: a movement to reclaim the Irish language, sport, music, and dress as a proud national identity distinct from Britain.</li>
+            <li>The Irish kilt was born in that era. Rather than adopt Scottish clan tartans, revivalists chose solid <b>saffron</b>, a warm golden-orange, and sometimes solid green, as a distinctly Irish national dress.</li>
+            <li>Patrick Pearse adopted the saffron kilt for his Irish-language school, St. Enda's, founded in 1908, and Irish pipe bands took it up soon after; Irish military pipers wear saffron to this day.</li>
+            <li>Irish county tartans (Cork, Kerry, Galway, Dublin, and the rest) are a later creation, designed in the second half of the twentieth century. They hold no official government standing, and that doesn't make them one bit less meaningful: they are a modern, heartfelt way to wear the county your family came from.</li>
+            <li>One more Irish distinction: unlike the back-pleated Scottish standard, Irish kilts in our krewe may feature side pleating, a subtle signature of the Irish silhouette.</li>
+          </ul>
+        </div>
+        <img loading="lazy" src="/assets/festival-pipeband-BhPaAHvm.jpg" alt="A pipe band performing at a Celtic festival" style="width:100%;border-radius:12px;box-shadow:var(--shadow-sm);margin:8px 0;" />
+        <small class="hs-credit">The revival made visible: pipes, kilts, and a heritage worn in public</small>
+        <div class="hs-terms"><span class="lbl">Key terms</span><span>Gaelic Revival</span><span>Saffron</span><span>St. Enda's</span><span>County tartan</span><span>Side pleating</span></div>
+        <p class="hs-fact">☘ <b>Fun fact:</b> The Ulster tartan is based on actual cloth found near Londonderry dating to the early 1600s; it was rediscovered and reproduced in 1958, making it the elder statesman of the Irish tartans.</p>
+        <div class="hs-quiz" data-answer="b">
+          <p class="hs-q"><b>Quick check:</b> When and why was the saffron kilt adopted?</p>
+          <div class="hs-opts">
+            <button type="button" data-k="a">In medieval times, as battle dress</button>
+            <button type="button" data-k="b">During the Gaelic Revival, as a distinctly Irish national dress</button>
+            <button type="button" data-k="c">In the 1990s, for the Riverdance costumes</button>
+          </div>
+          <p class="hs-verdict" aria-live="polite"></p>
+        </div>
+        <a class="hs-goto" href="#art-colors">☘ Keep learning: read "The Colors of the Cloth" in the Kilts section above</a>
+      </div>
+    </details>
+
+    <details class="hs-mod lm-lesson" data-mod="diaspora">
+      <summary><span class="hs-num">3</span><span class="hs-t"><b>The Irish in America</b><small>📜 Heritage · the diaspora's story</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">☘</span></summary>
+      <div class="hs-body">
+        <div class="hs-learn"><h4>What you'll learn</h4>
+          <ul>
+            <li>The Great Famine of 1845–1852 changed Ireland forever: roughly a million people died and more than a million emigrated, many crossing the Atlantic to build new lives in America.</li>
+            <li>Irish immigrants and their descendants shaped American cities, labor, music, policing, politics, and celebration, and they built the St. Patrick's Day parade tradition here decades before Ireland held parades of its own.</li>
+            <li>Today, tens of millions of Americans claim Irish ancestry, several times the population of Ireland itself. The diaspora keeps the culture alive far beyond the island's shores.</li>
+            <li>That is exactly where a krewe like ours fits in: heritage is not merely remembered, it is <i>performed</i>. Wearing the kilt, playing the tunes, marching the route, and giving back to the community are how the tradition stays a living thing.</li>
+            <li>And in the spirit of "strength in numbers": you don't need a drop of Irish blood to belong here. Loving the culture and living its generosity is what makes you one of us.</li>
+          </ul>
+        </div>
+        <div class="hs-terms"><span class="lbl">Key terms</span><span>Diaspora</span><span>The Great Famine</span><span>Emigration</span><span>Irish-American</span></div>
+        <p class="hs-fact">☘ <b>Fun fact:</b> The first recorded St. Patrick's Day parade wasn't in Dublin; it was in the American colonies, with New York City marching in 1762, over a century before Ireland's own parades began.</p>
+        <div class="hs-quiz" data-answer="a">
+          <p class="hs-q"><b>Quick check:</b> What drove the great wave of Irish emigration to America in the 1840s?</p>
+          <div class="hs-opts">
+            <button type="button" data-k="a">The Great Famine</button>
+            <button type="button" data-k="b">The California Gold Rush</button>
+            <button type="button" data-k="c">A royal decree</button>
+          </div>
+          <p class="hs-verdict" aria-live="polite"></p>
+        </div>
+        <a class="hs-goto" href="krewe-history.html">☘ Keep learning: see how our own chapter of the story began on the Krewe History page</a>
+      </div>
+    </details>
+
+    <details class="lm-lesson lm-reading" id="art-crosses">
+      <summary><span class="hs-num">4</span><span class="hs-t"><b>High Crosses &amp; the Fields of Clover</b><small>📖 Reading · Irish heritage</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">📖</span></summary>
+      <div class="hs-body lm-reading-body">
+<img src="/assets/celtic-cross-CqT4Fi5c.jpg" alt="Stone Celtic cross in a field of clover" />
+      <p>The great stone high crosses of Ireland, ringed where the cross-arms meet, once stood as
+         gathering points and teaching tools, their panels telling stories to all who passed.
+         Set among the clover, they marry the sacred and the everyday in a way that feels deeply Irish.</p>
+      <p>And the clover itself? Saint Patrick, so the tradition goes, plucked a humble shamrock to
+         explain the Trinity with its three leaves on a single stem, and the little plant has been ours ever since.</p>
+      </div>
+    </details>
+
+    <details class="lm-lesson lm-reading" id="art-festivals">
+      <summary><span class="hs-num">5</span><span class="hs-t"><b>The Wheel of the Year</b><small>📖 Reading · Seasons &amp; celebrations</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">📖</span></summary>
+      <div class="hs-body lm-reading-body">
+<img src="/assets/parade-crowd-BnA-usVO.jpg" alt="Crowd waving Irish tricolor flags at a parade" />
+      <p class="dropcap">The Celtic calendar turns on four great fire-festivals. <b>Imbolc</b> in February greets
+         the first stirrings of spring and Saint Brigid. <b>Bealtaine</b> in May lights the summer fires.
+         <b>Lúnasa</b> in August gives thanks for the harvest. And <b>Samhain</b> at the end of October,
+         when the veil between worlds grows thin, is the ancient root of our modern Halloween.</p>
+      <p>Of course, the day we hold dearest is the 17th of March. Saint Patrick's Day began as a quiet feast
+         and grew into the world's great celebration of all things Irish, and in Tampa Bay there's no
+         finer place to wear your green than marching with the Krewe.</p>
+      </div>
+    </details>
+      </div>
+    </details>
+
+    <details class="lm-cat" id="cat-legends">
+      <summary class="lm-cat-sum">
+        <span class="lm-cat-ico" aria-hidden="true">🏰</span>
+        <span class="lm-cat-t"><b>Legends &amp; Myth</b><small>4 modules</small></span>
+        <span class="lm-cat-caret" aria-hidden="true">▾</span>
+      </summary>
+      <div class="lm-cat-body">
+    <details class="hs-mod lm-lesson" data-mod="legend">
+      <summary><span class="hs-num">1</span><span class="hs-t"><b>Finn McCool &amp; the Giant's Causeway</b><small>🏰 Legends · a 5-minute watch</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">☘</span></summary>
+      <div class="hs-body">
+        <div class="hs-learn"><h4>What you'll learn</h4>
+          <ul>
+            <li>The legend of Fionn mac Cumhaill, the giant who built a stone causeway to face a Scottish rival.</li>
+            <li>How Finn's quick-thinking wife won the day with a cradle and a costume.</li>
+            <li>The real basalt columns still standing on the Antrim coast, all forty thousand of them.</li>
+          </ul>
+        </div>
+        <div class="hs-video" data-yt="aQbyVYUob1o" data-vtitle="The Irish myth of the Giant's Causeway (TED-Ed)">
+          <button type="button" class="hs-play" aria-label="Play video: the Irish myth of the Giant's Causeway">
+            <img loading="lazy" src="https://i.ytimg.com/vi/aQbyVYUob1o/hqdefault.jpg" alt="Video thumbnail for the animated myth of the Giant's Causeway" />
+            <span class="hs-playbtn" aria-hidden="true">▶</span>
+          </button>
+          <small class="hs-credit">Video: TED-Ed, "The Irish myth of the Giant's Causeway" by Iseult Gillespie</small>
+        </div>
+        <div class="hs-terms"><span class="lbl">Key terms</span><span>Fionn mac Cumhaill</span><span>Giant's Causeway</span><span>Basalt columns</span><span>The Fianna</span></div>
+        <p class="hs-fact">☘ <b>Fun fact:</b> The hexagonal columns are real: cooling lava cracked into them some 60 million years ago. The story is better, though.</p>
+        <div class="hs-quiz" data-answer="b">
+          <p class="hs-q"><b>Quick check:</b> How did Finn "defeat" the Scottish giant?</p>
+          <div class="hs-opts">
+            <button type="button" data-k="a">A sword duel on the causeway</button>
+            <button type="button" data-k="b">He out-witted him, disguised as a baby</button>
+            <button type="button" data-k="c">A dance contest</button>
+          </div>
+          <p class="hs-verdict" aria-live="polite"></p>
+        </div>
+        <a class="hs-goto" href="#art-salmon">☘ Keep learning: meet the Salmon of Knowledge just below</a>
+      </div>
+    </details>
+
+    <details class="lm-lesson lm-reading" id="art-salmon">
+      <summary><span class="hs-num">2</span><span class="hs-t"><b>The Salmon of Knowledge</b><small>📖 Reading · A tale of Éireann</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">📖</span></summary>
+      <div class="hs-body lm-reading-body">
+<img src="/assets/salmon-of-knowledge-D-HCDDDZ.jpg" alt="A glowing, colorful salmon leaping from a mystical river" />
+      <p class="dropcap">There is a fish that swam in the Well of Segais, at the source of the River Boyne,
+      and whoever tasted its flesh would gain all the wisdom in the world. The salmon had fed on hazelnuts
+      fallen from the nine sacred trees that ringed the well, and in each nut was the knowledge of the ages.</p>
+      <p>The poet Finnegas spent seven long years fishing that river, waiting for his chance. When at last he
+      caught the salmon, he set his young apprentice, a boy named Fionn mac Cumhaill, to cook it, but warned
+      him firmly: do not taste a single bite. As Fionn turned the fish over the fire, a blister of hot skin
+      burst and burned his thumb. Without thinking, he pressed it to his mouth to ease the sting, and in that
+      instant, all the wisdom of the world passed into him.</p>
+      <p>From that day forward, whenever Fionn needed guidance, he had only to press his thumb to his teeth and
+      the knowledge would come. The great hero who would go on to lead the Fianna, Ireland's legendary warrior
+      band, was made not by a sword stroke, but by an accidental taste of something wonderful.</p>
+      </div>
+    </details>
+
+    <details class="lm-lesson lm-reading" id="art-leprechaun">
+      <summary><span class="hs-num">3</span><span class="hs-t"><b>The Leprechaun: The Clever Protector</b><small>📖 Reading · Wits, gold, and a palace garden</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">📖</span></summary>
+      <div class="hs-body lm-reading-body">
+<img loading="lazy" src="/assets/leprechaun-clever-protector-BnwaAkPe.jpg" alt="The Clever Protector: a Celtic leprechaun in emerald velvet sits by a marble palace fountain with his overflowing pot of gold, while a young woman in green and pale yellow watches from the garden beyond" style="width:100%;border-radius:12px;box-shadow:var(--shadow-sm);margin:8px 0;" />
+      <p class="dropcap">Of all the fair folk of Ireland, the leprechaun is the smallest, and the sharpest. He
+         commands no armies and stands about as tall as your kneecap. What he carries instead is the quickest mind
+         in the country, and every coin in his famous pot was earned the honest way: one perfectly cobbled shoe at
+         a time. He is the shoemaker and banker of the fairy world, a craftsman who never breaks his word and never
+         forgets who tried to make him break it.</p>
+      <p>They tell of a leprechaun named Lorcan who kept his gold beside an old marble fountain in a palace garden,
+         where blush roses climbed the ivy and crystal water sang over carved stone. The pot sat in warm sunlight,
+         jewels and coins spilling like spilled laughter, while Lorcan rested on a little stool in his emerald suit
+         and pointed shoes, content as any king. One afternoon a young woman in an elaborate green and pale yellow
+         gown found him there. She had heard the old stories: catch a leprechaun, and his fortune is yours. She
+         stepped from behind the fountain, heart racing, and closed her fingers around his tiny wrist.</p>
+      <p>"Show me where the rest is buried," she whispered, sure that size and surprise had won the day. Now, a
+         leprechaun cannot lie, and Lorcan did not. "The gold you seek lies under a rosebush at the far edge of this
+         garden," he said, and led her straight to it. She tore a ribbon from her gown and tied it to the branch to
+         mark the spot. Lorcan, ever courteous, gave his solemn promise not to remove that ribbon, if only she would
+         free him long enough to fetch a spade. Off she ran through the roses, certain the treasure was already hers.</p>
+      <p>She returned to find every promise kept, and a garden transformed. Every rosebush for a hundred paces wore
+         an identical ribbon of green and pale yellow. A thousand blooms. A thousand ribbons. Not one clue which bush
+         held the gold. Lorcan had not lied, had not stolen, had not so much as raised his little fist. He sat again
+         by the fountain, water still sparkling on his coat, pot of gold exactly where it belonged, watching her with
+         luminous green eyes that held more mischief than malice.</p>
+      <p>That is the true genius of the leprechaun, too often miscalled mere trickery. His cunning is intelligence
+         in its Sunday best: the wit to protect himself and the wages of his own two hands without force, to honor
+         the letter of his word while teaching the greedy a lesson they will never forget, and to prove, one ribbon
+         at a time, that the sharpest thing anyone can carry is a quick mind. In a krewe that marches on charm rather
+         than muscle, we consider him one of our own.</p>
+      </div>
+    </details>
+
+    <details class="lm-lesson lm-reading" id="art-warriors">
+      <summary><span class="hs-num">4</span><span class="hs-t"><b>Daughters &amp; Warriors of Éireann</b><small>📖 Reading · Irish legend</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">📖</span></summary>
+      <div class="hs-body lm-reading-body">
+<img src="/assets/warrior-woman-Bix8mqwW.jpg" alt="Illustrated red-haired Celtic warrior woman with sword and cloak" />
+      <p class="dropcap">Long before the parades, the women of the Celtic world were warriors, queens, and
+         keepers of the law. Queen Medb of Connacht led armies into the great cattle raid of the Táin;
+         the war-goddess The Morrígan wheeled over the battlefield as a crow; and on the Isle of Skye,
+         the warrior-woman Scáthach trained the greatest heroes of the age.</p>
+      <p>It's a heritage worth remembering: in the Krewe of Shamrock, the women march, pipe, and lead
+         right alongside the men: daughters of Éireann, every one.</p>
+      </div>
+    </details>
+      </div>
+    </details>
+
+    <details class="lm-cat" id="cat-language">
+      <summary class="lm-cat-sum">
+        <span class="lm-cat-ico" aria-hidden="true">🗣</span>
+        <span class="lm-cat-t"><b>Language &amp; Symbols</b><small>3 modules</small></span>
+        <span class="lm-cat-caret" aria-hidden="true">▾</span>
+      </summary>
+      <div class="lm-cat-body">
+    <details class="hs-mod lm-lesson" data-mod="irish">
+      <summary><span class="hs-num">1</span><span class="hs-t"><b>Speak a Little Irish</b><small>🗣 Language · listen &amp; repeat</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">☘</span></summary>
+      <div class="hs-body">
+        <div class="hs-learn"><h4>What you'll learn</h4>
+          <ul>
+            <li>The four phrases every member of the krewe should have in their pocket.</li>
+            <li>How to pronounce them like you mean them (tap the speaker to hear two of them).</li>
+            <li>You needn't be fluent; a single warm word, well meant, is pure Irish.</li>
+          </ul>
+        </div>
+        <div class="hs-phrases">
+          <div class="hs-ph"><div class="ph-w"><b>Sláinte!</b> <i>(SLAWN-cha)</i></div><div class="ph-m">"Health!" The classic Irish toast.</div></div>
+          <div class="hs-ph"><button type="button" class="hs-say" data-audio="assets/audio/100 thousand welcomes.mp3" aria-label="Hear Céad Míle Fáilte">🔊</button><div class="ph-w"><b>Céad Míle Fáilte</b> <i>(kayd MEE-luh FAWL-cha)</i></div><div class="ph-m">"A hundred thousand welcomes."</div></div>
+          <div class="hs-ph"><button type="button" class="hs-say" data-audio="assets/audio/ElevenLabs_Untitled_project.mp3" aria-label="Hear what craic means">🔊</button><div class="ph-w"><b>Craic</b> <i>(crack)</i></div><div class="ph-m">Fun, laughter, news, and good company, all in one word.</div></div>
+          <div class="hs-ph"><div class="ph-w"><b>Dia dhuit</b> <i>(DEE-a GWIT)</i></div><div class="ph-m">"Hello." Literally, "God be with you."</div></div>
+        </div>
+        <p class="hs-fact">☘ <b>Fun fact:</b> Irish (Gaeilge) is one of Europe's oldest living written languages, with texts reaching back to the 4th century.</p>
+        <div class="hs-quiz" data-answer="b">
+          <p class="hs-q"><b>Quick check:</b> What does "Céad Míle Fáilte" mean?</p>
+          <div class="hs-opts">
+            <button type="button" data-k="a">Good luck to you</button>
+            <button type="button" data-k="b">A hundred thousand welcomes</button>
+            <button type="button" data-k="c">Health and wealth</button>
+          </div>
+          <p class="hs-verdict" aria-live="polite"></p>
+        </div>
+        <a class="hs-goto" href="#art-gaelic">☘ Keep learning: read "Sláinte! A Few Words of Irish" just below</a>
+      </div>
+    </details>
+
+    <details class="lm-lesson lm-reading" id="art-gaelic">
+      <summary><span class="hs-num">2</span><span class="hs-t"><b>Sláinte! A Few Words of Irish</b><small>📖 Reading · As Gaeilge, in the Irish language</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">📖</span></summary>
+      <div class="hs-body lm-reading-body">
+<img src="/assets/gaelic-cottage-XfKGDvCY.jpg" alt="Gaelic folk before a stone cottage at dusk" />
+      <p class="dropcap">A few words of Irish go a long way. Raise a glass and you'll hear <b>Sláinte</b>
+         (SLAWN-cha), which means "health!" Our own welcome, <b>Céad Míle Fáilte</b> (kayd MEE-luh felt-cha), means
+         "a hundred thousand welcomes," and we mean every one of them.</p>
+      <p>The old blessings are the loveliest of all: <i>"May the road rise up to meet you, may the wind be
+         always at your back."</i> And when someone sneezes, you might hear <b>Dia linn</b>, "God be with us."
+         You needn't be fluent; a single warm word, well meant, is pure Irish.</p>
+      </div>
+    </details>
+
+    <details class="lm-lesson lm-reading" id="art-triquetra">
+      <summary><span class="hs-num">3</span><span class="hs-t"><b>The Triquetra: Knot of Three</b><small>📖 Reading · Irish heritage</small></span><span class="hs-more">Open ▾</span><span class="hs-badge">📖</span></summary>
+      <div class="hs-body lm-reading-body">
+<img src="/assets/trinity-knot-Dx-0EAdH.jpg" alt="Green and gold trinity knot" />
+      <p class="dropcap">The triquetra, or trinity knot, is among the oldest and best-loved of Celtic symbols.
+         Drawn as a single unbroken line, it has no beginning and no end, a fitting emblem for
+         eternity, unity, and the bonds of community that the early Irish prized above all.</p>
+      <p>You'll find it carved on standing stones, illuminated in the Book of Kells, and worked
+         into jewelry to this day. We carry it as our quiet reminder that a krewe, like the knot,
+         is stronger for being woven together.</p>
+      </div>
+    </details>
+      </div>
+    </details>
+
+    <details class="lm-cat" id="cat-member">
+      <summary class="lm-cat-sum">
+        <span class="lm-cat-ico" aria-hidden="true">🌿</span>
+        <span class="lm-cat-t"><b>Member Knowledge</b><small>Contribute yours</small></span>
+        <span class="lm-cat-caret" aria-hidden="true">▾</span>
+      </summary>
+      <div class="lm-cat-body">
+        <div class="lm-empty">
+          <p class="lm-empty-title">Modules coming soon. Contribute yours.</p>
+          <p>This shelf is reserved for knowledge from our own members: parade tips, family lore, recipes, music, and the stories only a Shamrock can tell. Share a piece through <a href="share.html">Share Yours</a> or the <a href="members.html">members hub</a>, and help the Heritage Library grow.</p>
+        </div>
+      </div>
+    </details>
+</main>
+
+  <footer class="krewe-foot">
+    <img class="fimg crest-img" src="/assets/krewe-crest-jsNApbvr.png" alt="" />
+    <div class="fname">Krewe of Shamrock</div>
+    <div class="flinks">
+<a href="index.html">Home</a>
+<a href="event-signup.html">Events</a>
+<a href="parades.html">Parades</a>
+<a href="tartan-ball.html">Tartan Ball</a>
+<a href="learn.html">Heritage</a>
+<a href="krewe-history.html">History</a>
+<a href="poetry.html">Krewe Creativity</a>
+<a href="gallery.html">Gallery</a>
+<a href="videos.html">Videos</a>
+<a href="volunteer.html">Volunteer</a>
+<a href="store.html">Shop</a>
+<a href="membership-application.html">Join</a>
+<a href="members.html">Members</a>
+</div>
+    <div class="flinks" style="margin-bottom:8px;"><a href="mailto:secretary@kreweofshamrock.com">Contact: secretary@kreweofshamrock.com</a></div>
+    <div class="slainte">Sláinte! 🍀 Tampa Bay, Florida</div>
+    <div class="fine">© Krewe of Shamrock. Celebrating Irish heritage all year round.</div>
+  </footer>
+
+  <div class="krewe-music" id="krewePlayer">
+    <audio id="kreweAudio" src="/assets/krewe-theme-BVAAEwps.mp3" loop preload="none"></audio>
+    <button id="kreweMusicBtn" aria-label="Play background music" aria-pressed="false" title="Play our Irish tune">
+      <span class="bars"><i></i><i></i><i></i><i></i></span>
+    </button>
+    <span class="label" id="kreweMusicLabel">Tap for a tune ☘</span>
+  </div>
+    <script src="assets/krewe.js" defer></script>
+  <script>
+  /* The Heritage School: video facades, quick checks, progress, module nav */
+  (function(){
+    var KEY="kos_heritage_school";
+    function getDone(){ try{ return JSON.parse(localStorage.getItem(KEY))||{}; }catch(e){ return {}; } }
+    function setDone(d){ try{ localStorage.setItem(KEY,JSON.stringify(d)); }catch(e){} }
+    var mods=document.querySelectorAll(".hs-mod");
+
+    function refresh(){
+      var d=getDone(), n=0;
+      mods.forEach(function(m){ if(d[m.dataset.mod]){ m.classList.add("done"); n++; } });
+      var p=document.getElementById("hsProgress");
+      if(p) p.textContent = n>=mods.length
+        ? "🏆 All "+mods.length+" lessons complete. A true scholar of the krewe!"
+        : "☘ "+n+" of "+mods.length+" lessons complete";
+      var f=document.getElementById("hsBarFill");
+      if(f) f.style.width = Math.round(n/mods.length*100)+"%";
+    }
+
+    document.querySelectorAll(".hs-video").forEach(function(v){
+      var btn=v.querySelector(".hs-play"); if(!btn) return;
+      btn.addEventListener("click",function(){
+        var wrap=document.createElement("div"); wrap.className="hs-frame";
+        var f=document.createElement("iframe");
+        f.src="https://www.youtube-nocookie.com/embed/"+v.dataset.yt+"?autoplay=1&rel=0";
+        f.title=v.dataset.vtitle||"Heritage lesson video";
+        f.allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+        f.allowFullscreen=true;
+        wrap.appendChild(f); btn.replaceWith(wrap);
+      });
+    });
+
+    document.querySelectorAll(".hs-quiz").forEach(function(q){
+      var mod=q.closest(".hs-mod"), verdict=q.querySelector(".hs-verdict");
+      q.querySelectorAll(".hs-opts button").forEach(function(b){
+        b.addEventListener("click",function(){
+          var right = b.dataset.k===q.dataset.answer;
+          q.querySelectorAll(".hs-opts button").forEach(function(x){ x.classList.remove("right","wrong"); });
+          b.classList.add(right?"right":"wrong");
+          if(right){
+            verdict.textContent="☘ Spot on! Lesson complete.";
+            var d=getDone(); d[mod.dataset.mod]=true; setDone(d); refresh();
+          } else {
+            verdict.textContent="Not quite. Have another go!";
+          }
+        });
+      });
+    });
+
+    document.querySelectorAll(".hs-say").forEach(function(b){
+      var a=new Audio(b.dataset.audio);
+      b.addEventListener("click",function(){ a.currentTime=0; a.play(); });
+    });
+
+    function openTarget(el){
+      if(!el) return;
+      if(el.tagName==="DETAILS"){ el.open=true; }
+      else {
+        var d=el.querySelector("details");
+        if(d) d.open=true;
+      }
+      var cat=el.closest && el.closest("details.lm-cat");
+      if(cat) cat.open=true;
+    }
+
+    document.querySelectorAll(".hs-goto").forEach(function(a){
+      a.addEventListener("click",function(){
+        var href=a.getAttribute("href")||"";
+        if(href.charAt(0)!=="#") return;
+        openTarget(document.getElementById(href.slice(1)));
+      });
+    });
+
+    // Sticky module nav: pills, select, scroll-spy
+    var pills=[].slice.call(document.querySelectorAll(".lm-pill"));
+    var select=document.getElementById("lmModSelect");
+    var catEls=pills.map(function(p){ return document.getElementById((p.getAttribute("href")||"").slice(1)); }).filter(Boolean);
+
+    function setActive(id){
+      pills.forEach(function(p){
+        var on=p.getAttribute("data-cat")===id;
+        p.classList.toggle("is-active", on);
+        if(on) p.setAttribute("aria-current","true"); else p.removeAttribute("aria-current");
+      });
+      if(select){
+        var want="#"+id;
+        if(select.value!==want) select.value=want;
+      }
+    }
+
+    function jumpTo(hash){
+      var id=(hash||"").replace(/^#/,"");
+      var el=document.getElementById(id);
+      if(!el) return;
+      openTarget(el);
+      el.scrollIntoView({behavior:"smooth", block:"start"});
+      setActive(id);
+    }
+
+    pills.forEach(function(p){
+      p.addEventListener("click",function(e){
+        e.preventDefault();
+        jumpTo(p.getAttribute("href"));
+      });
+    });
+    if(select){
+      select.addEventListener("change",function(){
+        if(select.value) jumpTo(select.value);
+      });
+    }
+
+    if("IntersectionObserver" in window && catEls.length){
+      var io=new IntersectionObserver(function(entries){
+        var visible=entries.filter(function(en){ return en.isIntersecting; })
+          .sort(function(a,b){ return b.intersectionRatio-a.intersectionRatio; });
+        if(visible[0]) setActive(visible[0].target.id);
+      },{rootMargin:"-20% 0px -55% 0px", threshold:[0,0.15,0.35,0.6]});
+      catEls.forEach(function(c){ io.observe(c); });
+    }
+
+    if(location.hash) jumpTo(location.hash);
+    refresh();
+  })();
+  </script>
+
+</body>
+</html>

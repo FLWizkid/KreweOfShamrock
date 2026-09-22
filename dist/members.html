@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" href="/assets/favicon-C6Ez-gVw.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32-IFtF2Ie4.png" />
+<link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48-P2fbaPU4.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16-gRalTiZy.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/hub-apple-touch-icon-UxpyE5bp.png" />
+<link rel="manifest" href="/assets/manifest-CsI98Au4.webmanifest" />
+<meta name="theme-color" content="#14532d" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Shamrock" />
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Krewe of Shamrock · Members Only</title>
+<meta name="description" content="Members-only coordination tools for the Krewe of Shamrock: locker rentals, carpools, van pools, and the member directory." />
+<meta name="robots" content="noindex" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=EB+Garamond:ital@0;1&family=Atkinson+Hyperlegible+Next:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  .gate{ position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(180deg,var(--green-800),var(--green-900)); padding:24px; overflow-y:auto; }
+
+  /* ===== The Krewe Castle door (auth stage only) ===== */
+  #authStage{
+    background:
+      radial-gradient(ellipse at 50% 115%, rgba(212,180,90,.20), transparent 55%),
+      linear-gradient(180deg, #0d3b21 0%, #072a16 55%, #04200f 100%);
+    align-items:flex-start;
+  }
+  .castle{ position:relative; margin:auto; width:min(430px, 94vw); padding:12px 0 32px; }
+  .castle-top{
+    height:30px; width:88%; margin:0 auto;
+    background:
+      repeating-linear-gradient(90deg, #6b6e63 0 34px, rgba(0,0,0,0) 34px 52px),
+      linear-gradient(180deg, rgba(0,0,0,0) 0 0);
+    filter:drop-shadow(0 3px 3px rgba(0,0,0,.4));
+  }
+  .castle-wall{
+    background:
+      repeating-linear-gradient(0deg, rgba(0,0,0,.14) 0 2px, rgba(0,0,0,0) 2px 26px),
+      repeating-linear-gradient(90deg, rgba(0,0,0,.10) 0 2px, rgba(0,0,0,0) 2px 44px),
+      linear-gradient(180deg, #74776b, #5b5e53);
+    border-radius:10px; padding:26px 22px 30px;
+    box-shadow:0 24px 60px rgba(0,0,0,.55), inset 0 0 40px rgba(0,0,0,.25);
+    position:relative;
+  }
+  .castle-torch{
+    position:absolute; top:56px; font-size:26px;
+    animation:kosFlicker 1.6s infinite ease-in-out alternate;
+    text-shadow:0 0 14px rgba(255,170,40,.9), 0 0 30px rgba(255,140,0,.5);
+  }
+  .castle-torch.left{ left:-4px; } .castle-torch.right{ right:-4px; animation-delay:.6s; }
+  @keyframes kosFlicker{ from{ transform:scale(1) rotate(-3deg); opacity:.92; } to{ transform:scale(1.12) rotate(3deg); opacity:1; } }
+  .castle-banner{
+    text-align:center; font-family:var(--display); color:#f6efdc; letter-spacing:1px;
+    margin:0 0 4px; font-size:15px; text-transform:uppercase; opacity:.9;
+  }
+  .gate-card.auth-card{
+    border-radius:150px 150px 14px 14px;
+    border:9px solid #5b3a1e;
+    background:linear-gradient(180deg, #fffdf4, #f7eed7);
+    box-shadow:0 0 0 5px #3a2712, 0 14px 34px rgba(0,0,0,.45);
+    position:relative; padding-top:40px;
+  }
+  .auth-card::before, .auth-card::after{
+    content:""; position:absolute; left:-14px; width:44px; height:12px;
+    background:linear-gradient(180deg, #454545, #232323); border-radius:0 7px 7px 0;
+    box-shadow:0 2px 3px rgba(0,0,0,.5);
+  }
+  .auth-card::before{ top:34%; } .auth-card::after{ top:64%; }
+  .auth-card img{
+    border-radius:50%; box-shadow:0 0 0 5px #3a2712, 0 0 0 8px #8a8d80; background:#fff;
+    /* The medallion is a circle but the artwork is landscape: crop toward
+       the leprechaun's face and raised hand rather than letterboxing. */
+    aspect-ratio:1; height:auto; object-fit:cover; object-position:50% 24%;
+  }
+  .castle-guide{ margin-top:18px; text-align:left; background:linear-gradient(180deg,#fdf8e8,#f5ebd0);
+    border:1.5px solid rgba(168,128,28,.55); border-radius:14px; overflow:hidden;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.7), 0 2px 8px rgba(90,60,10,.10); }
+  .castle-guide summary{ list-style:none; display:flex; align-items:center; gap:10px; cursor:pointer;
+    padding:13px 16px; font-family:var(--display); color:var(--green-800); font-size:17px; letter-spacing:.3px;
+    background:linear-gradient(180deg, rgba(212,180,90,.30), rgba(212,180,90,.10)); }
+  .castle-guide summary::-webkit-details-marker{ display:none; }
+  .castle-guide summary .key{ font-size:20px; filter:drop-shadow(0 1px 1px rgba(0,0,0,.25)); }
+  .castle-guide summary .chev{ margin-left:auto; font-size:15px; color:var(--gold-text); transition:transform .25s ease; }
+  .castle-guide[open] summary .chev{ transform:rotate(90deg); }
+  .castle-guide[open] summary{ border-bottom:1px dashed rgba(168,128,28,.45); }
+  .castle-guide .guide-body{ padding:16px; }
+  .castle-guide .guide-step{ display:flex; gap:12px; align-items:flex-start; margin:0 0 16px; }
+  .castle-guide .guide-step:last-of-type{ margin-bottom:0; }
+  .castle-guide .guide-step .num{ flex:0 0 30px; width:30px; height:30px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #e9c96a, #b8860b 78%);
+    color:#fff; font-family:var(--display); font-size:15px; display:flex; align-items:center; justify-content:center;
+    box-shadow:0 0 0 2px #fffdf4, 0 0 0 3.5px rgba(168,128,28,.5), 0 2px 4px rgba(0,0,0,.25); }
+  .castle-guide .guide-step h3{ margin:3px 0 4px; font-family:var(--display); font-size:15px; color:var(--green-800); }
+  .castle-guide .guide-step p{ margin:0; font-size:15.5px; color:#3d3a33; line-height:1.5; }
+  .castle-guide .guide-step a{ color:var(--green-800); }
+  .castle-guide .guide-cta{ display:block; width:100%; margin:10px 0 2px; padding:11px 14px; border-radius:12px;
+    border:1.5px solid #8a6d1f; background:linear-gradient(180deg,#e9c96a,#caa53d); color:#3a2a05;
+    font-family:var(--display); font-size:16px; cursor:pointer;
+    box-shadow:0 2px 6px rgba(90,60,10,.25), inset 0 1px 0 rgba(255,255,255,.55); }
+  .castle-guide .guide-cta:hover{ filter:brightness(1.05); }
+  .castle-guide .guide-inside{ margin-top:16px; padding:10px 12px; background:rgba(255,255,255,.55);
+    border:1px dashed rgba(168,128,28,.45); border-radius:10px; font-size:15px; color:#57513f; line-height:1.5; }
+  .castle-guide .guide-inside b{ color:var(--green-800); }
+  .castle-guide .guide-help{ margin:10px 0 0; font-size:15px; color:var(--muted); text-align:center; }
+  /* Compact castle on small phones - fit gate + login without painful nested scroll */
+  @media (max-width:480px){
+    .castle-torch{ display:none; }
+    .gate{ padding:8px 10px 10px; }
+    .castle{ padding:2px 0 10px; width:min(100%, 400px); }
+    .castle-top{
+      height:16px; width:90%;
+      background:repeating-linear-gradient(90deg, #6b6e63 0 22px, rgba(0,0,0,0) 22px 34px),
+        linear-gradient(180deg, rgba(0,0,0,0) 0 0);
+    }
+    .castle-wall{ padding:8px 10px 10px; box-shadow:0 14px 36px rgba(0,0,0,.5), inset 0 0 28px rgba(0,0,0,.22); }
+    .castle-banner{ font-size:15px; margin:0 0 2px; letter-spacing:.4px; }
+    .gate-card{ padding:14px 14px 12px; }
+    .gate-card.auth-card{
+      border-radius:68px 68px 10px 10px; border-width:5px; padding-top:20px;
+      box-shadow:0 0 0 3px #3a2712, 0 8px 20px rgba(0,0,0,.4);
+    }
+    .gate-card img{ width:42px; margin-bottom:2px; }
+    .auth-card img{ box-shadow:0 0 0 3px #3a2712, 0 0 0 5px #8a8d80; }
+    .gate-card h1{ font-size:18px; margin:0 0 2px; }
+    .gate-card p{ font-size:15.5px; margin:0 0 8px; line-height:1.35; }
+    .gate-card input, .gate-card textarea{ padding:9px 12px; }
+    #authPanelSignin form input[type="password"]{ margin-top:7px !important; }
+    #authPanelSignin form .btn, #authPanelReset form .btn{ margin-top:8px !important; }
+    #authPanelSignin > p[style], #authPanelReset > p[style]{ margin-top:8px !important; font-size:15px !important; }
+    .gate-card .err{ min-height:12px; margin-top:4px; font-size:15px; }
+    .castle-guide{ margin-top:8px; border-radius:11px; }
+    .castle-guide summary{ padding:9px 12px; font-size:15px; gap:8px; }
+    .castle-guide summary .key{ font-size:16px; }
+    .castle-guide .guide-body{ padding:12px; }
+    .castle-guide .guide-step{ margin:0 0 12px; gap:10px; }
+    .castle-guide .guide-step .num{ flex-basis:26px; width:26px; height:26px; font-size:15px; }
+    .castle-guide .guide-step h3{ font-size:16px; margin:1px 0 2px; }
+    .castle-guide .guide-step p{ font-size:16px; }
+  }
+  .gate-card{ background:#fff; border-radius:18px; padding:34px 30px; max-width:380px; width:100%; text-align:center;
+    box-shadow:0 20px 60px rgba(0,0,0,.4); border:1px solid var(--gold); }
+  .gate-card img{ width:64px; height:auto; margin-bottom:10px; }
+  .gate-card h1{ font-family:var(--display); color:var(--green-800); font-size:24px; margin:0 0 6px; }
+  .gate-card p{ color:var(--muted); font-size:17px; margin:0 0 18px; }
+  .gate-card input, .gate-card textarea{ width:100%; box-sizing:border-box; padding:12px 14px; border:1px solid rgba(168,128,28,.5); border-radius:10px; font-size:16px; text-align:left; font:inherit; background:#fff; }
+  .gate-card textarea{ min-height:64px; resize:vertical; }
+  #authStage .gate-card input{ text-align:center; }
+  #profileStage .gate-card{ max-height:92vh; overflow:auto; }
+  .gate-card .err{ color:#a12; font-size:16px; min-height:18px; margin-top:8px; }
+  .member-grid{ display:grid; gap:26px; }
+  .app-card{ background:#fff; border:1px solid rgba(168,128,28,.28); border-radius:18px; box-shadow:var(--shadow-sm); overflow:hidden; }
+  .app-card > .app-head{ background:linear-gradient(180deg,var(--green-700),var(--green-800)); color:#fff; padding:18px 22px; display:flex; align-items:center; gap:12px; }
+  .app-head .ic{ font-size:26px; } .app-head h2{ margin:0; font-family:var(--display); font-size:22px; }
+  .app-head small{ display:block; font-family:var(--fancy); font-style:italic; color:var(--gold-light); font-size:16px; }
+  .app-body{ padding:20px 22px; }
+  /* Sep 14 meeting: larger Hub body / labels for older members */
+  #memberContent, #memberContent .app-body, #hubRoot, .hub-wrap{
+    font-size:17px;
+  }
+  #memberContent label, .hub-wrap label, .mini-form label, .krewe-form label{
+    font-size:16px;
+  }
+  #memberContent .empty{ font-size:16px; }
+  .krewe-form .row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .data-list{ list-style:none; padding:0; margin:14px 0 0; display:grid; gap:10px; }
+  .data-row{ border:1px solid rgba(168,128,28,.25); border-radius:12px; padding:12px 14px; background:#fbf7ec; font-size:17px; }
+  .data-row b{ color:var(--green-800); }
+  .badge{ display:inline-block; font-size:15px; font-weight:700; padding:2px 9px; border-radius:999px; text-transform:uppercase; letter-spacing:.5px; }
+  .badge.requested{ background:#f0e2bd; color:var(--gold-text); }
+  .badge.assigned{ background:#cfe6d4; color:#1d5b34; }
+  .badge.paid{ background:#bfe0c6; color:#14532d; }
+  .badge.available{ background:#e6e6e6; color:#444; }
+  .seg{ display:inline-flex; border:1px solid var(--green-700); border-radius:10px; overflow:hidden; margin-bottom:8px; }
+  .seg button{ border:0; background:#fff; color:var(--green-800); padding:8px 16px; font-family:var(--display); cursor:pointer; }
+  .seg button.on{ background:var(--green-700); color:#fff; }
+  .van-card{ border:1px solid rgba(168,128,28,.3); border-radius:14px; padding:16px; margin-top:12px; background:#fbf7ec; }
+  .van-card .seats{ font-family:var(--display); color:var(--green-800); font-weight:700; }
+  .mini-form{ display:grid; grid-template-columns:1fr 1fr auto; gap:8px; margin-top:10px; }
+  .mini-form input{ padding:9px 11px; border:1px solid rgba(168,128,28,.5); border-radius:9px; font-size:16px; }
+  .mini-form button{ white-space:nowrap; }
+  .dir-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; margin-top:14px; }
+  .dir-card{ border:1px solid rgba(168,128,28,.25); border-radius:12px; padding:12px 14px; background:#fbf7ec; text-align:left; width:100%; font:inherit; cursor:pointer; display:flex; gap:12px; align-items:center; transition:background .15s, transform .15s; }
+  .dir-card:hover{ background:#f3ebd2; transform:translateY(-1px); }
+  .dir-card .nm{ font-family:var(--display); color:var(--green-800); font-size:18px; }
+  .dir-card .rl{ font-size:15px; color:var(--muted); text-transform:capitalize; }
+  .dir-card .dir-av{ width:44px; height:44px; border-radius:50%; object-fit:cover; border:2px solid rgba(168,128,28,.45); flex:none; background:var(--green-800); color:#f6efdc; display:flex; align-items:center; justify-content:center; font-family:var(--display); font-size:15px; }
+  .dir-card .dir-av img{ width:100%; height:100%; object-fit:cover; border-radius:50%; }
+  .dir-card .dir-go{ margin-left:auto; color:var(--gold); font-family:var(--display); opacity:.7; }
+
+  /* Stacked panels for raffle create/manage forms (dir-card is horizontal for directory) */
+  .raffle-panel{
+    border:1px solid rgba(168,128,28,.25);
+    border-radius:12px;
+    padding:14px 16px;
+    background:#fbf7ec;
+    text-align:left;
+    width:100%;
+    box-sizing:border-box;
+    display:block;
+    cursor:default;
+  }
+  .raffle-panel:hover{ background:#fbf7ec; transform:none; }
+  .raffle-panel label{ display:block; }
+  .raffle-panel input,
+  .raffle-panel select,
+  .raffle-panel textarea{
+    display:block;
+    width:100%;
+    max-width:100%;
+    box-sizing:border-box;
+  }
+  .raffle-panel .raffle-form-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:12px;
+    align-items:center;
+  }
+
+  /* My Krewe people directory - photo-first, not a spreadsheet */
+  .people-toolbar{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:0 0 4px; }
+  .people-toolbar #dirSearch{ flex:1 1 220px; min-width:0; }
+  .people-count{ font-size:15px; color:var(--muted); white-space:nowrap; }
+  .people-grid{ display:flex; flex-direction:column; gap:18px; margin-top:10px; }
+  .people-letter{ font-family:var(--display); font-size:18px; color:var(--green-800); letter-spacing:.04em;
+    border-bottom:1px solid rgba(168,128,28,.35); padding:4px 2px 6px; margin:4px 0 0; position:sticky; top:52px; background:#fff; z-index:2; }
+  .people-row{ display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px; }
+  .people-card{ appearance:none; -webkit-appearance:none; border:1px solid rgba(168,128,28,.28); border-radius:16px;
+    padding:18px 16px 14px; background:linear-gradient(180deg,#fffdf8,#fbf7ec); text-align:center; width:100%;
+    font:inherit; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:8px;
+    box-shadow:0 1px 0 rgba(168,128,28,.12); transition:background .15s, transform .15s, box-shadow .15s; }
+  .people-card:hover{ background:linear-gradient(180deg,#fff,#f3ebd2); transform:translateY(-2px); box-shadow:0 8px 22px rgba(29,91,52,.12); }
+  .people-card:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
+  .people-card .dir-av{ width:72px; height:72px; border-radius:50%; border:3px solid rgba(212,175,55,.55);
+    background:var(--green-800); color:#f6efdc; display:flex; align-items:center; justify-content:center;
+    font-family:var(--display); font-size:22px; overflow:hidden; flex:none; }
+  .people-card .dir-av img{ width:100%; height:100%; object-fit:cover; border-radius:50%; display:block; }
+  .people-card .nm{ font-family:var(--display); color:var(--green-800); font-size:19px; line-height:1.25; margin:2px 0 0; }
+  .people-card .rl{ font-size:15px; color:var(--muted); text-transform:none; }
+  .people-card .rl.is-role{ text-transform:capitalize; }
+  .leaders-board{
+    position:relative; overflow:hidden;
+    margin:0 0 22px; padding:22px 18px 16px;
+    background:
+      radial-gradient(720px 220px at 0% 0%, rgba(212,175,55,.14), transparent 58%),
+      linear-gradient(180deg,#fffdf8 0%, #f6efdd 100%);
+    border:1px solid rgba(168,128,28,.38);
+    border-radius:18px;
+    box-shadow:var(--shadow-sm);
+    color:var(--ink);
+  }
+  .leaders-board::before{
+    content:"☘"; position:absolute; right:8px; top:-10px;
+    font-size:92px; line-height:1; opacity:.08; transform:rotate(14deg);
+    color:var(--green-800); pointer-events:none;
+  }
+  .leaders-head{ text-align:center; margin:0 0 16px; position:relative; }
+  .leaders-kicker{
+    margin:0 0 2px; font-family:var(--fancy); font-style:italic;
+    font-size:17px; color:var(--gold-text); letter-spacing:.04em;
+  }
+  .leaders-head h3{
+    margin:0; font-family:var(--display); font-size:clamp(22px,3.4vw,28px);
+    color:var(--green-800); letter-spacing:.04em;
+  }
+  .leaders-head h3::after{
+    content:""; display:block; width:64px; height:2px; margin:9px auto 0;
+    background:var(--gold); border-radius:99px;
+  }
+  .leaders-intro{
+    margin:10px auto 0; max-width:36em; font-family:var(--fancy);
+    font-size:17px; color:var(--muted);
+  }
+  .leaders-grid{ display:grid; grid-template-columns:1fr; gap:14px; align-items:start; }
+  .leaders-col{
+    min-width:0; background:#fff;
+    border:1px solid rgba(168,128,28,.28); border-radius:16px;
+    box-shadow:0 1px 0 rgba(168,128,28,.08); overflow:hidden;
+  }
+  .leaders-officers{ background:linear-gradient(180deg,#fff,#eef6ee); }
+  .leaders-col h4{
+    margin:0; padding:12px 16px;
+    font-family:var(--display); font-size:16px; font-weight:600;
+    letter-spacing:.1em; text-transform:uppercase; color:#fff;
+    background:linear-gradient(180deg,var(--green-700),var(--green-800));
+    border-bottom:2px solid var(--gold);
+  }
+  .leaders-list{ list-style:none; margin:0; padding:8px; display:flex; flex-direction:column; gap:2px; }
+  .leaders-line{ margin:0; }
+  .leaders-person{
+    display:flex; align-items:center; gap:10px; width:100%;
+    min-height:44px; padding:8px 10px; border-radius:12px;
+    color:var(--ink); text-align:left;
+  }
+  button.leaders-person{
+    appearance:none; -webkit-appearance:none; border:0; background:transparent;
+    font:inherit; cursor:pointer;
+  }
+  button.leaders-person:hover{ background:rgba(20,83,45,.07); }
+  button.leaders-person:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
+  .leaders-av{
+    width:36px; height:36px; border-radius:50%; flex:none; overflow:hidden;
+    border:2px solid rgba(212,175,55,.6); background:var(--green-800); color:#f6efdc;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--display); font-size:15px;
+  }
+  .leaders-av img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .leaders-av-open{
+    background:#f4efe0; color:var(--green-700); border-color:rgba(168,128,28,.4); font-size:16px;
+  }
+  .leaders-copy{ display:flex; flex-direction:column; gap:1px; min-width:0; flex:1; }
+  .leaders-role{
+    font-family:var(--display); font-size:15px; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--gold-text);
+  }
+  .leaders-name{
+    font-family:var(--display); font-size:17px; color:var(--green-800); line-height:1.25;
+  }
+  .leaders-committee{
+    flex:none; margin-left:auto;
+    font-family:var(--display); font-size:15px; letter-spacing:.04em; text-transform:uppercase;
+    color:var(--green-800); background:var(--green-50);
+    border:1px solid rgba(43,139,81,.28); border-radius:999px; padding:5px 10px;
+  }
+  .leaders-vacant .leaders-name{
+    font-family:var(--fancy); font-style:italic; font-size:17px; color:var(--muted); font-weight:500;
+  }
+  .leaders-vacant .leaders-committee{
+    background:#f4efe0; color:#5a5344; border-color:rgba(168,128,28,.35);
+  }
+  .leaders-empty{ margin:10px 14px 12px; color:var(--muted); font-family:var(--fancy); font-style:italic; }
+  .leaders-thanks{
+    position:relative; margin:16px 8px 2px; text-align:center;
+    font-family:var(--fancy); font-style:italic; font-size:16px; color:var(--muted);
+  }
+  @media (min-width:900px){
+    .leaders-board{ padding:24px 22px 18px; }
+    .leaders-grid{ grid-template-columns:minmax(0,1.05fr) minmax(0,.92fr) minmax(0,1.25fr); gap:16px; }
+  }
+  .people-card .people-go{ margin-top:4px; font-size:16px; letter-spacing:.04em; text-transform:uppercase;
+    color:var(--green-800); background:rgba(29,107,62,.08); border:1px solid rgba(168,128,28,.3);
+    border-radius:999px; padding:4px 10px; font-family:var(--display); }
+  @media (max-width:640px){
+    .people-row{ grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:10px; }
+    .people-card{ padding:14px 10px 12px; }
+    .people-card .dir-av{ width:64px; height:64px; font-size:18px; }
+    .people-letter{ top:48px; }
+  }
+  #memberProfileModal .modal-card{ background:#fbf7ec; }
+  #memberProfileModal .mp-sheet{ background:#fff; border:1px solid rgba(168,128,28,.28); border-radius:16px; padding:16px 18px; }
+  #memberProfileModal .mp-head{ display:flex; gap:14px; align-items:center; margin:0 0 12px; }
+  #memberProfileModal .mp-av{ width:72px; height:72px; border-radius:50%; object-fit:cover; border:2px solid var(--gold); background:var(--green-800); color:#f6efdc; display:flex; align-items:center; justify-content:center; font-family:var(--display); font-size:24px; flex:none; overflow:hidden; }
+  #memberProfileModal .mp-av img{ width:100%; height:100%; object-fit:cover; }
+  #memberProfileModal .mp-name{ font-family:var(--display); font-size:22px; color:var(--green-800); font-weight:700; }
+  #memberProfileModal .mp-facts{ display:flex; flex-wrap:wrap; gap:8px 14px; margin:8px 0 12px; font-size:16px; color:#3a3a2e; }
+  #memberProfileModal .mp-line{ margin:8px 0; font-size:17px; color:#3a3a2e; line-height:1.45; }
+  #memberProfileModal .mp-muted{ color:var(--muted); font-size:15px; }
+  .msg{ margin-top:10px; font-size:16px; }
+  .msg.success{ color:#14532d; } .msg.error{ color:#a12; }
+  .empty{ color:var(--muted); font-style:italic; }
+
+  /* ---- Reports Dashboard ---- */
+  .dash-card{ cursor:pointer; transition:transform .15s, box-shadow .15s; }
+  .dash-card:hover{ transform:translateY(-2px); box-shadow:0 16px 38px rgba(0,0,0,.18); }
+  .dash-card .app-head{ background:linear-gradient(180deg,#1d6b3e,var(--green-900)); }
+  .dash-card .dash-go{ margin-left:auto; font-family:var(--display); color:var(--gold-light); font-size:15px; white-space:nowrap; }
+  .dash-body p{ margin:0 0 14px; color:#3a3a2e; }
+  .dash-chips{ display:flex; flex-wrap:wrap; gap:8px; }
+  .dash-chips span{ background:#f0e8d2; border:1px solid rgba(168,128,28,.3); color:var(--green-800); border-radius:999px; padding:5px 13px; font-size:16px; font-family:var(--display); }
+  .dash-chip-link{ background:#f0e8d2; border:1px solid rgba(168,128,28,.3); color:var(--green-800); border-radius:999px; padding:5px 13px; font-size:16px; font-family:var(--display); text-decoration:none; display:inline-block; transition:background .15s,border-color .15s; }
+  .dash-chip-link:hover{ background:#e8ddc0; border-color:var(--green-700); color:var(--green-800); }
+
+  .modal-overlay{ position:fixed; inset:0; z-index:10000; background:rgba(12,28,18,.74); display:none; align-items:flex-start; justify-content:center; padding:24px 14px; overflow-y:auto; }
+  .modal-overlay.open{ display:flex; }
+  .modal-card{ background:#fbf7ec; width:100%; max-width:920px; border-radius:18px; border:1px solid var(--gold); box-shadow:0 30px 80px rgba(0,0,0,.5); overflow:hidden; margin:auto; }
+  .modal-head{ background:linear-gradient(180deg,var(--green-700),var(--green-800)); color:#fff; padding:16px 22px; display:flex; align-items:center; gap:12px; position:sticky; top:0; z-index:2; }
+  .modal-head h2{ margin:0; font-family:var(--display); font-size:21px; }
+  .modal-x{ margin-left:auto; background:rgba(255,255,255,.16); border:0; color:#fff; width:34px; height:34px; border-radius:9px; font-size:16px; cursor:pointer; }
+  .modal-x:hover{ background:rgba(255,255,255,.3); }
+  .modal-body{ padding:20px 22px 28px; }
+  .rpt-cat{ font-family:var(--display); color:var(--green-800); font-size:15px; letter-spacing:.6px; text-transform:uppercase; margin:20px 0 10px; border-bottom:1px solid rgba(168,128,28,.3); padding-bottom:6px; }
+  .rpt-cat:first-child{ margin-top:0; }
+  .rpt-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px; }
+  .rpt-card{ text-align:left; background:#fff; border:1px solid rgba(168,128,28,.28); border-radius:12px; padding:14px 15px; cursor:pointer; transition:transform .12s, box-shadow .12s; }
+  .rpt-card:hover{ transform:translateY(-2px); box-shadow:0 10px 24px rgba(0,0,0,.12); }
+  .rpt-card .t{ font-family:var(--display); color:var(--green-800); font-size:16px; display:flex; align-items:center; gap:7px; }
+  .rpt-card .d{ font-size:15px; color:var(--muted); margin-top:4px; line-height:1.4; }
+  .rpt-card .lock{ font-size:15px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--gold-text); background:#f0e2bd; border-radius:999px; padding:2px 9px; display:inline-block; margin-top:9px; }
+  .rpt-picker{ background:#fff; border:1px solid rgba(168,128,28,.35); border-radius:14px; padding:16px 16px 14px; }
+  .rpt-picker label{ display:block; font-family:var(--display); color:var(--green-800); font-size:16px; margin:0 0 8px; letter-spacing:.03em; }
+  .rpt-picker select{ width:100%; box-sizing:border-box; font:inherit; font-size:16px; padding:12px 14px; border-radius:10px; border:1px solid rgba(168,128,28,.5); background:#fbf7ec; color:var(--green-800); }
+  .rpt-picker .rpt-pick-desc{ margin:10px 0 12px; font-size:16px; color:var(--muted); line-height:1.4; min-height:2.8em; }
+  .rpt-picker .rpt-pick-actions{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+  .rpt-back{ background:none; border:0; color:var(--green-700); font-family:var(--display); font-size:15px; cursor:pointer; padding:0; margin-bottom:10px; }
+  .rpt-back:hover{ text-decoration:underline; }
+  #reportTitle{ font-family:var(--display); color:var(--green-800); margin:0 0 14px; font-size:22px; }
+  .stat-row{ display:flex; flex-wrap:wrap; gap:12px; margin:0 0 16px; }
+  .stat{ flex:1 1 120px; background:#fff; border:1px solid rgba(168,128,28,.25); border-radius:12px; padding:14px; text-align:center; }
+  .stat .num{ font-family:var(--display); color:var(--green-800); font-size:26px; line-height:1.1; }
+  .stat .lab{ font-size:15px; color:var(--muted); margin-top:4px; }
+  .rpt-tablewrap{ overflow-x:auto; }
+  .rpt-table{ width:100%; border-collapse:collapse; font-size:16px; background:#fff; border-radius:10px; overflow:hidden; }
+  .rpt-table th{ background:var(--green-700); color:#fff; text-align:left; padding:9px 11px; font-family:var(--display); font-weight:600; white-space:nowrap; }
+  .rpt-table td{ padding:8px 11px; border-top:1px solid rgba(168,128,28,.18); }
+  .rpt-table tr:nth-child(even) td{ background:#fbf7ec; }
+  .rpt-note{ font-size:16px; color:var(--muted); margin-top:14px; }
+  .rpt-secure{ background:#fff; border:1px solid rgba(168,128,28,.3); border-left:4px solid var(--gold); border-radius:12px; padding:18px 20px; }
+  .rpt-secure h4{ margin:0 0 8px; color:var(--green-800); font-family:var(--display); font-size:18px; }
+  .rpt-secure p{ margin:0 0 8px; }
+
+  /* ---- Parade Ready ---- */
+  .pr-pill{font-family:var(--display);font-size:16px;letter-spacing:.4px;background:rgba(20,83,45,.08);border:1px solid rgba(20,83,45,.25);color:var(--green-800);border-radius:12px;padding:10px 14px;margin:0 0 14px;}
+  .pr-pill.ok{background:var(--green-800);color:#f6efdc;border-color:var(--green-800);}
+  .pr-list{display:grid;gap:10px;margin:0 0 4px;}
+  .pr-gate{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;padding:12px 14px;font-size:15.5px;background:#fff;border:1px solid rgba(168,128,28,.28);border-radius:12px;line-height:1.35;}
+  .pr-gate.ok{background:#f3faf5;border-color:rgba(20,83,45,.28);}
+  .pr-gate.need{background:#fffdf6;border-color:rgba(168,128,28,.45);}
+  .pr-gate .pr-mark{flex:none;font-size:16px;line-height:1;}
+  .pr-gate .pr-label{font-weight:700;color:var(--green-800);}
+  .pr-gate small,.pr-gate .pr-hint{color:var(--muted);font-size:16px;font-weight:400;}
+  .pr-pay{display:inline-flex;align-items:center;justify-content:center;margin-left:auto;padding:8px 14px;border-radius:999px;background:var(--gold,#c9a227);color:var(--green-900,#1a3a24);font-family:var(--display);font-size:16px;font-weight:700;text-decoration:none;border:1px solid rgba(120,90,10,.35);white-space:nowrap;}
+  .pr-pay:hover{filter:brightness(1.05);}
+  .pr-pay-alt{flex:1 1 100%;margin:2px 0 0;font-size:15px;color:var(--muted);}
+  .pr-pay-alt a{color:var(--green-800);font-weight:600;}
+  .pr-waiver{background:#fffdf4;border:1px dashed rgba(168,128,28,.5);border-radius:12px;padding:12px 14px;margin-top:10px;}
+  .pr-hrs{font-size:17px;margin:0 0 6px;}
+  @media (max-width:480px){
+    .pr-pay{margin-left:0;width:100%;}
+  }
+  .rpt-btn{font:inherit;font-size:16px;padding:5px 12px;border-radius:14px;border:1px solid rgba(168,128,28,.5);background:#fff;cursor:pointer;}
+  .rpt-btn.ok{background:var(--green-800);color:#f6efdc;border-color:var(--green-800);}
+  .rpt-btn:hover{opacity:.85;}
+
+  /* ---- The Craic Cup (gamification) ----
+     Palette drawn from the krewe's Celtic knotwork artwork: deep field greens,
+     red-orange knot ribbons, and illuminated gold trim on parchment. */
+  :root{
+    --cup-green-deep:#0f3d2a; --cup-green:#175e43; --cup-teal:#1f6f5c;
+    --cup-red:#c2451e; --cup-crimson:#96351a;
+    --cup-gold:#c9a227; --cup-gold-light:#f0d78c; --cup-cream:#f9f3e1; --cup-ink:#2a2118;
+  }
+  /* Braided gold-and-red "knot ribbon" used as trim on the game surfaces */
+  .game-head .app-head, #gameModal .modal-head{
+    background:
+      repeating-linear-gradient(-45deg, rgba(201,162,39,.28) 0 10px, rgba(194,69,30,.24) 10px 20px, transparent 20px 34px),
+      linear-gradient(135deg,var(--cup-green-deep) 0%,var(--cup-green) 55%,var(--cup-teal) 100%);
+    border-bottom:3px solid var(--cup-gold);
+    box-shadow:inset 0 -6px 14px rgba(0,0,0,.22);
+  }
+  .game-head{ border:2px solid var(--cup-gold) !important; box-shadow:0 6px 18px rgba(23,94,67,.25) !important; }
+  .game-head .app-head small{ color:var(--cup-gold-light); }
+  .game-head .dash-go{ background:var(--cup-red); color:var(--cup-cream); border-radius:999px; padding:4px 12px; font-family:var(--display); box-shadow:0 2px 6px rgba(150,53,26,.4); }
+  #gameModal .modal-card{ background:var(--cup-cream); border:2px solid var(--cup-gold); box-shadow:0 0 0 4px rgba(23,94,67,.35), 0 30px 80px rgba(0,0,0,.5); }
+  .game-conn{ margin-left:auto; margin-right:6px; display:inline-flex; align-items:center; gap:6px; font-size:15px; font-family:var(--display); letter-spacing:.03em; border-radius:999px; padding:3px 10px; border:1px solid rgba(240,215,140,.5); color:#f6efdc; background:rgba(0,0,0,.18); white-space:nowrap; }
+  .game-conn::before{ content:''; width:8px; height:8px; border-radius:50%; background:#9aa; box-shadow:0 0 6px rgba(255,255,255,.35); }
+  .game-conn.ok::before{ background:#54d98a; box-shadow:0 0 8px rgba(84,217,138,.9); }
+  .game-conn.err::before{ background:#ff7a5c; box-shadow:0 0 8px rgba(255,122,92,.9); }
+  .game-tabs{ display:flex; flex-wrap:wrap; gap:8px; border:0; margin-bottom:16px; }
+  .game-tabs button{ border:1px solid var(--cup-gold); background:#fff; color:var(--cup-green); padding:9px 16px; font-family:var(--display); cursor:pointer; border-radius:999px; font-size:15px; box-shadow:0 1px 3px rgba(42,33,24,.12); transition:transform .12s ease, background .12s ease; }
+  .game-tabs button:hover{ background:var(--cup-gold-light); transform:translateY(-1px); }
+  .game-tabs button.on{ background:linear-gradient(180deg,var(--cup-red),var(--cup-crimson)); color:var(--cup-cream); border-color:var(--cup-crimson); box-shadow:0 3px 8px rgba(150,53,26,.35); }
+  .lb-table .medal{ font-size:20px; white-space:nowrap; }
+  .lb-table thead th{ background:var(--cup-green); color:var(--cup-gold-light); }
+  .lb-table tbody tr:nth-child(1) td{ background:rgba(201,162,39,.18); }
+  .lb-table tbody tr:nth-child(2) td{ background:rgba(201,162,39,.10); }
+  .lb-table tbody tr:nth-child(3) td{ background:rgba(194,69,30,.08); }
+  .rank-pill{ display:inline-flex; align-items:center; gap:6px; background:linear-gradient(180deg,#fdf6dd,#f0e3b8); border:1px solid var(--cup-gold); color:var(--cup-green); border-radius:999px; padding:3px 12px; font-family:var(--display); font-size:16px; white-space:nowrap; box-shadow:inset 0 1px 0 #fff; }
+  .badge-gallery{ display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; margin-top:8px; }
+  .badge-chip{ border:1px solid var(--cup-gold); border-radius:12px; padding:12px; background:#fffdf4; text-align:center; box-shadow:inset 0 0 0 3px rgba(194,69,30,.12), 0 1px 4px rgba(42,33,24,.10); transition:transform .15s ease; }
+  .badge-chip:hover{ transform:translateY(-2px) rotate(-1deg); }
+  .badge-chip .ic{ font-size:30px; line-height:1; }
+  .badge-chip .nm{ font-family:var(--display); color:var(--cup-green); font-size:16px; margin-top:6px; }
+  .badge-chip .ds{ font-size:15px; color:var(--muted); margin-top:3px; line-height:1.35; }
+  .prog{ background:#e7e0c8; border-radius:999px; height:15px; overflow:hidden; margin:8px 0; border:1px solid rgba(201,162,39,.45); }
+  .prog > i{ display:block; height:100%; background:linear-gradient(90deg,#fff6c8 0%,var(--cup-gold-light) 35%,var(--cup-gold) 70%,#f7e7a1 100%); position:relative; box-shadow:0 0 10px rgba(240,215,140,.55); }
+  .prog > i::after{ content:''; position:absolute; inset:0; background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.5) 50%,transparent 60%); background-size:200% 100%; animation:cupSparkle 2.8s ease-in-out infinite; }
+  @keyframes cupSparkle{ 0%,100%{background-position:100% 0} 50%{background-position:0 0} }
+  .pt-table td:last-child{ text-align:right; font-family:var(--display); color:var(--cup-green); white-space:nowrap; }
+  .find-card{ background:#fffdf4; border:2px solid var(--cup-gold); border-radius:16px; padding:20px; margin-top:14px; box-shadow:inset 0 0 0 4px rgba(194,69,30,.10), var(--shadow-sm); }
+  .find-card .big{ font-family:var(--display); color:var(--cup-green); font-size:40px; line-height:1; }
+  .find-matches{ display:grid; gap:8px; margin-top:12px; }
+  .find-match{ display:flex; align-items:center; gap:12px; text-align:left; background:#fffdf4; border:1px solid var(--cup-gold); border-radius:12px; padding:10px 14px; cursor:pointer; font:inherit; transition:background .12s ease; }
+  .find-match:hover{ background:var(--cup-gold-light); }
+  .find-match .fm-ic{ font-size:26px; line-height:1; }
+  .find-match .fm-nm{ font-family:var(--display); color:var(--cup-green); font-size:17px; }
+  .find-match .fm-pts{ margin-left:auto; font-family:var(--display); color:var(--cup-crimson); white-space:nowrap; }
+  .cup-hist{ margin:6px 0 0; padding:0; list-style:none; }
+  .cup-hist li{ border-top:1px solid rgba(201,162,39,.35); padding:9px 0; font-size:15px; line-height:1.4; }
+  .cup-hist .ev{ font-family:var(--display); color:var(--cup-green); font-size:16px; }
+  .cup-st{ display:inline-block; border-radius:999px; padding:1px 10px; font-size:15px; font-family:var(--display); letter-spacing:.03em; text-transform:uppercase; background:#eee4c8; color:#6b5a1e; border:1px solid rgba(201,162,39,.5); }
+  .cup-st.attended{ background:var(--cup-green); color:var(--cup-cream); border-color:var(--cup-green); }
+  .cup-st.registered,.cup-st.confirmed{ background:#fdf3d8; color:var(--gold-text); }
+  .cup-st.paid{ background:var(--cup-gold); color:var(--cup-ink); border-color:var(--cup-gold); }
+  .cup-st.cancelled,.cup-st.denied{ background:#f3d9cf; color:var(--cup-crimson); }
+  /* Events inside the Cup */
+  .cup-remind{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; background:linear-gradient(180deg,#fdf6dd,#f6ecc9); border:1px solid var(--cup-gold); border-left:6px solid var(--cup-red); border-radius:12px; padding:12px 16px; margin:0 0 14px; font-size:15.5px; color:var(--cup-ink); }
+  .cup-remind b{ color:var(--cup-green); font-family:var(--display); }
+  .cup-remind a{ color:var(--cup-crimson); font-weight:700; }
+  .cup-event{ background:#fffdf4; border:1px solid var(--cup-gold); border-radius:14px; padding:14px 16px; margin:10px 0; box-shadow:0 1px 5px rgba(42,33,24,.10); }
+  .cup-event .ce-top{ display:flex; gap:12px; align-items:flex-start; flex-wrap:wrap; }
+  .cup-date{ display:inline-flex; flex-direction:column; align-items:center; justify-content:center; min-width:56px; background:linear-gradient(180deg,var(--cup-red),var(--cup-crimson)); color:var(--cup-cream); border-radius:12px; padding:7px 10px; font-family:var(--display); line-height:1.1; box-shadow:0 2px 6px rgba(150,53,26,.35); }
+  .cup-date .d1{ font-size:15px; letter-spacing:.06em; text-transform:uppercase; }
+  .cup-date .d2{ font-size:22px; font-weight:700; }
+  .cup-event .ce-nm{ font-family:var(--display); color:var(--cup-green); font-size:19px; line-height:1.25; }
+  .cup-event .ce-meta{ font-size:16px; color:var(--muted); margin-top:2px; }
+  .cup-event .ce-hint{ font-size:16px; color:var(--cup-crimson); font-weight:700; margin-top:4px; }
+  .cup-event details{ margin-top:8px; }
+  .cup-event summary{ cursor:pointer; font-family:var(--display); color:var(--cup-green); font-size:15px; }
+  .cup-event .ce-detail{ font-size:15px; color:var(--cup-ink); margin-top:6px; line-height:1.45; }
+  .cup-event .ce-btns{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+  .cup-event .ce-btns a{ text-decoration:none; border-radius:999px; padding:8px 16px; font-family:var(--display); font-size:15px; display:inline-block; }
+  .ce-rsvp{ background:var(--cup-green); color:var(--cup-cream); border:1px solid var(--cup-green-deep); box-shadow:0 2px 6px rgba(15,61,42,.3); }
+  .ce-rsvp:hover{ background:var(--cup-teal); }
+  .ce-reg{ background:linear-gradient(180deg,var(--cup-gold-light),var(--cup-gold)); color:var(--cup-ink); border:1px solid var(--cup-gold); }
+  .ce-reg:hover{ filter:brightness(1.05); }
+  /* Game footer: step back / step forward through the screens, and a big
+     clearly-labeled exit, like any game's pause menu. */
+  .game-nav{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:20px; padding-top:14px; border-top:2px solid rgba(201,162,39,.5); }
+  .game-nav .gn-step{ font-family:var(--display); font-size:15px; border:1px solid var(--cup-gold); background:#fff; color:var(--cup-green); border-radius:999px; padding:9px 16px; cursor:pointer; box-shadow:0 1px 3px rgba(42,33,24,.12); }
+  .game-nav .gn-step:hover:not(:disabled){ background:var(--cup-gold-light); }
+  .game-nav .gn-step:disabled{ opacity:.45; cursor:default; }
+  .game-exit{ margin-left:auto; font-family:var(--display); font-size:15px; border:1px solid var(--cup-crimson); background:linear-gradient(180deg,var(--cup-red),var(--cup-crimson)); color:var(--cup-cream); border-radius:999px; padding:9px 18px; cursor:pointer; box-shadow:0 3px 8px rgba(150,53,26,.35); }
+  .game-exit:hover{ filter:brightness(1.08); }
+  @media (max-width:480px){ .game-exit{ margin-left:0; width:100%; text-align:center; } }
+
+  /* ---- Color-coded hub tools ----
+     Each everyday tool gets its own crest color: lockers green, carpools
+     navy, van pools rust, directory antique gold. The color always rides
+     with the emoji icon and the card's text heading, so nobody has to
+     rely on color alone to tell the tools apart. */
+  .hub-tool{ border-top:5px solid transparent; }
+  .hub-tool .app-head .ic{
+    width:46px; height:46px; flex:none; display:grid; place-items:center;
+    font-size:24px; background:#fdf6dd; border-radius:14px;
+    border:3px solid transparent; box-shadow:0 2px 6px rgba(0,0,0,.25);
+  }
+  .hub-tool.tool-green{ border-top-color:#1d6b3e; }
+  .hub-tool.tool-green .app-head .ic{ border-color:#1d6b3e; }
+  .hub-tool.tool-navy{ border-top-color:#313770; }
+  .hub-tool.tool-navy .app-head .ic{ border-color:#313770; }
+  .hub-tool.tool-rust{ border-top-color:#8f3b0e; }
+  .hub-tool.tool-rust .app-head .ic{ border-color:#8f3b0e; }
+  .hub-tool.tool-gold{ border-top-color:#a9801c; }
+  .hub-tool.tool-gold .app-head .ic{ border-color:#a9801c; }
+
+  /* ---- Members Only: auth, tour, raffles ---- */
+  .auth-card .auth-features{ margin-top:18px; text-align:left; display:grid; gap:8px; }
+  .afe{ font-size:16px; color:#3a3a2e; } .afe span{ margin-right:6px; }
+  .tour-grid{ display:grid; gap:12px; }
+  .tour-item{ display:flex; gap:12px; align-items:flex-start; background:#fff; border:1px solid rgba(168,128,28,.25); border-radius:12px; padding:12px 14px; }
+  .tour-item span{ font-size:26px; line-height:1; }
+
+  /* ---- Leprechaun welcome (first profile) ---- */
+  #lepOverlay{z-index:120;}
+  #lepOverlay .lep-card{max-width:440px;text-align:center;overflow:visible;padding:8px 26px 24px;}
+  @media(max-width:480px){ #lepOverlay .lep-card{padding:8px 16px 20px;} }
+  #lepOverlay .lep-sprite{font-size:72px;line-height:1;display:inline-block;animation:lepSpring .85s cubic-bezier(.2,1.4,.4,1) both;filter:drop-shadow(0 8px 14px rgba(0,0,0,.25));}
+  #lepOverlay .lep-burst{position:absolute;inset:auto;pointer-events:none;font-size:22px;animation:lepSpark 1.2s ease-out both;}
+  @keyframes lepSpring{0%{transform:translateY(120px) scale(.4) rotate(-12deg);opacity:0;}60%{transform:translateY(-18px) scale(1.08) rotate(4deg);opacity:1;}100%{transform:translateY(0) scale(1) rotate(0);opacity:1;}}
+  @keyframes lepSpark{0%{transform:scale(.2);opacity:0;}40%{opacity:1;}100%{transform:scale(1.4);opacity:0;}}
+  /* Painted leprechaun medallion (same artwork as the Fáilte hero and the
+     sign-in door): the art is landscape, so circle-crop it toward his face
+     and raised hand instead of squashing it. */
+  img.lep-medallion{
+    border-radius:50%; box-shadow:0 0 0 5px #3a2712, 0 0 0 8px #8a8d80; background:#fff;
+    aspect-ratio:1; height:auto; object-fit:cover; object-position:50% 24%;
+    width:96px; margin-left:auto; margin-right:auto;
+  }
+  #profileStage .gate-card img.lep-medallion{ width:96px; }
+  #lepOverlay .lep-sprite img.lep-medallion{ width:110px; }
+  @media (max-width:480px){
+    #profileStage .gate-card img.lep-medallion{ width:72px; }
+    #lepOverlay .lep-sprite img.lep-medallion{ width:88px; }
+  }
+  #lepOverlay h2{font-family:var(--display);color:var(--green-800);margin:8px 0 6px;font-size:28px;}
+  #lepOverlay .lep-body{text-align:left;color:#3a3a2e;font-size:15px;line-height:1.5;margin:0 0 14px;}
+  #lepOverlay .lep-body b{color:var(--green-800);}
+
+  /* ---- Signed-in Fáilte hero (members hub) ---- */
+  .page-head.is-home{
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+  }
+  .page-head.is-home .lep-wave{
+    margin:0 auto 14px; padding:0; position:relative; display:block;
+    width:min(300px, 72vw); border-radius:16px; overflow:hidden;
+    border:3px solid #cda53c;
+    box-shadow:0 12px 28px rgba(0,0,0,.45), 0 0 0 5px rgba(205,165,60,.22);
+  }
+  .lep-wave img{ display:block; width:100%; height:auto; }
+  .page-head.is-home h1{ letter-spacing:2px; }
+
+  .raffle-head .app-head{ background:linear-gradient(180deg,#7a1f2b,#4a0f17); }
+  .raffle-event{ margin-bottom:22px; }
+
+  @media (max-width:640px){
+  .krewe-form .row,.mini-form{ grid-template-columns:1fr; }
+  .rpt-grid{ grid-template-columns:1fr; }
+  .modal-body{ padding:16px; }
+  .gate{ padding:10px; align-items:flex-start; }
+  .castle{ width:min(100%, 430px); padding:6px 0 16px; }
+  .castle-wall{ padding:14px 12px 16px; }
+  .castle-top{ height:22px; }
+  .castle-banner{ font-size:15px; }
+  /* Door hinges stick out left:-14px and caused horizontal scroll on phones */
+  .auth-card::before, .auth-card::after{ display:none; }
+  .gate-card{ padding:20px 16px; max-width:100%; }
+  .gate-card.auth-card{ border-width:6px; padding-top:30px; }
+  .gate-card img{ width:52px; margin-bottom:6px; }
+  .gate-card h1{ font-size:20px; }
+  .gate-card p{ margin:0 0 12px; font-size:16px; }
+  .castle-guide{ margin-top:12px; }
+  .auth-card .auth-features{ margin-top:10px; gap:4px; }
+  .afe{ font-size:15px; line-height:1.35; }
+  .app-body{ padding:16px; }
+  .app-card > .app-head{ padding:14px 16px; flex-wrap:wrap; }
+  .people-row{ grid-template-columns:1fr 1fr; gap:10px; }
+  .people-card{ padding:12px 8px 10px; }
+  .people-card .nm{ font-size:15px; }
+  .people-toolbar{ flex-direction:column; align-items:stretch; }
+  .dir-grid{ grid-template-columns:1fr; }
+  .badge-gallery{ grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); }
+  .modal-overlay{ padding:12px 8px; }
+  .dash-chips{ gap:6px; }
+  .seg{ width:100%; }
+  .seg button{ flex:1; text-align:center; }
+}
+@media (max-width:380px){
+  .people-row{ grid-template-columns:1fr; }
+}
+  /* Must come AFTER base .auth-features{display:grid} or hide loses the cascade */
+  @media (max-width:480px){
+    .auth-card .auth-features,
+    .auth-features{ display:none !important; }
+    .gate-card.auth-card{ border-radius:56px 56px 10px 10px; padding-top:16px; }
+    .gate-card img{ width:40px; }
+    .gate-card h1{ font-size:17px; }
+    .gate-card p{ font-size:15px; margin:0 0 6px; }
+    #authPanelSignin form input[type="password"]{ margin-top:6px !important; }
+    #authPanelSignin form .btn{ margin-top:7px !important; }
+    .castle-guide{ margin-top:6px; }
+  }
+
+  /* Avoid nested page+gate scroll while a gate overlay is up */
+  body:has(#authStage:not([style*="display:none"])),
+  body:has(#profileStage:not([style*="display:none"])),
+  body:has(#setPasswordStage:not([style*="display:none"])){
+    overflow:hidden !important;
+  }
+
+  /* Hub calm: quieter castle door + larger taps */
+  #authStage .castle-torch{ display:none; }
+  #authStage .castle-top{ height:18px; width:84%; opacity:.85; }
+  #authStage .castle-wall{
+    padding:18px 16px 20px;
+    box-shadow:0 16px 40px rgba(0,0,0,.45), inset 0 0 28px rgba(0,0,0,.18);
+  }
+  #authStage .castle-banner{ font-size:16px; letter-spacing:.6px; margin-bottom:8px; }
+  #authStage .gate-card.auth-card{
+    border-width:6px;
+    border-radius:72px 72px 14px 14px;
+    box-shadow:0 0 0 3px #3a2712, 0 10px 24px rgba(0,0,0,.35);
+    padding-top:28px;
+  }
+  #authStage .auth-card::before, #authStage .auth-card::after{ display:none; }
+  #authStage .auth-card img{ width:96px; margin-left:auto; margin-right:auto; }
+  #authStage .gate-card h1{ font-size:22px; margin:6px 0 8px; }
+  #authStage .gate-card p{ font-size:15px; line-height:1.4; }
+  #authStage .castle-guide{ margin-top:12px; border-radius:12px; border-width:1px; box-shadow:none; }
+  #authStage .castle-guide summary{ padding:12px 14px; font-size:16px; }
+  #authStage form input{ font-size:16px; min-height:48px; padding:12px 14px; border-radius:10px; }
+  #authStage form .btn, #authStage .btn{ min-height:48px; font-size:16px; }
+  #memberContent .member-grid{ gap:18px; }
+  #memberContent .app-body input,
+  #memberContent .app-body select,
+  #memberContent .app-body textarea,
+  #memberContent .mini-form input{
+    font-size:16px; min-height:48px; padding:12px 12px; border-radius:10px;
+  }
+  #memberContent .app-body textarea{ min-height:88px; }
+  #memberContent .btn{ min-height:44px; }
+  #memberContent .seg button{ min-height:44px; padding:10px 14px; }
+  #memberContent .data-row, #memberContent .van-card{ padding:14px; }
+  @media (max-width:640px){
+    #memberContent .mini-form{ grid-template-columns:1fr; }
+    #memberContent .dir-grid{ grid-template-columns:1fr; }
+    #authStage .gate-card.auth-card{ border-radius:48px 48px 12px 12px; padding-top:20px; }
+    #authStage .auth-card img{ width:72px; }
+  }
+</style>
+  <!-- Self-hosted QR library: same-origin so ad-blockers and venue networks can't block it.
+       If the local file somehow fails, fall back to the CDN copy. -->
+  <script src="assets/vendor/qrcode.min.js?v=153" defer
+          onerror="var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js';document.head.appendChild(s);"></script>
+  <!-- Shared QR generator: every studio draws its squares through kosQR (see QR_LIBRARY_BUILD_PLAN.md Phase 1). -->
+  <script src="assets/kos-qr.js?v=20260918qr1" defer></script>
+  <script>
+  /* A meeting QR lands here as ?checkin=CODE; stash it so it survives the sign-in.
+     A members-only page (e.g. share.html) lands here as ?next=PAGE; stash it (15-minute
+     shelf life) so the member is sent back there after signing in at the door. */
+  try{
+    var _kosQs = new URLSearchParams(location.search);
+    var _kosCk = _kosQs.get("checkin");
+    if(_kosCk){ localStorage.setItem("kos_checkin", _kosCk); }
+    var _kosNx = _kosQs.get("next");
+    if(_kosNx && /^[a-z0-9-]+\.html$/.test(_kosNx)){
+      localStorage.setItem("kos_next", JSON.stringify({ p:_kosNx, t:Date.now() }));
+    }
+    /* Volunteer page (and others) send members here to log hours after sign-in. */
+    var _kosHub = (_kosQs.get("hub") || "").toLowerCase();
+    var _kosHash = (location.hash || "").replace(/^#/, "").toLowerCase();
+    if(_kosHub === "hours" || _kosHub === "volunteer" || _kosHash === "hours" || _kosHash === "volunteer"){
+      sessionStorage.setItem("kos_hub_intent", "hours");
+    }
+    if(_kosCk || _kosNx){ history.replaceState(null, "", location.pathname + (_kosHash ? ("#" + _kosHash) : "")); }
+  }catch(_){}
+  </script>
+  <script type="module" crossorigin src="/assets/members-wBgoSp2j.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="/assets/members-5fxORm81.css">
+</head>
+<body class="hub">
+
+  <!-- AUTH STAGE (email + password sign in), styled as the Krewe Castle door -->
+  <div class="gate" id="authStage">
+    <div class="castle">
+      <div class="castle-top" aria-hidden="true"></div>
+      <div class="castle-wall">
+        <span class="castle-torch left" aria-hidden="true">🔥</span>
+        <span class="castle-torch right" aria-hidden="true">🔥</span>
+        <p class="castle-banner">☘ The Krewe Castle ☘</p>
+        <div class="gate-card auth-card">
+      <img src="/assets/leprechaun-failte-D9xQ4vLH.jpg" alt="A leprechaun waves you in from the castle door" />
+      <h1>Members Only</h1>
+
+      <!-- Sign in -->
+      <div id="authPanelSignin">
+        <p>Fáilte! Sign in with the email on the krewe roster. Old Wild Apricot passwords do not work here.</p>
+        <form id="signinForm">
+          <input id="siEmail" type="email" placeholder="Email on the krewe roster" autocomplete="email" required />
+          <input id="siPassword" type="password" placeholder="Hub password" autocomplete="current-password" style="margin-top:10px;" />
+          <button class="btn btn-primary" type="submit" style="width:100%;margin-top:12px;">☘ Sign in</button>
+          <div class="err" id="signinMsg"></div>
+        </form>
+        <p style="margin-top:12px;">
+          <button type="button" class="btn" id="showResetBtn" style="width:100%;">☘ Create or reset your password</button>
+        </p>
+      </div>
+
+      <!-- Create or reset a password: one email field, one emailed link, both cases -->
+      <div id="authPanelReset" style="display:none;">
+        <p>Enter the email on the member roster and we will email you a secure link. The same link works whether you are creating your first password or resetting one you forgot.</p>
+        <form id="resetForm">
+          <input id="rpEmail" type="email" placeholder="Email on the krewe roster" autocomplete="email" required />
+          <button class="btn btn-primary" type="submit" style="width:100%;margin-top:12px;">☘ Email me a password link</button>
+          <div class="err" id="resetMsg"></div>
+        </form>
+        <p style="margin-top:10px;font-size:14px;">Open the link on this device, then choose a password of at least 8 characters.</p>
+        <p style="margin-top:14px;font-size:14px;"><a href="#" id="backFromReset">← Back to sign in</a></p>
+      </div>
+
+      <details class="castle-guide" id="castleGuide">
+        <summary><span class="key">🗝️</span> First time at the castle door? Start here <span class="chev">▶</span></summary>
+        <div class="guide-body">
+          <div class="guide-step">
+            <span class="num" aria-hidden="true">1</span>
+            <div>
+              <h3>Use your roster email</h3>
+              <p>The door knows you by the email on the member roster. Not sure which one that is? Ask <a href="mailto:digital@kreweofshamrock.com">digital@kreweofshamrock.com</a>.</p>
+            </div>
+          </div>
+          <div class="guide-step">
+            <span class="num" aria-hidden="true">2</span>
+            <div>
+              <h3>Need a password?</h3>
+              <p>Tap the gold button and we email you a link &mdash; it works for a first password or a reset. Open it on this device and choose a password of at least 8 characters.</p>
+              <button type="button" class="guide-cta" id="guideResetBtn">☘ Email me a password link</button>
+            </div>
+          </div>
+          <div class="guide-step">
+            <span class="num" aria-hidden="true">3</span>
+            <div>
+              <h3>Sign in</h3>
+              <p>Come back and sign in with your email and new password. Krewe leaders (President, Board Member, Committee Chair of&hellip;) confirm their titles at first login.</p>
+            </div>
+          </div>
+          <div class="guide-inside"><b>Inside:</b> your hub &mdash; <b>Home</b>, <b>My Krewe</b>, <b>Events</b>, <b>Member desk</b>, and the <b>Craic Cup</b>. Officers get an <b>Officer</b> tab.</div>
+          <p class="guide-help">Stuck at the door? Email <a href="mailto:digital@kreweofshamrock.com?subject=Website%20issue%20report">digital@kreweofshamrock.com</a>.</p>
+        </div>
+      </details>
+
+      <div class="auth-features">
+        <div class="afe"><span>🍀</span> The Craic Cup: earn Clovers, climb the ranks</div>
+        <div class="afe"><span>🎟️</span> Charity raffles: gift baskets &amp; 50/50</div>
+        <div class="afe"><span>📅</span> RSVP to events &amp; log volunteer hours</div>
+        <div class="afe"><span>🚗</span> Carpools, lockers &amp; the member directory</div>
+        <div class="afe"><span>📸</span> Share your photos &amp; videos for the public site</div>
+      </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SET PASSWORD STAGE (after clicking a create/reset link) -->
+  <div class="gate" id="setPasswordStage" style="display:none;">
+    <div class="gate-card" style="max-width:400px;">
+      <img src="/assets/emblem-shamrock-C25sUmyu.png" alt="Krewe of Shamrock emblem" />
+      <h1>Choose your password</h1>
+      <p>Use at least 8 characters. A longer passphrase — a few words strung together — is easy to remember and hard to guess. You will use it to sign in next time.</p>
+      <form id="setPasswordForm">
+        <input id="newPassword" type="password" placeholder="New password" autocomplete="new-password" minlength="8" required />
+        <button class="btn btn-primary" type="submit" style="width:100%;margin-top:12px;">☘ Save password &amp; continue</button>
+        <div class="err" id="setPasswordMsg"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- PROFILE STAGE (light Craic welcome) -->
+  <div class="gate" id="profileStage" style="display:none;">
+    <div class="gate-card" style="max-width:480px;">
+      <img class="lep-medallion" src="/assets/leprechaun-failte-D9xQ4vLH.jpg" alt="A leprechaun waves you in" />
+      <h1>Welcome to our Krewe Digital Home</h1>
+      <p style="margin:0 0 6px;"><b>This is the Craic Cup</b>. Our kindly competitive game of showing up. Earn Clovers, climb the ranks, collect badges, and chase your friends up the ladder (with a smile). First, let’s get your face in the game.</p>
+      <form id="profileForm" class="krewe-form" style="text-align:left;">
+        <div style="display:flex;gap:14px;align-items:center;margin:12px 0 8px;">
+          <div id="pfAvatarPreview" style="width:72px;height:72px;border-radius:50%;background:#e8f0e4;border:2px solid rgba(168,128,28,.45);display:flex;align-items:center;justify-content:center;font-size:28px;overflow:hidden;flex:0 0 auto;">☘</div>
+          <div style="flex:1;">
+            <label for="pfPhoto">Your photo *</label>
+            <input id="pfPhoto" type="file" accept="image/jpeg,image/png,image/webp,image/gif" />
+            <p style="font-size:15px;color:var(--muted);margin:4px 0 0;">So My Krewe feels like people, not a spreadsheet.</p>
+          </div>
+        </div>
+        <div class="row">
+          <div><label for="pfFirst">First name *</label><input id="pfFirst" required /></div>
+          <div><label for="pfLast">Last name *</label><input id="pfLast" required /></div>
+        </div>
+        <label for="pfStreet">Mailing address</label>
+        <input id="pfStreet" autocomplete="street-address" placeholder="Street" />
+        <div class="row">
+          <div><label for="pfCity">City</label><input id="pfCity" autocomplete="address-level2" /></div>
+          <div><label for="pfState">State</label><input id="pfState" autocomplete="address-level1" maxlength="20" placeholder="FL" /></div>
+          <div><label for="pfZip">ZIP</label><input id="pfZip" autocomplete="postal-code" maxlength="16" /></div>
+        </div>
+        <label for="pfFact">A fun fact about you</label>
+        <input id="pfFact" placeholder="e.g. I once caught 47 strands of beads in one parade" />
+        <label for="pfMemory">Favorite krewe or parade memory</label>
+        <textarea id="pfMemory" rows="2" placeholder="Optional - the story you’d tell at the pub"></textarea>
+
+        <details id="pfMoreDetails" style="margin-top:14px;border:1px dashed rgba(168,128,28,.45);border-radius:12px;padding:10px 12px;background:#fffdf4;">
+          <summary style="cursor:pointer;font-weight:600;color:var(--green-800);">More for your directory (optional)</summary>
+          <div style="margin-top:10px;">
+            <label for="pfPhone">Phone</label><input id="pfPhone" type="tel" />
+            <label for="pfHometown">Hometown</label><input id="pfHometown" />
+            <label for="pfHobbies">Hobbies</label><input id="pfHobbies" placeholder="e.g. Gardening, bagpipes, beach days" />
+            <label style="display:flex;gap:8px;align-items:center;margin-top:10px;cursor:pointer;font-weight:400;">
+              <input type="checkbox" id="pfVisible" checked style="width:auto;" /> Show my profile in the member directory
+            </label>
+          </div>
+        </details>
+
+        <details style="margin-top:12px;border:1px dashed rgba(168,128,28,.45);border-radius:12px;padding:10px 12px;background:#fffdf4;">
+          <summary style="cursor:pointer;font-weight:600;color:var(--green-800);">I hold a krewe title (optional)</summary>
+          <div style="margin-top:10px;">
+            <label style="display:flex;gap:10px;align-items:flex-start;cursor:pointer;">
+              <input type="checkbox" id="pfIsMember" checked style="margin-top:4px;" />
+              <span>I am a current Krewe of Shamrock member</span>
+            </label>
+            <input type="checkbox" id="pfHasRole" style="display:none;" />
+            <div id="pfRolePanel" style="margin-top:10px;">
+              <div id="pfRoleChoices">
+                <p style="font-size:15px;color:var(--muted);margin:0 0 8px;">Pick every title you hold. An officer confirms access — you can use the hub right away.</p>
+                <p style="font-size:15px;font-weight:700;color:var(--green-800);margin:10px 0 6px;">Officers</p>
+                <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" data-title="President" data-roles="officer" /> President</label>
+                <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" data-title="Vice President" data-roles="officer" /> Vice President</label>
+                <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" data-title="Treasurer" data-roles="treasurer,officer" /> Treasurer</label>
+                <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" data-title="Secretary" data-roles="secretary,officer" /> Secretary</label>
+                <p style="font-size:15px;font-weight:700;color:var(--green-800);margin:12px 0 6px;">Board</p>
+                <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" data-title="Board Member" data-roles="board" /> Board Member</label>
+                <p style="font-size:15px;font-weight:700;color:var(--green-800);margin:12px 0 6px;">Committee Chair of</p>
+                <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" data-title="Committee Chair of Finance" data-roles="committee" data-committee="Finance" /> Finance</label>
+                <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" data-title="Committee Chair of Bylaws" data-roles="committee" data-committee="Bylaws" /> Bylaws</label>
+                <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" data-title="Committee Chair of Charity" data-roles="committee" data-committee="Charity" /> Charity</label>
+                <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" data-title="Committee Chair of Technology" data-roles="committee" data-committee="Technology" /> Technology</label>
+                <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" data-title="Committee Chair of Membership" data-roles="committee" data-committee="Membership" /> Membership</label>
+                <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" data-title="Committee Chair of Social" data-roles="committee" data-committee="Social" /> Social</label>
+                <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" data-title="Committee Chair of Float" data-roles="committee" data-committee="Float" /> Float</label>
+                <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" data-title="Committee Chair of Parade" data-roles="committee" data-committee="Parade" /> Parade</label>
+                <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" class="pfRole" data-title="Committee Chair of Merchandise" data-roles="committee" data-committee="Merchandise" /> Merchandise</label>
+                <p style="font-size:15px;color:var(--muted);margin:8px 0 0;line-height:1.4;">After an officer approves: <b>Merchandise</b> unlocks Shop Studio; <b>Social</b> and <b>Charity</b> unlock Raffles, Event Studio, and related reports. Officers and board keep the Officer desk. Treasurer (and board) can see payments.</p>
+              </div>
+              <input id="pfRoleNote" placeholder="Anything that helps verify (optional)" style="margin-top:8px;" />
+            </div>
+          </div>
+        </details>
+
+        <p style="font-size:15px;color:#3a3a2e;background:#fbf6e9;border:1px solid rgba(168,128,28,.35);border-radius:10px;padding:10px 12px;margin:14px 0 0;line-height:1.4;">
+          <b>You are on step 3 of 4.</b> After you save, finish <b>Total hours since July 1</b> from TrackItForward on Member desk (step 4).
+        </p>
+        <button class="btn btn-primary" type="submit" style="width:100%;margin-top:14px;">🍀 Start earning Clovers</button>
+        <div class="err" id="pfMsg"></div>
+      </form>
+    </div>
+  </div>
+
+  <nav class="krewe-nav" aria-label="Primary">
+    <a class="brand" href="index.html">
+      <img src="/assets/emblem-shamrock-C25sUmyu.png" alt="Krewe of Shamrock emblem" />
+      <span class="name"><b>Krewe of Shamrock</b><small>Tampa Bay · Est. 1999</small></span>
+    </a>
+    <button class="nav-toggle" id="kreweNavToggle" aria-label="Open menu" aria-controls="kreweMenu" aria-expanded="false">
+      <span class="nav-toggle-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+    </button>
+    <div class="krewe-menu" id="kreweMenu">
+      <ul class="krewe-links">
+        <li><a href="index.html" data-nav="index.html">Home</a></li>
+        <li class="nav-group">
+          <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">Events <span class="caret"></span></button>
+          <ul class="nav-dropdown">
+            <li><a href="event-signup.html" data-nav="event-signup.html">Upcoming Events</a></li>
+            <li><a href="parades.html" data-nav="parades.html">Parades</a></li>
+            <li><a href="tartan-ball.html" data-nav="tartan-ball.html">Tartan Ball</a></li>
+          </ul>
+        </li>
+        <li class="nav-group">
+          <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">About <span class="caret"></span></button>
+          <ul class="nav-dropdown">
+            <li><a href="learn.html" data-nav="learn.html">Our Heritage</a></li>
+            <li><a href="krewe-history.html" data-nav="krewe-history.html">Krewe History</a></li>
+            <li><a href="poetry.html" data-nav="poetry.html">Krewe Creativity</a></li>
+          </ul>
+        </li>
+        <li class="nav-group">
+          <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">Media <span class="caret"></span></button>
+          <ul class="nav-dropdown">
+            <li><a href="gallery.html" data-nav="gallery.html">Photo Gallery</a></li>
+            <li><a href="videos.html" data-nav="videos.html">Videos</a></li>
+            <li><a href="share.html" data-nav="share.html">Share Yours</a></li>
+          </ul>
+        </li>
+        <li class="nav-group">
+          <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">Get Involved <span class="caret"></span></button>
+          <ul class="nav-dropdown">
+            <li><a href="volunteer.html" data-nav="volunteer.html">Volunteer</a></li>
+            <li><a href="store.html" data-nav="store.html">Shop</a></li>
+          </ul>
+        </li>
+        <li><a href="members.html" data-nav="members.html">Member Login</a></li>
+        <li><a href="https://kreweofshamrock.wildapricot.org" target="_blank" rel="noopener noreferrer" title="Archive of the previous site" aria-label="Archive of the previous site">Archive</a></li>
+      </ul>
+      <a class="nav-cta" href="membership-application.html" data-nav="membership-application.html">☘ Join</a>
+    </div>
+  </nav>
+
+  <header class="page-head">
+    <div class="ph-bg" style="background-image:url('/assets/krewe-big-group-CTzC-ay1.jpg')"></div>
+    <p class="eyebrow">For the Krewe</p>
+    <h1>Members Only</h1>
+    <p class="sub">Coordinate lockers, carpools, van pools, and find your fellow members.</p>
+  </header>
+
+  <main class="wrap" id="memberContent" style="display:none;">
+    <div id="memberBar" class="hub-member-bar">
+      <span id="memberWho" class="hub-signed-pill" aria-live="polite"></span>
+      <button type="button" class="hub-signout-btn" onclick="if(window.kosSignOut)window.kosSignOut()">Sign out</button>
+    </div>
+    <div class="member-grid">
+
+      <!-- NEW MEMBER ORIENTATION (members-only video, shown on the Member desk tab) -->
+      <section class="app-card" id="orientationCard" data-hub="parade">
+        <div class="app-head"><span class="ic">🎬</span><div><h2>New Member Orientation</h2><small>What new Krewe of Shamrock members must know</small></div></div>
+        <div class="app-body">
+          <p style="margin-top:0;">New to the Krewe - or want a refresher? This short video walks through
+             what every member should know: dues, the waiver, parade day, and how the season works.</p>
+          <div style="position:relative;padding-top:56.25%;border-radius:12px;overflow:hidden;box-shadow:var(--shadow);border:1px solid rgba(168,128,28,.3);">
+            <video controls playsinline preload="metadata"
+                   style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#0a0a0a;"
+                   src="assets/video/new-member-orientation.mp4">
+              Sorry - your browser cannot play this video.
+              <a href="assets/video/new-member-orientation.mp4">Download it instead.</a>
+            </video>
+          </div>
+          <p style="font-size:14px;color:var(--muted);margin:10px 0 0;">Pair it with <a href="#docs">Documents</a>: bylaws, waiver language, Code of Conduct, and parade guides.</p>
+        </div>
+      </section>
+
+      <!-- GOVERNING DOCUMENTS (Member desk, revealed by #docs) -->
+      <section class="app-card" id="docs" data-hub="parade">
+        <div class="app-head"><span class="ic">📜</span><div><h2>Documents</h2><small>Governing documents for members and officers</small></div></div>
+        <div class="app-body">
+          <div class="pr-waiver" style="margin-top:0;">
+            <p style="margin:0 0 8px;font-size:15px;color:var(--green-800);"><b>Read these in-Hub</b></p>
+            <p style="margin:0 0 10px;font-size:15px;color:var(--muted);line-height:1.45;">Official bylaws and Code of Conduct. Members and officers can open these here. The PDF is the official original.</p>
+            <div class="hub-docs" style="margin-top:0;">
+              <a href="/assets/docs/bylaws.html">Bylaws</a>
+              <a href="/assets/docs/code-of-conduct.html">Code of Conduct</a>
+              <a href="/assets/docs/parade-rules.html">Parade Rules</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PARADE READY -->
+      <section class="app-card" id="prCard">
+        <div class="app-head"><span class="ic">🎗️</span><div><h2>Parade Ready</h2><small>Dues, waiver, meeting &amp; photo release (Jun-May)</small></div></div>
+        <div class="app-body">
+          <div id="prStatus"><p class="empty">Loading your status…</p></div>
+          <h4 style="font-family:var(--display);color:var(--green-800);margin:16px 0 8px;">Volunteer hours</h4>
+          <div id="prHours"></div>
+          <p style="font-size:14px;color:#3a3a2e;background:#fbf6e9;border:1px solid rgba(168,128,28,.35);border-radius:12px;padding:12px 14px;margin:10px 0 0;line-height:1.45;">
+            <b>Bring your TrackItForward hours over.</b> When you finish your member profile, open Volunteer hours and enter your current TrackItForward balance as <b>Total hours since July 1</b>. An officer will confirm them. After that, keep logging new hours here on the new site.
+          </p>
+          <form id="vhForm" class="krewe-form" style="margin-top:10px;">
+            <label for="vhHours">Total hours since July 1</label>
+            <input id="vhHours" type="number" min="0.5" max="500" step="0.5" required placeholder="Your TrackItForward total" />
+            <input type="hidden" id="vhActivity" value="Total hours since July 1" />
+            <label for="vhDate" style="margin-top:8px;">As of date (optional)</label>
+            <input id="vhDate" type="date" />
+            <p style="font-size:15px;color:var(--muted);margin:6px 0 0;">Tip: copy the number from TrackItForward. Later logs can still use this form for new shifts (change the hours and we will keep the same season label).</p>
+            <button class="btn btn-primary" type="submit">☘ Save hours from TrackItForward</button>
+            <div class="msg" id="vhMsg"></div>
+          </form>
+        </div>
+      </section>
+
+      <!-- THE CRAIC CUP (gamified participation) -->
+      <section class="app-card dash-card game-head" role="button" tabindex="0"
+               onclick="openGame()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openGame();}">
+        <div class="app-head">
+          <span class="ic">🍀</span>
+          <div><h2>The Craic Cup</h2><small>Kind rivalry. Real bragging rights. All for the craic.</small></div>
+          <span class="dash-go">Play →</span>
+        </div>
+        <div class="app-body dash-body">
+          <p>Who’s bringing the most energy this season? Show up, volunteer, and stack
+             <b>Clovers 🍀</b>. They fuel your <b>rank</b> and unlock <b>badges</b>. RSVP to upcoming events right inside the Cup, and earn <b>+25 🍀</b> for cheering on another IKC krewe. Season restarts every July 1 - good-natured competition only.</p>
+          <div class="dash-chips">
+            <span>🏆 Leaderboard</span><span>📅 Upcoming events</span><span>🌱 → 👑 Ranks</span><span>🎖️ Badges</span>
+            <span>🤝 Volunteer bonuses</span><span>🔎 Find My Clovers</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- RAFFLES -->
+      <section class="app-card dash-card raffle-head" role="button" tabindex="0"
+               onclick="openRaffles()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openRaffles();}">
+        <div class="app-head"><span class="ic">🎟️</span>
+          <div><h2>Raffles</h2><small>Gift baskets &amp; 50/50 for charity - create, plan, enter</small></div>
+          <span class="dash-go">Open →</span></div>
+        <div class="app-body dash-body">
+          <p>Build gift-ready baskets from donated contents, track who is bringing what, and raise money for charity. Draws happen in person at events - tickets are tracked digitally; pay a volunteer at the table.</p>
+          <div class="dash-chips"><span>🎁 Gift baskets</span><span>💚 Charity</span><span>📋 Planning</span><span>🎫 In-person draws</span></div>
+        </div>
+      </section>
+
+      <!-- REPORTS DASHBOARD -->
+      <section class="app-card dash-card" id="dashCard" hidden aria-hidden="true" style="display:none;" role="button" tabindex="-1"
+               onclick="openReports()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openReports();}">
+        <div class="app-head">
+          <span class="ic">📊</span>
+          <div><h2>Reports</h2><small>Pick a report from the list</small></div>
+          <span class="dash-go">Open →</span>
+        </div>
+        <div class="app-body dash-body">
+          <p>Officer reports in one place - choose from a dropdown. Meeting check-in and handy link QRs are in Officer desk → QR Code Studio.</p>
+        </div>
+      </section>
+
+      <!-- SHARE YOUR MEDIA (Member desk) -->
+      <section class="app-card dash-card" id="shareCard" data-hub="parade" role="button" tabindex="0"
+               onclick="location.href='share.html'" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.href='share.html';}">
+        <div class="app-head">
+          <span class="ic">☘</span>
+          <div><h2>Share Your Media</h2><small>Upload photos &amp; videos for the public site - plus artwork, poems, stories, essays &amp; recipes</small></div>
+          <span class="dash-go">Open →</span>
+        </div>
+        <div class="app-body dash-body">
+          <p>Share your work with the whole Krewe. Upload an MP4 video or photos, add a piece of artwork, or
+             publish a poem, short story, essay, or recipe. Artwork, poems, stories, and recipes go live right away.
+             Photos and videos are submitted for officer review before they appear on the public site, and they need a
+             signed Photo &amp; Image Release (faces/likeness) in Parade Ready first.</p>
+          <div class="dash-chips" onclick="event.stopPropagation()">
+              <a href="share.html?type=video" class="dash-chip-link">🎬 Videos</a>
+              <a href="share.html?type=photo" class="dash-chip-link">📷 Gallery photos</a>
+              <a href="share.html?type=art" class="dash-chip-link">🎨 Artwork</a>
+              <a href="share.html?type=poem" class="dash-chip-link">✊️ Poems</a>
+              <a href="share.html?type=story" class="dash-chip-link">📖 Stories &amp; essays</a>
+              <a href="share.html?type=recipe" class="dash-chip-link">🍲 Recipes</a>
+            </div>
+        </div>
+      </section>
+
+      <!-- LOCKERS -->
+      <section class="app-card hub-tool tool-green" id="lockerCard" data-hub="parade">
+        <div class="app-head"><span class="ic">🔑</span><div><h2>Locker Rentals</h2><small>Request and track your krewe locker</small></div></div>
+        <div class="app-body">
+          <form id="lockerForm" class="krewe-form">
+            <div class="row">
+              <div><label for="lkName">Your name</label><input id="lkName" required /></div>
+              <div><label for="lkEmail">Email</label><input id="lkEmail" type="email" /></div>
+            </div>
+            <label for="lkSize">Locker size</label>
+            <select id="lkSize"><option value="small" selected>Small</option><option value="large">Large</option></select>
+            <label for="lkNotes">Notes (optional)</label>
+            <input id="lkNotes" placeholder="e.g. prefer near the entrance" />
+            <button class="btn btn-primary" type="submit">☘ Request a locker</button>
+            <div class="msg" id="lkMsg"></div>
+          </form>
+          <ul class="data-list" id="lockerList"><li class="empty">Loading lockers…</li></ul>
+        </div>
+      </section>
+
+      <!-- CARPOOLS -->
+      <section class="app-card hub-tool tool-navy" id="carpoolCard" data-hub="parade">
+        <div class="app-head"><span class="ic">🚗</span><div><h2>Carpools</h2><small>Offer a ride or ask for one</small></div></div>
+        <div class="app-body">
+          <div class="seg" role="tablist">
+            <button type="button" id="segOffer" class="on" onclick="setCarKind('offer')">I can drive</button>
+            <button type="button" id="segRequest" onclick="setCarKind('request')">I need a ride</button>
+          </div>
+          <form id="carForm" class="krewe-form">
+            <div class="row">
+              <div><label for="cpName">Your name</label><input id="cpName" required /></div>
+              <div><label for="cpEmail">Email</label><input id="cpEmail" type="email" /></div>
+            </div>
+            <div class="row">
+              <div><label for="cpEvent">For which event?</label><input id="cpEvent" placeholder="e.g. Krewe Picnic" /></div>
+              <div><label for="cpPickup">Pickup area</label><input id="cpPickup" placeholder="e.g. South Tampa" /></div>
+            </div>
+            <div class="row">
+              <div id="cpSeatsWrap"><label for="cpSeats">Seats available</label><input id="cpSeats" type="number" min="0" max="20" value="3" /></div>
+              <div><label for="cpPhone">Phone (optional)</label><input id="cpPhone" /></div>
+            </div>
+            <label for="cpNotes">Notes (optional)</label>
+            <input id="cpNotes" placeholder="e.g. leaving at 9am sharp" />
+            <button class="btn btn-primary" type="submit">☘ Post to the board</button>
+            <div class="msg" id="cpMsg"></div>
+          </form>
+          <h3 style="margin:18px 0 0;color:var(--green-800);font-family:var(--display);">🚙 Drivers offering rides</h3>
+          <ul class="data-list" id="offerList"><li class="empty">Loading…</li></ul>
+          <h3 style="margin:18px 0 0;color:var(--green-800);font-family:var(--display);">🙋 Looking for a ride</h3>
+          <ul class="data-list" id="requestList"><li class="empty">Loading…</li></ul>
+        </div>
+      </section>
+
+      <!-- VAN POOLS -->
+      <section class="app-card hub-tool tool-rust" id="vanCard" data-hub="parade">
+        <div class="app-head"><span class="ic">🚐</span><div><h2>Van Pools</h2><small>Reserve a seat on a krewe van</small></div></div>
+        <div class="app-body">
+          <div id="vanList"><p class="empty">Loading van pools…</p></div>
+        </div>
+      </section>
+
+      <!-- DIRECTORY -->
+            <section class="app-card hub-tool tool-gold" id="hubMemberDirectory" data-hub="krewe">
+        <div class="app-head"><span class="ic">👥</span><div><h2>My Krewe</h2><small>Your member directory - faces first. Every member of the krewe, one card each.</small></div></div>
+        <div class="app-body">
+          <div id="hubLeaders" class="leaders-board" hidden role="region" aria-label="Shamrock Leaders"></div>
+          <div class="people-toolbar">
+            <input id="dirSearch" class="krewe-form" placeholder="Search by name…" style="padding:11px 13px;border:1px solid rgba(168,128,28,.5);border-radius:10px;" oninput="renderDir()" />
+            <span class="people-count" id="dirCount"></span>
+          </div>
+          <div class="people-grid" id="dirGrid"><p class="empty">Loading directory…</p></div>
+
+          <p style="font-size:15px;color:var(--muted);margin-top:12px;">Tap a name to open the My Krewe profile. Contact details stay private. Reach people through a krewe officer or <a href="mailto:secretary@kreweofshamrock.com">email the Krewe</a>.</p><p style="margin:10px 0 0;"><a class="btn" href="https://www.facebook.com/groups/1790675004521855" target="_blank" rel="noopener noreferrer" style="background:#1877f2;color:#fff;border:0;display:inline-block;padding:8px 14px;border-radius:999px;font-weight:700;text-decoration:none;">📘 Members-only Facebook group →</a></p>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+    <!-- MEMBER PROFILE MODAL -->
+  <div class="modal-overlay" id="memberProfileModal" aria-hidden="true" onclick="if(event.target===this) closeMemberProfile()">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-label="Member profile" style="max-width:560px;">
+      <div class="modal-head"><span class="ic" style="font-size:24px;">👥</span><h2 id="mpTitle">Member profile</h2>
+        <button class="modal-x" type="button" onclick="closeMemberProfile()" aria-label="Close">✕</button></div>
+      <div class="modal-body" id="mpBody"><p class="empty">Loading…</p></div>
+    </div>
+  </div>
+
+  <!-- RAFFLES MODAL -->
+  <div class="modal-overlay" id="raffleModal" aria-hidden="true" onclick="if(event.target===this) closeRaffles()">
+    <div class="modal-card">
+      <div class="modal-head"><span class="ic" style="font-size:24px;">🎟️</span><h2>Raffles</h2>
+        <button class="modal-x" type="button" onclick="closeRaffles()" aria-label="Close">✕</button></div>
+      <div class="modal-body"><div id="raffleBody"></div></div>
+    </div>
+  </div>
+
+
+  <!-- LEPRECHAUN FIRST-PROFILE WELCOME -->
+  <div class="modal-overlay" id="lepOverlay" aria-hidden="true">
+    <div class="modal-card lep-card" role="dialog" aria-modal="true" aria-label="Welcome from the krewe leprechaun">
+      <div style="position:relative;min-height:90px;">
+        <span class="lep-burst" style="left:18%;top:8px;">✨</span>
+        <span class="lep-burst" style="right:20%;top:0;animation-delay:.15s;">☘️</span>
+        <span class="lep-burst" style="left:48%;top:-4px;animation-delay:.28s;">✨</span>
+        <div class="lep-sprite" aria-hidden="true" title="Krewe leprechaun"><img class="lep-medallion" src="/assets/leprechaun-failte-D9xQ4vLH.jpg" alt="" /></div>
+      </div>
+      <h2>Fáilte, new friend!</h2>
+      <div class="lep-body" id="lepBody"></div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;">
+        <button class="btn btn-primary" type="button" id="lepGoDesk">☘ Start on Member desk</button>
+        <button class="btn" type="button" id="lepLater">Show me the checklist</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- WELCOME TOUR -->
+  <div class="modal-overlay" id="tourOverlay" aria-hidden="true">
+    <div class="modal-card" style="max-width:680px;">
+      <div class="modal-head"><span class="ic" style="font-size:24px;">🍀</span><h2>Welcome to Members Only</h2></div>
+      <div class="modal-body">
+        <p style="margin:0 0 14px;color:#3a3a2e;">You're in! Start on <b>Member desk</b> so you can use the hub for connecting, events, Share, and the Craic Cup.</p>
+        <div class="tour-grid">
+          <div class="tour-item"><span>1️⃣</span><div><b>Member desk</b><br>Begin here. Your checklist for the season lives on this tab.</div></div>
+          <div class="tour-item"><span>2️⃣</span><div><b>Parade Ready + Photo Release</b><br>Sign the liability waiver and the Photo &amp; Image Release so you are parade-safe and can share media.</div></div>
+          <div class="tour-item"><span>3️⃣</span><div><b>My Krewe profile</b><br>Add your photo and a few friendly details so the directory feels like people, not a spreadsheet.</div></div>
+          <div class="tour-item"><span>4️⃣</span><div><b>Volunteer hours</b><br>Enter <b>Total hours since July 1</b> from TrackItForward. Then keep logging new hours here.</div></div>
+          <div class="tour-item"><span>🍀</span><div><b>Then play</b><br>Craic Cup, events, raffles, lockers, carpools, and Share unlock as you go. Cheer loud, climb kind.</div></div>
+        </div>
+        <div style="text-align:center;margin-top:18px;"><button class="btn btn-primary" onclick="kosCloseTour(); if(window.showHubTab) window.showHubTab('parade');">☘ Open Member desk</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE CRAIC CUP MODAL -->
+  <div class="modal-overlay" id="gameModal" aria-hidden="true"
+       onclick="if(event.target===this) closeGame()">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-label="The Craic Cup">
+      <div class="modal-head">
+        <span class="ic" style="font-size:24px;">🍀</span>
+        <h2>The Craic Cup</h2>
+        <span id="gameConn" class="game-conn" aria-live="polite" title="Craic Cup data connection to the krewe database">Connecting…</span>
+        <button class="modal-x" type="button" onclick="closeGame()" aria-label="Close the game">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="game-tabs" role="tablist">
+          <button id="gt-standings" class="on" type="button" onclick="gameTab('standings')">🏆 Standings</button>
+          <button id="gt-events" type="button" onclick="gameTab('events')">📅 Events</button>
+          <button id="gt-howto" type="button" onclick="gameTab('howto')">📖 How to Play</button>
+          <button id="gt-find" type="button" onclick="gameTab('find')">🔎 Find My Clovers</button>
+        </div>
+        <div id="gameBody"></div>
+        <div class="game-nav" aria-label="Game navigation">
+          <button id="gnPrev" type="button" class="gn-step" aria-label="Previous game screen">← Back</button>
+          <button id="gnNext" type="button" class="gn-step" aria-label="Next game screen">Next →</button>
+          <button id="gnExit" type="button" class="game-exit" onclick="closeGame()">🚪 Exit game</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REPORTS DASHBOARD MODAL -->
+  <div class="modal-overlay" id="reportsModal" aria-hidden="true"
+       onclick="if(event.target===this) closeReports()">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-label="Officer reports and QR tools">
+      <div class="modal-head">
+        <span class="ic" style="font-size:24px;">📊</span>
+        <h2>Officer reports</h2>
+        <button class="modal-x" type="button" onclick="closeReports()" aria-label="Close dashboard">✕</button>
+      </div>
+      <div class="modal-body">
+        <div id="reportGrid"></div>
+        <div id="reportView" style="display:none;">
+          <button class="rpt-back" type="button" onclick="showReportGrid()">← Choose another</button>
+          <h3 id="reportTitle"></h3>
+          <div id="reportBody"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="krewe-foot">
+    <img class="fimg crest-img" src="/assets/krewe-crest-jsNApbvr.png" alt="" />
+    <div class="fname">Krewe of Shamrock</div>
+    <div class="flinks">
+<a href="index.html">Home</a>
+<a href="event-signup.html">Events</a>
+<a href="parades.html">Parades</a>
+<a href="tartan-ball.html">Tartan Ball</a>
+<a href="learn.html">Heritage</a>
+<a href="krewe-history.html">History</a>
+<a href="poetry.html">Krewe Creativity</a>
+<a href="gallery.html">Gallery</a>
+<a href="videos.html">Videos</a>
+<a href="volunteer.html">Volunteer</a>
+<a href="store.html">Shop</a>
+<a href="membership-application.html">Join</a>
+<a href="members.html">Members</a>
+</div>
+    <div class="flinks" style="margin-bottom:8px;"><a href="mailto:secretary@kreweofshamrock.com">Contact: secretary@kreweofshamrock.com</a></div>
+    <div class="slainte">Sláinte! 🍀 Tampa Bay, Florida</div>
+    <div class="fine">© Krewe of Shamrock. Celebrating Irish heritage all year round.</div>
+  </footer>
+
+  <div class="krewe-music" id="krewePlayer">
+    <audio id="kreweAudio" src="/assets/krewe-theme-BVAAEwps.mp3" loop preload="none"></audio>
+    <button id="kreweMusicBtn" aria-label="Play background music" aria-pressed="false" title="Play our Irish tune">
+      <span class="bars"><i></i><i></i><i></i><i></i></span>
+    </button>
+    <span class="label" id="kreweMusicLabel">Tap for a tune ☘</span>
+  </div>
+  <script src="assets/krewe.js?v=20260915hubcalm1" defer></script>
+
+
+  <!-- ================= THE CRAIC CUP (gamification) ================= -->
+  <!-- ============== MEMBERS ONLY: AUTH + PROFILE + TOUR ============== -->
+
+  <!-- ============== RAFFLES ============== -->
+  <!-- raffle-module v=20260909r2 -->
+
+<script src="assets/kos-leadership.js?v=20260916lead6"></script>
+<script src="assets/hub-install.js?v=20260918pwa1"></script>
+<script src="assets/kos-calendar.js?v=20260920p1"></script>
+<script src="assets/members-desk.js?v=20260920parade2" defer></script>
+<script src="assets/kos-doc-library.js?v=20260919eggs1" defer></script>
+<script src="assets/kos-doc-studio.js?v=20260919docstudio1" defer></script>
+  <script src="assets/kos-event-studio.js?v=20260918memb3" defer></script>
+  <script src="assets/kos-shop-studio.js?v=20260910shopfix" defer></script>
+<script src="assets/kos-qr-studio.js?v=20260918qrpick1"></script>
+  <script src="assets/kos-reports.js?v=20260914t1" defer></script>
+  <script src="assets/kos-all-krewe-messages.js" defer></script>
+  <script src="assets/kos-email-invoices.js?v=20260915ei1" defer></script>
+</body>
+</html>
+

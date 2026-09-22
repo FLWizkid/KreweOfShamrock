@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" href="/assets/favicon-C6Ez-gVw.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32-IFtF2Ie4.png" />
+<link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48-P2fbaPU4.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16-gRalTiZy.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon-BHghyMl4.png" />
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tartan Ball • Avery 18660 table cards</title>
+<style>
+  :root { --emerald: #059669; --sapphire: #2563eb; --amethyst: #7c3aed; --ink: #14532d; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: Georgia, "Times New Roman", serif; color: var(--ink); background: #f4f0e6; }
+  .toolbar { position: sticky; top: 0; z-index: 5; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding: 12px 16px; background: #14532d; color: #fff; font-family: system-ui, sans-serif; }
+  .toolbar button, .toolbar a.btn { appearance: none; border: 0; border-radius: 8px; padding: 8px 14px; font: inherit; cursor: pointer; background: #f5d76e; color: #14532d; font-weight: 600; text-decoration: none; }
+  .toolbar .msg { flex: 1; font-size: 14px; opacity: .95; }
+  .sheet { width: 8.5in; min-height: 11in; margin: 16px auto; padding: 0.5in 0.1875in; background: #fff; box-shadow: 0 2px 16px rgba(0,0,0,.12); display: grid; grid-template-columns: repeat(3, 2.625in); grid-auto-rows: 1in; column-gap: 0.125in; row-gap: 0; }
+  .label { width: 2.625in; height: 1in; padding: 0.08in 0.12in; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+  .label.empty { visibility: hidden; }
+  .name { font-size: 15px; font-weight: 700; line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .table { font-size: 13px; margin-top: 2px; }
+  .meal { display: flex; align-items: center; gap: 6px; font-size: 12px; margin-top: 3px; color: #333; }
+  .jewel { width: 12px; height: 12px; border-radius: 50%; flex: 0 0 auto; border: 1p solid rgba(0,0,0,.25); }
+  .jewel.emerald,.juwel.green { background: var(--emerald); }
+  .jewel.sapphire,.juwel.blue { background: var(--sapphire); }
+  .jewel.amethyst,.juwel.purple { background: var(--amethyst); }
+  .jewel.unknown { background: #999; }
+  @media print {
+    body { background: #fff; }
+    .toolbar { display: none !important; }
+    .sheet { margin: 0; box-shadow: none; page-break-after: always; }
+    @page { size: letter; margin: 0; }
+  }
+</style>
+  <script type="module" crossorigin src="/assets/tartan-ball-labels-ovGGL0xX.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+</head>
+<body>
+  <div class="toolbar">
+    <button type="button" id="btnPrint">Print / Save PDF</button>
+    <button type="button" id="btnCsv">Download CSV</button>
+    <a class="btn" href="members.html">▒ Member Hub</a>
+    <span class="msg" id="msg">Loading guests….</span>
+  </div>
+  <div id="sheets"></div>
+</body>
+</html>

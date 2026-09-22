@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex" />
+<title>Krewe of Shamrock · One moment…</title>
+<link rel="icon" href="/assets/favicon-C6Ez-gVw.ico" sizes="any" />
+<style>
+  body{ background:#fff; }
+  .go-wrap{ max-width:520px; margin:12vh auto 0; padding:0 20px; text-align:center; }
+  .go-wrap h1{ font-family:var(--display); color:var(--green-800); font-size:26px; }
+  .go-wrap p{ color:var(--muted); font-size:16px; line-height:1.5; }
+  .go-wrap a{ color:var(--green-800); }
+</style>
+  <link rel="stylesheet" crossorigin href="/assets/members-5fxORm81.css">
+</head>
+<body>
+  <!-- The tracked QR hop (QR_LIBRARY_BUILD_PLAN.md Phase 2). A printed square
+       encodes go.html?c=SLUG; this page asks the registry where that slug
+       points, one anonymous scan is counted server-side, and the visitor is
+       sent on. Officers can re-point a slug later, so printed squares never
+       go stale. No third-party scripts: a plain fetch to the krewe's own
+       Supabase REST endpoint, so ad-blockers have nothing to block. -->
+  <div class="go-wrap">
+    <h1>☘ One moment…</h1>
+    <p id="goMsg">Following your QR code.</p>
+  </div>
+  <script>
+  (function () {
+    "use strict";
+    var SB_URL = "https://oazwkwflgbthojvnclfc.supabase.co";
+    var SB_KEY = "sb_publishable_aMCyVxkiolMuBt9_R990CA_xQmXLaaS";
+    var msg = document.getElementById("goMsg");
+    function fail(text) {
+      msg.innerHTML = "";
+      msg.appendChild(document.createTextNode(text + " "));
+      var a = document.createElement("a");
+      a.href = "index.html";
+      a.textContent = "Go to the Krewe of Shamrock home page";
+      msg.appendChild(a);
+      msg.appendChild(document.createTextNode("."));
+    }
+    var slug = new URLSearchParams(location.search).get("c") || "";
+    if (!slug) { fail("This QR link is missing its code."); return; }
+    fetch(SB_URL + "/rest/v1/rpc/resolve_qr", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SB_KEY,
+        "Authorization": "Bearer " + SB_KEY
+      },
+      body: JSON.stringify({ p_slug: slug })
+    }).then(function (r) { return r.json(); }).then(function (data) {
+      if (data && data.ok && data.target_url && /^(https:\/\/|mailto:)/i.test(data.target_url)) {
+        msg.textContent = "Taking you to " + (data.label || "the page") + "…";
+        location.replace(data.target_url);
+      } else {
+        fail((data && data.error) || "This QR code isn't active.");
+      }
+    }).catch(function () {
+      fail("Couldn't reach the krewe's server. Check your connection and try again, or");
+    });
+  })();
+  </script>
+</body>
+</html>

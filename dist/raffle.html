@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" href="/assets/favicon-C6Ez-gVw.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32-IFtF2Ie4.png" />
+<link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48-P2fbaPU4.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16-gRalTiZy.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon-BHghyMl4.png" />
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Krewe of Shamrock · Raffle</title>
+<meta name="description" content="Krewe of Shamrock charity gift-basket and 50/50 raffles. Browse themed donated baskets, enter tickets digitally, and pay in person at the event." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  .rf-wrap{ max-width:1040px; margin:0 auto; padding:26px 20px 60px; }
+  .rf-hero{ text-align:center; padding:30px 18px 6px; }
+  .rf-hero h1{ font-family:var(--display); color:var(--green-800); font-size:38px; margin:.2em 0 .1em; }
+  .rf-hero .sub{ font-family:var(--fancy); font-style:italic; color:#7a1f2b; font-size:20px; }
+  .rf-how{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:22px 0 8px; }
+  .rf-how .card{ background:#fff; border:1px solid rgba(168,128,28,.3); border-left:5px solid var(--gold); border-radius:14px; padding:18px 20px; box-shadow:var(--shadow-sm,0 4px 14px rgba(0,0,0,.06)); }
+  .rf-how h3{ font-family:var(--display); color:var(--green-800); margin:0 0 6px; font-size:20px; }
+  .rf-how ol{ margin:8px 0 0; padding-left:20px; } .rf-how li{ margin:5px 0; color:#3a3a2e; }
+  .rf-pay{ background:#fbf6e9; border:1px dashed var(--gold); border-radius:12px; padding:14px 18px; margin:16px 0 6px; color:#5a4a1e; font-size:15px; }
+  .rf-section-title{ font-family:var(--display); color:var(--green-800); font-size:27px; margin:34px 0 4px; }
+  .rf-section-title small{ display:block; font-family:var(--fancy); font-style:italic; color:var(--muted,#6b6b5e); font-size:16px; }
+  .basket-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:16px; margin-top:14px; }
+  .basket{ background:#fff; border:1px solid rgba(168,128,28,.3); border-radius:14px; padding:18px; box-shadow:0 6px 18px rgba(0,0,0,.06); transition:box-shadow .15s, border-color .15s; }
+  .basket.highlight{ border-color:var(--green-700,#1c6b3f); box-shadow:0 0 0 3px rgba(28,107,63,.25),0 10px 24px rgba(0,0,0,.12); }
+  .basket h3{ font-family:var(--display); color:var(--green-800); font-size:20px; margin:0 0 4px; }
+  .basket .val{ color:#7a1f2b; font-weight:600; font-size:14px; }
+  .basket .desc{ color:#4a4a3e; font-size:14px; margin:8px 0; }
+  .basket .count{ font-size:14px; color:var(--green-800); font-weight:600; margin:6px 0 10px; }
+  .buyform{ display:grid; gap:8px; }
+  .buyform input{ width:100%; padding:11px 12px; border:1px solid rgba(168,128,28,.45); border-radius:9px; font-size:15px; }
+  .qtyrow{ display:flex; gap:8px; }
+  .qtyrow input{ flex:1; }
+  .btn-rf{ background:var(--gold); color:var(--green-900); border:0; border-radius:999px; padding:11px 16px; font-family:var(--display); font-weight:700; font-size:15px; cursor:pointer; white-space:nowrap; }
+  .btn-rf:hover{ filter:brightness(1.05); }
+  .fifty{ background:linear-gradient(180deg,#7a1f2b,#4a0f17); color:#fff; border-radius:16px; padding:24px; margin-top:16px; }
+  .fifty h3{ font-family:var(--display); font-size:26px; margin:0 0 6px; }
+  .fifty .pot{ font-size:15px; opacity:.95; }
+  .fifty .buyform input{ background:#fff; }
+  .won{ background:#eaf5ee; border:1px solid #1c6b3f; color:#14532b; border-radius:10px; padding:8px 12px; font-weight:600; font-size:14px; }
+  .rf-msg{ font-size:14px; margin-top:6px; min-height:18px; }
+  .rf-msg.ok{ color:#14532b; } .rf-msg.err{ color:#b3261e; }
+  .empty{ color:var(--muted,#6b6b5e); }
+  @media (max-width:640px){ .rf-how{ grid-template-columns:1fr; } .rf-hero h1{ font-size:30px; } }
+  .basket .photo{ width:100%; height:170px; object-fit:cover; border-radius:10px; margin-bottom:10px; }
+  .basket .contents{ font-size:13.5px; color:#3a3a2e; margin:6px 0; }
+  .basket .contents b{ color:var(--green-800); }
+  .rf-empty-note{ color:var(--muted,#6b6b5e); text-align:center; padding:18px; }
+</style>
+  <script type="module" crossorigin src="/assets/raffle-DyVzUfoU.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="/assets/members-5fxORm81.css">
+</head>
+<body>
+<nav class="krewe-nav" aria-label="Primary">
+    <a class="brand" href="index.html">
+      <img src="/assets/emblem-shamrock-C25sUmyu.png" alt="Krewe of Shamrock emblem" />
+      <span class="name"><b>Krewe of Shamrock</b><small>Tampa Bay · Est. 1999</small></span>
+    </a>
+    <button class="nav-toggle" id="kreweNavToggle" aria-label="Open menu" aria-controls="kreweMenu" aria-expanded="false">
+      <span class="nav-toggle-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+    </button>
+    <div class="krewe-menu" id="kreweMenu">
+      <ul class="krewe-links">
+        <li><a href="index.html" data-nav="index.html">Home</a></li>
+        <li class="nav-group">
+          <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">Events <span class="caret"></span></button>
+          <ul class="nav-dropdown">
+            <li><a href="event-signup.html" data-nav="event-signup.html">Upcoming Events</a></li>
+            <li><a href="parades.html" data-nav="parades.html">Parades</a></li>
+            <li><a href="tartan-ball.html" data-nav="tartan-ball.html">Tartan Ball</a></li>
+          </ul>
+        </li>
+        <li class="nav-group">
+          <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">About <span class="caret"></span></button>
+          <ul class="nav-dropdown">
+            <li><a href="learn.html" data-nav="learn.html">Our Heritage</a></li>
+            <li><a href="krewe-history.html" data-nav="krewe-history.html">Krewe History</a></li>
+            <li><a href="poetry.html" data-nav="poetry.html">Krewe Creativity</a></li>
+          </ul>
+        </li>
+        <li class="nav-group">
+          <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">Media <span class="caret"></span></button>
+          <ul class="nav-dropdown">
+            <li><a href="gallery.html" data-nav="gallery.html">Photo Gallery</a></li>
+            <li><a href="videos.html" data-nav="videos.html">Videos</a></li>
+            <li><a href="share.html" data-nav="share.html">Share Yours</a></li>
+          </ul>
+        </li>
+        <li class="nav-group">
+          <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">Get Involved <span class="caret"></span></button>
+          <ul class="nav-dropdown">
+            <li><a href="volunteer.html" data-nav="volunteer.html">Volunteer</a></li>
+            <li><a href="store.html" data-nav="store.html">Shop</a></li>
+          </ul>
+        </li>
+        <li><a href="members.html" data-nav="members.html">Member Login</a></li>
+        <li><a href="https://kreweofshamrock.wildapricot.org" target="_blank" rel="noopener noreferrer" title="Archive of the previous site" aria-label="Archive of the previous site">Archive</a></li>
+      </ul>
+      <a class="nav-cta" href="membership-application.html" data-nav="membership-application.html">☘ Join</a>
+    </div>
+  </nav>
+
+  <header class="rf-hero">
+    <h1 id="rfTitle">Krewe of Shamrock Charity Raffles</h1>
+    <p class="sub" id="rfSub">Gift-ready baskets from donated treasures — raise funds for charity ☘</p>
+  </header>
+
+  <div class="rf-wrap">
+
+    <div class="rf-how">
+      <div class="card">
+        <h3>🎁 How gift-basket raffles work</h3>
+        <ol>
+          <li>Browse the themed, gift-ready baskets below (donated contents — themes, bottles, or a single treasure).</li>
+          <li>Enter your name and how many tickets you want for that basket.</li>
+          <li>Each ticket is one entry <em>in that basket</em>. Draws happen <b>in person</b> at the event.</li>
+          <li>Proceeds support charity. Members also use this page as a planning board while baskets come together.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h3>💰 How the 50/50 works</h3>
+        <ol>
+          <li>Buy 50/50 tickets in any amount.</li>
+          <li>All tickets go into one pot.</li>
+          <li>One ticket is drawn in person at the event.</li>
+          <li>The winner takes <b>half the pot</b>; the other half supports charity.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="rf-pay" id="rfPay">
+      <b>Paying:</b> Tickets are tracked digitally; payment is in person. Settle up with any Krewe volunteer at the table (cash or card).
+      Your entries are recorded when you submit — a volunteer confirms payment before the draw. Sláinte! 🍀
+    </div>
+
+    <div id="raffleRoot"><p class="empty">Loading raffles…</p></div>
+
+  </div>
+
+  <!-- MUSIC PLAYER -->
+  <div class="krewe-music" id="krewePlayer">
+    <audio id="kreweAudio" src="/assets/krewe-theme-BVAAEwps.mp3" loop preload="none"></audio>
+    <button id="kreweMusicBtn" aria-label="Play background music" aria-pressed="false" title="Play our Irish tune"><span class="bars"><i></i><i></i><i></i><i></i></span></button>
+    <span class="label" id="kreweMusicLabel">Tap for a tune ☘</span>
+  </div>
+  <script src="assets/krewe.js" defer></script>
+
+<p style="margin:8px 0 0;"><a href="mailto:secretary@kreweofshamrock.com" style="color:var(--gold-light);">Contact: secretary@kreweofshamrock.com</a></p>
+</body>
+</html>

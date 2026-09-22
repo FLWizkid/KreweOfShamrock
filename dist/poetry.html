@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" href="/assets/favicon-C6Ez-gVw.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32-IFtF2Ie4.png" />
+<link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48-P2fbaPU4.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16-gRalTiZy.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon-BHghyMl4.png" />
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Krewe of Shamrock · Krewe Creativity</title>
+<meta name="description" content="Krewe Creativity: photography, music, video, art, and writing shared by the Krewe of Shamrock community." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  /* illuminated-manuscript feature */
+  .illuminated{
+    position:relative; background:
+      linear-gradient(180deg,#fbf4df,#f3e8c8);
+    border:2px solid var(--gold); border-radius:16px;
+    padding:34px 38px; box-shadow:var(--shadow);
+    background-image:
+      radial-gradient(circle at 12% 16%, rgba(212,175,55,.10), transparent 40%),
+      radial-gradient(circle at 88% 84%, rgba(43,139,81,.10), transparent 42%),
+      linear-gradient(180deg,#fbf4df,#f1e4c2);
+  }
+  .illuminated .frame-rule{ position:absolute; inset:10px; border:1px solid rgba(168,128,28,.45); border-radius:11px; pointer-events:none; }
+  .illuminated h3{ font-family:"Cinzel Decorative",var(--display); color:var(--green-800); text-align:center; font-size:26px; margin:0 0 16px; }
+  .illuminated .verse{ font-family:var(--fancy); font-size:22px; line-height:1.7; color:#3a3326; white-space:pre-line; text-align:center; }
+  .illuminated .verse::first-letter{
+    font-family:"Cinzel Decorative",serif; float:left; font-size:74px; line-height:.8;
+    padding:6px 12px 4px 0; color:var(--gold-deep); }
+  .illuminated .src{ text-align:center; font-style:italic; color:var(--muted); margin-top:18px; }
+  .poem-card{ background:#fff; border:1px solid rgba(168,128,28,.28); border-radius:14px; padding:20px 22px; box-shadow:var(--shadow-sm); }
+  .poem-card h3{ color:var(--green-800); font-family:var(--display); margin:0 0 10px; font-size:20px; }
+  .poem-card .verse{ font-family:var(--fancy); white-space:pre-line; font-size:18px; line-height:1.65; color:#3a3326; }
+  .poem-card .src{ font-style:italic; color:var(--muted); margin-top:12px; }
+</style>
+<style>
+.cre-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:18px 0 10px;}
+.cre-card{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;background:#fffdf4;
+  border:1px solid rgba(168,128,28,.35);border-radius:14px;padding:18px 14px;box-shadow:var(--shadow-sm);
+  text-decoration:none;color:#3a3a2e;transition:box-shadow .25s ease,transform .25s ease;}
+.cre-card:hover{box-shadow:var(--shadow);transform:translateY(-3px);}
+.cre-card .ic{font-size:30px;line-height:1;}
+.cre-card b{font-family:var(--display);color:var(--green-800);font-size:17px;letter-spacing:.4px;}
+.cre-card span:last-child{font-family:var(--fancy);font-style:italic;color:var(--muted);font-size:14.5px;}
+</style>
+  <script type="module" crossorigin src="/assets/poetry-DUPsF70P.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="/assets/members-5fxORm81.css">
+</head>
+<body>
+
+  <nav class="krewe-nav" aria-label="Primary">
+    <a class="brand" href="index.html">
+      <img src="/assets/emblem-shamrock-C25sUmyu.png" alt="Krewe of Shamrock emblem" />
+      <span class="name"><b>Krewe of Shamrock</b><small>Tampa Bay · Est. 1999</small></span>
+    </a>
+    <button class="nav-toggle" id="kreweNavToggle" aria-label="Open menu" aria-controls="kreweMenu" aria-expanded="false">
+      <span class="nav-toggle-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+    </button>
+    <div class="krewe-menu" id="kreweMenu">
+      <ul class="krewe-links">
+        <li><a href="index.html" data-nav="index.html">Home</a></li>
+        <li class="nav-group">
+          <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">Events <span class="caret"></span></button>
+          <ul class="nav-dropdown">
+            <li><a href="event-signup.html" data-nav="event-signup.html">Upcoming Events</a></li>
+            <li><a href="parades.html" data-nav="parades.html">Parades</a></li>
+            <li><a href="tartan-ball.html" data-nav="tartan-ball.html">Tartan Ball</a></li>
+          </ul>
+        </li>
+        <li class="nav-group">
+          <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">About <span class="caret"></span></button>
+          <ul class="nav-dropdown">
+            <li><a href="learn.html" data-nav="learn.html">Our Heritage</a></li>
+            <li><a href="krewe-history.html" data-nav="krewe-history.html">Krewe History</a></li>
+            <li><a href="poetry.html" data-nav="poetry.html">Krewe Creativity</a></li>
+          </ul>
+        </li>
+        <li class="nav-group">
+          <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">Media <span class="caret"></span></button>
+          <ul class="nav-dropdown">
+            <li><a href="gallery.html" data-nav="gallery.html">Photo Gallery</a></li>
+            <li><a href="videos.html" data-nav="videos.html">Videos</a></li>
+            <li><a href="share.html" data-nav="share.html">Share Yours</a></li>
+          </ul>
+        </li>
+        <li class="nav-group">
+          <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">Get Involved <span class="caret"></span></button>
+          <ul class="nav-dropdown">
+            <li><a href="volunteer.html" data-nav="volunteer.html">Volunteer</a></li>
+            <li><a href="store.html" data-nav="store.html">Shop</a></li>
+          </ul>
+        </li>
+        <li><a href="members.html" data-nav="members.html">Member Login</a></li>
+        <li><a href="https://kreweofshamrock.wildapricot.org" target="_blank" rel="noopener noreferrer" title="Archive of the previous site" aria-label="Archive of the previous site">Archive</a></li>
+      </ul>
+      <a class="nav-cta" href="membership-application.html" data-nav="membership-application.html">☘ Join</a>
+    </div>
+  </nav>
+
+  <header class="page-head">
+    <div class="ph-bg" style="background-image:url('/assets/gaelic-cottage-XfKGDvCY.jpg')"></div>
+    <p class="eyebrow">Made by the krewe</p>
+    <h1>Krewe Creativity</h1>
+    <p class="sub">Photography, music, video, art, and writing, shared by our community.</p>
+  </header>
+
+  <main class="wrap narrow">
+
+    <span class="crest float" role="img" aria-label="Shamrock crest"></span><div class="tune-picker" style="max-width:520px;margin:0 auto 40px;text-align:center;background:#fff;border:1px solid rgba(168,128,28,.28);border-radius:14px;padding:20px 22px;box-shadow:var(--shadow-sm);"><h3 style="font-family:var(--display);color:var(--green-800);margin:0 0 12px;font-size:20px;">Play a Tune &#9752;</h3><p class="sub" style="margin:0 0 14px;">Pick a song to set the mood while you read.</p><audio id="tuneAudio" preload="none"></audio><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;align-items:center;"><select id="tuneSelect" aria-label="Choose a tune" style="padding:9px 12px;border:1px solid rgba(168,128,28,.45);border-radius:8px;font-family:var(--display);font-size:15px;background:#fbf4df;color:#3a3326;"><option value="assets/audio/Céilí Hearth.mp3">Céilí Hearth</option><option value="assets/audio/krewe-theme.mp3">The Parting Glass</option><option value="assets/audio/Krewe of Shamrock.mp3">The Wild Rover</option><option value="assets/audio/Shamrock Krewe.mp3">Whiskey in the Jar</option><option value="assets/audio/The Krewe of Shamrock (1).mp3">The Krewe of Shamrock</option></select><button id="tunePlayBtn" class="btn btn-primary" type="button" aria-pressed="false" style="cursor:pointer;">&#9654; Play a Tune</button></div></div><script>(function(){var a=document.getElementById('tuneAudio'),s=document.getElementById('tuneSelect'),b=document.getElementById('tunePlayBtn');if(!a||!s||!b)return;function L(){a.src=s.value;}L();s.addEventListener('change',function(){var p=!a.paused;L();if(p){a.play().catch(function(){});}else{b.textContent='\u25B6 Play a Tune';b.setAttribute('aria-pressed','false');}});b.addEventListener('click',function(){if(a.paused){if(!a.src)L();a.play().then(function(){b.textContent='\u275A\u275A Pause';b.setAttribute('aria-pressed','true');}).catch(function(){});}else{a.pause();b.textContent='\u25B6 Play a Tune';b.setAttribute('aria-pressed','false');}});a.addEventListener('ended',function(){b.textContent='\u25B6 Play a Tune';b.setAttribute('aria-pressed','false');});})();</script>
+
+
+    <!-- SHARE YOUR CREATIVITY -->
+    <div class="section-title">
+      <h2>Share Your Creativity</h2>
+      <p class="sub">This page belongs to every maker in the krewe</p>
+    </div>
+    <div class="knot-divider"><span class="knot"></span></div>
+    <p style="text-align:center;max-width:660px;margin:0 auto 6px;">Photographs from the route, a song from your kitchen table,
+       a painting, a poem, a bit of film: if you made it, it belongs here. Pick your craft below, send it in, and
+       we'll hang it proudly for the whole community.</p>
+    <div class="cre-grid">
+      <a class="cre-card" href="share.html?type=photo"><span class="ic">📷</span><b>Photography</b><span>Beautiful photographic art: travel, landscapes &amp; the human spirit</span></a>
+      <a class="cre-card" href="share.html?type=video"><span class="ic">🎵</span><b>Music &amp; Video</b><span>Songs, sessions &amp; footage worth sharing</span></a>
+      <a class="cre-card" href="share.html?type=art"><span class="ic">🎨</span><b>Art</b><span>Paintings, drawings &amp; Celtic craft</span></a>
+      <a class="cre-card" href="share.html?type=poem"><span class="ic">✒️</span><b>Poetry</b><span>Verse, blessings &amp; toasts</span></a>
+      <a class="cre-card" href="share.html?type=story"><span class="ic">📖</span><b>Writing</b><span>Stories &amp; memories of the krewe</span></a>
+      <a class="cre-card" href="share.html?type=recipe"><span class="ic">🍲</span><b>Recipes</b><span>Irish favorites &amp; parade snacks</span></a>
+    </div>
+
+    <!-- Illuminated feature: traditional Irish blessing -->
+    <div class="illuminated ornate"><span class="crn tr"></span><span class="crn bl"></span>
+      <div class="frame-rule"></div>
+      <h3>An Irish Blessing</h3>
+      <div class="verse">May the road rise up to meet you,
+May the wind be always at your back,
+May the sun shine warm upon your face,
+The rains fall soft upon your fields,
+And until we meet again,
+May God hold you in the palm of His hand.</div>
+      <div class="src">Traditional Irish blessing <a href="members.html?found=irish-blessing" style="text-decoration:none;font-size:18px;color:var(--green-700);opacity:.6;margin-left:4px;" aria-label="A lucky clover" title="A lucky clover">☘</a></div>
+    </div>
+
+    <!-- Poems (live) -->
+    <div class="section-title" style="margin-top:56px;">
+      <h2>Poetry</h2>
+      <p class="sub">Verse from the krewe</p>
+    </div>
+    <div class="knot-divider"><span class="knot"></span></div>
+    <div id="poems" class="grid-auto"><p class="empty">Loading poems…</p></div>
+
+    <!-- Artwork: static gallery + live -->
+    <div class="section-title" style="margin-top:56px;">
+      <h2>Artwork</h2>
+      <p class="sub">Celtic art &amp; illustration</p>
+    </div>
+    <div class="knot-divider"><span class="knot"></span></div>
+    <div class="grid-auto">
+      <div class="tile glow"><a href="assets/img/warrior-woman.jpg" target="_blank" rel="noopener"><img loading="lazy" src="/assets/warrior-woman-Bix8mqwW.jpg" alt="Illustrated Celtic warrior woman"></a><div class="cap"><h3>Daughter of Éireann</h3><span>Manuscript illustration</span></div></div>
+      <div class="tile glow"><a href="assets/img/piper-painting.jpg" target="_blank" rel="noopener"><img loading="lazy" src="/assets/piper-painting-DSNoR3_G.jpg" alt="Painterly portrait of a piper"></a><div class="cap"><h3>The Lone Piper</h3><span>Oil-painting style</span></div></div>
+      <div class="tile glow"><a href="assets/img/gaelic-cottage.jpg" target="_blank" rel="noopener"><img loading="lazy" src="/assets/gaelic-cottage-XfKGDvCY.jpg" alt="Painterly Gaelic cottage scene"></a><div class="cap"><h3>Home Fires</h3><span>Painted scene</span></div></div>
+      <div class="tile glow"><a href="assets/img/irish-folk.jpg" target="_blank" rel="noopener"><img loading="lazy" src="/assets/irish-folk-CK9izi8r.jpg" alt="Whimsical illustration of Irish folk"></a><div class="cap"><h3>The Lads in Green</h3><span>Whimsical illustration</span></div></div>
+    </div>
+    <div id="art" class="grid-auto" style="margin-top:22px;"><p class="empty">Loading community artwork…</p></div>
+  </main>
+
+  <footer class="krewe-foot">
+    <img class="fimg crest-img" src="/assets/krewe-crest-jsNApbvr.png" alt="" />
+    <div class="fname">Krewe of Shamrock</div>
+    <div class="flinks">
+<a href="index.html">Home</a>
+<a href="event-signup.html">Events</a>
+<a href="parades.html">Parades</a>
+<a href="tartan-ball.html">Tartan Ball</a>
+<a href="learn.html">Heritage</a>
+<a href="krewe-history.html">History</a>
+<a href="poetry.html">Krewe Creativity</a>
+<a href="gallery.html">Gallery</a>
+<a href="videos.html">Videos</a>
+<a href="volunteer.html">Volunteer</a>
+<a href="store.html">Shop</a>
+<a href="membership-application.html">Join</a>
+<a href="members.html">Members</a>
+</div>
+    <div class="flinks" style="margin-bottom:8px;"><a href="mailto:secretary@kreweofshamrock.com">Contact: secretary@kreweofshamrock.com</a></div>
+    <div class="slainte">Sláinte! 🍀 Tampa Bay, Florida</div>
+    <div class="fine">© Krewe of Shamrock. Celebrating Irish heritage all year round.</div>
+  </footer>
+
+  <div class="krewe-music" id="krewePlayer">
+    <audio id="kreweAudio" src="/assets/krewe-theme-BVAAEwps.mp3" loop preload="none"></audio>
+    <button id="kreweMusicBtn" aria-label="Play background music" aria-pressed="false" title="Play our Irish tune">
+      <span class="bars"><i></i><i></i><i></i><i></i></span>
+    </button>
+    <span class="label" id="kreweMusicLabel">Tap for a tune ☘</span>
+  </div>
+  <script src="assets/krewe.js" defer></script>
+
+  <!-- POEMS & ART DATA -->
+</body>
+</html>

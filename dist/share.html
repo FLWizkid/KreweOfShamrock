@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" href="/assets/favicon-C6Ez-gVw.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32-IFtF2Ie4.png" />
+<link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48-P2fbaPU4.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16-gRalTiZy.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon-BHghyMl4.png" />
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Krewe of Shamrock · Share Content</title>
+<meta name="description" content="Share your videos, photos, artwork, poems, stories, and recipes with the Krewe of Shamrock community." />
+<meta name="robots" content="noindex" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+.gate{ position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center;
+  background:linear-gradient(180deg,var(--green-800),var(--green-900)); padding:24px; }
+.gate-card{ background:#fff; border-radius:18px; padding:34px 30px; max-width:380px; width:100%; text-align:center;
+  box-shadow:0 20px 60px rgba(0,0,0,.4); border:1px solid var(--gold); }
+.gate-card img{ width:64px; height:auto; margin-bottom:10px; }
+.gate-card h1{ font-family:var(--display); color:var(--green-800); font-size:24px; margin:0 0 6px; }
+.gate-card p{ color:var(--muted); font-size:15px; margin:0 0 18px; }
+.gate-card input{ width:100%; padding:12px 14px; border:1px solid rgba(168,128,28,.5); border-radius:10px; font-size:16px; text-align:center; }
+.gate-card .err{ color:#a12; font-size:14px; min-height:18px; margin-top:8px; }
+
+.share-hero{ background:linear-gradient(180deg,var(--green-700),var(--green-800)); color:#fff; padding:36px 0 28px; text-align:center; }
+.share-hero h1{ font-family:var(--display); font-size:clamp(22px,4vw,36px); margin:0 0 8px; }
+.share-hero p{ font-family:var(--fancy); font-style:italic; color:var(--gold-light); font-size:18px; margin:0; }
+
+.type-tabs{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; padding:28px 0 0; }
+.type-tab{ border:2px solid rgba(168,128,28,.4); background:#fff; color:var(--green-800); border-radius:999px;
+  padding:10px 22px; font-family:var(--display); font-size:16px; cursor:pointer; transition:all .18s;
+  display:flex; align-items:center; gap:8px; }
+.type-tab:hover{ border-color:var(--green-700); background:#f5f0e8; }
+.type-tab.active{ background:var(--green-700); color:#fff; border-color:var(--green-700); }
+
+.share-card{ background:#fff; border:1px solid rgba(168,128,28,.28); border-radius:18px;
+  box-shadow:0 4px 18px rgba(0,0,0,.08); overflow:hidden; margin-top:28px; }
+.share-head{ background:linear-gradient(180deg,var(--green-700),var(--green-800)); color:#fff;
+  padding:18px 24px; display:flex; align-items:center; gap:12px; }
+.share-head .ic{ font-size:28px; }
+.share-head h2{ margin:0; font-family:var(--display); font-size:22px; }
+.share-head small{ display:block; font-family:var(--fancy); font-style:italic; color:var(--gold-light); font-size:14px; }
+.share-body{ padding:26px 28px 32px; }
+.note-box{ background:#f7f1e3; border:1px solid rgba(168,128,28,.4); border-left:4px solid var(--green-700);
+  border-radius:10px; padding:14px 16px; margin:0 0 20px; font-size:14px; color:var(--green-800); line-height:1.55; }
+.note-box strong{ color:var(--green-900,#0f3d24); }
+.msg.warn{ background:#fff8e6; border:1px solid #e6c96a; color:#6b5200; display:block; }
+
+.form-group{ margin-bottom:18px; }
+.form-group label{ display:block; font-family:var(--display); color:var(--green-800); font-size:16px;
+  letter-spacing:.4px; margin-bottom:6px; }
+.form-group input, .form-group textarea, .form-group select{
+  width:100%; padding:11px 14px; border:1px solid rgba(168,128,28,.45); border-radius:10px;
+  font-size:16px; font-family:inherit; background:#fdfaf4; box-sizing:border-box;
+  transition:border-color .15s; }
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus{
+  outline:none; border-color:var(--green-600,#2e8b57); box-shadow:0 0 0 3px rgba(46,139,87,.12); }
+.form-group textarea{ resize:vertical; min-height:140px; line-height:1.6; }
+.form-group .hint{ font-size:14px; color:var(--muted); margin-top:5px; }
+
+.file-drop{ border:2px dashed rgba(168,128,28,.45); border-radius:12px; padding:32px 20px;
+  text-align:center; cursor:pointer; transition:all .18s; background:#fdfaf4; }
+.file-drop:hover, .file-drop.drag-over{ border-color:var(--green-700); background:#f0ebe0; }
+.file-drop .ic{ font-size:36px; line-height:1; margin-bottom:10px; }
+.file-drop p{ margin:0; color:var(--muted); font-size:14px; }
+.file-drop strong{ color:var(--green-800); }
+.file-drop input[type=file]{ display:none; }
+.file-chosen{ font-size:14px; color:var(--green-700); margin-top:8px; font-style:italic; }
+
+.form-row{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+@media(max-width:600px){ .form-row{ grid-template-columns:1fr; } }
+
+.submit-area{ display:flex; align-items:center; gap:16px; margin-top:24px; flex-wrap:wrap; }
+.submit-note{ font-size:14px; color:var(--muted); flex:1; min-width:200px; }
+
+.msg{ margin-top:16px; padding:14px 16px; border-radius:10px; font-size:15px; display:none; }
+.msg.success{ background:#e8f5ec; border:1px solid #a3d9b1; color:#145c2e; display:block; }
+.msg.error{ background:#fef0f0; border:1px solid #f5b8b8; color:#a12020; display:block; }
+
+.panel{ display:none; }
+.panel.active{ display:block; }
+
+.back-link{ display:inline-flex; align-items:center; gap:6px; color:var(--green-700);
+  font-family:var(--display); font-size:16px; text-decoration:none; margin-bottom:20px; }
+.back-link:hover{ text-decoration:underline; }
+</style>
+  <script type="module" crossorigin src="/assets/share-BSeFvJXb.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="/assets/members-5fxORm81.css">
+</head>
+<body>
+
+<!-- Auth gate -->
+<div class="gate" id="gate" style="display:none;">
+  <div class="gate-card">
+    <img src="/assets/emblem-shamrock-C25sUmyu.png" alt="Krewe emblem" onerror="this.style.display='none'" />
+    <h1>Members Only</h1>
+    <p>F&aacute;ilte! Sharing photos and videos is for krewe members. Sign in at the castle door and we&rsquo;ll bring you right back here.</p>
+    <a class="btn btn-primary" style="margin-top:6px;width:100%;display:block;box-sizing:border-box;" href="members.html?next=share.html">&#9752; Sign in at the castle door</a>
+    <p style="margin-top:14px;font-size:14px;">First time? The castle door has a step-by-step guide to setting up your password.</p>
+  </div>
+</div>
+
+<nav class="krewe-nav" aria-label="Primary">
+    <a class="brand" href="index.html">
+      <img src="/assets/emblem-shamrock-C25sUmyu.png" alt="Krewe of Shamrock emblem" />
+      <span class="name"><b>Krewe of Shamrock</b><small>Tampa Bay · Est. 1999</small></span>
+    </a>
+    <button class="nav-toggle" id="kreweNavToggle" aria-label="Open menu" aria-controls="kreweMenu" aria-expanded="false">
+      <span class="nav-toggle-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+    </button>
+    <div class="krewe-menu" id="kreweMenu">
+      <ul class="krewe-links">
+        <li><a href="index.html" data-nav="index.html">Home</a></li>
+        <li class="nav-group">
+          <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">Events <span class="caret"></span></button>
+          <ul class="nav-dropdown">
+            <li><a href="event-signup.html" data-nav="event-signup.html">Upcoming Events</a></li>
+            <li><a href="parades.html" data-nav="parades.html">Parades</a></li>
+            <li><a href="tartan-ball.html" data-nav="tartan-ball.html">Tartan Ball</a></li>
+          </ul>
+        </li>
+        <li class="nav-group">
+          <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">About <span class="caret"></span></button>
+          <ul class="nav-dropdown">
+            <li><a href="learn.html" data-nav="learn.html">Our Heritage</a></li>
+            <li><a href="krewe-history.html" data-nav="krewe-history.html">Krewe History</a></li>
+            <li><a href="poetry.html" data-nav="poetry.html">Krewe Creativity</a></li>
+          </ul>
+        </li>
+        <li class="nav-group">
+          <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">Media <span class="caret"></span></button>
+          <ul class="nav-dropdown">
+            <li><a href="gallery.html" data-nav="gallery.html">Photo Gallery</a></li>
+            <li><a href="videos.html" data-nav="videos.html">Videos</a></li>
+            <li><a href="share.html" data-nav="share.html">Share Yours</a></li>
+          </ul>
+        </li>
+        <li class="nav-group">
+          <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">Get Involved <span class="caret"></span></button>
+          <ul class="nav-dropdown">
+            <li><a href="volunteer.html" data-nav="volunteer.html">Volunteer</a></li>
+            <li><a href="store.html" data-nav="store.html">Shop</a></li>
+          </ul>
+        </li>
+        <li><a href="members.html" data-nav="members.html">Member Login</a></li>
+        <li><a href="https://kreweofshamrock.wildapricot.org" target="_blank" rel="noopener noreferrer" title="Archive of the previous site" aria-label="Archive of the previous site">Archive</a></li>
+      </ul>
+      <a class="nav-cta" href="membership-application.html" data-nav="membership-application.html">☘ Join</a>
+    </div>
+  </nav>
+
+<main id="mainContent" style="display:none;">
+
+  <div class="share-hero">
+    <div class="wrap">
+      <h1>&#x2618; Share with the Krewe</h1>
+      <p>Post videos, photos, artwork, poems, stories &amp; recipes</p>
+    </div>
+  </div>
+
+  <div class="wrap" style="padding-top:16px;padding-bottom:60px;">
+
+    <a href="members.html" class="back-link">&#8592; Back to Member Hub</a>
+
+    <div style="color:var(--muted);font-size:15px;margin:0 0 20px;line-height:1.5;">
+      <p style="margin:0 0 10px;">Choose the type of content you&rsquo;d like to share. This space is for lifting each other up &mdash; post what is <b>positive, kind, and true to the krewe spirit</b>.</p>
+      <p style="margin:0 0 10px;"><b>Our posting values:</b> keep it welcoming and constructive. Please do <b>not</b> post political campaigning, partisan arguments, or content that judges, shames, or attacks people. Celebrate our culture, creativity, and camaraderie instead.</p>
+      <p style="margin:0;">Artwork, poems, stories, and recipes go live right away. Photos and videos are submitted for officer review before they appear on the site. Photos and videos also need a signed media consent (faces/likeness).</p>
+    </div>
+
+    <!-- Type selector tabs -->
+    <div class="type-tabs" id="typeTabs">
+      <button class="type-tab active" data-panel="video">&#127916; Videos</button>
+      <button class="type-tab" data-panel="photo">&#128247; Gallery Photos</button>
+      <button class="type-tab" data-panel="art">&#127912; Artwork</button>
+      <button class="type-tab" data-panel="poem">&#10002;&#65039; Poems</button>
+      <button class="type-tab" data-panel="story">&#128214; Stories &amp; Essays</button>
+      <button class="type-tab" data-panel="recipe">&#127858; Recipes</button>
+    </div>
+
+    <!-- VIDEO PANEL -->
+    <div class="panel active" id="panel-video">
+      <div class="share-card">
+        <div class="share-head">
+          <span class="ic">&#127916;</span>
+          <div><h2>Submit a Video</h2><small>Upload a file or paste a YouTube/Vimeo/MP4 link</small></div>
+        </div>
+        <div class="share-body">
+          <div class="note-box" role="note">
+            <strong>Officer review:</strong> videos wait for an officer to approve before they go live.
+            <strong>Showcase limits (free plan):</strong> the site holds <strong>15 published videos</strong> max (~<strong>25&nbsp;MB</strong> each).
+            Prefer clips <strong>under 25&nbsp;MB</strong> (MP4). When the published library is full, approving another
+            <strong>rotates out the earliest</strong> published video and <strong>deletes it from Storage</strong>.
+          </div>
+          <form id="formVideo" novalidate>
+            <div class="form-group">
+              <label for="vTitle">Video Title *</label>
+              <input id="vTitle" type="text" placeholder="Give your video a title" required />
+            </div>
+            <div class="form-group">
+              <label>Video File</label>
+              <div class="file-drop" id="dropVideo">
+                <div class="ic">&#127916;</div>
+                <p><strong>Click to choose</strong> or drag &amp; drop your video here</p>
+                <p>MP4, WebM, MOV · max 25 MB</p>
+                <input type="file" id="fileVideo" accept="video/mp4,video/webm,video/quicktime" />
+              </div>
+              <div class="file-chosen" id="fileVideoName"></div>
+              <div class="hint">MP4 preferred; MOV may not play in all browsers; keep under 25 MB.</div>
+            </div>
+            <div class="form-group">
+              <label for="vUrl">Or Video URL</label>
+              <input id="vUrl" type="url" placeholder="https://youtube.com/watch?v=... or https://vimeo.com/..." />
+              <div class="hint">Upload a file <em>or</em> paste a YouTube, Vimeo, or direct MP4 link (one is required).</div>
+            </div>
+            <div class="form-group">
+              <label for="vDesc">Description</label>
+              <textarea id="vDesc" placeholder="Tell the krewe what this video is about..."></textarea>
+            </div>
+            <div class="submit-area">
+              <button type="submit" class="btn btn-primary">Submit for review</button>
+              <span class="submit-note">&#x1f512; Submitted for officer review (media consent required). Not live until approved.</span>
+            </div>
+            <div class="msg" id="msgVideo"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHOTO PANEL -->
+    <div class="panel" id="panel-photo">
+      <div class="share-card">
+        <div class="share-head">
+          <span class="ic">&#128247;</span>
+          <div><h2>Upload Gallery Photos</h2><small>JPG, PNG, WebP · up to 10 MB each</small></div>
+        </div>
+        <div class="share-body">
+          <form id="formPhoto" novalidate>
+            <div class="form-group">
+              <label for="pTitle">Photo Title / Caption *</label>
+              <input id="pTitle" type="text" placeholder="What does this photo show?" required />
+            </div>
+            <div class="form-group">
+              <label>Photo File *</label>
+              <div class="file-drop" id="dropPhoto">
+                <div class="ic">&#128247;</div>
+                <p><strong>Click to choose</strong> or drag &amp; drop your photo here</p>
+                <p>JPG, PNG, WebP · max 10 MB</p>
+                <input type="file" id="filePhoto" accept="image/jpeg,image/png,image/webp,image/gif" />
+              </div>
+              <div class="file-chosen" id="filePhotoName"></div>
+            </div>
+            <div class="form-group">
+              <label for="pDesc">Notes (optional)</label>
+              <textarea id="pDesc" placeholder="Where was this taken? Any story behind it?"></textarea>
+            </div>
+            <div class="submit-area">
+              <button type="submit" class="btn btn-primary">Submit for review</button>
+              <span class="submit-note">&#x1f512; Submitted for officer review (media consent required). Not live until approved.</span>
+            </div>
+            <div class="msg" id="msgPhoto"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- ARTWORK PANEL -->
+    <div class="panel" id="panel-art">
+      <div class="share-card">
+        <div class="share-head">
+          <span class="ic">&#127912;</span>
+          <div><h2>Share Artwork</h2><small>Celtic art, illustrations, digital or traditional</small></div>
+        </div>
+        <div class="share-body">
+          <form id="formArt" novalidate>
+            <div class="form-group">
+              <label for="aTitle">Artwork Title *</label>
+              <input id="aTitle" type="text" placeholder="Title of your piece" required />
+            </div>
+            <div class="form-group">
+              <label>Image File *</label>
+              <div class="file-drop" id="dropArt">
+                <div class="ic">&#127912;</div>
+                <p><strong>Click to choose</strong> or drag &amp; drop your artwork here</p>
+                <p>JPG, PNG, WebP, GIF · max 15 MB</p>
+                <input type="file" id="fileArt" accept="image/jpeg,image/png,image/webp,image/gif" />
+              </div>
+              <div class="file-chosen" id="fileArtName"></div>
+            </div>
+            <div class="form-group">
+              <label for="aDesc">Artist Statement / Description</label>
+              <textarea id="aDesc" placeholder="Tell us about this piece: medium, inspiration, technique..."></textarea>
+            </div>
+            <div class="submit-area">
+              <button type="submit" class="btn btn-primary">Post to the site</button>
+              <span class="submit-note">&#x1f512; Goes live on the Krewe Creativity page as soon as you submit.</span>
+            </div>
+            <div class="msg" id="msgArt"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- POEM PANEL -->
+    <div class="panel" id="panel-poem">
+      <div class="share-card">
+        <div class="share-head">
+          <span class="ic">&#10002;&#65039;</span>
+          <div><h2>Submit a Poem</h2><small>Original verse, blessings, limericks &amp; ballads</small></div>
+        </div>
+        <div class="share-body">
+          <form id="formPoem" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="pmTitle">Poem Title *</label>
+                <input id="pmTitle" type="text" placeholder="Title of your poem" required />
+              </div>
+              <div class="form-group">
+                <label for="pmSubtitle">Subtitle / Tagline (optional)</label>
+                <input id="pmSubtitle" type="text" placeholder="e.g. A Blessing for Parade Day" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="pmBody">Your Poem *</label>
+              <textarea id="pmBody" style="min-height:220px;font-family:var(--fancy);font-size:16px;line-height:1.8;" placeholder="Write or paste your poem here..." required></textarea>
+            </div>
+            <div class="submit-area">
+              <button type="submit" class="btn btn-primary">Post to the site</button>
+              <span class="submit-note">&#x1f512; Goes live on the Krewe Creativity page as soon as you submit.</span>
+            </div>
+            <div class="msg" id="msgPoem"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- STORY / ESSAY PANEL -->
+    <div class="panel" id="panel-story">
+      <div class="share-card">
+        <div class="share-head">
+          <span class="ic">&#128214;</span>
+          <div><h2>Submit a Story or Essay</h2><small>Short stories, personal essays, krewe memories</small></div>
+        </div>
+        <div class="share-body">
+          <form id="formStory" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="stTitle">Title *</label>
+                <input id="stTitle" type="text" placeholder="Title of your piece" required />
+              </div>
+              <div class="form-group">
+                <label for="stSubtitle">Subtitle (optional)</label>
+                <input id="stSubtitle" type="text" placeholder="e.g. A Memory from Mardi Gras" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="stBody">Your Story or Essay *</label>
+              <textarea id="stBody" style="min-height:280px;" placeholder="Write or paste your story here..." required></textarea>
+            </div>
+            <div class="submit-area">
+              <button type="submit" class="btn btn-primary">Post to the site</button>
+              <span class="submit-note">&#x1f512; Goes live as soon as you submit.</span>
+            </div>
+            <div class="msg" id="msgStory"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- RECIPE PANEL -->
+    <div class="panel" id="panel-recipe">
+      <div class="share-card">
+        <div class="share-head">
+          <span class="ic">&#127858;</span>
+          <div><h2>Share a Recipe</h2><small>Irish, Celtic, krewe favorites &amp; parade snacks</small></div>
+        </div>
+        <div class="share-body">
+          <form id="formRecipe" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="rTitle">Recipe Name *</label>
+                <input id="rTitle" type="text" placeholder="e.g. Guinness Lamb Stew" required />
+              </div>
+              <div class="form-group">
+                <label for="rSubtitle">Subtitle / Occasion (optional)</label>
+                <input id="rSubtitle" type="text" placeholder="e.g. Perfect for Parade Day" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="rIngredients">Ingredients *</label>
+              <textarea id="rIngredients" style="min-height:140px;" placeholder="List ingredients, one per line..." required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="rBody">Method / Instructions *</label>
+              <textarea id="rBody" style="min-height:180px;" placeholder="Step-by-step instructions..." required></textarea>
+            </div>
+            <div class="form-group">
+              <label>Photo of the Dish (optional)</label>
+              <div class="file-drop" id="dropRecipe">
+                <div class="ic">&#127860;</div>
+                <p><strong>Click to add a photo</strong> of your finished dish</p>
+                <p>JPG, PNG · max 10 MB</p>
+                <input type="file" id="fileRecipe" accept="image/jpeg,image/png,image/webp" />
+              </div>
+              <div class="file-chosen" id="fileRecipeName"></div>
+            </div>
+            <div class="submit-area">
+              <button type="submit" class="btn btn-primary">Post to the site</button>
+              <span class="submit-note">&#x1f512; Goes live as soon as you submit.</span>
+            </div>
+            <div class="msg" id="msgRecipe"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /wrap -->
+</main>
+
+<footer class="site-footer" style="background:var(--green-900);color:#c8d9c0;text-align:center;padding:24px;font-size:14px;margin-top:0;">
+  <p style="margin:0;">&copy; Krewe of Shamrock · Tampa Bay, Florida. <a href="members.html" style="color:var(--gold-light);">Member Hub</a></p>
+  <p style="margin:8px 0 0;"><a href="mailto:secretary@kreweofshamrock.com" style="color:var(--gold-light);">Contact: secretary@kreweofshamrock.com</a></p>
+</footer>
+
+  <div class="krewe-music" id="krewePlayer">
+    <audio id="kreweAudio" src="/assets/krewe-theme-BVAAEwps.mp3" loop preload="none"></audio>
+    <button id="kreweMusicBtn" aria-label="Play background music" aria-pressed="false" title="Play our Irish tune">
+      <span class="bars"><i></i><i></i><i></i><i></i></span>
+    </button>
+    <span class="label" id="kreweMusicLabel">Tap for a tune ☘</span>
+  </div>
+  <script src="assets/krewe.js" defer></script>
+</body>
+</html>

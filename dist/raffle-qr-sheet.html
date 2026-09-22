@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" href="/assets/favicon-C6Ez-gVw.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32-IFtF2Ie4.png" />
+<link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48-P2fbaPU4.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16-gRalTiZy.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon-BHghyMl4.png" />
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Krewe of Shamrock · Raffle QR Codes</title>
+<style>
+  body{ background:#fff; }
+  .qr-top{ max-width:900px; margin:0 auto; padding:20px; text-align:center; }
+  .qr-top h1{ font-family:var(--display); color:var(--green-800); }
+  .qr-actions{ margin:10px 0 18px; }
+  .qr-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:18px; max-width:900px; margin:0 auto; padding:0 20px 40px; }
+  .qr-card{ border:2px solid var(--green-800); border-radius:16px; padding:18px; text-align:center; break-inside:avoid; }
+  .qr-card h2{ font-family:var(--display); color:var(--green-800); font-size:22px; margin:0 0 4px; }
+  .qr-card .sub{ color:#7a1f2b; font-size:14px; margin:0 0 10px; }
+  .qr-card canvas{ width:230px; height:230px; }
+  .qr-card .scan{ font-family:var(--display); color:var(--green-800); margin-top:8px; font-size:15px; }
+  .qr-card.fifty{ border-color:#7a1f2b; }
+  @media print{ .qr-actions,.krewe-nav,.krewe-music{ display:none !important; } .qr-card{ box-shadow:none; } }
+</style>
+  <script type="module" crossorigin src="/assets/raffle-qr-sheet-COQ0LqqU.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="/assets/members-5fxORm81.css">
+</head>
+<body>
+  <div class="qr-top">
+    <h1>Raffle QR Codes</h1>
+    <p>Print this page, cut out each card, and tape it to the matching basket. Guests scan to enter from their phones.</p>
+    <div class="qr-actions"><button class="btn btn-primary" onclick="window.print()">🖨️ Print</button> <a class="btn" href="members.html">← Back to Members</a></div>
+  </div>
+  <div id="qrGrid" class="qr-grid"><p style="text-align:center;grid-column:1/-1;">Loading…</p></div>
+
+  <!-- Self-hosted QR library: same-origin so ad-blockers and venue networks can't block it.
+       If the local file somehow fails, fall back to the CDN copy. -->
+  <script src="assets/vendor/qrcode.min.js?v=153"
+          onerror="var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js';document.head.appendChild(s);"></script>
+  <!-- Shared QR generator (see QR_LIBRARY_BUILD_PLAN.md Phase 1). -->
+  <script src="assets/kos-qr.js?v=20260918qr1"></script>
+<p style="margin:8px 0 0;"><a href="mailto:secretary@kreweofshamrock.com" style="color:var(--gold-light);">Contact: secretary@kreweofshamrock.com</a></p>
+</body>
+</html>

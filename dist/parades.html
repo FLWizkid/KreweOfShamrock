@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" href="/assets/favicon-C6Ez-gVw.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32-IFtF2Ie4.png" />
+<link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48-P2fbaPU4.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16-gRalTiZy.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon-BHghyMl4.png" />
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Krewe of Shamrock · Parades &amp; Safety</title>
+<meta name="description" content="The parades the Krewe of Shamrock marches in across Tampa Bay, plus our parade safety and security practices, Gasparilla rules, and key safety guidelines." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  .parade-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:20px; }
+  .parade-card{ background:#fff; border:1px solid rgba(168,128,28,.28); border-radius:16px; padding:22px; box-shadow:var(--shadow-sm); display:flex; flex-direction:column; overflow:hidden; }
+  .parade-card .mo{ font-family:var(--display); font-size:13px; letter-spacing:1px; text-transform:uppercase; color:var(--gold-deep); }
+  .parade-card h3{ color:var(--green-800); font-size:20px; margin:6px 0 8px; }
+  .parade-card p{ font-size:15px; margin:0 0 12px; color:var(--ink); }
+  .parade-card a{ font-family:var(--display); font-weight:600; color:var(--green-700); text-decoration:none; font-size:14px; }
+  .parade-card a:hover{ color:var(--gold-deep); }
+  .parade-card .dt{ font-weight:600; color:var(--green-800); font-size:15px; margin:-2px 0 10px; }
+  .parade-card .parade-media{ margin:-22px -22px 14px; aspect-ratio:16/7.2; background:linear-gradient(160deg,#1a3a24,#0d1f14); display:grid; place-items:center; overflow:hidden; color:#f5e6b8; font-family:var(--display); }
+  .parade-card .parade-media picture{ display:block; width:100%; height:100%; }
+  .parade-card .parade-media img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .parade-card .parade-actions{ display:flex; flex-wrap:wrap; gap:8px; margin-top:auto; }
+  .parade-card .parade-actions .btn{ font-size:14px; }
+  .parade-card .ev-meta{ font-size:15px; margin:0 0 6px; }
+  .parade-card .ev-meta b{ color:var(--green-800); }
+  .why-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:16px; max-width:860px; margin:0 auto; }
+  .why-item{ background:rgba(255,255,255,.7); border:1px solid rgba(168,128,28,.22); border-radius:14px; padding:16px 18px; }
+  .why-item h3{ margin:0 0 6px; font-family:var(--display); font-size:17px; color:var(--green-800); }
+  .why-item p{ margin:0; font-size:15.5px; }
+  @media (max-width:720px){ .why-grid{ grid-template-columns:1fr; } }
+  .season-wrap{ overflow-x:auto; margin-top:34px; }
+  table.season{ width:100%; min-width:560px; border-collapse:collapse; background:#fff;
+    border:1px solid rgba(168,128,28,.28); border-radius:16px; overflow:hidden; box-shadow:var(--shadow-sm); }
+  table.season th{ background:linear-gradient(180deg,var(--green-800),var(--green-900)); color:var(--gold-light);
+    font-family:var(--display); font-size:13px; letter-spacing:.8px; text-transform:uppercase; padding:12px 16px; text-align:left; }
+  table.season td{ padding:11px 16px; border-top:1px solid rgba(168,128,28,.18); font-size:15.5px; }
+  table.season td.mo{ font-family:var(--display); font-size:13px; letter-spacing:1px; text-transform:uppercase; color:var(--gold-deep); white-space:nowrap; }
+  table.season td.dt{ white-space:nowrap; font-weight:600; color:var(--green-800); }
+  table.season a{ color:var(--green-700); font-weight:600; text-decoration:none; }
+  table.season a:hover{ color:var(--gold-deep); }
+  table.season tr.ours td{ background:rgba(212,175,55,.12); }
+  .season-key{ text-align:center; margin-top:14px; font-size:14.5px; color:var(--muted); }
+  .season-key .swatch{ display:inline-block; width:14px; height:14px; border-radius:4px; background:rgba(212,175,55,.35); border:1px solid var(--gold-deep); vertical-align:-2px; margin-right:6px; }
+  .rules-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+  .rule{ display:flex; gap:14px; align-items:flex-start; background:rgba(255,255,255,.06); border:1px solid rgba(236,208,126,.4); border-radius:14px; padding:16px 18px; }
+  .rule .ic{ font-size:26px; line-height:1; }
+  .rule h3{ margin:0 0 4px; font-family:var(--display); font-size:16px; color:var(--gold-light); }
+  .rule p{ margin:0; font-size:14.5px; color:#f1ead4; }
+  .safety-list{ list-style:none; padding:0; margin:0; display:grid; grid-template-columns:1fr 1fr; gap:12px 24px; }
+  .safety-list li{ position:relative; padding-left:30px; font-size:16px; }
+  .safety-list li::before{ content:"☘"; position:absolute; left:0; top:1px; color:var(--green-600); font-size:18px; }
+  @media (max-width:720px){ .rules-grid,.safety-list{ grid-template-columns:1fr; } }
+  .page-head{ padding:40px 22px 34px; }
+  #parade-season > .wrap{ padding-top:32px; padding-bottom:40px; }
+  #parade-season .parade-lead{ max-width:760px; margin:0 auto 14px; text-align:center; font-size:17px; }
+  @media (max-width:720px){
+    .page-head{ padding:32px 14px 28px; }
+    #parade-season > .wrap{ padding-top:24px; }
+  }
+</style>
+  <script type="module" crossorigin src="/assets/parades-D9sZH_qH.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="/assets/members-5fxORm81.css">
+</head>
+<body>
+
+  <nav class="krewe-nav" aria-label="Primary">
+    <a class="brand" href="index.html">
+      <img src="/assets/emblem-shamrock-C25sUmyu.png" alt="Krewe of Shamrock emblem" />
+      <span class="name"><b>Krewe of Shamrock</b><small>Tampa Bay · Est. 1999</small></span>
+    </a>
+    <button class="nav-toggle" id="kreweNavToggle" aria-label="Open menu" aria-controls="kreweMenu" aria-expanded="false">
+      <span class="nav-toggle-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+    </button>
+    <div class="krewe-menu" id="kreweMenu">
+      <ul class="krewe-links">
+        <li><a href="index.html" data-nav="index.html">Home</a></li>
+        <li class="nav-group">
+          <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">Events <span class="caret"></span></button>
+          <ul class="nav-dropdown">
+            <li><a href="event-signup.html" data-nav="event-signup.html">Upcoming Events</a></li>
+            <li><a href="parades.html" data-nav="parades.html">Parades</a></li>
+            <li><a href="tartan-ball.html" data-nav="tartan-ball.html">Tartan Ball</a></li>
+          </ul>
+        </li>
+        <li class="nav-group">
+          <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">About <span class="caret"></span></button>
+          <ul class="nav-dropdown">
+            <li><a href="learn.html" data-nav="learn.html">Our Heritage</a></li>
+            <li><a href="krewe-history.html" data-nav="krewe-history.html">Krewe History</a></li>
+            <li><a href="poetry.html" data-nav="poetry.html">Krewe Creativity</a></li>
+          </ul>
+        </li>
+        <li class="nav-group">
+          <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">Media <span class="caret"></span></button>
+          <ul class="nav-dropdown">
+            <li><a href="gallery.html" data-nav="gallery.html">Photo Gallery</a></li>
+            <li><a href="videos.html" data-nav="videos.html">Videos</a></li>
+            <li><a href="share.html" data-nav="share.html">Share Yours</a></li>
+          </ul>
+        </li>
+        <li class="nav-group">
+          <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">Get Involved <span class="caret"></span></button>
+          <ul class="nav-dropdown">
+            <li><a href="volunteer.html" data-nav="volunteer.html">Volunteer</a></li>
+            <li><a href="store.html" data-nav="store.html">Shop</a></li>
+          </ul>
+        </li>
+        <li><a href="members.html" data-nav="members.html">Member Login</a></li>
+        <li><a href="https://kreweofshamrock.wildapricot.org" target="_blank" rel="noopener noreferrer" title="Archive of the previous site" aria-label="Archive of the previous site">Archive</a></li>
+      </ul>
+      <a class="nav-cta" href="membership-application.html" data-nav="membership-application.html">☘ Join</a>
+    </div>
+  </nav>
+
+  <header class="page-head">
+    <div class="ph-bg" style="background-image:url('/assets/parade-crowd-BnA-usVO.jpg')"></div>
+    <p class="eyebrow">Green flags flying, pipes in the air</p>
+    <h1>Parades &amp; Safety</h1>
+    <p class="sub">Every parade we march &mdash; including both Gasparilla Saturdays &mdash; plus how we keep the route safe.</p>
+  </header>
+
+  <!-- PARADES WE MARCH IN — first section, recruiting cards with float art -->
+  <section class="band band-cream" id="parade-season">
+    <div class="wrap">
+      <div class="section-title">
+        <h2>Parades We March In</h2>
+        <p class="sub">Every Shamrock march this season</p>
+      </div>
+      <div class="knot-divider"><span class="knot"></span></div>
+      <p class="parade-lead">
+        Full membership includes a place in every krewe parade of the season,
+        including Children's Gasparilla and the Parade of Pirates.
+        March RSVP and staging stay in the Member Hub.
+      </p>
+      <div class="btns" style="margin:0 0 16px;justify-content:center;display:flex;flex-wrap:wrap;gap:10px;">
+        <a class="btn btn-primary" href="membership-application.html">☘ Join</a>
+        <a class="btn" href="members.html">Member Login</a>
+        <a class="btn" href="#ikc-season">See the season</a>
+      </div>
+      <div class="parade-grid" id="paradeStaticGrid">
+        <article class="parade-card" data-start="2026-12-05T10:00:00-05:00">
+          <div class="parade-media">
+            <picture>
+              <source type="image/webp" srcset="/assets/santafest-zmlFNmGG.webp" />
+              <img src="/assets/santafest-tZ5YwNrW.jpg" alt="Krewe of Shamrock castle float decorated with garland and gifts at SantaFest" width="1632" height="736" fetchpriority="high" />
+            </picture>
+          </div>
+          <div class="mo">December</div><h3>SantaFest</h3>
+          <p class="ev-meta"><b>When:</b> Saturday, December 5, 2026</p>
+          <p class="ev-meta"><b>Where:</b> Downtown Tampa</p>
+          <p>Tampa's downtown holiday kickoff parade, a festive start to the krewe's marching season.</p>
+          <div class="parade-actions">
+            <a class="btn btn-primary" href="membership-application.html">☘ Join</a>
+            <a class="btn" href="members.html">Member Login</a>
+            <a href="https://www.friendsoftamparec.org/santa-fest--tree-lighting.html" target="_blank" rel="noopener">Parade info →</a>
+          </div>
+        </article>
+        <article class="parade-card" data-start="2027-01-23T10:00:00-05:00">
+          <div class="parade-media">
+            <picture>
+              <source type="image/webp" srcset="/assets/childrens-gasparilla-Dy_tN2TY.webp" />
+              <img src="/assets/childrens-gasparilla-VKRwpGSk.jpg" alt="Krewe of Shamrock castle float on Bayshore at Children's Gasparilla with families along the route" width="1632" height="736" fetchpriority="high" />
+            </picture>
+          </div>
+          <div class="mo">January</div><h3>Children's Gasparilla</h3>
+          <p class="ev-meta"><b>When:</b> Saturday, January 23, 2027</p>
+          <p class="ev-meta"><b>Where:</b> Bayshore Boulevard, Tampa</p>
+          <p>The family-friendly, alcohol-free daytime parade along Bayshore: beads, pirates, and big smiles for the little ones.</p>
+          <div class="parade-actions">
+            <a class="btn btn-primary" href="membership-application.html">☘ Join</a>
+            <a class="btn" href="members.html">Member Login</a>
+            <a href="https://gasparillapiratefest.com/childrens-schedule-of-events/" target="_blank" rel="noopener">Parade info →</a>
+          </div>
+        </article>
+        <article class="parade-card" data-start="2027-01-30T14:00:00-05:00">
+          <div class="parade-media">
+            <picture>
+              <source type="image/webp" srcset="/assets/gasparilla-pirates-B0Ia-LXg.webp" />
+              <img src="/assets/gasparilla-pirates-CGhCyhL7.jpg" alt="Krewe of Shamrock castle float on Bayshore at the Gasparilla Parade of Pirates" width="1632" height="736" loading="lazy" />
+            </picture>
+          </div>
+          <div class="mo">January</div><h3>Gasparilla Parade of Pirates</h3>
+          <p class="ev-meta"><b>When:</b> Saturday, January 30, 2027</p>
+          <p class="ev-meta"><b>Where:</b> Bayshore Boulevard, Tampa</p>
+          <p>The crown jewel: the legendary invasion and grand pirate parade down Bayshore Boulevard.</p>
+          <div class="parade-actions">
+            <a class="btn btn-primary" href="membership-application.html">☘ Join</a>
+            <a class="btn" href="members.html">Member Login</a>
+            <a href="https://gasparillapiratefest.com/pirate-fest-schedule-of-events/" target="_blank" rel="noopener">Parade info →</a>
+          </div>
+        </article>
+        <article class="parade-card" data-start="2027-02-13T19:00:00-05:00">
+          <div class="parade-media">
+            <picture>
+              <source type="image/webp" srcset="/assets/santyago-knight-Cz46Ty7u.webp" />
+              <img src="/assets/santyago-knight-vaL_oQgB.jpg" alt="Krewe of Shamrock castle float at dusk in the Sant'Yago Knight Parade" width="1632" height="736" loading="lazy" />
+            </picture>
+          </div>
+          <div class="mo">February</div><h3>Sant'Yago Knight Parade</h3>
+          <p class="ev-meta"><b>When:</b> Saturday, February 13, 2027</p>
+          <p class="ev-meta"><b>Where:</b> Ybor City, Tampa</p>
+          <p>The dazzling night parade through historic Ybor City: lights, floats, and Latin-quarter energy.</p>
+          <div class="parade-actions">
+            <a class="btn btn-primary" href="membership-application.html">☘ Join</a>
+            <a class="btn" href="members.html">Member Login</a>
+            <a href="https://krewesantyago.org/knight-parade" target="_blank" rel="noopener">Parade info →</a>
+          </div>
+        </article>
+        <article class="parade-card">
+          <div class="parade-media">
+            <picture>
+              <source type="image/webp" srcset="/assets/tampa-pride-BkwTqg41.webp" />
+              <img src="/assets/tampa-pride-DSYhpXjU.jpg" alt="Krewe of Shamrock castle float at night with a Pride flag at Tampa Pride" width="1632" height="736" loading="lazy" />
+            </picture>
+          </div>
+          <div class="mo">Spring</div><h3>Tampa Pride</h3>
+          <p class="ev-meta"><b>When:</b> Date to be announced</p>
+          <p class="ev-meta"><b>Where:</b> Ybor City, Tampa</p>
+          <p>Ybor City's joyful celebration of Tampa's LGBTQ+ community; the krewe rolls with pride.</p>
+          <div class="parade-actions">
+            <a class="btn btn-primary" href="membership-application.html">☘ Join</a>
+            <a class="btn" href="members.html">Member Login</a>
+            <a href="https://tampapride.org/" target="_blank" rel="noopener">Parade info →</a>
+          </div>
+        </article>
+        <article class="parade-card" data-start="2027-03-01T12:00:00-05:00">
+          <div class="parade-media">
+            <picture>
+              <source type="image/webp" srcset="/assets/st-patricks-DnOzHb0y.webp" />
+              <img src="/assets/st-patricks-nuAKkbTE.jpg" alt="Krewe of Shamrock castle float on the Tampa waterfront at the Rough Riders St. Patrick's Day Parade" width="1632" height="736" loading="lazy" />
+            </picture>
+          </div>
+          <div class="mo">March</div><h3>Rough Riders' St. Patrick's Day</h3>
+          <p class="ev-meta"><b>When:</b> March 2027 · date to be announced</p>
+          <p class="ev-meta"><b>Where:</b> Tampa</p>
+          <p>Our home holiday, the parade where the Krewe of Shamrock was born in 1999. Pipes, kilts, and a sea of green.</p>
+          <div class="parade-actions">
+            <a class="btn btn-primary" href="membership-application.html">☘ Join</a>
+            <a class="btn" href="members.html">Member Login</a>
+            <a href="https://tamparoughriders.org/stpats" target="_blank" rel="noopener">Parade info →</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY MARCH -->
+  <section class="wrap narrow" id="why-march">
+    <div class="section-title">
+      <h2>Why March With Shamrock</h2>
+      <p class="sub">Kilts on Tampa's biggest routes</p>
+    </div>
+    <div class="banner-flourish" aria-hidden="true"></div>
+    <p style="text-align:center;font-size:17px;margin-bottom:20px;">
+      Cheer from the curb, or pull on a kilt and walk with us. Shamrock is Tampa's original kilted krewe &mdash;
+      proud, loud, and glad to have you. If you want a place in every parade of the season, join the krewe.
+    </p>
+    <div class="why-grid">
+      <div class="why-item"><h3>Tampa's original kilted krewe</h3><p>Pipes, tartan, and a sea of green. We are the Irish heritage krewe Tampa hears coming, marching since 1999.</p></div>
+      <div class="why-item"><h3>The Castle of Shenanigans</h3><p>March beside the float we built with our own hands, or ride the rails and throw beads to the crowd.</p></div>
+      <div class="why-item"><h3>A season of marches</h3><p>From SantaFest through St. Patrick's Day, full members have a place in every Shamrock parade of the season.</p></div>
+      <div class="why-item"><h3>Friends on the route</h3><p>Hospitality, humor, and a krewe that looks out for one another from the first bead to the last.</p></div>
+    </div>
+    <div class="btns" style="margin-top:22px;justify-content:center;display:flex;flex-wrap:wrap;gap:10px;">
+      <a class="btn btn-primary" href="membership-application.html">☘ Join</a>
+      <a class="btn" href="members.html">Member Login</a>
+      <a class="btn" href="#ikc-season">See the season</a>
+    </div>
+  </section>
+
+  <!-- FULL IKC PARADE SEASON -->
+  <section class="band band-cream" id="ikc-season">
+    <div class="wrap">
+      <div class="section-title">
+        <h2>The Full Parade Season, Around the Bay</h2>
+        <p class="sub">Every parade on the Inter-Krewe Council calendar · 2026&ndash;27 season</p>
+      </div>
+      <div class="knot-divider"><span class="knot"></span></div>
+      <div class="season-wrap">
+        <table class="season" id="ikcSeasonTable">
+          <thead>
+            <tr><th scope="col">Month</th><th scope="col">Parade</th><th scope="col">Date</th><th scope="col">Details</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="mo">October</td><td>Fantasy Fest (Key West)</td><td class="dt">October 16&ndash;25, 2026</td><td><a href="https://www.fantasyfest.com/" target="_blank" rel="noopener">Parade info &rarr;</a></td></tr>
+            <tr><td class="mo">October</td><td>USF Homecoming Parade</td><td class="dt">Friday, October 16, 2026</td><td><a href="https://www.usf.edu/student-affairs/homecoming/information/paradeinformation.aspx" target="_blank" rel="noopener">Parade info &rarr;</a></td></tr>
+            <tr><td class="mo">November</td><td>Tampa Veterans Parade</td><td class="dt">Cancelled for 2026</td><td><a href="https://www.veteransparade.org/" target="_blank" rel="noopener">Parade info &rarr;</a></td></tr>
+            <tr><td class="mo">November</td><td>Ruskin Veterans Parade</td><td class="dt">Date TBA</td><td><a href="https://vfw6287.org/di/vfw/v2/default.asp" target="_blank" rel="noopener">Parade info &rarr;</a></td></tr>
+            <tr class="ours"><td class="mo">December</td><td>SantaFest</td><td class="dt">Saturday, December 5, 2026</td><td><a href="https://www.friendsoftamparec.org/santa-fest--tree-lighting.html" target="_blank" rel="noopener">Parade info &rarr;</a></td></tr>
+            <tr><td class="mo">December</td><td>Anna Maria Island Christmas Parade</td><td class="dt">Date TBA</td><td><a href="https://www.annamaria.com/" target="_blank" rel="noopener">Parade info &rarr;</a></td></tr>
+            <tr><td class="mo">December</td><td>ReliaQuest Bowl Parade</td><td class="dt">Date TBA</td><td><a href="https://www.visittampabay.com/tampa-events/details/reliaquest-bowl-parade-%26-pep-rally/93644/" target="_blank" rel="noopener">Parade info &rarr;</a></td></tr>
+            <tr><td class="mo">January</td><td>Martin Luther King, Jr. Parade</td><td class="dt">Monday, January 18, 2027</td><td><a href="https://mlkjrparade.com/" target="_blank" rel="noopener">Parade info &rarr;</a></td></tr>
+            <tr class="ours"><td class="mo">January</td><td>Children's Gasparilla</td><td class="dt">Saturday, January 23, 2027</td><td><a href="https://gasparillapiratefest.com/childrens-schedule-of-events/" target="_blank" rel="noopener">Parade info &rarr;</a></td></tr>
+            <tr class="ours"><td class="mo">January</td><td>Gasparilla Parade of Pirates</td><td class="dt">Saturday, January 30, 2027</td><td><a href="https://gasparillapiratefest.com/pirate-fest-schedule-of-events/" target="_blank" rel="noopener">Parade info &rarr;</a></td></tr>
+            <tr class="ours"><td class="mo">February</td><td>Sant'Yago Knight Parade</td><td class="dt">Saturday, February 13, 2027</td><td><a href="https://krewesantyago.org/knight-parade" target="_blank" rel="noopener">Parade info &rarr;</a></td></tr>
+            <tr><td class="mo">February</td><td>Krewe of St. Andrews Mardi Gras</td><td class="dt">Date TBA</td><td><a href="https://standrewsmardigras.com/festival-info/" target="_blank" rel="noopener">Parade info &rarr;</a></td></tr>
+            <tr class="ours"><td class="mo">March</td><td>Rough Riders' St. Patrick's Day Parade</td><td class="dt">Date TBA</td><td><a href="https://tamparoughriders.org/stpats" target="_blank" rel="noopener">Parade info &rarr;</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="season-key"><span class="swatch" aria-hidden="true"></span>Gold rows are parades the Krewe of Shamrock marches in. <a href="members.html?found=tampa-parades" style="text-decoration:none;font-size:19px;color:var(--green-700);opacity:.65;margin-left:4px;vertical-align:-1px;" aria-label="A lucky clover" title="A lucky clover">☘</a></p>
+      <p style="text-align:center;margin-top:16px;font-family:var(--fancy);font-style:italic;color:var(--muted);">
+        Dates come from the
+        <a href="https://interkrewe.com/Parades" target="_blank" rel="noopener" style="color:var(--green-700);">Inter-Krewe Council parade list</a>
+        and can change; always check the official parade page before heading out.
+      </p>
+    </div>
+  </section>
+
+  <!-- OUR FLOAT -->
+  <section class="wrap">
+    <div class="section-title"><h2>Our Float: The Castle of Shenanigans</h2><p class="sub">Rolling stone-by-stone since 2019</p></div>
+    <div class="banner-flourish" aria-hidden="true"></div>
+    <div class="feature">
+      <div class="ft-text">
+        <h2>A Castle on Wheels</h2>
+        <p>You hear the Castle of Shenanigans before you see it. The music rolls up the block, the
+           stone towers swing around the corner, and there's our Leprechaun green skull grinning down
+           over the Krewe crest that honors our 1999 founding. Then the beads start flying. Members
+           ride up top and along the rails, showering the crowd the whole length of the route.</p>
+        <p>Since 2019 the castle has ruled the route at Gasparilla and the St. Patrick&rsquo;s parade,
+           and when the marching is done, it&rsquo;s where the whole krewe gathers for the family photo.
+           But the best part of the castle isn&rsquo;t how it rolls. It&rsquo;s how it was born.</p>
+        <a class="btn btn-primary" href="membership-application.html">☘ Ride With Us</a>
+      </div>
+      <div class="ft-media">
+        <div class="framed ornate"><span class="crn tr"></span><span class="crn bl"></span>
+          <img src="/assets/float-castle-BY3IDzUJ.jpg" alt="Krewe of Shamrock castle float showing the official crest, Est. 1999" />
+        </div>
+      </div>
+    </div>
+    <div class="feature rev" style="margin-top:26px;">
+      <div class="ft-text">
+        <h2>Built by Our Own Hands in 2019</h2>
+        <p>The Castle of Shenanigans didn't come from a catalog. Krewe members built it themselves,
+           on weekends that started with coffee and lumber and ended with sawdust in everyone's hair.
+           Members measured twice and cut once, and everybody got a little better every Saturday.</p>
+        <p>There was plenty to figure out along the way. How do you make a castle strong enough to
+           carry a crew of bead-throwers, light enough to tow, and low enough to clear every wire on
+           the route? Tower by tower and hinge by hinge, the crew engineered the answers: an amazing
+           sound system, rails that hold, the bar, bathrooms, and our Leprechaun green skull that
+           grins through any weather. Every problem found a fix, and every fix became a story.</p>
+        <p>Ask anyone who sanded a turret and they'll tell you the build was as much fun as the parade.
+           We laughed, we debated the plans, we picked up skills we didn't know we had, and we grew
+           closer with every coat of black paint. When the castle rolls down Bayshore and the crowd
+           roars, every member who played a part feels the same swell of pride. We didn't just build
+           a float. It built us.</p>
+      </div>
+      <div class="ft-media">
+        <div class="framed ornate"><span class="crn tr"></span><span class="crn bl"></span>
+          <img src="/assets/float-krewe-DQn3taWU.jpg" alt="Krewe of Shamrock members riding the castle float they built themselves" />
+        </div>
+      </div>
+    </div>
+    <div class="framed ornate" style="margin-top:26px;"><span class="crn tr"></span><span class="crn bl"></span>
+      <img src="/assets/float-parade-CWPS9zy3.jpg" alt="The whole Krewe of Shamrock gathered in front of the castle float on parade day" />
+    </div>
+  </section>
+
+  <!-- SAFETY & SECURITY -->
+  <section class="band band-green">
+    <div class="wrap">
+      <div class="section-title"><h2 style="color:#fff;">Safety &amp; Security First</h2><p class="sub">How we keep our krewe and the crowd safe</p></div>
+      <div class="knot-divider"><span class="knot"></span></div>
+      <p style="text-align:center;color:#f1ead4;max-width:760px;margin:0 auto 26px;">
+        A parade is only a good time if everyone goes home safe. Every Krewe of Shamrock member agrees to follow the
+        parade organizers' rules, the directions of parade marshals and law enforcement, and our own krewe safety practices.
+        Our walking marshals and safety volunteers keep watch over the line of march from start to finish.</p>
+      <div class="rules-grid">
+        <div class="rule"><span class="ic">🛡️</span><div><h3>Marshals &amp; Spotters</h3><p>Designated krewe marshals walk alongside the unit, keep spacing from the float, and watch the crowd line the entire route.</p></div></div>
+        <div class="rule"><span class="ic">🚸</span><div><h3>Mind the Little Ones</h3><p>Children near the curb move fast. We hand beads to small children rather than throw, and never toss toward faces.</p></div></div>
+        <div class="rule"><span class="ic">🚗</span><div><h3>Sober &amp; Steady</h3><p>Drivers and those working around the float stay sober. We plan rides and never drink and drive; designated drivers, always.</p></div></div>
+        <div class="rule"><span class="ic">👮</span><div><h3>Follow the Officials</h3><p>We obey parade marshals, EventFest staff, and the Tampa Police Department without exception, and report anything suspicious.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GASPARILLA RULES -->
+  <section class="wrap narrow">
+    <div class="section-title"><h2>Gasparilla Parade Rules</h2><p class="sub">Set by the organizers and strictly enforced</p></div>
+    <div class="knot-divider"><span class="knot"></span></div>
+    <p style="text-align:center;">The Gasparilla parades are managed by Ye Mystic Krewe of Gasparilla and EventFest. These rules apply to every krewe
+       on the route, and we follow them to the letter so we're invited back year after year.</p>
+    <ul class="safety-list" style="margin-top:18px;">
+      <li><b>Underhand throws only.</b> Beads and favors are tossed gently, underhand, never overhand.</li>
+      <li><b>Nothing thrown before Bay to Bay Blvd.</b> Krewes caught throwing early risk not being invited back.</li>
+      <li><b>Keep beads out of the bay.</b> Throwing beads or litter into Tampa Bay is illegal, and we proudly support the <b>#BeadFreeBay</b> campaign.</li>
+      <li><b>No beads in plastic bags.</b> Bags must be removed before staging and the parade route.</li>
+      <li><b>Stay with your unit.</b> Maintain safe spacing from floats and keep the route clear.</li>
+      <li><b>Respect the route &amp; the crowd.</b> Follow all EventFest and Tampa Police directions at all times.</li>
+    </ul>
+    <p style="text-align:center;margin-top:18px;font-size:15px;color:var(--muted);">
+      Official details: <a href="https://www.tampa.gov/special-events-coordination/gasparilla-safety" target="_blank" rel="noopener" style="color:var(--green-700);">City of Tampa: Gasparilla Safety</a>
+      · <a href="https://gasparillapiratefest.com/faq/" target="_blank" rel="noopener" style="color:var(--green-700);">Gasparilla Pirate Fest FAQ</a>
+    </p>
+  </section>
+
+  <!-- KEY SAFETY RULES -->
+  <section class="band band-cream">
+    <div class="wrap">
+      <div class="section-title"><h2>Key Safety Rules We Follow</h2><p class="sub">Our parade-day pledge</p></div>
+      <div class="banner-flourish" aria-hidden="true"></div>
+      <ul class="safety-list">
+        <li>Obey all parade marshals, organizers, and law enforcement.</li>
+        <li>Never drink and drive; designated drivers, always.</li>
+        <li>Throw gently and underhand; aim low, never at faces.</li>
+        <li>Hand beads directly to small children at the curb.</li>
+        <li>Keep safe spacing between people and the float.</li>
+        <li>No glass on the route; pick up after ourselves.</li>
+        <li>Stay hydrated, wear sensible footwear, and pace the day.</li>
+        <li>Watch the crowd line and report anything unsafe immediately.</li>
+        <li>Know the muster point and emergency contacts before we step off.</li>
+        <li>Look out for one another. We march, and leave, as a krewe.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="band band-green">
+    <div class="wrap" style="text-align:center;">
+      <span class="crest float" role="img" aria-label="Shamrock crest"></span>
+      <div class="section-title"><h2 style="color:#fff;">March With Us</h2><p class="sub">Pipes, kilts, and a hundred thousand welcomes</p></div>
+      <div class="btns" style="margin-top:22px;">
+        <a class="btn btn-primary" href="membership-application.html">☘ Join</a>
+        <a class="btn btn-outline" href="members.html">Member Login</a>
+        <a class="btn btn-outline" href="#ikc-season">See the season</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="krewe-foot">
+    <img class="fimg crest-img" src="/assets/krewe-crest-jsNApbvr.png" alt="" />
+    <div class="fname">Krewe of Shamrock</div>
+    <div class="flinks">
+<a href="index.html">Home</a>
+<a href="event-signup.html">Events</a>
+<a href="parades.html">Parades</a>
+<a href="tartan-ball.html">Tartan Ball</a>
+<a href="learn.html">Heritage</a>
+<a href="krewe-history.html">History</a>
+<a href="poetry.html">Krewe Creativity</a>
+<a href="gallery.html">Gallery</a>
+<a href="videos.html">Videos</a>
+<a href="volunteer.html">Volunteer</a>
+<a href="store.html">Shop</a>
+<a href="membership-application.html">Join</a>
+<a href="members.html">Members</a>
+</div>
+    <div class="flinks" style="margin-bottom:8px;"><a href="mailto:secretary@kreweofshamrock.com">Contact: secretary@kreweofshamrock.com</a></div>
+    <div class="slainte">Sláinte! 🍀 Tampa Bay, Florida</div>
+    <div class="fine">© Krewe of Shamrock. Celebrating Irish heritage all year round.</div>
+  </footer>
+
+  <div class="krewe-music" id="krewePlayer">
+    <audio id="kreweAudio" src="/assets/Krewe%20of%20Shamrock-C6A94R-k.mp3" loop preload="none"></audio>
+    <button id="kreweMusicBtn" aria-label="Play background music" aria-pressed="false" title="Play our Irish tune">
+      <span class="bars"><i></i><i></i><i></i><i></i></span>
+    </button>
+    <span class="label" id="kreweMusicLabel">Tap for a tune ☘</span>
+  </div>
+  <script src="assets/krewe.js" defer></script>
+</body>
+</html>

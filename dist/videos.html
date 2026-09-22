@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" href="/assets/favicon-C6Ez-gVw.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32-IFtF2Ie4.png" />
+<link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48-P2fbaPU4.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16-gRalTiZy.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon-BHghyMl4.png" />
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Krewe of Shamrock · Videos</title>
+<meta name="description" content="Parade footage, performances, and krewe moments from the Krewe of Shamrock." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  /* Video page redesign — page-local so we don't touch the global sheet */
+  .vid-stage{ margin: 0 auto 36px; max-width: 920px; }
+  .vid-stage .vid-frame{
+    position:relative; padding-top:56.25%; border-radius:16px; overflow:hidden;
+    background:#0a120c; box-shadow:var(--shadow); border:1px solid rgba(168,128,28,.35);
+  }
+  .vid-stage .vid-frame > *{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+  .vid-stage video{ object-fit:contain; background:#0a120c; }
+  .vid-stage .vid-meta{ margin-top:14px; text-align:center; }
+  .vid-stage .vid-meta h3{
+    font-family:var(--display); color:var(--green-800); margin:0 0 4px;
+    font-size:clamp(22px,3vw,30px); letter-spacing:.6px;
+  }
+  .vid-stage .vid-meta p{ margin:0; font-family:var(--fancy); font-style:italic; color:var(--muted); font-size:17px; }
+
+  .vid-grid{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:20px;
+  }
+  .vid-card{
+    margin:0; border-radius:14px; overflow:hidden; background:rgba(255,252,245,.92);
+    border:1px solid rgba(168,128,28,.28); box-shadow:var(--shadow);
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .vid-card:hover{ transform:translateY(-3px); box-shadow:0 14px 28px rgba(20,40,20,.18); }
+  .vid-card button.vid-thumb{
+    display:block; width:100%; border:0; padding:0; cursor:pointer; text-align:left;
+    position:relative; aspect-ratio:16/9; background:
+      radial-gradient(ellipse at 30% 20%, rgba(46,90,46,.35), transparent 55%),
+      linear-gradient(160deg, #1a3a24 0%, #0d1f14 55%, #132818 100%);
+    color:#fff;
+  }
+  .vid-card button.vid-thumb video{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.88;
+  }
+  .vid-card .vid-play{
+    position:absolute; inset:0; display:grid; place-items:center; z-index:2;
+    background:linear-gradient(180deg, transparent 40%, rgba(0,0,0,.45));
+  }
+  .vid-card .vid-play span{
+    width:58px; height:58px; border-radius:50%;
+    background:rgba(212,175,55,.95); color:#12301a;
+    display:grid; place-items:center; font-size:22px; padding-left:3px;
+    box-shadow:0 6px 18px rgba(0,0,0,.35); border:2px solid rgba(255,255,255,.55);
+  }
+  .vid-card .vid-badge{
+    position:absolute; top:10px; left:10px; z-index:3;
+    font-size:11px; letter-spacing:.4px; text-transform:uppercase;
+    background:rgba(18,48,26,.82); color:#f5e6b8; padding:4px 8px; border-radius:999px;
+    border:1px solid rgba(212,175,55,.4);
+  }
+  .vid-card figcaption{ padding:12px 14px 16px; }
+  .vid-card figcaption strong{
+    display:block; font-family:var(--display); color:var(--green-800);
+    font-size:17px; letter-spacing:.4px; margin-bottom:2px;
+  }
+  .vid-card figcaption small{
+    display:block; font-family:var(--fancy); font-style:italic; color:var(--muted); font-size:15px;
+  }
+
+  .vid-empty{
+    text-align:center; padding:40px 16px; color:var(--muted);
+    font-family:var(--fancy); font-size:18px;
+  }
+  .vid-cta-row{ text-align:center; margin:28px 0 8px; }
+  .vid-cta-row a.btn-ghost{
+    display:inline-block; padding:10px 18px; border-radius:999px;
+    border:1px solid rgba(46,90,46,.45); color:var(--green-800);
+    text-decoration:none; font-family:var(--display); letter-spacing:.4px;
+    background:rgba(255,252,245,.7);
+  }
+  .vid-cta-row a.btn-ghost:hover{ background:rgba(46,90,46,.08); }
+
+  .vid-modal[hidden]{ display:none !important; }
+  .vid-modal{
+    position:fixed; inset:0; z-index:80; display:grid; place-items:center;
+    background:rgba(8,16,10,.78); padding:18px;
+  }
+  .vid-modal-panel{
+    width:min(920px,100%); background:#0c1610; border-radius:16px; overflow:hidden;
+    border:1px solid rgba(212,175,55,.4); box-shadow:0 24px 60px rgba(0,0,0,.45);
+  }
+  .vid-modal-head{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:12px 14px; background:#12301a; color:#f5e6b8;
+  }
+  .vid-modal-head h3{ margin:0; font-family:var(--display); font-size:18px; letter-spacing:.4px; }
+  .vid-modal-head button{
+    border:0; background:transparent; color:#f5e6b8; font-size:28px; line-height:1;
+    cursor:pointer; padding:0 6px;
+  }
+  .vid-modal-body{ position:relative; padding-top:56.25%; background:#000; }
+  .vid-modal-body > *{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+  .vid-modal-body video{ object-fit:contain; }
+  .vid-modal-note{
+    padding:10px 14px 14px; color:#d8c9a0; font-family:var(--fancy); font-style:italic; font-size:15px;
+  }
+</style>
+  <script type="module" crossorigin src="/assets/videos-CPBtiWGr.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="/assets/members-5fxORm81.css">
+</head>
+<body>
+
+  <nav class="krewe-nav" aria-label="Primary">
+    <a class="brand" href="index.html">
+      <img src="/assets/emblem-shamrock-C25sUmyu.png" alt="Krewe of Shamrock emblem" />
+      <span class="name"><b>Krewe of Shamrock</b><small>Tampa Bay · Est. 1999</small></span>
+    </a>
+    <button class="nav-toggle" id="kreweNavToggle" aria-label="Open menu" aria-controls="kreweMenu" aria-expanded="false">
+      <span class="nav-toggle-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+    </button>
+    <div class="krewe-menu" id="kreweMenu">
+      <ul class="krewe-links">
+        <li><a href="index.html" data-nav="index.html">Home</a></li>
+        <li class="nav-group">
+          <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">Events <span class="caret"></span></button>
+          <ul class="nav-dropdown">
+            <li><a href="event-signup.html" data-nav="event-signup.html">Upcoming Events</a></li>
+            <li><a href="parades.html" data-nav="parades.html">Parades</a></li>
+            <li><a href="tartan-ball.html" data-nav="tartan-ball.html">Tartan Ball</a></li>
+          </ul>
+        </li>
+        <li class="nav-group">
+          <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">About <span class="caret"></span></button>
+          <ul class="nav-dropdown">
+            <li><a href="learn.html" data-nav="learn.html">Our Heritage</a></li>
+            <li><a href="krewe-history.html" data-nav="krewe-history.html">Krewe History</a></li>
+            <li><a href="poetry.html" data-nav="poetry.html">Krewe Creativity</a></li>
+          </ul>
+        </li>
+        <li class="nav-group">
+          <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">Media <span class="caret"></span></button>
+          <ul class="nav-dropdown">
+            <li><a href="gallery.html" data-nav="gallery.html">Photo Gallery</a></li>
+            <li><a href="videos.html" data-nav="videos.html">Videos</a></li>
+            <li><a href="share.html" data-nav="share.html">Share Yours</a></li>
+          </ul>
+        </li>
+        <li class="nav-group">
+          <button class="nav-group-btn" aria-haspopup="true" aria-expanded="false">Get Involved <span class="caret"></span></button>
+          <ul class="nav-dropdown">
+            <li><a href="volunteer.html" data-nav="volunteer.html">Volunteer</a></li>
+            <li><a href="store.html" data-nav="store.html">Shop</a></li>
+          </ul>
+        </li>
+        <li><a href="members.html" data-nav="members.html">Member Login</a></li>
+        <li><a href="https://kreweofshamrock.wildapricot.org" target="_blank" rel="noopener noreferrer" title="Archive of the previous site" aria-label="Archive of the previous site">Archive</a></li>
+      </ul>
+      <a class="nav-cta" href="membership-application.html" data-nav="membership-application.html">☘ Join</a>
+    </div>
+  </nav>
+
+  <header class="page-head">
+    <div class="ph-bg" style="background-image:url('/assets/festival-pipeband-BhPaAHvm.jpg')"></div>
+    <p class="eyebrow">Media</p>
+    <h1>Krewe Videos</h1>
+    <p class="sub">Parade day, pipes, and the moments worth watching again.</p>
+  </header>
+
+  <main class="wrap">
+    <div class="section-title">
+      <h2>On the avenue &amp; beyond</h2>
+      <p class="sub">Tap a clip to watch. Newest first · up to 15 member clips</p>
+    </div>
+    <div class="knot-divider"><span class="knot"></span></div>
+
+    <div id="featured" class="vid-stage" hidden></div>
+    <div id="content"><p class="vid-empty">Loading videos…</p></div>
+
+    <div class="vid-cta-row">
+      <a class="btn-ghost" href="share.html?type=video">Share a clip from Member Hub</a>
+    </div>
+  </main>
+
+  <div class="vid-modal" id="vidModal" hidden>
+    <div class="vid-modal-panel" role="dialog" aria-modal="true" aria-labelledby="vidModalTitle">
+      <div class="vid-modal-head">
+        <h3 id="vidModalTitle">Video</h3>
+        <button type="button" id="vidModalClose" aria-label="Close">&times;</button>
+      </div>
+      <div class="vid-modal-body" id="vidModalBody"></div>
+      <div class="vid-modal-note" id="vidModalNote" hidden></div>
+    </div>
+  </div>
+
+  <footer class="krewe-foot">
+    <img class="fimg crest-img" src="/assets/krewe-crest-jsNApbvr.png" alt="" />
+    <div class="fname">Krewe of Shamrock</div>
+    <div class="flinks">
+<a href="index.html">Home</a>
+<a href="event-signup.html">Events</a>
+<a href="parades.html">Parades</a>
+<a href="tartan-ball.html">Tartan Ball</a>
+<a href="learn.html">Heritage</a>
+<a href="krewe-history.html">History</a>
+<a href="poetry.html">Krewe Creativity</a>
+<a href="gallery.html">Gallery</a>
+<a href="videos.html">Videos</a>
+<a href="volunteer.html">Volunteer</a>
+<a href="store.html">Shop</a>
+<a href="membership-application.html">Join</a>
+<a href="members.html">Members</a>
+    </div>
+    <div class="flinks" style="margin-bottom:8px;"><a href="mailto:secretary@kreweofshamrock.com">Contact: secretary@kreweofshamrock.com</a></div>
+    <div class="slainte">Sláinte! 🍀 Tampa Bay, Florida</div>
+    <div class="fine">© Krewe of Shamrock. Celebrating Irish heritage all year round.</div>
+  </footer>
+
+  <div class="krewe-music" id="krewePlayer">
+    <audio id="kreweAudio" src="/assets/krewe-theme-BVAAEwps.mp3" loop preload="none"></audio>
+    <button id="kreweMusicBtn" aria-label="Play background music" aria-pressed="false" title="Play our Irish tune">
+      <span class="bars"><i></i><i></i><i></i><i></i></span>
+    </button>
+    <span class="label" id="kreweMusicLabel">Tap for a tune ☘</span>
+  </div>
+  <script src="assets/krewe.js" defer></script>
+
+
+</body>
+</html>
