@@ -60,10 +60,10 @@ function jewelClass(row) {
 }
 function mealShort(label) {
   if (!label) return "Meal TBA";
-  return String(label).replace/^(\d+)\.\s*/, "");
+  return String(label).replace(/^(\d+)\.\s*/, "");
 }
 function esc(s) {
-  return String(s ?? "").replace(/[&<m>="']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\":"&quot;","'":"&#39;"}[c]));
+  return String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
 }
 function render(rows) {
   const per = 30;
