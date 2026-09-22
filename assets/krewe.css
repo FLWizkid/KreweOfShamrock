@@ -168,16 +168,19 @@ h1,h2,h3{ font-family:var(--display); letter-spacing:.4px; line-height:1.2; }
 .btn-green:hover{ background:linear-gradient(180deg,var(--green-700),var(--green-900)); }
 
 .hero-links{
+  position:absolute;
+  top:16px;
+  right:22px;
   display:flex;
   flex-direction:column;
-  align-items:center;
+  align-items:flex-end;
   gap:4px;
-  margin-top:20px;
+  z-index:2;
 }
 .hero-links a{
   color:#fff;
   font-family:var(--display);
-  font-size:clamp(16px,2vw,20px);
+  font-size:15px;
   font-weight:600;
   line-height:1.35;
   text-decoration-line:underline;
@@ -409,6 +412,8 @@ form.krewe-form{ padding:26px 30px 30px; }
   .krewe-music .label{ display:none; }
   .wrap{ padding:40px 16px; }
   .hero{ padding:56px 16px 64px; }
+  .hero-links{ top:12px; right:14px; }
+  .hero-links a{ font-size:13px; }
   .page-head{ padding:44px 16px 40px; }
   .form-stage{ padding:28px 14px 110px; } /* leave room for music FAB */
   form.krewe-form{ padding:20px 16px 24px; }
@@ -782,6 +787,8 @@ table{ max-width:100%; }
 @media (max-width:480px){
   .wrap{ padding:32px 14px; }
   .hero{ padding:48px 14px 56px; }
+  .hero-links{ top:10px; right:10px; }
+  .hero-links a{ font-size:12px; }
   .page-head{ padding:36px 14px 34px; }
   .krewe-nav .brand img{ width:36px; height:36px; }
   .krewe-nav .brand .name b{ font-size:15px; }
